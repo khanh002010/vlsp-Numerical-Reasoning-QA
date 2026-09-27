@@ -22,7 +22,7 @@ class TrainingConfig:
     per_device_train_batch_size: int = 1
     gradient_accumulation_steps: int = 16
     warmup_steps: int = 100
-    max_steps: int = 1000  # or use num_train_epochs
+    max_steps: int = -1  # Set to -1 to respect num_train_epochs
     num_train_epochs: int = 3
     learning_rate: float = 2e-4
     fp16: bool = True
