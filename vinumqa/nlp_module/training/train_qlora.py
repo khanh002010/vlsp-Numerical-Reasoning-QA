@@ -118,6 +118,7 @@ def train():
         num_train_epochs=train_cfg.num_train_epochs,
         warmup_steps=train_cfg.warmup_steps,
         save_strategy="epoch",
+        gradient_checkpointing=True,
     )
     
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)

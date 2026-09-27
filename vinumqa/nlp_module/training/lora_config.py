@@ -19,8 +19,8 @@ class LoraConfig:
             
 @dataclass
 class TrainingConfig:
-    per_device_train_batch_size: int = 4
-    gradient_accumulation_steps: int = 4
+    per_device_train_batch_size: int = 1
+    gradient_accumulation_steps: int = 16
     warmup_steps: int = 100
     max_steps: int = 1000  # or use num_train_epochs
     num_train_epochs: int = 3
