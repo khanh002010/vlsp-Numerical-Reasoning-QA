@@ -75,5 +75,11 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str):
     print(f"Batch inference completed. Results saved to {output_path}")
 
 if __name__ == "__main__":
-    # run_batch_inference("test.json", "submission.json", "test_images/")
-    print("Batch inference script ready.")
+    import sys
+    
+    test_file = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT / "test.json")
+    img_dir = sys.argv[2] if len(sys.argv) > 2 else str(PROJECT_ROOT / "test_images")
+    output_file = str(PROJECT_ROOT / "submission.json")
+    
+    print(f"Starting batch inference on {test_file}...")
+    run_batch_inference(test_file, output_file, img_dir)

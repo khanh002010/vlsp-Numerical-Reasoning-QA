@@ -121,5 +121,4 @@ def train():
     trainer.model.save_pretrained(os.path.join(train_cfg.output_dir, "final"))
 
 if __name__ == "__main__":
-    # train()
-    print("Train QLoRA script ready.")
+    train()
