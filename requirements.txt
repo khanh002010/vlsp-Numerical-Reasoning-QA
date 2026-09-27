@@ -1,0 +1,14 @@
+torch
+torchvision
+transformers
+accelerate
+peft
+trl
+bitsandbytes
+datasets
+pandas
+beautifulsoup4
+lxml
+tabulate
+Pillow
+qwen-vl-utils
