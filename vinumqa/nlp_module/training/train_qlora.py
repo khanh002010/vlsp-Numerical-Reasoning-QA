@@ -89,44 +89,46 @@ def train():
     model = get_peft_model(model, peft_config)
     
     # 6. Training Arguments & SFTTrainer
+    common_args = dict(
+        output_dir=train_cfg.output_dir,
+        per_device_train_batch_size=train_cfg.per_device_train_batch_size,
+        gradient_accumulation_steps=train_cfg.gradient_accumulation_steps,
+        optim=train_cfg.optim,
+        logging_steps=train_cfg.logging_steps,
+        learning_rate=train_cfg.learning_rate,
+        fp16=train_cfg.fp16,
+        max_steps=train_cfg.max_steps,
+        num_train_epochs=train_cfg.num_train_epochs,
+        warmup_steps=train_cfg.warmup_steps,
+        save_strategy="epoch",
+    )
+    
     try:
         from trl import SFTConfig
-        training_args = SFTConfig(
-            output_dir=train_cfg.output_dir,
-            per_device_train_batch_size=train_cfg.per_device_train_batch_size,
-            gradient_accumulation_steps=train_cfg.gradient_accumulation_steps,
-            optim=train_cfg.optim,
-            logging_steps=train_cfg.logging_steps,
-            learning_rate=train_cfg.learning_rate,
-            fp16=train_cfg.fp16,
-            max_steps=train_cfg.max_steps,
-            num_train_epochs=train_cfg.num_train_epochs,
-            warmup_steps=train_cfg.warmup_steps,
-            save_strategy="epoch",
-            dataset_text_field="text",
-            max_seq_length=train_cfg.max_seq_length,
-        )
-        trainer = SFTTrainer(
-            model=model,
-            train_dataset=dataset,
-            peft_config=peft_config,
-            tokenizer=tokenizer,
-            args=training_args,
-        )
+        try:
+            # trl >= 0.12 (max_seq_length and dataset_text_field in SFTConfig)
+            training_args = SFTConfig(**common_args, dataset_text_field="text", max_seq_length=train_cfg.max_seq_length)
+            trainer = SFTTrainer(
+                model=model,
+                train_dataset=dataset,
+                peft_config=peft_config,
+                tokenizer=tokenizer,
+                args=training_args,
+            )
+        except TypeError:
+            # trl ~0.11 (dataset_text_field in SFTConfig, max_seq_length in SFTTrainer)
+            training_args = SFTConfig(**common_args, dataset_text_field="text")
+            trainer = SFTTrainer(
+                model=model,
+                train_dataset=dataset,
+                peft_config=peft_config,
+                tokenizer=tokenizer,
+                args=training_args,
+                max_seq_length=train_cfg.max_seq_length,
+            )
     except ImportError:
-        training_args = TrainingArguments(
-            output_dir=train_cfg.output_dir,
-            per_device_train_batch_size=train_cfg.per_device_train_batch_size,
-            gradient_accumulation_steps=train_cfg.gradient_accumulation_steps,
-            optim=train_cfg.optim,
-            logging_steps=train_cfg.logging_steps,
-            learning_rate=train_cfg.learning_rate,
-            fp16=train_cfg.fp16,
-            max_steps=train_cfg.max_steps,
-            num_train_epochs=train_cfg.num_train_epochs,
-            warmup_steps=train_cfg.warmup_steps,
-            save_strategy="epoch",
-        )
+        # trl < 0.11 (fallback to TrainingArguments)
+        training_args = TrainingArguments(**common_args)
         trainer = SFTTrainer(
             model=model,
             train_dataset=dataset,
