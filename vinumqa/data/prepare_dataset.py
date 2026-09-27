@@ -12,8 +12,8 @@ from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# Add project root to path
-PROJECT_ROOT = Path(r"d:\VS CODE\vlsp Numerical Reasoning QA")
+# Add project root to path (Dynamic for Kaggle/Local)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from vinumqa.utils.dsl_parser import parse_program, validate_program, ALL_OPS, MATH_OPS, TABLE_OPS, CHART_OPS
@@ -159,11 +159,13 @@ def save_splits(train_data: list, val_data: list, output_dir: str):
 
 
 def main():
-    data_path = r"d:\VS CODE\vlsp Numerical Reasoning QA\vlsp-2026-ViTNumChart\train.json"
-    output_dir = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data"
+    # Relative paths based on project root
+    project_root = Path(__file__).resolve().parent.parent.parent
+    data_path = project_root / "vlsp-2026-ViTNumChart" / "train.json"
+    output_dir = project_root / "vinumqa" / "data"
     
     # Load and analyze
-    data = load_data(data_path)
+    data = load_data(str(data_path))
     analyze_dataset(data)
     
     # Split
