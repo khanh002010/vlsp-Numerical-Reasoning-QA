@@ -47,7 +47,7 @@ def train():
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data\train_split_formatted.json"
+    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_split_formatted.json")
     if not os.path.exists(train_data_path):
         print(f"Training data not found at {train_data_path}. Please run format_training_data.py first.")
         return
