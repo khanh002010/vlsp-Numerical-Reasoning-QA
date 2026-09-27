@@ -28,5 +28,5 @@ class TrainingConfig:
     fp16: bool = True
     logging_steps: int = 10
     output_dir: str = "./outputs/nlp_module"
-    optim: str = "paged_adamw_32bit"
+    optim: str = "paged_adamw_8bit"  # Chuyển state sang CPU khi đầy và dùng 8-bit để siêu tiết kiệm VRAM
     max_seq_length: int = 2048
