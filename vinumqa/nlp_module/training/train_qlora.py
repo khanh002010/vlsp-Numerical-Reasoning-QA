@@ -75,8 +75,6 @@ def train():
         trust_remote_code=True
     )
     
-    model = prepare_model_for_kbit_training(model)
-    
     # 5. Setup LoRA
     peft_config = PeftLoraConfig(
         r=lora_cfg.r,
