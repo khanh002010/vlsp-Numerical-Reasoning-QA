@@ -86,7 +86,7 @@ def train():
         task_type=lora_cfg.task_type,
         target_modules=lora_cfg.target_modules
     )
-    model = get_peft_model(model, peft_config)
+    # Let SFTTrainer handle the PEFT wrapping
     
     # 6. Training Arguments & SFTTrainer
     import inspect
