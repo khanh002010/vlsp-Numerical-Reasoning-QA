@@ -89,6 +89,9 @@ def train():
     model = get_peft_model(model, peft_config)
     
     # 6. Training Arguments & SFTTrainer
+    import inspect
+    from trl import SFTTrainer
+    
     common_args = dict(
         output_dir=train_cfg.output_dir,
         per_device_train_batch_size=train_cfg.per_device_train_batch_size,
@@ -105,39 +108,35 @@ def train():
     
     try:
         from trl import SFTConfig
-        try:
-            # trl >= 0.12 (max_seq_length and dataset_text_field in SFTConfig)
-            training_args = SFTConfig(**common_args, dataset_text_field="text", max_seq_length=train_cfg.max_seq_length)
-            trainer = SFTTrainer(
-                model=model,
-                train_dataset=dataset,
-                peft_config=peft_config,
-                tokenizer=tokenizer,
-                args=training_args,
-            )
-        except TypeError:
-            # trl ~0.11 (dataset_text_field in SFTConfig, max_seq_length in SFTTrainer)
-            training_args = SFTConfig(**common_args, dataset_text_field="text")
-            trainer = SFTTrainer(
-                model=model,
-                train_dataset=dataset,
-                peft_config=peft_config,
-                tokenizer=tokenizer,
-                args=training_args,
-                max_seq_length=train_cfg.max_seq_length,
-            )
+        sft_config_kwargs = common_args.copy()
+        sft_sig = inspect.signature(SFTConfig.__init__)
+        if "dataset_text_field" in sft_sig.parameters:
+            sft_config_kwargs["dataset_text_field"] = "text"
+        if "max_seq_length" in sft_sig.parameters:
+            sft_config_kwargs["max_seq_length"] = train_cfg.max_seq_length
+        training_args = SFTConfig(**sft_config_kwargs)
     except ImportError:
-        # trl < 0.11 (fallback to TrainingArguments)
         training_args = TrainingArguments(**common_args)
-        trainer = SFTTrainer(
-            model=model,
-            train_dataset=dataset,
-            peft_config=peft_config,
-            dataset_text_field="text",
-            max_seq_length=train_cfg.max_seq_length,
-            tokenizer=tokenizer,
-            args=training_args,
-        )
+        
+    trainer_kwargs = {
+        "model": model,
+        "train_dataset": dataset,
+        "peft_config": peft_config,
+        "args": training_args,
+    }
+    
+    trainer_sig = inspect.signature(SFTTrainer.__init__)
+    if "processing_class" in trainer_sig.parameters:
+        trainer_kwargs["processing_class"] = tokenizer
+    elif "tokenizer" in trainer_sig.parameters:
+        trainer_kwargs["tokenizer"] = tokenizer
+        
+    if "dataset_text_field" in trainer_sig.parameters:
+        trainer_kwargs["dataset_text_field"] = "text"
+    if "max_seq_length" in trainer_sig.parameters:
+        trainer_kwargs["max_seq_length"] = train_cfg.max_seq_length
+        
+    trainer = SFTTrainer(**trainer_kwargs)
     
     print("Starting training...")
     trainer.train()
