@@ -75,6 +75,8 @@ def train():
         trust_remote_code=True
     )
     
+    model = prepare_model_for_kbit_training(model)
+    
     # 5. Setup LoRA
     peft_config = PeftLoraConfig(
         r=lora_cfg.r,
@@ -84,13 +86,27 @@ def train():
         task_type=lora_cfg.task_type,
         target_modules=lora_cfg.target_modules
     )
-    # Let SFTTrainer handle the PEFT wrapping
+    model = get_peft_model(model, peft_config)
+    model.print_trainable_parameters()
     
-    # 6. Training Arguments & SFTTrainer
-    import inspect
-    from trl import SFTTrainer
+    # 6. Tokenize Dataset Manually (Bypassing trl entirely!)
+    def tokenize_function(examples):
+        tokens = tokenizer(
+            examples["text"],
+            truncation=True,
+            max_length=train_cfg.max_seq_length,
+            padding="max_length"
+        )
+        # For causal LM, labels are the same as input_ids
+        tokens["labels"] = tokens["input_ids"].copy()
+        return tokens
+        
+    print("Tokenizing dataset...")
+    tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
     
-    common_args = dict(
+    from transformers import Trainer, DataCollatorForLanguageModeling
+    
+    training_args = TrainingArguments(
         output_dir=train_cfg.output_dir,
         per_device_train_batch_size=train_cfg.per_device_train_batch_size,
         gradient_accumulation_steps=train_cfg.gradient_accumulation_steps,
@@ -104,37 +120,15 @@ def train():
         save_strategy="epoch",
     )
     
-    try:
-        from trl import SFTConfig
-        sft_config_kwargs = common_args.copy()
-        sft_sig = inspect.signature(SFTConfig.__init__)
-        if "dataset_text_field" in sft_sig.parameters:
-            sft_config_kwargs["dataset_text_field"] = "text"
-        if "max_seq_length" in sft_sig.parameters:
-            sft_config_kwargs["max_seq_length"] = train_cfg.max_seq_length
-        training_args = SFTConfig(**sft_config_kwargs)
-    except ImportError:
-        training_args = TrainingArguments(**common_args)
-        
-    trainer_kwargs = {
-        "model": model,
-        "train_dataset": dataset,
-        "peft_config": peft_config,
-        "args": training_args,
-    }
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
     
-    trainer_sig = inspect.signature(SFTTrainer.__init__)
-    if "processing_class" in trainer_sig.parameters:
-        trainer_kwargs["processing_class"] = tokenizer
-    elif "tokenizer" in trainer_sig.parameters:
-        trainer_kwargs["tokenizer"] = tokenizer
-        
-    if "dataset_text_field" in trainer_sig.parameters:
-        trainer_kwargs["dataset_text_field"] = "text"
-    if "max_seq_length" in trainer_sig.parameters:
-        trainer_kwargs["max_seq_length"] = train_cfg.max_seq_length
-        
-    trainer = SFTTrainer(**trainer_kwargs)
+    # 7. Start Training
+    trainer = Trainer(
+        model=model,
+        train_dataset=tokenized_dataset,
+        args=training_args,
+        data_collator=data_collator,
+    )
     
     print("Starting training...")
     trainer.train()
