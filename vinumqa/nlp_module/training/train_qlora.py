@@ -4,9 +4,16 @@ Uses the 'trl' and 'peft' libraries to fine-tune Qwen2.5-7B on the Step-wise Pip
 """
 
 import os
+import sys
 import torch
 import json
+from pathlib import Path
 from datasets import Dataset
+
+# Add project root to sys.path to resolve vinumqa package
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 try:
     from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, BitsAndBytesConfig
     from peft import get_peft_model, LoraConfig as PeftLoraConfig, prepare_model_for_kbit_training
@@ -40,10 +47,7 @@ def train():
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-    train_data_path = os.path.join(project_root, "vinumqa", "data", "train_split_formatted.json")
-    
+    train_data_path = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data\train_split_formatted.json"
     if not os.path.exists(train_data_path):
         print(f"Training data not found at {train_data_path}. Please run format_training_data.py first.")
         return

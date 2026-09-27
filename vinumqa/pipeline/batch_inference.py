@@ -5,6 +5,13 @@ Runs the Full Pipeline over a test dataset and outputs a submission file.
 
 import json
 import os
+import sys
+from pathlib import Path
+
+# Add project root to sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from vinumqa.pipeline.full_pipeline import ViNumQAPipeline
 
 def run_batch_inference(test_json_path: str, output_path: str, img_dir: str):

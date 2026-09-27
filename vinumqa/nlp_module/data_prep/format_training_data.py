@@ -122,10 +122,7 @@ def format_sample(sample: Dict) -> Dict:
     return formatted
 
 def main():
-    # Use relative path based on current file location
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-    data_dir = os.path.join(project_root, "vinumqa", "data")
+    data_dir = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data"
     
     for split in ["train_split", "val_split"]:
         input_path = os.path.join(data_dir, f"{split}.json")
