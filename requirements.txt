@@ -3,7 +3,7 @@ torchvision
 transformers
 accelerate
 peft
-trl
+trl==0.9.4
 bitsandbytes
 datasets
 pandas
