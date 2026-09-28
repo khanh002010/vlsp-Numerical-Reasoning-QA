@@ -14,7 +14,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from vinumqa.pipeline.full_pipeline import ViNumQAPipeline
 
-def run_batch_inference(test_json_path: str, output_path: str, img_dir: str):
+def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lora_path: str = None):
     """
     Run the end-to-end pipeline on the test set.
     """
@@ -28,11 +28,13 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str):
     print(f"Loaded {len(test_data)} test samples.")
     
     # Initialize Pipeline
-    # For actual execution on Kaggle T4, configure models appropriately.
+    if lora_path is None:
+        lora_path = str(PROJECT_ROOT / "outputs" / "nlp_module" / "final")
+        
     pipeline = ViNumQAPipeline(
         cv_model_id="Qwen/Qwen2-VL-2B-Instruct",
         nlp_model_id="Qwen/Qwen2.5-7B-Instruct",
-        nlp_lora_weights=str(PROJECT_ROOT / "outputs" / "nlp_module" / "final"),
+        nlp_lora_weights=lora_path,
         use_zoom=True,
         use_reflection=True
     )
@@ -80,7 +82,8 @@ if __name__ == "__main__":
     
     test_file = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT / "test.json")
     img_dir = sys.argv[2] if len(sys.argv) > 2 else str(PROJECT_ROOT / "test_images")
+    lora_path = sys.argv[3] if len(sys.argv) > 3 else None
     output_file = str(PROJECT_ROOT / "submission.json")
     
     print(f"Starting batch inference on {test_file}...")
-    run_batch_inference(test_file, output_file, img_dir)
+    run_batch_inference(test_file, output_file, img_dir, lora_path)
