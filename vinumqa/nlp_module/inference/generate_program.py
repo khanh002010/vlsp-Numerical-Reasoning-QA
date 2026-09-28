@@ -35,7 +35,7 @@ class ProgramGenerator:
             print(f"Failed to load NLP module: {e}")
             self.model = None
 
-    def generate(self, context_text: str, markdown_table: str, question: str) -> dict:
+    def generate(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
         """
         Generate a reasoning program and execute it.
         Returns a dict with 'extracted_values', 'program', and 'answer'.
@@ -43,7 +43,7 @@ class ProgramGenerator:
         if self.model is None:
             return {"error": "Model not loaded"}
             
-        prompt = self._build_prompt(context_text, markdown_table, question)
+        prompt = self._build_prompt(context_text, markdown_table, images_available_str, question)
         
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         
@@ -62,7 +62,7 @@ class ProgramGenerator:
         except Exception as e:
             return {"error": str(e)}
 
-    def _build_prompt(self, context_text: str, markdown_table: str, question: str) -> str:
+    def _build_prompt(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> str:
         """
         Build the prompt following the Step-wise Pipeline format.
         """
@@ -71,16 +71,18 @@ class ProgramGenerator:
             "Step 1 - Extractor: Từ bảng và văn bản dưới đây, hãy trích xuất các giá trị số và thông tin liên quan để trả lời câu hỏi.\n"
             "Step 2 - Reasoner: Dựa trên các giá trị đã trích xuất, hãy sinh ra công thức tính toán dưới dạng reasoning program.\n\n"
             "Các hàm được phép: add, subtract, multiply, divide, greater, exp, table_max, table_min, table_sum, table_average, chart_at, chart_max, chart_min, chart_sum, chart_average\n"
-            "Dùng #0, #1, ... để tham chiếu kết quả bước trước.\n\n"
+            "Dùng #0, #1, ... để tham chiếu kết quả bước trước."
         )
         
         context = ""
         if markdown_table:
-            context += f"### Table\n{markdown_table}\n\n"
+            context += f"\n\n### Table\n{markdown_table}"
         if context_text:
-            context += f"### Text\n{context_text}\n\n"
+            context += f"\n\n### Text\n{context_text}"
+        if images_available_str:
+            context += f"\n\n### Images Available\n{images_available_str}"
             
-        context += f"### Question\n{question}\n\n### Response\n| Step | Output |\n|---|---|\n"
+        context += f"\n\n### Question\n{question}\n\n### Response\n| Step | Output |\n|---|---|\n"
         
         return instruction + context
 

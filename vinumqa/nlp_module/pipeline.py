@@ -21,15 +21,15 @@ class NLPPipeline:
             
         print("NLP Pipeline initialized.")
 
-    def process(self, context_text: str, markdown_table: str, question: str) -> dict:
+    def process(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
         """
         Process the inputs to generate and execute a reasoning program.
         Returns a dictionary with 'extracted_values', 'program', and 'answer'.
         """
         if self.use_reflection:
-            return self.reflection_loop.generate_with_reflection(context_text, markdown_table, question)
+            return self.reflection_loop.generate_with_reflection(context_text, markdown_table, images_available_str, question)
         else:
-            return self.generator.generate(context_text, markdown_table, question)
+            return self.generator.generate(context_text, markdown_table, images_available_str, question)
 
 if __name__ == "__main__":
     print("NLPPipeline module is ready.")

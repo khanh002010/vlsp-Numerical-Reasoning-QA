@@ -46,16 +46,17 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lor
         
         question = sample['qa']['question']
         texts = "\n".join(sample.get('text', []))
+        tables_dict = sample.get('tables', {})
         
-        # Resolve image paths
-        image_paths = []
+        # Resolve image paths keeping the image key
+        image_dict = {}
         if 'images' in sample:
             for img_key, img_filename in sample['images'].items():
                 img_path = os.path.join(img_dir, img_filename)
-                image_paths.append(img_path)
+                image_dict[img_key] = img_path
                 
         # Run Pipeline
-        output = pipeline.run(texts, image_paths, question)
+        output = pipeline.run(texts, tables_dict, image_dict, question)
         
         answer = output['reasoning_result'].get('answer', None)
         program = output['reasoning_result'].get('program', "")

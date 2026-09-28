@@ -42,12 +42,12 @@ class ReflectionLoop:
                 
         return " ".join(feedback)
 
-    def generate_with_reflection(self, context_text: str, markdown_table: str, question: str) -> dict:
+    def generate_with_reflection(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
         """
         Generate program, critique it, and regenerate if necessary.
         """
         # First attempt
-        result = self.generator.generate(context_text, markdown_table, question)
+        result = self.generator.generate(context_text, markdown_table, images_available_str, question)
         
         if "error" in result:
             return result
@@ -64,7 +64,7 @@ class ReflectionLoop:
             print(f"Reflection triggered (Attempt {attempt+1}): {feedback}")
             
             # Re-build prompt with feedback
-            original_prompt = self.generator._build_prompt(context_text, markdown_table, question)
+            original_prompt = self.generator._build_prompt(context_text, markdown_table, images_available_str, question)
             retry_prompt = (
                 original_prompt + 
                 f"| 1 | {result['extracted_values']} |\n"
