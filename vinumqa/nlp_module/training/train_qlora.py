@@ -48,12 +48,18 @@ def train():
     
     # 2. Load dataset
     train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_split_formatted.json")
+    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "val_split_formatted.json")
+    
     if not os.path.exists(train_data_path):
         print(f"Training data not found at {train_data_path}. Please run format_training_data.py first.")
         return
         
     dataset = load_formatted_dataset(train_data_path)
     print(f"Loaded {len(dataset)} training samples.")
+    
+    val_dataset = load_formatted_dataset(val_data_path) if os.path.exists(val_data_path) else None
+    if val_dataset:
+        print(f"Loaded {len(val_dataset)} validation samples.")
     
     # 3. Setup Quantization (4-bit QLoRA)
     bnb_config = BitsAndBytesConfig(
@@ -101,8 +107,13 @@ def train():
         tokens["labels"] = tokens["input_ids"].copy()
         return tokens
         
-    print("Tokenizing dataset...")
+    print("Tokenizing train dataset...")
     tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
+    
+    tokenized_val_dataset = None
+    if val_dataset:
+        print("Tokenizing validation dataset...")
+        tokenized_val_dataset = val_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
     
     from transformers import Trainer, DataCollatorForLanguageModeling
     
@@ -118,6 +129,7 @@ def train():
         num_train_epochs=train_cfg.num_train_epochs,
         warmup_steps=train_cfg.warmup_steps,
         save_strategy="epoch",
+        evaluation_strategy="epoch" if tokenized_val_dataset else "no",
         gradient_checkpointing=True,
     )
     
@@ -127,6 +139,7 @@ def train():
     trainer = Trainer(
         model=model,
         train_dataset=tokenized_dataset,
+        eval_dataset=tokenized_val_dataset,
         args=training_args,
         data_collator=data_collator,
     )
