@@ -32,6 +32,7 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str):
     pipeline = ViNumQAPipeline(
         cv_model_id="Qwen/Qwen2-VL-2B-Instruct",
         nlp_model_id="Qwen/Qwen2.5-7B-Instruct",
+        nlp_lora_weights=str(PROJECT_ROOT / "outputs" / "nlp_module" / "final"),
         use_zoom=True,
         use_reflection=True
     )
