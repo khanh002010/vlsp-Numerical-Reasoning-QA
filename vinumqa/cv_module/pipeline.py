@@ -15,6 +15,7 @@ class CVPipeline:
         print("Initializing CV Pipeline...")
         self.extractor = ChartToTableExtractor(model_id=model_id)
         self.use_zoom = use_zoom
+        self.image_cache = {} # Cache to store extracted markdown tables
         
         if self.use_zoom:
             self.verify_agent = VerifyAgent(self.extractor)
@@ -23,7 +24,12 @@ class CVPipeline:
     def process_image(self, image_path: str) -> str:
         """
         Process a single chart image and return a Markdown table.
+        Uses caching to avoid reprocessing the same image.
         """
+        if image_path in self.image_cache:
+            print(f"Loading cached table for {image_path}...")
+            return self.image_cache[image_path]
+            
         print(f"Extracting table from {image_path}...")
         
         # 1. Initial extraction
@@ -32,9 +38,12 @@ class CVPipeline:
         # 2. Verify and potentially Zoom
         if self.use_zoom:
             final_table = self.verify_agent.process(image_path, initial_table)
-            return final_table
         else:
-            return initial_table
+            final_table = initial_table
+            
+        # 3. Save to cache
+        self.image_cache[image_path] = final_table
+        return final_table
 
     def process_batch(self, image_paths: list) -> dict:
         """
