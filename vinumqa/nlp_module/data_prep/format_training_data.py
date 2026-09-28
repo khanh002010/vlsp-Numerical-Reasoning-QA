@@ -43,6 +43,7 @@ def dict_to_markdown_table(table_dict: Dict) -> str:
     """
     import pandas as pd
     from bs4 import BeautifulSoup
+    from io import StringIO
 
     md_tables = []
     for table_name, table_html in table_dict.items():
@@ -54,8 +55,8 @@ def dict_to_markdown_table(table_dict: Dict) -> str:
                 continue
                 
             # Convert to Pandas DataFrame
-            # pandas read_html expects a string or file-like object containing HTML
-            dfs = pd.read_html(str(table_tag))
+            # wrap in StringIO to avoid pandas FutureWarning
+            dfs = pd.read_html(StringIO(str(table_tag)))
             if dfs:
                 df = dfs[0]
                 # Convert DataFrame to Markdown
