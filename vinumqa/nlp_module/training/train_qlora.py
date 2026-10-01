@@ -129,7 +129,7 @@ def train():
         num_train_epochs=train_cfg.num_train_epochs,
         warmup_steps=train_cfg.warmup_steps,
         save_strategy="epoch",
-        evaluation_strategy="epoch" if tokenized_val_dataset else "no",
+        eval_strategy="epoch" if tokenized_val_dataset else "no",
         gradient_checkpointing=True,
     )
     
