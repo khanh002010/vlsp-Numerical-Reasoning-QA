@@ -1,6 +1,7 @@
 """
 Chart-to-Table extraction using a Vision Language Model (VLM).
 This module uses Qwen2-VL-2B-Instruct to convert chart images into Markdown tables.
+Includes Aspect Ratio classification and Smart Image Resizing (MAX_PIXELS).
 """
 
 import torch
@@ -16,6 +17,61 @@ try:
 except ImportError:
     print("Please install transformers and qwen_vl_utils: pip install transformers qwen-vl-utils")
 
+# ==============================================================
+# HELPER FUNCTIONS
+# ==============================================================
+
+MAX_PIXELS = 750_000
+LANDSCAPE_RATIO_THRESHOLD = 1.2
+SQUARE_RATIO_THRESHOLD = 0.8
+
+def classify_chart_type(image: Image.Image) -> dict:
+    """
+    Phân loại loại biểu đồ dựa trên Aspect Ratio (Tỷ lệ khung hình).
+    """
+    w, h = image.size
+    ratio = w / h if h > 0 else 1.0
+    
+    if ratio > LANDSCAPE_RATIO_THRESHOLD:
+        return {
+            'shape': 'Landscape',
+            'prompt_hint': (
+                "[CHART TYPE HINT - Landscape Chart]: Đây là biểu đồ nằm ngang (Cột / Đường / Vùng). "
+                "Hãy đọc kỹ: (1) TRỤC X - thường là mốc thời gian (Tháng/Quý/Năm) hoặc danh mục; "
+                "(2) TRỤC Y - thường là đơn vị số (Tỷ VNĐ, Tr. USD, %, điểm...); "
+                "(3) LEGEND (Chú thích màu sắc) - xác định tên của từng series dữ liệu."
+            )
+        }
+    else:
+        return {
+            'shape': 'Square',
+            'prompt_hint': (
+                "[CHART TYPE HINT - Square/Pie Chart]: Đây rất có thể là biểu đồ tròn (Pie Chart). "
+                "Hãy đọc kỹ: (1) TÊN CÁC LÁT CẮT - nhãn tên của từng phần; "
+                "(2) TỶ LỆ % - con số phần trăm ghi bên trong hoặc bên ngoài mỗi lát cắt; "
+                "(3) LEGEND - bảng chú thích màu nếu nhãn không hiển thị trực tiếp."
+            )
+        }
+
+def preprocess_image(image: Image.Image) -> Image.Image:
+    """
+    Chuẩn hóa ảnh: giữ nguyên Aspect Ratio, nhưng giới hạn pixel tối đa = MAX_PIXELS.
+    Tránh OOM khi đi thi với ảnh độ phân giải quá cao.
+    """
+    w, h = image.size
+    current_pixels = w * h
+    
+    if current_pixels > MAX_PIXELS:
+        scale = (MAX_PIXELS / current_pixels) ** 0.5
+        new_w = int(w * scale)
+        new_h = int(h * scale)
+        return image.resize((new_w, new_h), Image.LANCZOS)
+    return image
+
+
+# ==============================================================
+# EXTRACTOR CLASS
+# ==============================================================
 
 class ChartToTableExtractor:
     def __init__(self, model_id: str = "Qwen/Qwen2-VL-2B-Instruct", device: str = "cuda"):
@@ -39,7 +95,7 @@ class ChartToTableExtractor:
             self.model = None
             self.processor = None
             
-        self.system_prompt = (
+        self.base_prompt = (
             "You are an expert data analyst. Convert the following chart image into a well-structured "
             "Markdown table. Extract all text, labels, and numerical values accurately. "
             "Preserve the original language (Vietnamese) and formatting of the numbers. "
@@ -54,14 +110,24 @@ class ChartToTableExtractor:
             return "| Lỗi | Model chưa được load |\n|---|---|\n| N/A | N/A |"
             
         try:
-            image = Image.open(image_path).convert("RGB")
+            raw_image = Image.open(image_path).convert("RGB")
+            
+            # 1. Image Preprocessing (MAX_PIXELS)
+            image = preprocess_image(raw_image)
+            
+            # 2. Chart Type Classification
+            chart_info = classify_chart_type(image)
+            prompt_hint = chart_info['prompt_hint']
+            
+            # 3. Combine prompt
+            full_prompt = f"{prompt_hint}\n\n{self.base_prompt}"
             
             messages = [
                 {
                     "role": "user",
                     "content": [
                         {"type": "image", "image": image},
-                        {"type": "text", "text": self.system_prompt},
+                        {"type": "text", "text": full_prompt},
                     ],
                 }
             ]
@@ -106,8 +172,4 @@ class ChartToTableExtractor:
 if __name__ == "__main__":
     # Test script
     extractor = ChartToTableExtractor()
-    
-    # Example usage:
-    # table_md = extractor.extract("path/to/chart.png")
-    # print(table_md)
     print("ChartToTableExtractor module is ready.")

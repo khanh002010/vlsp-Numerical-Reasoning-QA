@@ -1,24 +1,22 @@
 """
 CV Pipeline Orchestrator.
-Combines ChartToTableExtractor and VerifyAgent to extract highly accurate tables from charts.
+Uses ChartToTableExtractor (Qwen2-VL) to extract tables from chart images.
+Zoom/sliding-window is removed: EDA shows avg image resolution is ~622k pixels,
+well within MAX_PIXELS=750k, so all images are kept at native resolution.
 """
 
 from vinumqa.cv_module.chart_to_table.extract_table import ChartToTableExtractor
-from vinumqa.cv_module.zoom_verify.verify_agent import VerifyAgent
 
 class CVPipeline:
-    def __init__(self, use_zoom: bool = True, model_id: str = "Qwen/Qwen2-VL-2B-Instruct"):
+    def __init__(self, model_id: str = "Qwen/Qwen2-VL-2B-Instruct"):
         """
-        Initialize the complete CV pipeline.
-        :param use_zoom: Whether to enable the Zoom Tool for anomaly correction.
+        Initialize the CV pipeline.
+        Zoom Tool removed: image resolution in dataset is well within MAX_PIXELS=750k,
+        so direct single-pass extraction is sufficient and ~2-3x faster.
         """
         print("Initializing CV Pipeline...")
         self.extractor = ChartToTableExtractor(model_id=model_id)
-        self.use_zoom = use_zoom
-        self.image_cache = {} # Cache to store extracted markdown tables
-        
-        if self.use_zoom:
-            self.verify_agent = VerifyAgent(self.extractor)
+        self.image_cache = {}  # Cache: key=image_path, value=markdown table
         print("CV Pipeline initialized.")
 
     def process_image(self, image_path: str) -> str:
@@ -32,16 +30,10 @@ class CVPipeline:
             
         print(f"Extracting table from {image_path}...")
         
-        # 1. Initial extraction
-        initial_table = self.extractor.extract(image_path)
+        # Direct extraction (single pass, no zoom)
+        final_table = self.extractor.extract(image_path)
         
-        # 2. Verify and potentially Zoom
-        if self.use_zoom:
-            final_table = self.verify_agent.process(image_path, initial_table)
-        else:
-            final_table = initial_table
-            
-        # 3. Save to cache
+        # Save to cache
         self.image_cache[image_path] = final_table
         return final_table
 

@@ -8,6 +8,8 @@ import os
 import re
 from typing import List, Dict
 
+from vinumqa.nlp_module.dsl_operators import get_dsl_system_prompt
+
 def extract_values_from_program(program: str) -> str:
     """
     Extract the arguments from a reasoning program to act as the 'evidence' for Step 1.
@@ -70,85 +72,97 @@ def dict_to_markdown_table(table_dict: Dict) -> str:
 def format_sample(sample: Dict) -> Dict:
     """
     Format a single sample into the Step-wise Pipeline instruction format.
+    Uses inline placeholder injection (same logic as full_pipeline.py)
+    to replace ### Image N ### and ### Table N ### with actual content.
     """
     question = sample['qa']['question']
     program = sample['qa']['program']
-    
-    # Process Texts
-    texts = "\n".join(sample.get('text', []))
-    
-    # Process Tables
-    tables_dict = sample.get('tables', {})
-    tables_md = dict_to_markdown_table(tables_dict)
-    
-    # Process Images (list them for reference, actual extraction handled by CV module)
-    images = ", ".join(list(sample.get('images', {}).keys()))
-    
+
+    # --- Build inline context (placeholders replaced inline) ---
+    placeholder_re = re.compile(
+        r'^###\s*(Image|Table)\s+(\d+)\s*###$', re.IGNORECASE
+    )
+    tables_md_map = {}
+    if sample.get('tables'):
+        for k, v in sample['tables'].items():
+            tables_md_map[k] = dict_to_markdown_table({k: v})
+
+    # Images: during training we reference them by name only (CV output used at inference)
+    image_keys = list(sample.get('images', {}).keys())
+    image_placeholder_map = {
+        k: f"[Chart: {k} - extracted by CV Module]" for k in image_keys
+    }
+
+    result_segs = []
+    for seg in sample.get('text', []):
+        m = placeholder_re.match(seg.strip())
+        if m:
+            kind = m.group(1).capitalize()
+            num  = m.group(2)
+            key  = f"{kind} {num}"
+            if kind == 'Table' and key in tables_md_map:
+                result_segs.append(tables_md_map[key])
+            elif kind == 'Image' and key in image_placeholder_map:
+                result_segs.append(image_placeholder_map[key])
+            # silently drop unmatched placeholders
+        else:
+            result_segs.append(seg)
+
+    inline_context = "\n\n".join(result_segs)
+    if image_keys:
+        inline_context += f"\n\n### Images Available\n{', '.join(image_keys)}"
+
     # 1. Extractor Step
     extracted_values = extract_values_from_program(program)
-    
+
+    # DSL System Prompt (identical to inference prompt)
+    dsl_prompt = get_dsl_system_prompt()
+
     instruction = (
         "### Instruction\n"
-        "Step 1 - Extractor: Từ bảng và văn bản dưới đây, hãy trích xuất các giá trị số và thông tin liên quan để trả lời câu hỏi.\n"
-        "Step 2 - Reasoner: Dựa trên các giá trị đã trích xuất, hãy sinh ra công thức tính toán dưới dạng reasoning program.\n\n"
-        "Các hàm được phép: add, subtract, multiply, divide, greater, exp, table_max, table_min, table_sum, table_average, chart_at, chart_max, chart_min, chart_sum, chart_average\n"
-        "Dùng #0, #1, ... để tham chiếu kết quả bước trước."
+        "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
+        "va thong tin lien quan de tra loi cau hoi.\n"
+        "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
+        "tinh toan duoi dang reasoning program.\n\n"
+        f"{dsl_prompt}\n\n"
+        "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
     )
-    
-    context = ""
-    if tables_md:
-        context += f"### Table\n{tables_md}\n\n"
-    if texts:
-        context += f"### Text\n{texts}\n\n"
-    if images:
-        context += f"### Images Available\n{images}\n\n"
-        
-    context += f"### Question\n{question}"
-    
+
+    context = f"### Context\n{inline_context}\n\n### Question\n{question}"
+
     response = (
         "| Step | Output |\n"
         "|---|---|\n"
         f"| 1 | {extracted_values} |\n"
         f"| 2 | {program} |"
     )
-    
-    # Format for LLM fine-tuning (e.g., standard Alpaca or ChatML format)
-    # Here we use a generic instruction/input/output format
-    formatted = {
+
+    return {
         "instruction": instruction,
         "input": context,
-        "output": response
+        "output": response,
     }
-    
-    return formatted
 
 def main():
-    # Use relative path based on current file location
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-    data_dir = os.path.join(project_root, "vinumqa", "data")
-    
-    for split in ["train_split", "val_split"]:
-        input_path = os.path.join(data_dir, f"{split}.json")
-        output_path = os.path.join(data_dir, f"{split}_formatted.json")
-        
-        if not os.path.exists(input_path):
-            print(f"Skipping {input_path} (not found)")
-            continue
-            
-        with open(input_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            
-        print(f"Formatting {len(data)} samples from {split}...")
-        
-        formatted_data = []
-        for sample in data:
-            formatted_data.append(format_sample(sample))
-            
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(formatted_data, f, ensure_ascii=False, indent=2)
-            
-        print(f"Saved formatted data to {output_path}")
+    TRAIN_JSON = r"d:\VS CODE\vlsp Numerical Reasoning QA\data\train\train.json"
+    TEST_JSON  = r"d:\VS CODE\vlsp Numerical Reasoning QA\data\public_test\public_test.json"
+    OUT_DIR = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data"
+    os.makedirs(OUT_DIR, exist_ok=True)
+
+    with open(TRAIN_JSON, 'r', encoding='utf-8') as f:
+        train_data = json.load(f)
+
+    with open(TEST_JSON, 'r', encoding='utf-8') as f:
+        val_data = json.load(f)
+
+    for name, data in [("train_split", train_data), ("val_split", val_data)]:
+        out_path = os.path.join(OUT_DIR, f"{name}_formatted.json")
+        print(f"Formatting {len(data)} samples -> {out_path}")
+        formatted = [format_sample(s) for s in data]
+        with open(out_path, 'w', encoding='utf-8') as f:
+            json.dump(formatted, f, ensure_ascii=False, indent=2)
+        print(f"Saved {len(formatted)} samples to {out_path}")
+
 
 if __name__ == "__main__":
     main()
