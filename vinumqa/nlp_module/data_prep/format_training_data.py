@@ -155,14 +155,13 @@ def main():
     with open(TEST_JSON, 'r', encoding='utf-8') as f:
         val_data = json.load(f)
 
-    for name, data in [("train_split", train_data), ("val_split", val_data)]:
+    for name, data in [("train", train_data), ("public_test", val_data)]:
         out_path = os.path.join(OUT_DIR, f"{name}_formatted.json")
         print(f"Formatting {len(data)} samples -> {out_path}")
         formatted = [format_sample(s) for s in data]
         with open(out_path, 'w', encoding='utf-8') as f:
             json.dump(formatted, f, ensure_ascii=False, indent=2)
         print(f"Saved {len(formatted)} samples to {out_path}")
-
 
 if __name__ == "__main__":
     main()

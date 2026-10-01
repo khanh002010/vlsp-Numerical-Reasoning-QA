@@ -47,8 +47,8 @@ def train():
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_split_formatted.json")
-    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "val_split_formatted.json")
+    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
+    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
     
     if not os.path.exists(train_data_path):
         print(f"Training data not found at {train_data_path}. Please run format_training_data.py first.")
@@ -59,7 +59,7 @@ def train():
     
     val_dataset = load_formatted_dataset(val_data_path) if os.path.exists(val_data_path) else None
     if val_dataset:
-        print(f"Loaded {len(val_dataset)} validation samples.")
+        print(f"Loaded {len(val_dataset)} validation samples (Public Test).")
     
     # 3. Setup Quantization (4-bit QLoRA)
     bnb_config = BitsAndBytesConfig(
