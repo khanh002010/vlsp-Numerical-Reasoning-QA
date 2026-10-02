@@ -20,7 +20,7 @@ class LoraConfig:
 @dataclass
 class TrainingConfig:
     per_device_train_batch_size: int = 1
-    gradient_accumulation_steps: int = 16
+    gradient_accumulation_steps: int = 8   # Giảm từ 16 → 8 do DSL prompt làm chuỗi dài hơn ~300-400 token
     warmup_steps: int = 100
     max_steps: int = -1  # Set to -1 to respect num_train_epochs
     num_train_epochs: int = 3
