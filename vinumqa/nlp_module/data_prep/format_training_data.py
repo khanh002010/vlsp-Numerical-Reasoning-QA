@@ -8,7 +8,14 @@ import os
 import re
 from typing import List, Dict
 
-from vinumqa.nlp_module.dsl_operators import get_dsl_system_prompt
+from vinumqa.nlp_module.inference.constrained_decode import VALID_DSL_OPERATORS
+
+# Short 1-line DSL hint for validation/inference (~30 tokens vs 400 tokens)
+DSL_HINT_SHORT = (
+    "Operators: "
+    + ", ".join(VALID_DSL_OPERATORS)
+    + ". Use #0, #1... to reference previous results."
+)
 
 def extract_values_from_program(program: str) -> str:
     """
@@ -69,11 +76,16 @@ def dict_to_markdown_table(table_dict: Dict) -> str:
             
     return "\n\n".join(md_tables)
 
-def format_sample(sample: Dict) -> Dict:
+def format_sample(sample: Dict, include_dsl_prompt: bool = False) -> Dict:
     """
     Format a single sample into the Step-wise Pipeline instruction format.
     Uses inline placeholder injection (same logic as full_pipeline.py)
     to replace ### Image N ### and ### Table N ### with actual content.
+
+    Args:
+        include_dsl_prompt: If True, inject short 1-line DSL hint into instruction.
+                            Set False for training (model learns from examples).
+                            Set True for validation/inference (short reminder only).
     """
     question = sample['qa']['question']
     program = sample['qa']['program']
@@ -115,16 +127,16 @@ def format_sample(sample: Dict) -> Dict:
     # 1. Extractor Step
     extracted_values = extract_values_from_program(program)
 
-    # DSL System Prompt (identical to inference prompt)
-    dsl_prompt = get_dsl_system_prompt()
+    # DSL hint: empty for training (model learns from examples)
+    #            short 1-line for val/inference (just a reminder)
+    dsl_line = f"\n{DSL_HINT_SHORT}\n" if include_dsl_prompt else ""
 
     instruction = (
         "### Instruction\n"
         "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
         "va thong tin lien quan de tra loi cau hoi.\n"
         "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
-        "tinh toan duoi dang reasoning program.\n\n"
-        f"{dsl_prompt}\n\n"
+        f"tinh toan duoi dang reasoning program.{dsl_line}\n"
         "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
     )
 
@@ -155,10 +167,17 @@ def main():
     with open(TEST_JSON, 'r', encoding='utf-8') as f:
         val_data = json.load(f)
 
-    for name, data in [("train", train_data), ("public_test", val_data)]:
+    # Train: no DSL prompt (model learns from examples, saves ~400 tokens/sample)
+    # Val:   short 1-line DSL hint (~30 tokens, just a reminder)
+    configs = [
+        ("train",       train_data, False),
+        ("public_test", val_data,   True),
+    ]
+
+    for name, data, include_dsl in configs:
         out_path = os.path.join(OUT_DIR, f"{name}_formatted.json")
-        print(f"Formatting {len(data)} samples -> {out_path}")
-        formatted = [format_sample(s) for s in data]
+        print(f"Formatting {len(data)} samples -> {out_path} (DSL hint: {include_dsl})")
+        formatted = [format_sample(s, include_dsl_prompt=include_dsl) for s in data]
         with open(out_path, 'w', encoding='utf-8') as f:
             json.dump(formatted, f, ensure_ascii=False, indent=2)
         print(f"Saved {len(formatted)} samples to {out_path}")

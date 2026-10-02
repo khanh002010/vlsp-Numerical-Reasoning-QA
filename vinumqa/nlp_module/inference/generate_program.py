@@ -7,7 +7,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 from vinumqa.nlp_module.inference.symbolic_executor import SymbolicExecutor
 from vinumqa.nlp_module.inference.constrained_decode import DSLLogitsProcessor
-from vinumqa.nlp_module.dsl_operators import get_dsl_system_prompt
+from vinumqa.nlp_module.data_prep.format_training_data import DSL_HINT_SHORT
 import re
 
 
@@ -56,8 +56,8 @@ class ProgramGenerator:
                 self.dsl_processor = None
                 print("DSL Constrained Decoder: DISABLED")
 
-            # DSL System Prompt (Problem 3 fix)
-            self.dsl_system_prompt = get_dsl_system_prompt()
+            # DSL short hint (same as val data format — consistent train/val/inference)
+            self.dsl_hint = DSL_HINT_SHORT
 
             print("NLP Module loaded successfully.")
         except Exception as e:
@@ -122,8 +122,7 @@ class ProgramGenerator:
             "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
             "va thong tin lien quan de tra loi cau hoi.\n"
             "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
-            "tinh toan duoi dang reasoning program.\n\n"
-            f"{self.dsl_system_prompt}\n\n"
+            f"tinh toan duoi dang reasoning program.\n{self.dsl_hint}\n"
             "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
         )
 
