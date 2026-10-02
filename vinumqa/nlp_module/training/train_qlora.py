@@ -98,18 +98,18 @@ def train():
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
     
-    # 6. Tokenize Dataset Manually (Bypassing trl entirely!)
+    # 6. Tokenize Dataset (no pre-padding)
+    # With batch_size=1, each sample is processed at its actual length.
+    # DataCollatorForLanguageModeling below will pad per-batch to the
+    # longest sequence in that batch — which with batch_size=1 means NO padding!
     def tokenize_function(examples):
         tokens = tokenizer(
             examples["text"],
             truncation=True,
             max_length=train_cfg.max_seq_length,
-            # No padding here: with batch_size=1, each sample runs solo.
-            # padding="max_length" would pad every sample to 4096 tokens
-            # even if actual content is only 500 tokens → 67x wasted compute!
-            # DataCollatorForLanguageModeling handles padding per-batch dynamically.
+            # No padding: samples processed at actual length
+            # e.g. 800-token sample → 800 tokens, not 4096
         )
-        # For causal LM, labels are the same as input_ids
         tokens["labels"] = tokens["input_ids"].copy()
         return tokens
         
@@ -141,7 +141,13 @@ def train():
         gradient_checkpointing=True,
     )
     
-    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
+    data_collator = DataCollatorForLanguageModeling(
+        tokenizer=tokenizer,
+        mlm=False,
+        # pad_to_multiple_of=8: round up to nearest multiple of 8
+        # so tensor shapes are GPU-friendly (tensor cores work on multiples of 8)
+        pad_to_multiple_of=8,
+    )
     
     # 7. Start Training
     trainer = Trainer(
