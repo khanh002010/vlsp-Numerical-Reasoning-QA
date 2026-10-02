@@ -29,4 +29,7 @@ class TrainingConfig:
     logging_steps: int = 10
     output_dir: str = "./outputs/nlp_module"
     optim: str = "paged_adamw_8bit"  # Chuyển state sang CPU khi đầy và dùng 8-bit để siêu tiết kiệm VRAM
-    max_seq_length: int = 2048
+    max_seq_length: int = 4096
+    # Eval config: batch=1 + accumulate để tránh OOM khi logits.float() trên vocab Qwen 152k
+    per_device_eval_batch_size: int = 1
+    eval_accumulation_steps: int = 8

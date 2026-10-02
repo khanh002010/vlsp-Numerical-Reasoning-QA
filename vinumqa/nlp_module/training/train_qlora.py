@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 from datasets import Dataset
 
+# Reduce CUDA memory fragmentation (helps avoid OOM during eval's logits.float() cast)
+os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")
+
 # Add project root to sys.path to resolve vinumqa package
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -120,7 +123,9 @@ def train():
     training_args = TrainingArguments(
         output_dir=train_cfg.output_dir,
         per_device_train_batch_size=train_cfg.per_device_train_batch_size,
+        per_device_eval_batch_size=train_cfg.per_device_eval_batch_size,
         gradient_accumulation_steps=train_cfg.gradient_accumulation_steps,
+        eval_accumulation_steps=train_cfg.eval_accumulation_steps,
         optim=train_cfg.optim,
         logging_steps=train_cfg.logging_steps,
         learning_rate=train_cfg.learning_rate,
