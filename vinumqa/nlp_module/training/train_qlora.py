@@ -104,7 +104,10 @@ def train():
             examples["text"],
             truncation=True,
             max_length=train_cfg.max_seq_length,
-            padding="max_length"
+            # No padding here: with batch_size=1, each sample runs solo.
+            # padding="max_length" would pad every sample to 4096 tokens
+            # even if actual content is only 500 tokens → 67x wasted compute!
+            # DataCollatorForLanguageModeling handles padding per-batch dynamically.
         )
         # For causal LM, labels are the same as input_ids
         tokens["labels"] = tokens["input_ids"].copy()
