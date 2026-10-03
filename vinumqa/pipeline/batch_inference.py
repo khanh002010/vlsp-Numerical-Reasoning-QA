@@ -35,8 +35,6 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lor
         cv_model_id="Qwen/Qwen2-VL-2B-Instruct",
         nlp_model_id="Qwen/Qwen2.5-7B-Instruct",
         nlp_lora_weights=lora_path,
-        use_zoom=True,
-        use_reflection=True
     )
     
     results = []
