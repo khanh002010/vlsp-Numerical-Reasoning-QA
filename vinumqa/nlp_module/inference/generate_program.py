@@ -113,30 +113,35 @@ class ProgramGenerator:
         question: str,
     ) -> str:
         """
-        Build the prompt following the Step-wise Pipeline format.
-        DSL operator definitions from dsl_operators.py are injected into the
-        instruction so the model always has the authoritative DSL reference.
+        Build the prompt exactly matching the training data format.
         """
+        # DSL hint formatting exactly as in val data
+        dsl_line = f"\n{self.dsl_hint}\n"
+        
         instruction = (
             "### Instruction\n"
             "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
             "va thong tin lien quan de tra loi cau hoi.\n"
             "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
-            f"tinh toan duoi dang reasoning program.\n{self.dsl_hint}\n"
+            f"tinh toan duoi dang reasoning program.{dsl_line}\n"
             "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
         )
 
-        context = ""
+        # Build inline context similar to training
+        inline_context = context_text
         if markdown_table:
-            context += f"\n\n### Table\n{markdown_table}"
-        if context_text:
-            context += f"\n\n### Text\n{context_text}"
+            # If a separate table is provided, append it
+            inline_context += f"\n\n{markdown_table}"
+            
         if images_available_str:
-            context += f"\n\n### Images Available\n{images_available_str}"
+            inline_context += f"\n\n### Images Available\n{images_available_str}"
 
-        context += f"\n\n### Question\n{question}\n\n### Response\n| Step | Output |\n|---|---|\n"
+        # EXACT match with train format: "### Context\n..."
+        context = f"### Context\n{inline_context.strip()}\n\n### Question\n{question}"
 
-        return instruction + context
+        # In qlora, the prompt given to the model includes the response prefix
+        prompt = f"{instruction}\n\n{context}\n\n### Response\n| Step | Output |\n|---|---|\n"
+        return prompt
 
     def _parse_response(self, response_text: str) -> dict:
         """
