@@ -43,7 +43,10 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lor
         print(f"Processing sample {i+1}/{len(test_data)} (QID: {sample['qid']})")
         
         question = sample['qa']['question']
-        texts = "\n".join(sample.get('text', []))
+        # IMPORTANT: pass as list, NOT joined string!
+        # build_inline_context() iterates over segments to match ### Image N ### placeholders.
+        # Joining to a string causes it to iterate individual characters → no placeholders matched.
+        text_segments = sample.get('text', [])
         tables_dict = sample.get('tables', {})
         
         # Resolve image paths keeping the image key
@@ -54,7 +57,7 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lor
                 image_dict[img_key] = img_path
                 
         # Run Pipeline
-        output = pipeline.run(texts, tables_dict, image_dict, question)
+        output = pipeline.run(text_segments, tables_dict, image_dict, question)
         
         answer = output['reasoning_result'].get('answer', None)
         program = output['reasoning_result'].get('program', "")
