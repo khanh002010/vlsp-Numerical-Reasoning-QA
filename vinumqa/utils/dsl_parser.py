@@ -13,10 +13,9 @@ import re
 from typing import List, Dict, Tuple, Optional, Any
 
 
-# All valid DSL operators
 MATH_OPS = {"add", "subtract", "multiply", "divide", "greater", "exp"}
 TABLE_OPS = {"table_max", "table_min", "table_sum", "table_average"}
-CHART_OPS = {"chart_at", "chart_max", "chart_min", "chart_sum", "chart_average"}
+CHART_OPS = {"chart_at", "chart_max", "chart_min", "chart_sum", "chart_average", "chart_total"}
 ALL_OPS = MATH_OPS | TABLE_OPS | CHART_OPS
 
 

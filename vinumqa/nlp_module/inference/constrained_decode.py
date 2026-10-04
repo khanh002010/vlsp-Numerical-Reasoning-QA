@@ -19,8 +19,8 @@ from transformers import LogitsProcessor
 
 
 VALID_DSL_OPERATORS = [
-    "subtract", "divide", "multiply", "add", "greater",
-    "chart_at", "chart_max", "chart_min", "chart_average", "chart_sum",
+    "subtract", "divide", "multiply", "add", "greater", "exp",
+    "chart_at", "chart_max", "chart_min", "chart_average", "chart_sum", "chart_total",
     "table_max", "table_min", "table_average", "table_sum",
 ]
 
