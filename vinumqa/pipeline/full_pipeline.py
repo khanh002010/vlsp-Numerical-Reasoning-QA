@@ -85,7 +85,10 @@ def build_inline_context(
             if kind == "Table" and key in table_md_map:
                 result_segments.append(table_md_map[key])
             elif kind == "Image" and key in image_md_map:
-                result_segments.append(image_md_map[key])
+                # MUST PREPEND **Image X** so the LLM knows this table came from an image!
+                # Otherwise, it will hallucinate `Table X` in the DSL program.
+                injected_content = f"**{key}**\n{image_md_map[key]}"
+                result_segments.append(injected_content)
             # If key not found, silently drop the placeholder (no noise injected)
         else:
             result_segments.append(seg)
