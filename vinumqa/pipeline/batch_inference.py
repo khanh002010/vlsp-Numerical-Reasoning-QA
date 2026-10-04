@@ -58,13 +58,17 @@ def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lor
                 
         # Run Pipeline
         output = pipeline.run(text_segments, tables_dict, image_dict, question)
-        
-        answer = output['reasoning_result'].get('answer', None)
-        program = output['reasoning_result'].get('program', "")
-        
+
+        reasoning = output.get('reasoning_result', {})
+        program = reasoning.get('program', "")
+
+        # Log if something went wrong
+        if not program:
+            error = reasoning.get('error', 'unknown')
+            print(f"  [WARNING] No program generated for QID {sample['qid']}. Error: {error}")
+
         results.append({
             "qid": sample['qid'],
-            "answer": answer,
             "program": program
         })
         
