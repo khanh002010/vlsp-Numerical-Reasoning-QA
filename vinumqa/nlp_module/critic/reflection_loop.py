@@ -37,8 +37,15 @@ class ReflectionLoop:
         # Verify if extracted values actually exist in the context
         values = extracted_values.split("#")
         for val in values:
-            if val.strip() and val.strip() not in context:
-                feedback.append(f"Cảnh báo: Giá trị '{val.strip()}' không tìm thấy trong văn bản hoặc bảng.")
+            v_clean = val.strip()
+            if not v_clean:
+                continue
+            # Ignore special DSL structural keywords
+            if v_clean.lower() == "none" or v_clean.lower().startswith("table ") or v_clean.lower().startswith("image "):
+                continue
+                
+            if v_clean not in context:
+                feedback.append(f"Cảnh báo: Giá trị '{v_clean}' không tìm thấy trong văn bản hoặc bảng.")
                 
         return " ".join(feedback)
 
