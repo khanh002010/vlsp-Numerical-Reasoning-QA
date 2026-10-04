@@ -4,7 +4,7 @@ Inference script to generate reasoning programs from text and tables using the f
 
 import torch
 import re
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftModel
 from vinumqa.nlp_module.inference.constrained_decode import DSLLogitsProcessor
 from vinumqa.nlp_module.data_prep.format_training_data import DSL_HINT_SHORT
@@ -39,10 +39,23 @@ class ProgramGenerator:
 
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(base_model_id)
+
+            # Load in 4-bit QLoRA — SAME as training setup.
+            # Fixes 2 problems:
+            #   1. OOM: FP16 7B model takes ~14GB but T4 only has 14.56GB total.
+            #           4-bit reduces to ~4GB, leaving room for CV model (~4.5GB).
+            #   2. torchao incompatibility: BnB 4-bit bypasses the torchao
+            #      dispatch path in PEFT's inject_adapter.
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.float16,
+            )
             self.model = AutoModelForCausalLM.from_pretrained(
                 base_model_id,
-                torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-                device_map="auto" if self.device == "cuda" else None,
+                quantization_config=bnb_config,
+                device_map="auto",
             )
 
             if lora_weights:
