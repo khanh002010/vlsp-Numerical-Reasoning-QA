@@ -160,10 +160,12 @@ def validate_program(program_str: str) -> Tuple[bool, str]:
             
             # Check argument count
             if step.operator in MATH_OPS:
-                numeric_args = [a for a in step.args if a.startswith("#") or _is_number(a)]
-                if len(numeric_args) < 2:
-                    return False, f"Math op {step.operator} needs 2 numeric args, got {len(numeric_args)}"
-        
+                if len(step.args) != 2:
+                    return False, f"Toán tử {step.operator} yêu cầu đúng 2 tham số, nhưng nhận được {len(step.args)}"
+            elif step.operator in TABLE_OPS or step.operator in CHART_OPS:
+                if len(step.args) != 4:
+                    return False, f"Toán tử {step.operator} yêu cầu đúng 4 tham số, nhưng nhận được {len(step.args)}"
+                    
         return True, "Valid"
     
     except Exception as e:
