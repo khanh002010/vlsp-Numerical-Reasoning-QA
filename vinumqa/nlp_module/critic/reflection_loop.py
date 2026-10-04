@@ -80,13 +80,10 @@ class ReflectionLoop:
                 "### Response\n| Step | Output |\n|---|---|\n"
             )
             
-            # We would need to expose a method in ProgramGenerator to take raw prompts, 
-            # or pass the feedback to generate(). For this template, we simulate it:
-            # result = self.generator.generate_with_prompt(retry_prompt)
-            # (Assuming self.generator has been updated to support this)
+            # Trigger generation with the retry prompt
+            result = self.generator.generate_with_prompt(retry_prompt)
             
-            # Since it's a template, we just break to avoid infinite loops if not implemented
-            break
+            # Continue the loop to evaluate the new result
             
         return result
 

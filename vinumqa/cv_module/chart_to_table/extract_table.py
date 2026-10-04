@@ -42,14 +42,22 @@ def classify_chart_type(image: Image.Image) -> dict:
                 "(3) LEGEND (Chú thích màu sắc) - xác định tên của từng series dữ liệu."
             )
         }
-    else:
+    elif SQUARE_RATIO_THRESHOLD <= ratio <= LANDSCAPE_RATIO_THRESHOLD:
         return {
             'shape': 'Square',
             'prompt_hint': (
-                "[CHART TYPE HINT - Square/Pie Chart]: Đây rất có thể là biểu đồ tròn (Pie Chart). "
-                "Hãy đọc kỹ: (1) TÊN CÁC LÁT CẮT - nhãn tên của từng phần; "
-                "(2) TỶ LỆ % - con số phần trăm ghi bên trong hoặc bên ngoài mỗi lát cắt; "
+                "[CHART TYPE HINT - Square Chart]: Có thể là biểu đồ tròn (Pie) hoặc biểu đồ cột/đường dạng vuông. "
+                "Hãy đọc kỹ: (1) TÊN CÁC LÁT CẮT / TRỤC - nhãn tên của từng phần; "
+                "(2) TỶ LỆ % HOẶC SỐ - con số ghi bên trong hoặc bên ngoài; "
                 "(3) LEGEND - bảng chú thích màu nếu nhãn không hiển thị trực tiếp."
+            )
+        }
+    else:
+        return {
+            'shape': 'Portrait',
+            'prompt_hint': (
+                "[CHART TYPE HINT - Portrait Chart]: Đây là biểu đồ dạng dọc. "
+                "Hãy đọc kỹ các trục, nhãn dữ liệu và chú thích màu (nếu có)."
             )
         }
 

@@ -13,7 +13,7 @@ def create_summarization_task(sample: dict) -> dict:
     Given a dataset sample, create a summarization task if it has text/tables.
     """
     tables = sample.get("input", "")
-    if "### Table" not in tables:
+    if "**Table" not in tables:
         return None
         
     return {

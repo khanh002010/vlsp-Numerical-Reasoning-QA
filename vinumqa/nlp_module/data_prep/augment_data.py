@@ -13,20 +13,57 @@ def generate_synthetic_samples(num_samples: int = 500) -> list:
     """
     samples = []
     
-    # Template 1: Add two numbers
-    for _ in range(num_samples // 4):
-        val1 = random.randint(10, 1000)
-        val2 = random.randint(10, 1000)
-        question = f"Tổng của {val1} và {val2} là bao nhiêu?"
-        program = f"add({val1}; {val2})"
+    # We want num_samples distributed across rare operators
+    rare_ops = ["exp", "chart_total", "chart_sum", "table_sum"]
+    samples_per_op = num_samples // len(rare_ops)
+    
+    for _ in range(samples_per_op):
+        # exp
+        val1 = round(random.uniform(1.0, 5.0), 2)
+        val2 = random.randint(2, 5)
+        question = f"Tính {val1} mũ {val2}."
+        program = f"exp({val1}; {val2})"
         samples.append({
-            "instruction": "Step 1 - Extractor: Từ bảng và văn bản dưới đây, hãy trích xuất các giá trị số và thông tin liên quan để trả lời câu hỏi.\nStep 2 - Reasoner: Dựa trên các giá trị đã trích xuất, hãy sinh ra công thức tính toán dưới dạng reasoning program.",
-            "input": f"### Question\n{question}",
+            "instruction": "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.",
+            "input": f"### Context\n\n### Question\n{question}",
             "output": f"| Step | Output |\n|---|---|\n| 1 | {val1}#{val2} |\n| 2 | {program} |"
         })
         
-    # Add more templates as needed...
-    
+        # chart_total
+        img = f"Image {random.randint(1, 5)}"
+        lbl = f"Thang {random.randint(1, 12)}"
+        question = f"Tổng giá trị trong {img} tại {lbl} là bao nhiêu?"
+        program = f"chart_total({img}; {lbl}; none; none)"
+        samples.append({
+            "instruction": "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.",
+            "input": f"### Context\n\n### Question\n{question}",
+            "output": f"| Step | Output |\n|---|---|\n| 1 | {img}#{lbl}#none |\n| 2 | {program} |"
+        })
+
+        # chart_sum
+        img = f"Image {random.randint(1, 5)}"
+        series = f"Series {random.randint(1, 5)}"
+        question = f"Tổng của {series} trong {img} là bao nhiêu?"
+        program = f"chart_sum({img}; {series}; none; none)"
+        samples.append({
+            "instruction": "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.",
+            "input": f"### Context\n\n### Question\n{question}",
+            "output": f"| Step | Output |\n|---|---|\n| 1 | {img}#{series}#none |\n| 2 | {program} |"
+        })
+
+        # table_sum
+        tbl = f"Table {random.randint(1, 5)}"
+        col = f"Column {random.randint(1, 5)}"
+        r1 = f"Row {random.randint(1, 5)}"
+        r2 = f"Row {random.randint(6, 10)}"
+        question = f"Tổng của {col} trong {tbl} từ {r1} đến {r2} là bao nhiêu?"
+        program = f"table_sum({tbl}; {col}; {r1}; {r2})"
+        samples.append({
+            "instruction": "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.",
+            "input": f"### Context\n\n### Question\n{question}",
+            "output": f"| Step | Output |\n|---|---|\n| 1 | {tbl}#{col}#{r1}#{r2} |\n| 2 | {program} |"
+        })
+        
     return samples
 
 def augment_dataset(input_path: str, output_path: str):

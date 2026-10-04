@@ -17,23 +17,24 @@ DSL_HINT_SHORT = (
     + ". Use #0, #1... to reference previous results."
 )
 
+from vinumqa.utils.dsl_parser import parse_program
+
 def extract_values_from_program(program: str) -> str:
     """
     Extract the arguments from a reasoning program to act as the 'evidence' for Step 1.
     For example: 'chart_at(Image 1; P/B trượt; Jul-21; none); subtract(#0; 2.1)'
     Returns: 'Image 1#P/B trượt#Jul-21#none#2.1'
     """
-    pattern = r'\(([^)]*)\)'
-    matches = re.finditer(pattern, program)
-    
+    try:
+        steps = parse_program(program)
+    except Exception:
+        steps = []
+        
     values = []
-    for match in matches:
-        args_str = match.group(1)
-        args = [a.strip() for a in args_str.split(';')]
-        for arg in args:
-            # Skip references to previous steps
-            if not arg.startswith('#'):
-                values.append(arg)
+    for step in steps:
+        for arg in step.args:
+            if not str(arg).startswith('#'):
+                values.append(str(arg))
                 
     # Remove duplicates while preserving order
     seen = set()
@@ -44,6 +45,7 @@ def extract_values_from_program(program: str) -> str:
             unique_values.append(v)
             
     return "#".join(unique_values)
+
 
 def dict_to_markdown_table(table_dict: Dict) -> str:
     """
@@ -76,7 +78,7 @@ def dict_to_markdown_table(table_dict: Dict) -> str:
             
     return "\n\n".join(md_tables)
 
-def format_sample(sample: Dict, include_dsl_prompt: bool = False) -> Dict:
+def format_sample(sample: Dict, include_dsl_prompt: bool = False, cv_pipeline=None, image_dir: str = None) -> Dict:
     """
     Format a single sample into the Step-wise Pipeline instruction format.
     Uses inline placeholder injection (same logic as full_pipeline.py)
@@ -101,9 +103,17 @@ def format_sample(sample: Dict, include_dsl_prompt: bool = False) -> Dict:
 
     # Images: during training we reference them by name only (CV output used at inference)
     image_keys = list(sample.get('images', {}).keys())
-    image_placeholder_map = {
-        k: f"[Chart: {k} - extracted by CV Module]" for k in image_keys
-    }
+    image_placeholder_map = {}
+    if cv_pipeline and image_dir:
+        for img_key, img_filename in sample.get('images', {}).items():
+            img_path = os.path.join(image_dir, img_filename)
+            if os.path.exists(img_path):
+                image_placeholder_map[img_key] = f"**{img_key}**\n" + cv_pipeline.process_image(img_path)
+            else:
+                image_placeholder_map[img_key] = f"[Image not found: {img_path}]"
+    else:
+        for k in image_keys:
+            image_placeholder_map[k] = f"[Chart: {k} - extracted by CV Module]"
 
     result_segs = []
     for seg in sample.get('text', []):
@@ -156,10 +166,21 @@ def format_sample(sample: Dict, include_dsl_prompt: bool = False) -> Dict:
     }
 
 def main():
-    TRAIN_JSON = r"d:\VS CODE\vlsp Numerical Reasoning QA\data\train\train.json"
-    TEST_JSON  = r"d:\VS CODE\vlsp Numerical Reasoning QA\data\public_test\public_test.json"
-    OUT_DIR = r"d:\VS CODE\vlsp Numerical Reasoning QA\vinumqa\data"
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    TRAIN_JSON = os.path.join(PROJECT_ROOT, "data", "train", "train.json")
+    TRAIN_IMAGES = os.path.join(PROJECT_ROOT, "data", "train", "train_images")
+    TEST_JSON  = os.path.join(PROJECT_ROOT, "data", "public_test", "public_test.json")
+    TEST_IMAGES = os.path.join(PROJECT_ROOT, "data", "public_test", "public_test_images")
+    OUT_DIR = os.path.join(PROJECT_ROOT, "vinumqa", "data")
     os.makedirs(OUT_DIR, exist_ok=True)
+
+    try:
+        from vinumqa.cv_module.pipeline import CVPipeline
+        print("Loading CV Pipeline for pre-extraction...")
+        cv_pipeline = CVPipeline()
+    except Exception as e:
+        print(f"Warning: CV Pipeline could not be loaded: {e}")
+        cv_pipeline = None
 
     with open(TRAIN_JSON, 'r', encoding='utf-8') as f:
         train_data = json.load(f)
@@ -170,14 +191,14 @@ def main():
     # Train: no DSL prompt (model learns from examples, saves ~400 tokens/sample)
     # Val:   short 1-line DSL hint (~30 tokens, just a reminder)
     configs = [
-        ("train",       train_data, False),
-        ("public_test", val_data,   True),
+        ("train",       train_data, False, TRAIN_IMAGES),
+        ("public_test", val_data,   True,  TEST_IMAGES),
     ]
 
-    for name, data, include_dsl in configs:
+    for name, data, include_dsl, img_dir in configs:
         out_path = os.path.join(OUT_DIR, f"{name}_formatted.json")
         print(f"Formatting {len(data)} samples -> {out_path} (DSL hint: {include_dsl})")
-        formatted = [format_sample(s, include_dsl_prompt=include_dsl) for s in data]
+        formatted = [format_sample(s, include_dsl_prompt=include_dsl, cv_pipeline=cv_pipeline, image_dir=img_dir) for s in data]
         with open(out_path, 'w', encoding='utf-8') as f:
             json.dump(formatted, f, ensure_ascii=False, indent=2)
         print(f"Saved {len(formatted)} samples to {out_path}")

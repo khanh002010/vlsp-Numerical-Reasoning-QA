@@ -18,11 +18,9 @@ import torch
 from transformers import LogitsProcessor
 
 
-VALID_DSL_OPERATORS = [
-    "subtract", "divide", "multiply", "add", "greater", "exp",
-    "chart_at", "chart_max", "chart_min", "chart_average", "chart_sum", "chart_total",
-    "table_max", "table_min", "table_average", "table_sum",
-]
+from vinumqa.nlp_module.dsl_operators import OPERATOR_NAMES
+
+VALID_DSL_OPERATORS = OPERATOR_NAMES
 
 
 class DSLLogitsProcessor(LogitsProcessor):
@@ -71,18 +69,32 @@ class DSLLogitsProcessor(LogitsProcessor):
 
     def _is_at_operator_start(self, input_ids: torch.LongTensor) -> bool:
         """
-        Heuristic: if the last N tokens form "; " or "| 2 |", we're at
-        the beginning of a new operator call.
+        Check if we are at the start of a new operator.
+        Must be at depth 0 (not inside parentheses).
         """
-        ids = input_ids[0].tolist()
-        # Check for "; " suffix
-        if len(ids) >= len(self._semi_ids):
-            if ids[-len(self._semi_ids):] == self._semi_ids:
+        # Decode the recent part of the sequence to track depth
+        text = self.tokenizer.decode(input_ids[0][-2000:])
+        
+        # Isolate the program part
+        if "| 2 |" in text:
+            program_part = text.split("| 2 |")[-1]
+        else:
+            program_part = text
+
+        depth = 0
+        for char in program_part:
+            if char == '(':
+                depth += 1
+            elif char == ')':
+                depth -= 1
+        
+        # Only constrain if we are at the top level (outside any operator arguments)
+        if depth == 0:
+            if not program_part.strip():
                 return True
-        # Check for "| 2 |" suffix (table row start → operator position)
-        if len(ids) >= len(self._pipe_ids):
-            if ids[-len(self._pipe_ids):] == self._pipe_ids:
+            if program_part.endswith("; ") or program_part.endswith(";\n") or program_part.endswith(";"):
                 return True
+                
         return False
 
     def __call__(

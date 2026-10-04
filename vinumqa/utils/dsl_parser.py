@@ -35,22 +35,77 @@ class ProgramStep:
 def parse_program(program_str: str) -> List[ProgramStep]:
     """
     Parse a reasoning program string into a list of ProgramStep objects.
-    
-    Example input: "chart_at(Image 1; P/B trượt; Jul-21; none); subtract(#0; 2.1)"
+    Handles nested parentheses properly.
     """
     steps = []
+    program_str = program_str.strip()
+    if not program_str:
+        return steps
+        
+    current_step_str = ""
+    depth = 0
+    step_strings = []
     
-    # Split by top-level "; " that separates steps (not inside parentheses)
-    # Strategy: find each op(...) pattern
-    pattern = r'([a-z_]+)\(([^)]*)\)'
-    matches = re.finditer(pattern, program_str)
-    
-    for i, match in enumerate(matches):
-        operator = match.group(1)
-        args_str = match.group(2)
-        args = [a.strip() for a in args_str.split(";")]
-        steps.append(ProgramStep(step_id=i, operator=operator, args=args))
-    
+    i = 0
+    while i < len(program_str):
+        char = program_str[i]
+        if char == '(':
+            depth += 1
+            current_step_str += char
+        elif char == ')':
+            depth -= 1
+            current_step_str += char
+        elif char == ';' and depth == 0:
+            if i + 1 < len(program_str) and program_str[i+1] == ' ':
+                step_strings.append(current_step_str.strip())
+                current_step_str = ""
+                i += 1
+            else:
+                current_step_str += char
+        else:
+            current_step_str += char
+        i += 1
+        
+    if current_step_str.strip():
+        step_strings.append(current_step_str.strip())
+        
+    for i, step_str in enumerate(step_strings):
+        match = re.match(r'^([a-z_]+)\((.*)\)$', step_str)
+        if match:
+            operator = match.group(1)
+            args_str = match.group(2)
+            
+            args = []
+            current_arg = ""
+            arg_depth = 0
+            j = 0
+            while j < len(args_str):
+                char = args_str[j]
+                if char == '(':
+                    arg_depth += 1
+                    current_arg += char
+                elif char == ')':
+                    arg_depth -= 1
+                    current_arg += char
+                elif char == ';' and arg_depth == 0:
+                    if j + 1 < len(args_str) and args_str[j+1] == ' ':
+                        args.append(current_arg.strip())
+                        current_arg = ""
+                        j += 1
+                    else:
+                        args.append(current_arg.strip())
+                        current_arg = ""
+                else:
+                    current_arg += char
+                j += 1
+                
+            if current_arg.strip() or args_str.endswith('; ') or args_str.endswith(';'):
+                args.append(current_arg.strip())
+                
+            steps.append(ProgramStep(step_id=i, operator=operator, args=args))
+        else:
+            steps.append(ProgramStep(step_id=i, operator="INVALID", args=[step_str]))
+            
     return steps
 
 
@@ -72,8 +127,19 @@ def resolve_arg(arg: str, results: Dict[int, Any]) -> Any:
     
     # Try to parse as number
     try:
-        # Handle Vietnamese number formats (e.g., "1.234,56" or "1,234.56")
-        cleaned = arg.replace(",", "")
+        cleaned = arg
+        if ',' in cleaned and '.' in cleaned:
+            if cleaned.rfind(',') > cleaned.rfind('.'):
+                cleaned = cleaned.replace('.', '').replace(',', '.')
+            else:
+                cleaned = cleaned.replace(',', '')
+        elif ',' in cleaned:
+            cleaned = cleaned.replace(',', '.')
+        elif '.' in cleaned and len(cleaned.split('.')[-1]) == 3 and cleaned.count('.') == 1:
+            cleaned = cleaned.replace('.', '')
+        elif '.' in cleaned and cleaned.count('.') > 1:
+            cleaned = cleaned.replace('.', '')
+            
         return float(cleaned)
     except (ValueError, TypeError):
         pass
@@ -175,7 +241,19 @@ def validate_program(program_str: str) -> Tuple[bool, str]:
 def _is_number(s: str) -> bool:
     """Check if a string is a number."""
     try:
-        float(s.replace(",", ""))
+        cleaned = s.strip()
+        if ',' in cleaned and '.' in cleaned:
+            if cleaned.rfind(',') > cleaned.rfind('.'):
+                cleaned = cleaned.replace('.', '').replace(',', '.')
+            else:
+                cleaned = cleaned.replace(',', '')
+        elif ',' in cleaned:
+            cleaned = cleaned.replace(',', '.')
+        elif '.' in cleaned and len(cleaned.split('.')[-1]) == 3 and cleaned.count('.') == 1:
+            cleaned = cleaned.replace('.', '')
+        elif '.' in cleaned and cleaned.count('.') > 1:
+            cleaned = cleaned.replace('.', '')
+        float(cleaned)
         return True
     except (ValueError, TypeError):
         return False

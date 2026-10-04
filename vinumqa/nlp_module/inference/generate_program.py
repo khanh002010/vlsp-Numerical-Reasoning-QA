@@ -94,6 +94,16 @@ class ProgramGenerator:
             return {"error": "Model not loaded", "extracted_values": "", "program": ""}
 
         prompt = self._build_prompt(context_text, markdown_table, images_available_str, question)
+        return self.generate_with_prompt(prompt)
+
+    def generate_with_prompt(self, prompt: str) -> dict:
+        """
+        Generate a reasoning program directly from a raw prompt string.
+        """
+        if self.model is None:
+            print("[ERROR] Model not loaded. Cannot generate.")
+            return {"error": "Model not loaded", "extracted_values": "", "program": ""}
+
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
 
         # Build logits_processor list
@@ -105,7 +115,7 @@ class ProgramGenerator:
             with torch.no_grad():
                 outputs = self.model.generate(
                     **inputs,
-                    max_new_tokens=256,
+                    max_new_tokens=768,
                     temperature=0.0,    # Greedy decoding — deterministic
                     do_sample=False,
                     logits_processor=logits_processor,

@@ -79,6 +79,16 @@ DSL_OPERATORS = {
         "impl": lambda a, b: 1 if a > b else 0,
     },
 
+    "exp": {
+        "signature": "exp(a; b)",
+        "args": ["a: number", "b: number"],
+        "returns": "number",
+        "description": "Tính lũy thừa a^b.",
+        "example_program": "exp(1.05; 3)",
+        "example_meaning": "Tính 1.05 mũ 3",
+        "impl": lambda a, b: a ** b,
+    },
+
     # ----------------------------------------------------------
     # 2. CHART OPERATORS (Đọc dữ liệu từ Biểu đồ)
     # ----------------------------------------------------------
@@ -126,12 +136,12 @@ DSL_OPERATORS = {
     },
 
     "chart_average": {
-        "signature": "chart_average(image_id; x_start; x_end_or_none; series_name_or_none)",
+        "signature": "chart_average(image_key; name; start; end)",
         "args": [
-            "image_id: str",
-            "x_start: str",
-            "x_end_or_none: str",
-            "series_name_or_none: str",
+            "image_key: str",
+            "name: str",
+            "start: str",
+            "end: str",
         ],
         "returns": "number",
         "description": "Tính trung bình các điểm dữ liệu trong một khoảng trên biểu đồ (89 lần).",
@@ -151,6 +161,20 @@ DSL_OPERATORS = {
         "description": "Tính tổng các điểm dữ liệu trong một series trên biểu đồ (32 lần). [HIẾM - cần Data Augmentation]",
         "example_program": "chart_sum(Image 1; Chi tieu 2024E; none; none)",
         "example_meaning": "Tính tổng toàn bộ giá trị trong series 'Chi tiêu 2024E' của Image 1",
+    },
+
+    "chart_total": {
+        "signature": "chart_total(image_id; x_label; y_label_or_none; series_name_or_none)",
+        "args": [
+            "image_id: str",
+            "x_label: str",
+            "y_label_or_none: str",
+            "series_name_or_none: str",
+        ],
+        "returns": "number",
+        "description": "Tính tổng các thành phần tại một điểm x trên biểu đồ.",
+        "example_program": "chart_total(Image 1; Jan-25; none; none)",
+        "example_meaning": "Tính tổng các giá trị tại Jan-25 trên Image 1",
     },
 
     # ----------------------------------------------------------
@@ -234,13 +258,15 @@ def get_dsl_system_prompt() -> str:
         "  - multiply(a; b)     → a * b",
         "  - add(a; b)          → a + b",
         "  - greater(a; b)      → 1 nếu a > b, ngược lại 0",
+        "  - exp(a; b)          → a ^ b",
         "",
         "### Nhóm 2: Đọc dữ liệu từ Biểu đồ (image_id là 'Image 1', 'Image 2'...)",
         "  - chart_at(image_id; series_name; x_label; y_label_or_none)             → một điểm số",
         "  - chart_max(image_id; series_name; x_start_or_none; x_end_or_none)      → số lớn nhất",
         "  - chart_min(image_id; series_name; x_start_or_none; x_end_or_none)      → số nhỏ nhất",
-        "  - chart_average(image_id; x_start; x_end_or_none; series_name_or_none)  → số trung bình",
+        "  - chart_average(image_key; name; start; end)  → số trung bình",
         "  - chart_sum(image_id; series_name; x_start_or_none; x_end_or_none)      → tổng",
+        "  - chart_total(image_id; x_label; y_label_or_none; series_name_or_none)  → tổng các thành phần",
         "",
         "### Nhóm 3: Đọc dữ liệu từ Bảng (table_id là 'Table 1', 'Table 2'...)",
         "  - table_max(table_id; column_name; row_start_or_none; row_end_or_none)     → số lớn nhất",
@@ -253,7 +279,7 @@ def get_dsl_system_prompt() -> str:
         "  - Dùng 'none' khi không cần giới hạn phạm vi.",
         "  - Dấu phân cách giữa các đối số là dấu chấm phẩy (;).",
         "  - Kết quả bước trước dùng lại bằng #N (e.g. subtract(#0; #1)).",
-        "  - CHỈ được dùng 14 toán tử trên, không tự tạo toán tử mới.",
+        "  - CHỈ được dùng 16 toán tử trên, không tự tạo toán tử mới.",
     ]
     return "\n".join(lines)
 
@@ -262,9 +288,9 @@ def get_dsl_system_prompt() -> str:
 # QUICK REFERENCE (Summary for inspection)
 # ==============================================================
 
-OPERATOR_NAMES = list(DSL_OPERATORS.keys())  # 14 operators
+OPERATOR_NAMES = list(DSL_OPERATORS.keys())  # 16 operators
 
-RARE_OPERATORS = ["chart_sum", "table_sum"]  # < 55 samples → cần Data Augmentation
+RARE_OPERATORS = ["chart_sum", "table_sum", "exp", "chart_total"]  # < 55 samples → cần Data Augmentation
 
 
 if __name__ == "__main__":
