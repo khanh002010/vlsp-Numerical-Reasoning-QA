@@ -1,124 +1,37 @@
-"""
-Constraint Decoding for ViNumQA Reasoning Program Synthesis.
-Uses a LogitsProcessor to restrict the LLM to generate only valid DSL operators.
-
-Implementation: Token-level hard constraint.
-  - At every decoding step, the processor checks if the current position is the
-    start of a new operator (i.e., right after "; " or at step beginning).
-  - If so, it sets logits of all tokens that are NOT a valid operator's first
-    token to -inf, forcing the model to begin with a known operator name.
-  - All other positions (inside parentheses: args, numbers, strings) are unconstrained.
-
-Note: For production-grade constrained decoding with full grammar enforcement,
-      consider using the `outlines` library (pip install outlines) which builds
-      a complete FSM from a regex/grammar.
-"""
-
+"""Full operator-name restriction, not a claim of full argument grammar."""
 import torch
 from transformers import LogitsProcessor
-
-
 from vinumqa.nlp_module.dsl_operators import OPERATOR_NAMES
+from vinumqa.nlp_module.inference.operator_constraint import operator_prefix, allows_operator_piece
 
 VALID_DSL_OPERATORS = OPERATOR_NAMES
 
-
 class DSLLogitsProcessor(LogitsProcessor):
-    """
-    Hard-constrains the model to start each new operator with a valid DSL name.
-    """
-
     def __init__(self, tokenizer):
-        """
-        Args:
-            tokenizer: The tokenizer of the model (Qwen2.5-7B).
-        """
         self.tokenizer = tokenizer
+        self.start = 0
+        self.pieces = None
+        self.cache = {}
 
-        # Pre-compute: first-token IDs for each valid operator name
-        self.operator_first_token_ids: set[int] = set()
-        for op in VALID_DSL_OPERATORS:
-            # Tokenize WITHOUT space prefix (Qwen tokenizer behaviour)
-            ids = tokenizer.encode(op, add_special_tokens=False)
-            if ids:
-                self.operator_first_token_ids.add(ids[0])
-            # Also with space prefix (some tokenizers split differently)
-            ids_space = tokenizer.encode(" " + op, add_special_tokens=False)
-            if ids_space:
-                self.operator_first_token_ids.add(ids_space[0])
+    def reset(self, prompt_length):
+        self.start = prompt_length
 
-        # Always allow structural tokens: ( ) ; # digits space . - newline
-        structural_chars = [
-            "(", ")", ";", "#", " ", ".", "-", "\n",
-            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-        ]
-        self.structural_token_ids: set[int] = set()
-        for ch in structural_chars:
-            ids = tokenizer.encode(ch, add_special_tokens=False)
-            if ids:
-                self.structural_token_ids.add(ids[0])
-
-        # Combine: allowed at the START of a new operator step
-        self.allowed_at_op_start = (
-            self.operator_first_token_ids | self.structural_token_ids
-        )
-
-        # Decode trigger: "; " signals the start of a new operator
-        self._semi_ids = tokenizer.encode("; ", add_special_tokens=False)
-        self._pipe_ids = tokenizer.encode("| 2 |", add_special_tokens=False)
-
-    def _is_at_operator_start(self, input_ids: torch.LongTensor) -> bool:
-        """
-        Check if we are at the start of a new operator.
-        Must be at depth 0 (not inside parentheses).
-        """
-        # Decode the recent part of the sequence to track depth
-        text = self.tokenizer.decode(input_ids[0][-2000:])
-        
-        # Isolate the program part
-        if "| 2 |" in text:
-            program_part = text.split("| 2 |")[-1]
-        else:
-            program_part = text
-
-        depth = 0
-        for char in program_part:
-            if char == '(':
-                depth += 1
-            elif char == ')':
-                depth -= 1
-        
-        # Only constrain if we are at the top level (outside any operator arguments)
-        if depth == 0:
-            if not program_part.strip():
-                return True
-            if program_part.endswith("; ") or program_part.endswith(";\n") or program_part.endswith(";"):
-                return True
-                
-        return False
-
-    def __call__(
-        self,
-        input_ids: torch.LongTensor,
-        scores: torch.FloatTensor,
-    ) -> torch.FloatTensor:
-        """
-        At operator-start positions: mask out all tokens NOT in allowed set.
-        At all other positions: return scores unchanged (args, strings, numbers).
-        """
-        if self._is_at_operator_start(input_ids):
-            # Create a mask: -inf for disallowed tokens
-            mask = torch.full_like(scores, float("-inf"))
-            allowed = list(self.allowed_at_op_start)
-            # Clip to vocab size
-            allowed = [t for t in allowed if t < scores.shape[-1]]
-            mask[:, allowed] = 0.0
-            scores = scores + mask
-
+    def __call__(self, input_ids, scores):
+        # Per-row state also supports beam-expanded batches. Never scan the prompt.
+        for row in range(input_ids.shape[0]):
+            generated = self.tokenizer.decode(input_ids[row, self.start:], skip_special_tokens=True)
+            prefix = operator_prefix(generated)
+            if prefix is None: continue
+            if self.pieces is None:
+                self.pieces = self.tokenizer.batch_decode([[i] for i in range(len(self.tokenizer))], skip_special_tokens=False)
+            key = (prefix, scores.shape[-1])
+            if key not in self.cache:
+                special = set(self.tokenizer.all_special_ids)
+                self.cache[key] = [i for i, piece in enumerate(self.pieces) if i < scores.shape[-1]
+                                   and i not in special and piece and allows_operator_piece(prefix, piece)]
+            allowed = self.cache[key]
+            if not allowed: raise ValueError(f"No token can complete DSL operator prefix {prefix!r}")
+            mask = torch.full_like(scores[row], float("-inf"))
+            mask[allowed] = 0
+            scores[row] += mask
         return scores
-
-
-if __name__ == "__main__":
-    print("DSLLogitsProcessor is ACTIVE.")
-    print(f"Constraining to {len(VALID_DSL_OPERATORS)} operators: {VALID_DSL_OPERATORS}")
-    print("Recommendation: for full grammar enforcement, also use 'outlines' library.")

@@ -9,7 +9,7 @@ class SymbolicExecutor:
     def __init__(self):
         print("Initializing Symbolic Executor...")
 
-    def execute(self, program_str: str) -> str:
+    def execute(self, program_str: str, tables=None, charts=None) -> str:
         """
         Validates and executes the program.
         Returns the result as a string or an error message.
@@ -35,7 +35,7 @@ class SymbolicExecutor:
             # But ViNumQA DSL requires the program to look up explicitly:
             # e.g., table_max(Table 1; Đầu tư công; 2021; 2025F)
             
-            results = execute_program(steps)
+            results = execute_program(steps, tables=tables, charts=charts)
             
             # The final result is the output of the last step
             if len(steps) > 0:

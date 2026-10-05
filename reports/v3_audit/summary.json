@@ -1,0 +1,234 @@
+{
+  "total": 459,
+  "counts": {
+    "non_exact": 423,
+    "step_count_diff": 192,
+    "lookup_added_to_math_gold": 32,
+    "fewer_steps": 158,
+    "operator_sequence_diff": 298,
+    "lookup_omitted_math_only": 116,
+    "pred_math_only": 263,
+    "same_ops_argument_diff": 125,
+    "both_math_only": 147,
+    "strict_invalid": 136,
+    "invalid_arity": 64,
+    "repo_invalid": 101,
+    "invalid_reference": 47,
+    "repo_equivalent": 36,
+    "exact": 36,
+    "invalid_source_type": 47,
+    "missing_source_id": 6,
+    "invalid_math_argument": 14,
+    "same_math_value_non_exact": 4,
+    "aligned_noncommutative_swap": 3
+  },
+  "groups": {
+    "math_only": {
+      "total": 182,
+      "exact": 30
+    },
+    "chart": {
+      "total": 199,
+      "exact": 6
+    },
+    "table": {
+      "total": 75
+    },
+    "mixed_lookup": {
+      "total": 3
+    }
+  },
+  "operators": {
+    "gold": {
+      "add": 136,
+      "divide": 182,
+      "chart_max": 32,
+      "chart_min": 27,
+      "subtract": 278,
+      "multiply": 101,
+      "chart_at": 297,
+      "greater": 34,
+      "table_max": 36,
+      "table_min": 31,
+      "chart_average": 21,
+      "table_average": 38,
+      "chart_sum": 18,
+      "chart_total": 1,
+      "table_sum": 9
+    },
+    "pred": {
+      "table_average": 43,
+      "subtract": 224,
+      "divide": 171,
+      "multiply": 64,
+      "chart_average": 51,
+      "chart_max": 44,
+      "chart_min": 33,
+      "table_max": 20,
+      "table_min": 17,
+      "add": 45,
+      "chart_at": 46,
+      "table_sum": 9,
+      "greater": 21,
+      "chart_total": 5,
+      "INVALID": 5,
+      "chart_sum": 11,
+      "chart_divide": 1,
+      "table_divide": 1
+    }
+  },
+  "syntax": [
+    {
+      "file": "vinumqa/__init__.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/cv_module/chart_classifier/classify.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/cv_module/chart_to_table/extract_table.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/cv_module/pipeline.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/cv_module/zoom_verify/verify_agent.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/cv_module/zoom_verify/zoom_tool.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/data/prepare_dataset.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/critic/reflection_loop.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/data_prep/augment_data.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/data_prep/format_training_data.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/data_prep/multitask_mixing.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/dsl_operators.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/inference/constrained_decode.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/inference/fsm_outlines.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/inference/generate_program.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/inference/symbolic_executor.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/pipeline.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/training/lora_config.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/nlp_module/training/train_qlora.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/pipeline/batch_inference.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/pipeline/full_pipeline.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/utils/__init__.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/utils/dsl_parser.py",
+      "status": "OK"
+    },
+    {
+      "file": "vinumqa/utils/metrics.py",
+      "status": "OK"
+    }
+  ],
+  "formatted": {
+    "train_formatted.json": {
+      "samples": 1725,
+      "instructions": {
+        "### Instruction\nStep 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.\nDung #0, #1, ... de tham chieu ket qua buoc truoc.": 1725
+      },
+      "cv_error_samples": 0,
+      "chart_placeholder_samples": 1725,
+      "image_header_samples": 0,
+      "max_output_chars": 689
+    },
+    "public_test_formatted.json": {
+      "samples": 459,
+      "instructions": {
+        "### Instruction\nStep 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.\nOperators: subtract, divide, multiply, add, greater, chart_at, chart_max, chart_min, chart_average, chart_sum, table_max, table_min, table_average, table_sum. Use #0, #1... to reference previous results.\n\nDung #0, #1, ... de tham chieu ket qua buoc truoc.": 459
+      },
+      "cv_error_samples": 0,
+      "chart_placeholder_samples": 459,
+      "image_header_samples": 0,
+      "max_output_chars": 844
+    }
+  },
+  "train": {
+    "samples": 1725,
+    "math_only": 768,
+    "public_same_context": 0
+  },
+  "gold_issue_rows": 0,
+  "source_sha256": {
+    "page.html": "39578e97ac2e68f8a5eb71fbbb0bcb3d4ea3bcb25d35eecb9b865ed96ff429c7",
+    "evaluation_report_v3.csv": "91beadb3654644f12ac3cada5c7f2257217001646f164525ae469e24911d43be",
+    "vinumqa/__init__.py": "5bfce4f4a2f0f1089b7327c0fad8e8f0476c812364473994b205ddab1854f545",
+    "vinumqa/cv_module/chart_classifier/classify.py": "58c9429860fa1c5cc36298297d704bae72b6bec8636f0c89f842b4c5988fba4c",
+    "vinumqa/cv_module/chart_to_table/extract_table.py": "fdbef55d272a8fe219b7ec061de94f11fbcf516676223fd61bcb438b423f9438",
+    "vinumqa/cv_module/pipeline.py": "f8c0ef02aff5eb83eeb09078295a178ff82079715e784cae267e74dc1de78dd1",
+    "vinumqa/cv_module/zoom_verify/verify_agent.py": "eee21075c622552edf39906d2b7b60f447348ff38027853007f19cef9e40f62c",
+    "vinumqa/cv_module/zoom_verify/zoom_tool.py": "e9125a35ebcace6fa0ee379b1c7c237a81dc2c66f2d1478d9391da8eb6eeab75",
+    "vinumqa/data/prepare_dataset.py": "6de2d3c73031f5ffb0e3ed26671adfeefd4bab851850b01ae3223a2765c3b642",
+    "vinumqa/nlp_module/critic/reflection_loop.py": "4d87e647a0b59b202bc56876793e2cb2e15a4c836a22a34ea75a28547c45d655",
+    "vinumqa/nlp_module/data_prep/augment_data.py": "969b051ec4322f360aa9f768a2a1f2dcb582cf25a959d64f6b212981cb94cac3",
+    "vinumqa/nlp_module/data_prep/format_training_data.py": "ded7cc640e88acd86ceeef2c946ad66d1f521c562218f4011ddf4c76a726fcae",
+    "vinumqa/nlp_module/data_prep/multitask_mixing.py": "68407aae9eeb8e16bb36e5bb79461d09f5a52ddeddae880e25925767f579cebe",
+    "vinumqa/nlp_module/dsl_operators.py": "a36a43e993aaded26f1166e65f0b136f669ece85db5f003d2de51e08610c1d2e",
+    "vinumqa/nlp_module/inference/constrained_decode.py": "72b099e221a56ef826e0842c55cd8a452c21d5e0899f688c20707f2effff9c2d",
+    "vinumqa/nlp_module/inference/fsm_outlines.py": "786862dee0d0ebeb9f359cb9eeee8004a8364723d89d7e5b6acd6441eb14cf0d",
+    "vinumqa/nlp_module/inference/generate_program.py": "b52c205e54dc64a1b04b1ef10ae023ba87d05c38c372155f4468bb99c4556ec3",
+    "vinumqa/nlp_module/inference/symbolic_executor.py": "aab19ca827569bdcfab2e9dbd540b65f9e5f24d7dcf1c1ecc428c3051700dd19",
+    "vinumqa/nlp_module/pipeline.py": "0414e0a950423997bf1257fe14ab36ff7fc3fe00250c6b8e667472ea4cc104e9",
+    "vinumqa/nlp_module/training/lora_config.py": "40969aeaf1bacf5f4476b867add98780381f12e019241b8babe5fd97a2defc64",
+    "vinumqa/nlp_module/training/train_qlora.py": "c2f1b81316b1f624cfba930899f0a343cc5143d51e8a3aab7496f62e538aa970",
+    "vinumqa/pipeline/batch_inference.py": "207b513772f707fdebd1ece3090c0e4a5cce315764423dc8d159a641f535daf9",
+    "vinumqa/pipeline/full_pipeline.py": "9c715b50be6e251b51488a8f698db44ef23e90b712615e906ecf323153070809",
+    "vinumqa/utils/__init__.py": "3843da1bae6a8db7c7a63feca59e386f4ba5ef6b12f8fe417dd0f1b95bdab662",
+    "vinumqa/utils/dsl_parser.py": "c5d0f2d0eabc8d6646fb59946847784e6e46812a2bada2721c3aa11d45bfaf0b",
+    "vinumqa/utils/metrics.py": "df4aed0ee36448b908c29eaa91beeaf2ddb5d17a11ff89c2a6a54c2ca9a4923b"
+  }
+}

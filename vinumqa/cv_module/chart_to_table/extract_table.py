@@ -9,7 +9,7 @@ from typing import Union, List, Dict
 from PIL import Image
 import io
 import sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 try:
     from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
@@ -97,11 +97,13 @@ class ChartToTableExtractor:
                 device_map="auto" if self.device == "cuda" else None
             )
             self.processor = AutoProcessor.from_pretrained(model_id)
+            self.model.eval()
             print("Model loaded successfully.")
         except Exception as e:
             print(f"Failed to load model: {e}")
             self.model = None
             self.processor = None
+            raise RuntimeError("CV initialization failed") from e
             
         self.base_prompt = (
             "You are an expert data analyst. Convert the following chart image into a well-structured "
@@ -115,7 +117,7 @@ class ChartToTableExtractor:
         Extract a Markdown table from a chart image.
         """
         if self.model is None or self.processor is None:
-            return "| Lỗi | Model chưa được load |\n|---|---|\n| N/A | N/A |"
+            raise RuntimeError("CV model not loaded")
             
         try:
             raw_image = Image.open(image_path).convert("RGB")
@@ -155,7 +157,10 @@ class ChartToTableExtractor:
             inputs = inputs.to(self.device)
 
             # Inference
-            generated_ids = self.model.generate(**inputs, max_new_tokens=1024)
+            with torch.inference_mode():
+                generated_ids = self.model.generate(**inputs, max_new_tokens=2048, do_sample=False)
+            if generated_ids.shape[1] - inputs.input_ids.shape[1] >= 2048:
+                raise ValueError("CV output reached token limit; incomplete table")
             generated_ids_trimmed = [
                 out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
             ]
@@ -167,7 +172,7 @@ class ChartToTableExtractor:
             
         except Exception as e:
             print(f"Error extracting table from {image_path}: {e}")
-            return f"| Lỗi | {str(e)} |\n|---|---|"
+            raise RuntimeError(f"CV extraction failed: {image_path}") from e
 
     def extract_batch(self, image_paths: List[str]) -> List[str]:
         """

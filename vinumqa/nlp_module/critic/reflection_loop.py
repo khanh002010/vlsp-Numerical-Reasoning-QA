@@ -1,91 +1,31 @@
-"""
-Critic Agent / Reflection Loop.
-Verifies the generated reasoning program and extracted values.
-If errors are found, it triggers a regeneration with feedback.
-"""
-
-from vinumqa.nlp_module.inference.generate_program import ProgramGenerator
+"""Bounded retries; validate every candidate including the last one."""
 from vinumqa.utils.dsl_parser import validate_program
+from vinumqa.nlp_module.contracts import source_ids, RESPONSE_PREFIX
 
 class ReflectionLoop:
-    def __init__(self, generator: ProgramGenerator, max_retries: int = 1):
-        """
-        Initialize the Reflection Loop with a ProgramGenerator.
-        """
-        self.generator = generator
-        self.max_retries = max_retries
-        print("Reflection Loop initialized.")
+    def __init__(self, generator, max_retries=1):
+        if max_retries < 0: raise ValueError("max_retries must be nonnegative")
+        self.generator, self.max_retries = generator, max_retries
 
-    def _critique(self, program: str, extracted_values: str, context: str) -> str:
-        """
-        Analyze the output for logical or syntactic errors.
-        Returns a feedback string if errors are found, else empty string.
-        """
-        feedback = []
-        
-        # 1. Syntactic / DSL check
-        is_valid, msg = validate_program(program)
-        if not is_valid:
-            feedback.append(f"Lỗi cú pháp: {msg}. Vui lòng sửa lại công thức cho đúng định dạng.")
-            
-        # 2. Logic check: division by zero, invalid references, etc.
-        # Handled partially by validate_program, but we could add more heuristics here.
-        if "divide" in program and " 0" in program:
-            feedback.append("Cảnh báo: Có khả năng chia cho 0.")
-            
-        # 3. Data consistency check
-        # Verify if extracted values actually exist in the context
-        values = extracted_values.split("#")
-        for val in values:
-            v_clean = val.strip()
-            if not v_clean:
-                continue
-            # Ignore special DSL structural keywords
-            if v_clean.lower() == "none" or v_clean.lower().startswith("table ") or v_clean.lower().startswith("image "):
-                continue
-                
-            if v_clean not in context:
-                feedback.append(f"Cảnh báo: Giá trị '{v_clean}' không tìm thấy trong văn bản hoặc bảng.")
-                
-        return "\n".join(feedback)
+    def _critique(self, program, extracted_values, context):
+        valid, reason = validate_program(program, sources=source_ids(context))
+        return "" if valid else reason
 
-    def generate_with_reflection(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
-        """
-        Generate program, critique it, and regenerate if necessary.
-        """
-        # First attempt
-        result = self.generator.generate(context_text, markdown_table, images_available_str, question)
-        
-        if "error" in result:
-            return result
-            
-        context_combined = context_text + "\n" + markdown_table
-        
-        for attempt in range(self.max_retries):
-            feedback = self._critique(result["program"], result["extracted_values"], context_combined)
-            
+    def generate_with_reflection(self, context_text, markdown_table, images_available_str, question):
+        original = self.generator._build_prompt(context_text, markdown_table, images_available_str, question)
+        prompt = original
+        history = []
+        for attempt in range(self.max_retries + 1):
+            result = self.generator.generate_with_prompt(prompt)
+            if result.get("error"):
+                return {**result, "valid": False, "attempts": history}
+            feedback = self._critique(result.get("program", ""), result.get("extracted_values", ""), context_text + "\n" + markdown_table)
+            history.append({"program": result.get("program", ""), "validation_error": feedback,
+                            "raw_output": result.get("raw_output", "")})
             if not feedback:
-                # No errors found, return result
-                break
-                
-            print(f"Reflection triggered (Attempt {attempt+1}): {feedback}")
-            
-            # Re-build prompt with feedback
-            retry_prompt = (
-                original_prompt + 
-                f"| 1 | {result['extracted_values']} |\n"
-                f"| 2 | {result['program']} |\n\n"
-                f"### System Critic Feedback:\n{feedback}\n"
-                f"Yêu cầu: Hãy suy nghĩ lại, sửa các lỗi trên và TUYỆT ĐỐI tuân thủ cú pháp DSL.\n\n"
-                "### Response\n| Step | Output |\n|---|---|\n"
-            )
-            
-            # Trigger generation with the retry prompt
-            result = self.generator.generate_with_prompt(retry_prompt)
-            
-            # Continue the loop to evaluate the new result
-            
-        return result
-
-if __name__ == "__main__":
-    print("ReflectionLoop module is ready.")
+                return {**result, "valid": True, "validation_error": "", "attempts": history}
+            prompt = (original + f"| 1 | {result.get('extracted_values', '')} |\n| 2 | {result.get('program', '')} |\n"
+                      + "\n### Validation feedback\n" + feedback
+                      + "\nSửa program theo câu hỏi và nguồn gốc trong context.\n\n" + RESPONSE_PREFIX)
+        return {**result, "valid": False, "error": "Validation failed after retries",
+                "validation_error": feedback, "attempts": history}

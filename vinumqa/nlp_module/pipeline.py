@@ -24,12 +24,12 @@ class NLPPipeline:
     def process(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
         """
         Process the inputs to generate and execute a reasoning program.
-        Returns a dictionary with 'extracted_values', 'program', and 'answer'.
+        Returns program, validation status and generation diagnostics.
         """
         if self.use_reflection:
             return self.reflection_loop.generate_with_reflection(context_text, markdown_table, images_available_str, question)
         else:
-            return self.generator.generate(context_text, markdown_table, images_available_str, question)
+            return ReflectionLoop(self.generator, max_retries=0).generate_with_reflection(context_text, markdown_table, images_available_str, question)
 
 if __name__ == "__main__":
     print("NLPPipeline module is ready.")

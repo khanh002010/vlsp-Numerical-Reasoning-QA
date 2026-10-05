@@ -1,0 +1,295 @@
+{
+  "reflection_retry": "NameError: name 'original_prompt' is not defined",
+  "validator_examples": {
+    "add(VN30; VNMidcap)": [
+      true,
+      "Valid"
+    ],
+    "chart_max(Table 1; x; none; none)": [
+      true,
+      "Valid"
+    ],
+    "divide(100; 0)": [
+      true,
+      "Valid"
+    ],
+    "subtract(2; 1);add(#0; 3)": [
+      false,
+      "Toán tử subtract yêu cầu đúng 2 tham số, nhưng nhận được 3"
+    ]
+  },
+  "numeric_resolution": {
+    "0.175": 175.0,
+    "0.105": 105.0,
+    "46.495": 46495.0,
+    "52.102": 52102.0
+  },
+  "execution_accuracy_missing_prediction": 1.0,
+  "parsed_no_space": [
+    "#0: subtract(2; 1);add(#0; 3)"
+  ],
+  "swaps": [
+    {
+      "csv_row": 298,
+      "qid": "f5e10586-f916-5ec2-8b36-12532321c97a",
+      "question": "Tại ngày 9/2/2023, nếu lấy P/E ước tính cho năm tài chính hiện tại trừ đi mức P/E trung bình 5 năm, kết quả là bao nhiêu?",
+      "gold": "chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 9/2/2023; none); chart_at(Image 1; TB 5 năm; 9/2/2023; none); subtract(#0; #1)",
+      "pred": "chart_average(Image 1; P/E; none; 2023; none; 2024); chart_at(Image 1; P/E; none; 2024; Jan; none); subtract(#1; #0)",
+      "flags": [
+        "aligned_noncommutative_swap",
+        "invalid_arity",
+        "non_exact",
+        "operator_sequence_diff",
+        "repo_invalid",
+        "strict_invalid"
+      ],
+      "gold_issues": [],
+      "pred_issues": [
+        "arity@0:6!=4",
+        "arity@1:6!=4"
+      ],
+      "differences": [
+        "#0: operator chart_at -> chart_average",
+        "#0 arg1: 'P/E ước tính cho năm tài chính hiện tại' -> 'P/E'",
+        "#0 arg2: '9/2/2023' -> 'none'",
+        "#0 arg3: 'none' -> '2023'",
+        "#0 arg4: '<absent>' -> 'none'",
+        "#0 arg5: '<absent>' -> '2024'",
+        "#1 arg1: 'TB 5 năm' -> 'P/E'",
+        "#1 arg2: '9/2/2023' -> 'none'",
+        "#1 arg3: 'none' -> '2024'",
+        "#1 arg4: '<absent>' -> 'Jan'",
+        "#1 arg5: '<absent>' -> 'none'",
+        "#2 arg0: '#0' -> '#1'",
+        "#2 arg1: '#1' -> '#0'"
+      ]
+    },
+    {
+      "csv_row": 362,
+      "qid": "0b7b5473-0a3d-564a-9b96-29bfcd0a429b",
+      "question": "Nếu lấy dòng vốn quỹ cổ phiếu toàn cầu tháng 10/2023 được suy ra từ biến động mức lũy kế đầu năm 2023 giữa cuối tháng 9 và cuối tháng 10, rồi trừ đi tổng dòng vốn vào DM equity và EM equity trong cùng tháng, chênh lệch là bao nhiêu tỷ USD?",
+      "gold": "chart_at(Image 2; Cổ phiếu; Sep-23; none); chart_at(Image 2; Cổ phiếu; Oct-23; none); subtract(#1; #0); subtract(-9853; -7081); subtract(#2; #3)",
+      "pred": "chart_at(Image 4; Dòng vốn lũy kế đầu năm 2023; Oct-23; none); chart_at(Image 4; Dòng vốn lũy kế đầu năm 2023; Sep-23; none); subtract(#0; #1); chart_total(#3; DM equity; EM equity)",
+      "flags": [
+        "aligned_noncommutative_swap",
+        "fewer_steps",
+        "invalid_arity",
+        "invalid_reference",
+        "invalid_source_type",
+        "non_exact",
+        "operator_sequence_diff",
+        "repo_invalid",
+        "step_count_diff",
+        "strict_invalid"
+      ],
+      "gold_issues": [],
+      "pred_issues": [
+        "arity@3:3!=4",
+        "reference@3:#3",
+        "source_type@3:#3"
+      ],
+      "differences": [
+        "#0 arg0: 'Image 2' -> 'Image 4'",
+        "#0 arg1: 'Cổ phiếu' -> 'Dòng vốn lũy kế đầu năm 2023'",
+        "#0 arg2: 'Sep-23' -> 'Oct-23'",
+        "#1 arg0: 'Image 2' -> 'Image 4'",
+        "#1 arg1: 'Cổ phiếu' -> 'Dòng vốn lũy kế đầu năm 2023'",
+        "#1 arg2: 'Oct-23' -> 'Sep-23'",
+        "#2 arg0: '#1' -> '#0'",
+        "#2 arg1: '#0' -> '#1'",
+        "#3: operator subtract -> chart_total",
+        "#3 arg0: '-9853' -> '#3'",
+        "#3 arg1: '-7081' -> 'DM equity'",
+        "#3 arg2: '<absent>' -> 'EM equity'",
+        "#4: missing gold step #4: subtract(#2; #3)"
+      ]
+    },
+    {
+      "csv_row": 393,
+      "qid": "53711127-a34c-5e49-a319-23bd7dbf8a74",
+      "question": "Trong tháng 1/2025, chênh lệch giữa dòng vốn vào quỹ cổ phiếu của khối thị trường đang phát triển (EM) và tổng dòng vốn vào các thị trường Trung Quốc, Ấn Độ, Indonesia, Hàn Quốc, Đài Loan, Thái Lan và Việt Nam là bao nhiêu tỷ USD?",
+      "gold": "table_sum(Table 1; Jan-25; China; Vietnam); chart_at(Image 2; Đang phát triển (EM); Jan-25; none); subtract(#1; #0)",
+      "pred": "table_sum(Table 1; Dòng vốn đầu tư vào một số thị trường chính (tỷ USD); Trung Quốc; Đài Loan); table_sum(Table 1; Dòng vốn đầu tư vào một số thị trường chính (tỷ USD); Indonesia; Hàn Quốc); subtract(#0; #1)",
+      "flags": [
+        "aligned_noncommutative_swap",
+        "non_exact",
+        "operator_sequence_diff"
+      ],
+      "gold_issues": [],
+      "pred_issues": [],
+      "differences": [
+        "#0 arg1: 'Jan-25' -> 'Dòng vốn đầu tư vào một số thị trường chính (tỷ USD)'",
+        "#0 arg2: 'China' -> 'Trung Quốc'",
+        "#0 arg3: 'Vietnam' -> 'Đài Loan'",
+        "#1: operator chart_at -> table_sum",
+        "#1 arg0: 'Image 2' -> 'Table 1'",
+        "#1 arg1: 'Đang phát triển (EM)' -> 'Dòng vốn đầu tư vào một số thị trường chính (tỷ USD)'",
+        "#1 arg2: 'Jan-25' -> 'Indonesia'",
+        "#1 arg3: 'none' -> 'Hàn Quốc'",
+        "#2 arg0: '#1' -> '#0'",
+        "#2 arg1: '#0' -> '#1'"
+      ]
+    }
+  ],
+  "same_math_value": [
+    {
+      "csv_row": 48,
+      "qid": "75942c41-9dfa-5dde-9606-65f893287648",
+      "question": "Trong Q124, mảng Xây dựng mang lại doanh thu tuyệt đối là bao nhiêu tỷ đồng cho công ty?",
+      "gold": "divide(64; 100); multiply(425; #0)",
+      "pred": "divide(425; 100); multiply(#0; 64)",
+      "flags": [
+        "both_math_only",
+        "non_exact",
+        "pred_math_only",
+        "same_math_value_non_exact",
+        "same_ops_argument_diff"
+      ],
+      "gold_issues": [],
+      "pred_issues": [],
+      "differences": [
+        "#0 arg0: '64' -> '425'",
+        "#1 arg0: '425' -> '#0'",
+        "#1 arg1: '#0' -> '64'"
+      ]
+    },
+    {
+      "csv_row": 58,
+      "qid": "6f6b25cd-4e55-5356-8ba5-331012f6f130",
+      "question": "Đối với DPG, hệ số P/E forward năm 2024 hàm ý khi lấy mức giá mục tiêu được nâng lên chia cho EPS dự phóng 2024 là bao nhiêu lần?",
+      "gold": "divide(52102; 3351)",
+      "pred": "divide(52.102; 3.351)",
+      "flags": [
+        "both_math_only",
+        "non_exact",
+        "pred_math_only",
+        "same_math_value_non_exact",
+        "same_ops_argument_diff"
+      ],
+      "gold_issues": [],
+      "pred_issues": [],
+      "differences": [
+        "#0 arg0: '52102' -> '52.102'",
+        "#0 arg1: '3351' -> '3.351'"
+      ]
+    },
+    {
+      "csv_row": 61,
+      "qid": "42523de0-d558-5aba-a87c-21a24feb9939",
+      "question": "Giá mục tiêu của DPG đã được điều chỉnh tăng bao nhiêu phần trăm so với mức giá mục tiêu trước đó?",
+      "gold": "subtract(52102; 44733); divide(#0; 44733); multiply(#1; 100)",
+      "pred": "subtract(52.102; 44.733); divide(#0; 44.733); multiply(#1; 100)",
+      "flags": [
+        "both_math_only",
+        "non_exact",
+        "pred_math_only",
+        "same_math_value_non_exact",
+        "same_ops_argument_diff"
+      ],
+      "gold_issues": [],
+      "pred_issues": [],
+      "differences": [
+        "#0 arg0: '52102' -> '52.102'",
+        "#0 arg1: '44733' -> '44.733'",
+        "#1 arg1: '44733' -> '44.733'"
+      ]
+    },
+    {
+      "csv_row": 460,
+      "qid": "2252c63f-ec0e-5c67-95ce-8ec7cecd0297",
+      "question": "ROE của HBC trong năm tài chính 2017 có cao hơn năm tài chính 2016 không?",
+      "gold": "greater(40.0; 37.6)",
+      "pred": "greater(16.5; 15.1)",
+      "flags": [
+        "both_math_only",
+        "non_exact",
+        "pred_math_only",
+        "same_math_value_non_exact",
+        "same_ops_argument_diff"
+      ],
+      "gold_issues": [],
+      "pred_issues": [],
+      "differences": [
+        "#0 arg0: '40.0' -> '16.5'",
+        "#0 arg1: '37.6' -> '15.1'"
+      ]
+    }
+  ],
+  "formatted_checks": {
+    "train_formatted.json": {
+      "program_mismatch_by_position": 1,
+      "median_chars": 4579,
+      "max_chars": 14615,
+      "over_16000_chars": 0,
+      "first_instruction": "### Instruction\nStep 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.\nDung #0, #1, ... de tham chieu ket qua buoc truoc.",
+      "program_mismatches": [
+        {
+          "qid": "05a85e9c-7c27-529f-924b-466218915da3",
+          "raw": "chart_average(Image 1; Tỷ lệ sở hữu nước ngoài tại ngày 10/12/2024; none; none)\ntable_average(Table 1; Tỷ lệ sở hữu tại ngày 10/12/2024; none; none); subtract(#0; #1)",
+          "formatted": ""
+        }
+      ]
+    },
+    "public_test_formatted.json": {
+      "program_mismatch_by_position": 0,
+      "median_chars": 6339,
+      "max_chars": 16986,
+      "over_16000_chars": 27,
+      "first_instruction": "### Instruction\nStep 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so va thong tin lien quan de tra loi cau hoi.\nStep 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc tinh toan duoi dang reasoning program.\nOperators: subtract, divide, multiply, add, greater, chart_at, chart_max, chart_min, chart_average, chart_sum, table_max, table_min, table_average, table_sum. Use #0, #1... to reference previous results.\n\nDung #0, #1, ... de tham chieu ket qua buoc truoc.",
+      "program_mismatches": []
+    }
+  },
+  "selected_sources": [
+    {
+      "qid": "bed4e850-a504-5677-9307-184caea40c71",
+      "qa": {
+        "question": "Lãi suất cho vay mua nhà sau thời gian ưu đãi trung bình của ba ngân hàng VCB, CTG và Standard Charter là bao nhiêu phần trăm?",
+        "program": "add(9; 9); add(#0; 8.8); divide(#1; 3)"
+      },
+      "tables": {
+        "Table 1": "<table>\n  <tr>\n    <td colspan=\"2\"></td>\n    <td>Lãi suất ưu đãi cho kỳ hạn 12 tháng</td>\n    <td>Lãi suất cho vay mua nhà sau thời gian ưu đãi</td>\n  </tr>\n  <tr>\n    <td rowspan=\"3\">NHTMNN</td>\n    <td>VCB</td>\n    <td>5,7%</td>\n    <td>9,0%</td>\n  </tr>\n  <tr>\n    <td>BID</td>\n    <td>5,8%-6%</td>\n    <td>8,7%</td>\n  </tr>\n  <tr>\n    <td>CTG</td>\n    <td>6,0%</td>\n    <td>9,0%</td>\n  </tr>\n  <tr>\n    <td rowspan=\"8\">NHTMCP</td>\n    <td>ACB</td>\n    <td>7,0%</td>\n    <td>11%-11,7%</td>\n  </tr>\n  <tr>\n    <td>SIB</td>\n    <td>7,0%</td>\n    <td>10,5%</td>\n  </tr>\n  <tr>\n    <td>TCB</td>\n    <td>6,7%</td>\n    <td>10% -11%</td>\n  </tr>\n  <tr>\n    <td>MBB</td>\n    <td>7,9%</td>\n    <td>10%-10,5%</td>\n  </tr>\n  <tr>\n    <td>VPB</td>\n    <td>7,2%</td>\n    <td>11,0%</td>\n  </tr>\n  <tr>\n    <td>VIB</td>\n    <td>6,5%</td>\n    <td>11,0%</td>\n  </tr>\n  <tr>\n    <td>TPB</td>\n    <td>6,6%</td>\n    <td>11,4%</td>\n  </tr>\n  <tr>\n    <td>MSB</td>\n    <td>6,2%</td>\n    <td>10,5%</td>\n  </tr>\n  <tr>\n    <td rowspan=\"3\">NH nước ngoài</td>\n    <td>Shinhan</td>\n    <td>7,0%</td>\n    <td>8,8%-9%</td>\n  </tr>\n  <tr>\n    <td>Woori</td>\n    <td>5,3%</td>\n    <td>9%</td>\n  </tr>\n  <tr>\n    <td>Standard Charter</td>\n    <td>6,3%</td>\n    <td>8,8%</td>\n  </tr>\n</table>"
+      },
+      "formatted_input": "### Context\nTài chính - Ngân hàng: Khởi đầu một chu kỳ mới\n\nTriển vọng năm 2025: Trung lập.\n\nCổ phiếu ưa thích: CTG, TCB, VCB, ACB.\n\nNgành Ngân hàng có hiệu suất đầu tư vượt trội trong năm 2024 nhờ lợi nhuận phục hồi.\n\nCổ phiếu ngân hàng đã tăng 22% trong năm 2024, vượt trội hơn so với chỉ số VNIndex (12,1%). Chúng tôi tin rằng lợi nhuận phục hồi là động lực chính hỗ trợ giá cổ phiếu, đặc biệt trong nửa đầu năm 2024 khi NIM được cải thiện. Những cổ phiếu có hiệu suất đầu tư cao bao gồm LPB (+132%), TCB (+60%), HDB (+57%), CTG (+39%) và MBB (+38%).\n\nCác cổ phiếu ưa thích của chúng tôi trong năm 2024 cũng ghi nhận mức lợi nhuận tốt với CTG (+39%), ACB (+29%), cũng như VCB (+14%).\n\n[Chart: Image 1 - extracted by CV Module]\n\nNguồn: SSI Research\n\nTriển vọng năm 2025\n\nMặc dù kinh tế vĩ mô vẫn gặp nhiều thách thức, chúng tôi kỳ vọng năm 2025 sẽ mang lại nhiều cơ hội cho nền kinh tế hơn so với năm 2024, đặc biệt là về hoạt động đầu tư công và sự phục hồi của thị trường bất động sản. Hơn nữa, sự hỗ trợ của các cấp lãnh đạo đã và đang giúp các ngân hàng có thêm công cụ để hỗ trợ người đi vay và có phương án dự phòng linh hoạt hơn. Tuy nhiên, chúng tôi tin rằng việc cạnh tranh gay gắt giữa các ngân hàng, đặc biệt là giữa các ngân hàng thương mại cổ phần (NHTMCP), vẫn sẽ tiếp tục diễn ra trong năm 2025. Với việc lãi suất huy động đang tăng dần sau khi giảm xuống mức thấp kỷ lục, chúng tôi dự báo chi phi vốn sẽ tăng nhưng NIM tại các NHTMCP sẽ chịu áp lực nhiều hơn trong khi NIM ở các ngân hàng thương mại nhà nước (NHTMNN) sẽ tăng nhẹ. Tuy nhiên, chất lượng tài sản tốt dần lên sẽ là bức tranh chung trong năm 2025. Nhìn chung, chúng tôi giữ quan điểm tích cực về ngành ngân hàng với dự báo tăng trưởng lợi nhuận trước thuế (LNTT) là 17,4% svck trong năm 2025 cho các ngân hàng chúng tôi nghiên cứu.\n\nLàn gió mới thúc đẩy tăng trưởng tín dụng: Trong 4 năm qua, thị trường Việt Nam đã đối mặt với nhiều trở ngại, bao gồm những biến động liên quan đến đại dịch gây khó khăn cho hoạt động sản xuất và dịch vụ cùng với các vấn đề liên quan tới trái phiếu doanh nghiệp và thị trường bất động sản. Điều này làm cho nhu cầu tín dụng thấp hơn kỳ vọng và tiêu dùng suy giảm. Các khoản vay vốn lưu động đến từ các ngành nghề thương mại, sản xuất và các công ty FDI là động lực chính cho tăng trưởng tín dụng trong 3 quý đầu năm 2024. Bên cạnh đó, chúng tôi nhận thấy dòng vốn tín dụng đang chảy vào các công ty chứng khoán tại một số ngân hàng tư nhân, bao gồm MBB, TCB, VPB, HDB, MSB, TPB, và VIB, với tổng giải ngân ít nhất là 27,6 nghìn tỷ đồng. Ngoài ra, chúng tôi cũng thấy nhu cầu tín dụng hồi phục từ cuối Q2/2024, tập trung nhiều hơn vào ngành xây dựng và bất động sản, đặc biệt là ở thị trường phía Bắc. Cụ thể, số lượng căn hộ mới được mở bán tại Hà Nội đạt 18.800 căn (+292% svck) và giá tăng 26% svck trong Q3/2024. Chúng tôi cho rằng việc giữ lãi suất cho vay mua nhà ở mức thấp (Bảng 1) là yếu tố quan trọng để người mua nhà có thể tiếp cận nguồn vốn, và cả thiện số lượng giao dịch mua nhà lên hơn 20.000 tại Hà Nội trong 3 quý đầu năm 2024. Các khoản cho vay mua nhà cũng tăng 7,2% so với đầu năm tại các ngân hàng mà chúng tôi đang nghiên cứu, chủ yếu tập trung ở BID (36,7 nghìn tỷ đồng YTD), TCB (22,5\n\nnghìn tỷ đồng YTD), MBB (13,8 nghìn tỷ đồng YTD), và ACB (10,1 nghìn tỷ đồng YTD). Thị trường bất động sản ấm dần lên dự kiến giúp dòng vốn chảy sang TP. HCM từ Q4/2024. Với những điều kiện như vậy, chúng tôi dự báo tăng trưởng tín dụng sẽ hồi phục và đạt 15,3% YTD trong năm 2024.\n\nTheo kịch bản cơ sở của chúng tôi, tăng trưởng GDP trong năm 2025 dự kiến sẽ tương đương với năm 2024 (khoảng 7,0%) và có thể cao hơn. Đối với tín dụng toàn hệ thống, cho vay các chủ đầu tư bất động sản tăng 16% so với đầu năm, trong khi các khoản cho vay mua nhà chỉ tăng 4,6% so với đầu năm. Vì thế, với nguồn cung lớn hơn trong năm 2025 (Bảng 2) và lãi suất cho vay mua nhà được kỳ vọng sẽ giữ ở mức thấp, chúng tôi cho rằng phân khúc khách hàng cá nhân sẽ phục hồi, đặc biệt là các khoản nợ cho vay mua nhà vào thời điểm mà Chính phủ đang thể hiện quyết tâm giải quyết các vấn đề pháp lý liên quan đến các dự án bất động sản. Do đó, tăng trưởng tín dụng dự kiến sẽ đạt 16% so với đầu năm trong năm 2025 .\n\nBảng 1: Lãi suất cho vay mua nhà tính đến tháng 11/2024\n\n**Table 1**\n| 0             | 1                | 2                                   | 3                                             |\n|:--------------|:-----------------|:------------------------------------|:----------------------------------------------|\n| nan           | nan              | Lãi suất ưu đãi cho kỳ hạn 12 tháng | Lãi suất cho vay mua nhà sau thời gian ưu đãi |\n| NHTMNN        | VCB              | 5,7%                                | 9,0%                                          |\n| NHTMNN        | BID              | 5,8%-6%                             | 8,7%                                          |\n| NHTMNN        | CTG              | 6,0%                                | 9,0%                                          |\n| NHTMCP        | ACB              | 7,0%                                | 11%-11,7%                                     |\n| NHTMCP        | SIB              | 7,0%                                | 10,5%                                         |\n| NHTMCP        | TCB              | 6,7%                                | 10% -11%                                      |\n| NHTMCP        | MBB              | 7,9%                                | 10%-10,5%                                     |\n| NHTMCP        | VPB              | 7,2%                                | 11,0%                                         |\n| NHTMCP        | VIB              | 6,5%                                | 11,0%                                         |\n| NHTMCP        | TPB              | 6,6%                                | 11,4%                                         |\n| NHTMCP        | MSB              | 6,2%                                | 10,5%                                         |\n| NH nước ngoài | Shinhan          | 7,0%                                | 8,8%-9%                                       |\n| NH nước ngoài | Woori            | 5,3%                                | 9%                                            |\n| NH nước ngoài | Standard Charter | 6,3%                                | 8,8%                                          |\n\n[Chart: Image 2 - extracted by CV Module]\n\n[Chart: Image 3 - extracted by CV Module]\n\nNguồn: SSI Research\n\nNIM – Niềm vui ngắn ngủi: NIM phục hồi tốt trong 6 tháng đầu năm 2024 (+7bps YTD đạt 3,62%) khi lãi suất huy động giảm (-117 bps syck). Ngoài ra, tối ưu hóa cơ cấu tài sản cũng là yếu tố then chốt hỗ trợ NIM trong nửa đầu năm 2024. Tại cuối Q2/2024, LDR lập kỷ lục ở mức 97,2% (Biểu đồ 3) trước khi giảm xuống 96,4% vào Q3/2024. NIM giảm -22 bps QoQ xuống còn 3,47% trong Q3/2024 do lãi suất huy động tăng dần và canh tranh giữa các ngân hàng trở nên gay gắt, làm cho lợi suất sinh lời trên tài sản giảm -21 bps so với quý trước. Với nhu cầu tín dụng thường tăng cao vào quý 4, chúng tôi cho rằng các ngân hàng sẽ phải tăng cường huy động để đảm bảo các chỉ số về thanh khoản, điều này sẽ làm giảm tỷ lệ LDR. Dưới sự cạnh tranh gay gắt, chúng tôi cho rằng NIM sẽ tiếp tục chịu áp lực trong Q4/2024, và chỉ đạt 3,48% (-7bps svck) cho cả năm 2024.\n\nSang năm 2025, chúng tôi tin rằng chính sách tiền tê vẫn sẽ duy trì linh hoạt cùng với việc theo đổi chặt chẽ áp lực tỷ giá hối đoái. Do đó, chúng tôi dư báo lãi suất huy đông 12 tháng sẽ tăng nhe trong năm 2025, làm tăng chi phí vốn lên +17 bps svck. Với lợi thể canh tranh về chi phí vốn, chúng tôi cho rằng các NHTMNN ít gặp áp lực hơn so với các NHTMCP. Do đó, chúng tôi ước tính NIM sẽ duy trì ổn định sựck ở mức 3,48% nhưng sẽ có sự khác biệt giữa NHTMNN (+5 bps svck đạt 2,77%) và các NHTMCP (-7 bps svck đạt 4,24%) trong năm 2025.\n\n[Chart: Image 4 - extracted by CV Module]\n\n[Chart: Image 5 - extracted by CV Module]\n\n[Chart: Image 6 - extracted by CV Module]\n\n[Chart: Image 7 - extracted by CV Module]\n\nNguồn: SSI Research NHTMNN: VCB. BID. và CTG\n\nNHTMCP cấp 1: ACB, STB, VPB, MBB, và TCB Các NH khác: HDB, TPB, VIB, MSB, và OCB\n\nChất lượng tài sản – có chuyển biến tích cực nhưng vẫn cần thận trọng: Sau khi tăng vọt lên 2,12% vào Q2/2024, tỷ lệ hình thành nợ xấu đã giảm đáng kể ở các ngân hàng chúng tôi nghiên cứu xuống còn 1,22% trong Q3/2024, ngoại trừ OCB, MBB, TPB và VIB. Trong 3 quý đầu năm 2024, các ngân hàng đã xử lý 73,3 nghìn tỷ đồng nợ xấu, chủ yếu từ VPB (19,4 nghìn tỷ đồng), CTG (17,4 nghìn tỷ đồng), BID (15,9 nghìn tỷ đồng) và MBB (7,1 nghìn tỷ đồng), chiếm 0,84% tổng dư nợ khách hàng, đây là mức cao nhất từng được ghi nhận. Mặc dù đã tích cực xử lý nợ xấu nhưng tỷ lệ nợ xấu vẫn còn cao, dao động ở mức 2% tại Q3/2024, chủ yếu ở các ngành như vật liệu xây dựng, các công ty xây dựng, bất động sản (chủ đầu tư và cho vay mua nhà), thương mại và sản xuất. Chúng tôi cho rằng khả năng thanh toán nợ vẫn còn yếu, điều này ảnh hưởng đến việc thu hổi nợ của các ngân hàng. Tuy nhiên, chúng tôi cho rằng ngân hàng sẽ đẩy mạnh xử lý nợ xấu trong Q4/2024 và giúp tỷ lệ nợ xấu giảm xuống 1,9% vào cuối năm 2024. Điều đáng chú ý là chi phí tín dụng nhỏ hơn nhiều so với tỷ lệ hình thành nợ xấu kể từ Q3/2022 (Biểu đồ 8), điều này thường sẽ ám chỉ dự phòng sẽ tăng trong thời gan tới. Tuy nhiên, với sự hỗ trợ của NHNN và Chính phủ, các ngân hàng giờ đây có thêm thời gian để giãn việc trích lập dự phòng và ghi nhận nợ xấu. Vì thế, chúng tôi dự báo chi phí tín dụng sẽ giảm -9 bps svck xuống còn 1,28% trong năm 2024.\n\n[Chart: Image 8 - extracted by CV Module]\n\n[Chart: Image 9 - extracted by CV Module]\n\n[Chart: Image 10 - extracted by CV Module]\n\nNguồn: SSI Research\n\nVới sự quyết tâm của Chính phủ để giải quyết các nút thắt trong lĩnh vực bất động sản, chúng tôi kỳ vọng một số dự án pháp lý chưa hoàn thiện sẽ được giải quyết và tái xây dựng vào năm 2025. Từ đó sẽ hỗ trợ ngân hàng trong việc thuyết phục người mua nhà trả nợ. Tuy nhiên, điều quan trọng cần nhấn mạnh ở đây là vấn đề về dòng tiền của chủ đầu tư bất động sản và niềm tin của người mua nhà và nhà đầu tư. Nếu chủ đầu tư tiếp tục không hoàn thiện được hợp đồng mua bán và/hoặc không bàn giao nhà đúng tiến độ, chúng tôi cho rằng nợ xấu nhóm khách hàng cá nhân có thể sẽ tăng. Tuy nhiên, trong kịch bản cơ sở, chúng tôi vẫn tin rằng sự phục hồi của thị trường bất động sản miền Bắc và việc mở bán nhiều dự án mới (Bảng 2) trong năm 2025 sẽ cải thiện tâm lý thị trường và thu hút dòng vốn đầu tư mới – đặc biệt là ở miền Nam. Nhìn chung, chúng tôi kỳ vọng tỷ lệ nợ xấu sẽ biến động trong nửa đầu năm 2025, trước khi dần cải thiện xuống còn 1,78% trong nửa cuối năm 2025.\n\n[Chart: Image 11 - extracted by CV Module]\n\n[Chart: Image 12 - extracted by CV Module]\n\nNguồn: SSI Research\n\nNHTMNN: VCB, BID, và CTG NHTMCP cấp 1: ACB, STB, VPB, MBB, vàTCB Các NH khác: HDB, TPB, VIB, MSB, và OCB\n\nThu nhập ngoài lãi phục hồi 11,8% svck trong 3 quý đầu năm 2024 nhờ nỗ lực thu hồi nợ xấu đã xử lý (+65,7% svck) và lãi từ kinh doanh ngoại hối (+12,6% svck). Trong 3 quý đầu năm 2024, các ngân hàng đã nỗ lực thu hồi nợ xấu trong bối cảnh thị trường bất động sản dần phục hồi. Đặc biệt, chúng tôi nhận thấy các ngân hàng hoạt động chủ yếu ở miền Bắc ghi nhận mức thu nhập này cao hơn, bao gồm các NHTMNN nói chung, MBB, TCB, VPB, MSB và TPB. Chúng tôi kỳ vọng thu nhập từ nợ xấu đã xử lý sẽ tiếp tục phục hồi trong năm 2025. Việc đồng USD/VND liên tục tăng trong nửa đầu năm 2024 đã giúp các ngân hàng tăng thu nhập từ giao dịch ngoại hối 50,6% svck. Mặc dù thu nhập này giảm 39,5% svck trong Q3/2024 do đồng USD suy yếu khi nhà đầu tư dự đoán Fed sẽ cắt giảm lãi suất nhưng chúng tôi dự báo thu nhập này sẽ tăng trở lại trong Q4/2024, khi mà tỷ giá hối đoái bật tăng.\n\nỞ khía cạnh khác, các ngân hàng đã ghi nhận lợi nhuận lớn từ giao dịch trái phiếu chính phủ trong năm 2023 (12,1 nghìn tỷ đồng hoặc 2,4% TOI) và điều này khó có thể lặp lại trong năm 2024. Cụ thể, thu nhập từ giao dịch trái phiếu chính phủ giảm khoảng 20% svck trong 9T2024. Mặc khác, thu nhập từ phí tăng nhẹ +4,7% svck trong nửa đầu năm 2024 chủ yếu do tài trợ thương mại và sự phục hồi của dịch vụ thẻ, trong khi thu nhập từ bảo hiểm nhân thọ vẫn ở mức thấp. Tuy nhiên, luật tổ chức tín dụng mới có hiệu lực từ tháng 7/2024 quy định hoạt động thư tín dụng được xem là hoạt động tín dụng và điều đó làm cho các ngân hàng phải phân loại lại phí tài trợ thương mại thành thu nhập lãi. Do đó, thu nhập từ phí giảm nhẹ 0,4% svck trong 9T2024 và có thể tiếp tục giảm trong Q4/2024.\n\n[Chart: Image 13 - extracted by CV Module]\n\n### Images Available\nImage 1, Image 2, Image 3, Image 4, Image 5, Image 6, Image 7, Image 8, Image 9, Image 10, Image 11, Image 12, Image 13\n\n### Question\nLãi suất cho vay mua nhà sau thời gian ưu đãi trung bình của ba ngân hàng VCB, CTG và Standard Charter là bao nhiêu phần trăm?"
+    },
+    {
+      "qid": "b36cd841-19f1-544e-b95f-fb0234949122",
+      "qa": {
+        "question": "Trong năm 2024, mức sinh lời của cổ phiếu CTG cao hơn bao nhiêu phần trăm so với chỉ số VNIndex?",
+        "program": "subtract(39; 12.1)"
+      },
+      "tables": {
+        "Table 1": "<table>\n  <tr>\n    <td colspan=\"2\"></td>\n    <td>Lãi suất ưu đãi cho kỳ hạn 12 tháng</td>\n    <td>Lãi suất cho vay mua nhà sau thời gian ưu đãi</td>\n  </tr>\n  <tr>\n    <td rowspan=\"3\">NHTMNN</td>\n    <td>VCB</td>\n    <td>5,7%</td>\n    <td>9,0%</td>\n  </tr>\n  <tr>\n    <td>BID</td>\n    <td>5,8%-6%</td>\n    <td>8,7%</td>\n  </tr>\n  <tr>\n    <td>CTG</td>\n    <td>6,0%</td>\n    <td>9,0%</td>\n  </tr>\n  <tr>\n    <td rowspan=\"8\">NHTMCP</td>\n    <td>ACB</td>\n    <td>7,0%</td>\n    <td>11%-11,7%</td>\n  </tr>\n  <tr>\n    <td>SIB</td>\n    <td>7,0%</td>\n    <td>10,5%</td>\n  </tr>\n  <tr>\n    <td>TCB</td>\n    <td>6,7%</td>\n    <td>10% -11%</td>\n  </tr>\n  <tr>\n    <td>MBB</td>\n    <td>7,9%</td>\n    <td>10%-10,5%</td>\n  </tr>\n  <tr>\n    <td>VPB</td>\n    <td>7,2%</td>\n    <td>11,0%</td>\n  </tr>\n  <tr>\n    <td>VIB</td>\n    <td>6,5%</td>\n    <td>11,0%</td>\n  </tr>\n  <tr>\n    <td>TPB</td>\n    <td>6,6%</td>\n    <td>11,4%</td>\n  </tr>\n  <tr>\n    <td>MSB</td>\n    <td>6,2%</td>\n    <td>10,5%</td>\n  </tr>\n  <tr>\n    <td rowspan=\"3\">NH nước ngoài</td>\n    <td>Shinhan</td>\n    <td>7,0%</td>\n    <td>8,8%-9%</td>\n  </tr>\n  <tr>\n    <td>Woori</td>\n    <td>5,3%</td>\n    <td>9%</td>\n  </tr>\n  <tr>\n    <td>Standard Charter</td>\n    <td>6,3%</td>\n    <td>8,8%</td>\n  </tr>\n</table>"
+      },
+      "formatted_input": "### Context\nTài chính - Ngân hàng: Khởi đầu một chu kỳ mới\n\nTriển vọng năm 2025: Trung lập.\n\nCổ phiếu ưa thích: CTG, TCB, VCB, ACB.\n\nNgành Ngân hàng có hiệu suất đầu tư vượt trội trong năm 2024 nhờ lợi nhuận phục hồi.\n\nCổ phiếu ngân hàng đã tăng 22% trong năm 2024, vượt trội hơn so với chỉ số VNIndex (12,1%). Chúng tôi tin rằng lợi nhuận phục hồi là động lực chính hỗ trợ giá cổ phiếu, đặc biệt trong nửa đầu năm 2024 khi NIM được cải thiện. Những cổ phiếu có hiệu suất đầu tư cao bao gồm LPB (+132%), TCB (+60%), HDB (+57%), CTG (+39%) và MBB (+38%).\n\nCác cổ phiếu ưa thích của chúng tôi trong năm 2024 cũng ghi nhận mức lợi nhuận tốt với CTG (+39%), ACB (+29%), cũng như VCB (+14%).\n\n[Chart: Image 1 - extracted by CV Module]\n\nNguồn: SSI Research\n\nTriển vọng năm 2025\n\nMặc dù kinh tế vĩ mô vẫn gặp nhiều thách thức, chúng tôi kỳ vọng năm 2025 sẽ mang lại nhiều cơ hội cho nền kinh tế hơn so với năm 2024, đặc biệt là về hoạt động đầu tư công và sự phục hồi của thị trường bất động sản. Hơn nữa, sự hỗ trợ của các cấp lãnh đạo đã và đang giúp các ngân hàng có thêm công cụ để hỗ trợ người đi vay và có phương án dự phòng linh hoạt hơn. Tuy nhiên, chúng tôi tin rằng việc cạnh tranh gay gắt giữa các ngân hàng, đặc biệt là giữa các ngân hàng thương mại cổ phần (NHTMCP), vẫn sẽ tiếp tục diễn ra trong năm 2025. Với việc lãi suất huy động đang tăng dần sau khi giảm xuống mức thấp kỷ lục, chúng tôi dự báo chi phi vốn sẽ tăng nhưng NIM tại các NHTMCP sẽ chịu áp lực nhiều hơn trong khi NIM ở các ngân hàng thương mại nhà nước (NHTMNN) sẽ tăng nhẹ. Tuy nhiên, chất lượng tài sản tốt dần lên sẽ là bức tranh chung trong năm 2025. Nhìn chung, chúng tôi giữ quan điểm tích cực về ngành ngân hàng với dự báo tăng trưởng lợi nhuận trước thuế (LNTT) là 17,4% svck trong năm 2025 cho các ngân hàng chúng tôi nghiên cứu.\n\nLàn gió mới thúc đẩy tăng trưởng tín dụng: Trong 4 năm qua, thị trường Việt Nam đã đối mặt với nhiều trở ngại, bao gồm những biến động liên quan đến đại dịch gây khó khăn cho hoạt động sản xuất và dịch vụ cùng với các vấn đề liên quan tới trái phiếu doanh nghiệp và thị trường bất động sản. Điều này làm cho nhu cầu tín dụng thấp hơn kỳ vọng và tiêu dùng suy giảm. Các khoản vay vốn lưu động đến từ các ngành nghề thương mại, sản xuất và các công ty FDI là động lực chính cho tăng trưởng tín dụng trong 3 quý đầu năm 2024. Bên cạnh đó, chúng tôi nhận thấy dòng vốn tín dụng đang chảy vào các công ty chứng khoán tại một số ngân hàng tư nhân, bao gồm MBB, TCB, VPB, HDB, MSB, TPB, và VIB, với tổng giải ngân ít nhất là 27,6 nghìn tỷ đồng. Ngoài ra, chúng tôi cũng thấy nhu cầu tín dụng hồi phục từ cuối Q2/2024, tập trung nhiều hơn vào ngành xây dựng và bất động sản, đặc biệt là ở thị trường phía Bắc. Cụ thể, số lượng căn hộ mới được mở bán tại Hà Nội đạt 18.800 căn (+292% svck) và giá tăng 26% svck trong Q3/2024. Chúng tôi cho rằng việc giữ lãi suất cho vay mua nhà ở mức thấp (Bảng 1) là yếu tố quan trọng để người mua nhà có thể tiếp cận nguồn vốn, và cả thiện số lượng giao dịch mua nhà lên hơn 20.000 tại Hà Nội trong 3 quý đầu năm 2024. Các khoản cho vay mua nhà cũng tăng 7,2% so với đầu năm tại các ngân hàng mà chúng tôi đang nghiên cứu, chủ yếu tập trung ở BID (36,7 nghìn tỷ đồng YTD), TCB (22,5\n\nnghìn tỷ đồng YTD), MBB (13,8 nghìn tỷ đồng YTD), và ACB (10,1 nghìn tỷ đồng YTD). Thị trường bất động sản ấm dần lên dự kiến giúp dòng vốn chảy sang TP. HCM từ Q4/2024. Với những điều kiện như vậy, chúng tôi dự báo tăng trưởng tín dụng sẽ hồi phục và đạt 15,3% YTD trong năm 2024.\n\nTheo kịch bản cơ sở của chúng tôi, tăng trưởng GDP trong năm 2025 dự kiến sẽ tương đương với năm 2024 (khoảng 7,0%) và có thể cao hơn. Đối với tín dụng toàn hệ thống, cho vay các chủ đầu tư bất động sản tăng 16% so với đầu năm, trong khi các khoản cho vay mua nhà chỉ tăng 4,6% so với đầu năm. Vì thế, với nguồn cung lớn hơn trong năm 2025 (Bảng 2) và lãi suất cho vay mua nhà được kỳ vọng sẽ giữ ở mức thấp, chúng tôi cho rằng phân khúc khách hàng cá nhân sẽ phục hồi, đặc biệt là các khoản nợ cho vay mua nhà vào thời điểm mà Chính phủ đang thể hiện quyết tâm giải quyết các vấn đề pháp lý liên quan đến các dự án bất động sản. Do đó, tăng trưởng tín dụng dự kiến sẽ đạt 16% so với đầu năm trong năm 2025 .\n\nBảng 1: Lãi suất cho vay mua nhà tính đến tháng 11/2024\n\n**Table 1**\n| 0             | 1                | 2                                   | 3                                             |\n|:--------------|:-----------------|:------------------------------------|:----------------------------------------------|\n| nan           | nan              | Lãi suất ưu đãi cho kỳ hạn 12 tháng | Lãi suất cho vay mua nhà sau thời gian ưu đãi |\n| NHTMNN        | VCB              | 5,7%                                | 9,0%                                          |\n| NHTMNN        | BID              | 5,8%-6%                             | 8,7%                                          |\n| NHTMNN        | CTG              | 6,0%                                | 9,0%                                          |\n| NHTMCP        | ACB              | 7,0%                                | 11%-11,7%                                     |\n| NHTMCP        | SIB              | 7,0%                                | 10,5%                                         |\n| NHTMCP        | TCB              | 6,7%                                | 10% -11%                                      |\n| NHTMCP        | MBB              | 7,9%                                | 10%-10,5%                                     |\n| NHTMCP        | VPB              | 7,2%                                | 11,0%                                         |\n| NHTMCP        | VIB              | 6,5%                                | 11,0%                                         |\n| NHTMCP        | TPB              | 6,6%                                | 11,4%                                         |\n| NHTMCP        | MSB              | 6,2%                                | 10,5%                                         |\n| NH nước ngoài | Shinhan          | 7,0%                                | 8,8%-9%                                       |\n| NH nước ngoài | Woori            | 5,3%                                | 9%                                            |\n| NH nước ngoài | Standard Charter | 6,3%                                | 8,8%                                          |\n\n[Chart: Image 2 - extracted by CV Module]\n\n[Chart: Image 3 - extracted by CV Module]\n\nNguồn: SSI Research\n\nNIM – Niềm vui ngắn ngủi: NIM phục hồi tốt trong 6 tháng đầu năm 2024 (+7bps YTD đạt 3,62%) khi lãi suất huy động giảm (-117 bps syck). Ngoài ra, tối ưu hóa cơ cấu tài sản cũng là yếu tố then chốt hỗ trợ NIM trong nửa đầu năm 2024. Tại cuối Q2/2024, LDR lập kỷ lục ở mức 97,2% (Biểu đồ 3) trước khi giảm xuống 96,4% vào Q3/2024. NIM giảm -22 bps QoQ xuống còn 3,47% trong Q3/2024 do lãi suất huy động tăng dần và canh tranh giữa các ngân hàng trở nên gay gắt, làm cho lợi suất sinh lời trên tài sản giảm -21 bps so với quý trước. Với nhu cầu tín dụng thường tăng cao vào quý 4, chúng tôi cho rằng các ngân hàng sẽ phải tăng cường huy động để đảm bảo các chỉ số về thanh khoản, điều này sẽ làm giảm tỷ lệ LDR. Dưới sự cạnh tranh gay gắt, chúng tôi cho rằng NIM sẽ tiếp tục chịu áp lực trong Q4/2024, và chỉ đạt 3,48% (-7bps svck) cho cả năm 2024.\n\nSang năm 2025, chúng tôi tin rằng chính sách tiền tê vẫn sẽ duy trì linh hoạt cùng với việc theo đổi chặt chẽ áp lực tỷ giá hối đoái. Do đó, chúng tôi dư báo lãi suất huy đông 12 tháng sẽ tăng nhe trong năm 2025, làm tăng chi phí vốn lên +17 bps svck. Với lợi thể canh tranh về chi phí vốn, chúng tôi cho rằng các NHTMNN ít gặp áp lực hơn so với các NHTMCP. Do đó, chúng tôi ước tính NIM sẽ duy trì ổn định sựck ở mức 3,48% nhưng sẽ có sự khác biệt giữa NHTMNN (+5 bps svck đạt 2,77%) và các NHTMCP (-7 bps svck đạt 4,24%) trong năm 2025.\n\n[Chart: Image 4 - extracted by CV Module]\n\n[Chart: Image 5 - extracted by CV Module]\n\n[Chart: Image 6 - extracted by CV Module]\n\n[Chart: Image 7 - extracted by CV Module]\n\nNguồn: SSI Research NHTMNN: VCB. BID. và CTG\n\nNHTMCP cấp 1: ACB, STB, VPB, MBB, và TCB Các NH khác: HDB, TPB, VIB, MSB, và OCB\n\nChất lượng tài sản – có chuyển biến tích cực nhưng vẫn cần thận trọng: Sau khi tăng vọt lên 2,12% vào Q2/2024, tỷ lệ hình thành nợ xấu đã giảm đáng kể ở các ngân hàng chúng tôi nghiên cứu xuống còn 1,22% trong Q3/2024, ngoại trừ OCB, MBB, TPB và VIB. Trong 3 quý đầu năm 2024, các ngân hàng đã xử lý 73,3 nghìn tỷ đồng nợ xấu, chủ yếu từ VPB (19,4 nghìn tỷ đồng), CTG (17,4 nghìn tỷ đồng), BID (15,9 nghìn tỷ đồng) và MBB (7,1 nghìn tỷ đồng), chiếm 0,84% tổng dư nợ khách hàng, đây là mức cao nhất từng được ghi nhận. Mặc dù đã tích cực xử lý nợ xấu nhưng tỷ lệ nợ xấu vẫn còn cao, dao động ở mức 2% tại Q3/2024, chủ yếu ở các ngành như vật liệu xây dựng, các công ty xây dựng, bất động sản (chủ đầu tư và cho vay mua nhà), thương mại và sản xuất. Chúng tôi cho rằng khả năng thanh toán nợ vẫn còn yếu, điều này ảnh hưởng đến việc thu hổi nợ của các ngân hàng. Tuy nhiên, chúng tôi cho rằng ngân hàng sẽ đẩy mạnh xử lý nợ xấu trong Q4/2024 và giúp tỷ lệ nợ xấu giảm xuống 1,9% vào cuối năm 2024. Điều đáng chú ý là chi phí tín dụng nhỏ hơn nhiều so với tỷ lệ hình thành nợ xấu kể từ Q3/2022 (Biểu đồ 8), điều này thường sẽ ám chỉ dự phòng sẽ tăng trong thời gan tới. Tuy nhiên, với sự hỗ trợ của NHNN và Chính phủ, các ngân hàng giờ đây có thêm thời gian để giãn việc trích lập dự phòng và ghi nhận nợ xấu. Vì thế, chúng tôi dự báo chi phí tín dụng sẽ giảm -9 bps svck xuống còn 1,28% trong năm 2024.\n\n[Chart: Image 8 - extracted by CV Module]\n\n[Chart: Image 9 - extracted by CV Module]\n\n[Chart: Image 10 - extracted by CV Module]\n\nNguồn: SSI Research\n\nVới sự quyết tâm của Chính phủ để giải quyết các nút thắt trong lĩnh vực bất động sản, chúng tôi kỳ vọng một số dự án pháp lý chưa hoàn thiện sẽ được giải quyết và tái xây dựng vào năm 2025. Từ đó sẽ hỗ trợ ngân hàng trong việc thuyết phục người mua nhà trả nợ. Tuy nhiên, điều quan trọng cần nhấn mạnh ở đây là vấn đề về dòng tiền của chủ đầu tư bất động sản và niềm tin của người mua nhà và nhà đầu tư. Nếu chủ đầu tư tiếp tục không hoàn thiện được hợp đồng mua bán và/hoặc không bàn giao nhà đúng tiến độ, chúng tôi cho rằng nợ xấu nhóm khách hàng cá nhân có thể sẽ tăng. Tuy nhiên, trong kịch bản cơ sở, chúng tôi vẫn tin rằng sự phục hồi của thị trường bất động sản miền Bắc và việc mở bán nhiều dự án mới (Bảng 2) trong năm 2025 sẽ cải thiện tâm lý thị trường và thu hút dòng vốn đầu tư mới – đặc biệt là ở miền Nam. Nhìn chung, chúng tôi kỳ vọng tỷ lệ nợ xấu sẽ biến động trong nửa đầu năm 2025, trước khi dần cải thiện xuống còn 1,78% trong nửa cuối năm 2025.\n\n[Chart: Image 11 - extracted by CV Module]\n\n[Chart: Image 12 - extracted by CV Module]\n\nNguồn: SSI Research\n\nNHTMNN: VCB, BID, và CTG NHTMCP cấp 1: ACB, STB, VPB, MBB, vàTCB Các NH khác: HDB, TPB, VIB, MSB, và OCB\n\nThu nhập ngoài lãi phục hồi 11,8% svck trong 3 quý đầu năm 2024 nhờ nỗ lực thu hồi nợ xấu đã xử lý (+65,7% svck) và lãi từ kinh doanh ngoại hối (+12,6% svck). Trong 3 quý đầu năm 2024, các ngân hàng đã nỗ lực thu hồi nợ xấu trong bối cảnh thị trường bất động sản dần phục hồi. Đặc biệt, chúng tôi nhận thấy các ngân hàng hoạt động chủ yếu ở miền Bắc ghi nhận mức thu nhập này cao hơn, bao gồm các NHTMNN nói chung, MBB, TCB, VPB, MSB và TPB. Chúng tôi kỳ vọng thu nhập từ nợ xấu đã xử lý sẽ tiếp tục phục hồi trong năm 2025. Việc đồng USD/VND liên tục tăng trong nửa đầu năm 2024 đã giúp các ngân hàng tăng thu nhập từ giao dịch ngoại hối 50,6% svck. Mặc dù thu nhập này giảm 39,5% svck trong Q3/2024 do đồng USD suy yếu khi nhà đầu tư dự đoán Fed sẽ cắt giảm lãi suất nhưng chúng tôi dự báo thu nhập này sẽ tăng trở lại trong Q4/2024, khi mà tỷ giá hối đoái bật tăng.\n\nỞ khía cạnh khác, các ngân hàng đã ghi nhận lợi nhuận lớn từ giao dịch trái phiếu chính phủ trong năm 2023 (12,1 nghìn tỷ đồng hoặc 2,4% TOI) và điều này khó có thể lặp lại trong năm 2024. Cụ thể, thu nhập từ giao dịch trái phiếu chính phủ giảm khoảng 20% svck trong 9T2024. Mặc khác, thu nhập từ phí tăng nhẹ +4,7% svck trong nửa đầu năm 2024 chủ yếu do tài trợ thương mại và sự phục hồi của dịch vụ thẻ, trong khi thu nhập từ bảo hiểm nhân thọ vẫn ở mức thấp. Tuy nhiên, luật tổ chức tín dụng mới có hiệu lực từ tháng 7/2024 quy định hoạt động thư tín dụng được xem là hoạt động tín dụng và điều đó làm cho các ngân hàng phải phân loại lại phí tài trợ thương mại thành thu nhập lãi. Do đó, thu nhập từ phí giảm nhẹ 0,4% svck trong 9T2024 và có thể tiếp tục giảm trong Q4/2024.\n\n[Chart: Image 13 - extracted by CV Module]\n\n### Images Available\nImage 1, Image 2, Image 3, Image 4, Image 5, Image 6, Image 7, Image 8, Image 9, Image 10, Image 11, Image 12, Image 13\n\n### Question\nTrong năm 2024, mức sinh lời của cổ phiếu CTG cao hơn bao nhiêu phần trăm so với chỉ số VNIndex?"
+    },
+    {
+      "qid": "42523de0-d558-5aba-a87c-21a24feb9939",
+      "qa": {
+        "question": "Giá mục tiêu của DPG đã được điều chỉnh tăng bao nhiêu phần trăm so với mức giá mục tiêu trước đó?",
+        "program": "subtract(52102; 44733); divide(#0; 44733); multiply(#1; 100)"
+      },
+      "tables": {
+        "Table 1": "<table><tr><td>(%)</td><td>1M</td><td>6M</td><td>12M</td></tr><tr><td>Tuyệt đối</td><td>-7,1</td><td>32,5</td><td>-5,3</td></tr><tr><td>Tương đối</td><td>-3,1</td><td>24,1</td><td>-4,2</td></tr></table>",
+        "Table 2": "<table><tr><td>Năm tài chính</td><td>2021H</td><td>2022H</td><td>2023H</td><td>2024F</td><td>2025F</td><td>2026F</td></tr><tr><td>Doanh thu (tỷđồng)</td><td>2,545</td><td>3,319</td><td>3,450</td><td>4,142</td><td>4,707</td><td>5,203</td></tr><tr><td>Lợi nhuận gộp (tỷđồng)</td><td>875</td><td>921</td><td>585</td><td>609</td><td>674</td><td>771</td></tr><tr><td>Biên lợi nhuận gộp (%)</td><td>34.4%</td><td>27.7%</td><td>17.0%</td><td>14.7%</td><td>14.3%</td><td>14.8%</td></tr><tr><td>Lợi nhuận sau thuế (tỷđồng)</td><td>342</td><td>383</td><td>203</td><td>211</td><td>248</td><td>302</td></tr><tr><td>EPS (VND/CP)</td><td>5,438</td><td>6,047</td><td>3,223</td><td>3,351</td><td>3,938</td><td>4,799</td></tr><tr><td>ROE (%)</td><td>28.7</td><td>25.1</td><td>12.4%</td><td>11.9%</td><td>12.7%</td><td>13.8%</td></tr><tr><td>P/E (x)</td><td>13.8</td><td>4.7</td><td>15.2x</td><td>15.5x</td><td>13.2x</td><td>10.9x</td></tr><tr><td>P/B (x)</td><td>3.5</td><td>1.1</td><td>1.7x</td><td>1.7x</td><td>1.5x</td><td>1.4x</td></tr></table>"
+      },
+      "formatted_input": "### Context\nCTCP Tập đoàn Đạt Phương (HOSE: DPG) Tăng trưởng bền vững  Giá mục tiêu: 52.102 VND (Upside: -7.8%) Triển vọng FY24 & Định giá Chúng tôi dự báo doanh thu hợp nhất là 4.142 tỷ đồng (+20% YoY) và LNST của công ty mẹ là 211 tỷ đồng (+4% YoY), với EPS là 3.351 đồng (+4% YoY). Xây dựng: Sau mức tăng đột biến 40% trong năm 2023, chúng tôi dự báo tốc độ tăng trưởng của ngành sẽ giảm dần xuống mức khiêm tốn trong năm 2024, từ 20% đến 25% và tỷ suất lợi nhuận gộp sẽ duy trì ổn định, từ 7% đến 7,2%.\n\nThủy điện: Chúng tôi dự báo ngành sẽ giữ nguyên hoặc giảm nhẹ 5%.\n\nBất động sản: Theo quan điểm của chúng tôi, doanh thu vẫn chưa được đưa vào dự báo của chúng tôi vì phân khúc khách sạn còn lâu mới phục hồi. Hơn nữa, thông tin từ công ty về các dự án còn hạn chế.\n\nChúng tôi hạ mức đánh giá xuống Nắm giữ (từ Tăng tỷ trọng) cho DPG và nâng giá mục tiêu lên 52.102 đồng (từ 44.733 đồng), dựa trên phương pháp định giá DCF. KQKD FY23 & 1Q24 CTCP Tập đoàn Đất Phương (DPG) báo cáo doanh thu năm 2023 là 3.450 tỷ đồng (+3,9% YoY) và LNST của công ty mẹ là 203 tỷ đồng (-47% YoY). Mặc dù doanh thu tăng khiêm tốn nhưng lợi nhuận ròng lại giảm mạnh do doanh thu từ mảng Bất động sản không đáng kể, chỉ đạt 26 tỷ đồng (-96% YoY). Mặt khác, Xây dựng tiếp tục chiếm ưu thế với mức tăng 41% (YoY), đạt 2.875 tỷ đồng. Thủy điện giảm đáng kể xuống còn 532 đồng từ 657 tỷ đồng (-19 YoY); do đó, lợi nhuận gộp giảm xuống còn 370 tỷ đồng từ mức 503 đồng (-26% YoY), do điều kiện thủy văn thuận lợi bắt đầu giảm dần. Trong Q124, công ty báo cáo doanh thu 425 tỷ đồng (+9% YoY) và LNST đạt 52 tỷ đồng (+0,6% YoY). Trong đó, Xây dựng và Thủy điện chiếm lần lượt 64% và 33% doanh thu. Dữ liệu quan trọng\n\n[Chart: Image 1 - extracted by CV Module]\n\nThay đổi giá cổ phiếu\n\n**Table 1**\n| 0         | 1   | 2   | 3   |\n|:----------|:----|:----|:----|\n| (%)       | 1M  | 6M  | 12M |\n| Tuyệt đối | -71 | 325 | -53 |\n| Tương đối | -31 | 241 | -42 |\n\nCác chỉ tiêu tài chính và định giá\n\n**Table 2**\n| 0                           | 1     | 2     | 3     | 4     | 5     | 6     |\n|:----------------------------|:------|:------|:------|:------|:------|:------|\n| Năm tài chính               | 2021H | 2022H | 2023H | 2024F | 2025F | 2026F |\n| Doanh thu (tỷđồng)          | 2545  | 3319  | 3450  | 4142  | 4707  | 5203  |\n| Lợi nhuận gộp (tỷđồng)      | 875   | 921   | 585   | 609   | 674   | 771   |\n| Biên lợi nhuận gộp (%)      | 34.4% | 27.7% | 17.0% | 14.7% | 14.3% | 14.8% |\n| Lợi nhuận sau thuế (tỷđồng) | 342   | 383   | 203   | 211   | 248   | 302   |\n| EPS (VND/CP)                | 5438  | 6047  | 3223  | 3351  | 3938  | 4799  |\n| ROE (%)                     | 28.7  | 25.1  | 12.4% | 11.9% | 12.7% | 13.8% |\n| P/E (x)                     | 13.8  | 4.7   | 15.2x | 15.5x | 13.2x | 10.9x |\n| P/B (x)                     | 3.5   | 1.1   | 1.7x  | 1.7x  | 1.5x  | 1.4x  |\n\n### Images Available\nImage 1\n\n### Question\nGiá mục tiêu của DPG đã được điều chỉnh tăng bao nhiêu phần trăm so với mức giá mục tiêu trước đó?"
+    },
+    {
+      "qid": "8d829101-30ce-504a-8f1d-9c4299018ae3",
+      "qa": {
+        "question": "Mức giá mục tiêu trung bình trong 1 năm của các cổ phiếu dầu khí được phân tích là bao nhiêu đồng?",
+        "program": "table_average(Table 1; Giá mục tiêu (đồng)@Trong 1 năm; none; none)"
+      },
+      "tables": {
+        "Table 1": "<table><tr><td rowspan=\"2\">CP</td><td>% tăng giá</td><td>Giá mục tiêu (đồng)</td><td>Giá hiện tại (đồng)</td><td colspan=\"3\">Tăng trưởng NPATMI</td><td colspan=\"3\">P/E</td><td colspan=\"3\">ROE</td><td colspan=\"3\">Tỷ suất cổ tức (%)</td></tr><tr><td>Trong 1 năm</td><td>Trong 1 năm</td><td>31/12/2024</td><td>2023</td><td>2024F</td><td>2025F</td><td>2023</td><td>2024F</td><td>2025F</td><td>2023</td><td>2024F</td><td>2025F</td><td>2023</td><td>2024F</td><td>2025F</td></tr><tr><td>GAS</td><td>15,8%</td><td>79.000</td><td>68.100</td><td>-21,7%</td><td>-4,8%</td><td>-4,5%</td><td>17,5</td><td>14,8</td><td>15,5</td><td>18,6%</td><td>16,7%</td><td>14,7%</td><td>3,4%</td><td>4,4%</td><td>4,4%</td></tr><tr><td>PVS</td><td>17,6%</td><td>40.000</td><td>33.960</td><td>3,7%</td><td>-6,6%</td><td>22,8%</td><td>27,0</td><td>24,2</td><td>17,3</td><td>8,0%</td><td>7,6%</td><td>8,8%</td><td>2,4%</td><td>2,4%</td><td>2,4%</td></tr><tr><td>PVD</td><td>21,1%</td><td>28.700</td><td>23.700</td><td>n,m,</td><td>24,5%</td><td>50,1%</td><td>23,2</td><td>19,6</td><td>13,1</td><td>3,8%</td><td>5,1%</td><td>7,3%</td><td>0%</td><td>0%</td><td>4,4%</td></tr><tr><td>PLX</td><td>17,3%</td><td>44.000</td><td>37.500</td><td>61,8%</td><td>16,2%</td><td>9,7%</td><td>15,8</td><td>15,0</td><td>13,7</td><td>10,8%</td><td>12,0%</td><td>12,7%</td><td>4,3%</td><td>5,2%</td><td>5,2%</td></tr><tr><td>BSR</td><td>5,3%</td><td>24.000</td><td>22.800</td><td>-42,4%</td><td>-79,0%</td><td>85,4%</td><td>6,8</td><td>38,9</td><td>21,0</td><td>15,6%</td><td>3,1%</td><td>5,7%</td><td>3,8%</td><td>3,3%</td><td>2,4%</td></tr></table>"
+      },
+      "formatted_input": "### Context\nDầu khí: Tăng trưởng lợi nhuận tiếp tục phân hóa mặc dù giá dầu dự kiến giảm trong năm 2025\n\nTriển vọng năm 2025: Trung lập.\n\nCổ phiếu ưa thích: PVD. Cổ phiếu Theo dõi: PLX, BSR.\n\nTriển vọng năm 2025\n\nDầu khí\n\nTheo dự báo mới nhất của OPEC, nhu cầu dầu toàn cầu dự kiến sẽ tăng 1,6 triệu thùng/ngày trong năm 2025, chậm lại từ mức tăng 1,61 triệu thùng/ngày trong năm 2024 (đã giảm từ dự báo ban đầu là 1,82 triệu thùng/ngày trong tháng trước).\n\nIEA có quan điểm thận trọng hơn về nhu cầu dầu toàn cầu với mức tăng 1,1 triệu thùng/ngày lên 103,9 triệu thùng/ngày. Tuy nhiên, nguồn cung dự kiến sẽ tăng với tốc độ cao hơn là 1,9 triệu thùng/ngày trong năm 2025 lên 104,8 triệu thùng/ngày nhờ tăng 1,5 triệu thùng/ngày từ các quốc gia không thuộc OPEC+, đặc biệt tại Châu Mỹ, bao gồm Mỹ, Canada, Brazil, và Argentina. Điều này chưa bao gồm việc OPEC+ hoãn kế hoạch cắt giảm sản lượng 2,2 triệu thùng/ngày, gần đây đã trì hoãn thêm 3 tháng và kéo dài tiến độ 9 tháng đến tháng 9/2026.\n\nDo đó, chúng tôi kỳ vọng giá dầu trung bình sẽ dao động từ 70-75 USD/thùng trong năm 2025. Yếu tố hỗ trợ cho giá dầu bao gồm việc OPEC trì hoãn cắt giảm sản lượng dầu, thị trường Trung Quốc phục hồi tốt hơn dự kiến, và/hoặc việc cắt giảm lãi suất nhanh hơn dự kiến.\n\n[Chart: Image 1 - extracted by CV Module]\n\nNguồn: Bloomberg\n\nCập nhật về các dự án đầu tư chính\n\nKho cảng LNG: Nghiên cứu khả thi cho giai đoạn mở rộng của kho cảng Thị Vải đã được phê duyệt, dự kiến sẽ giúp công suất kho cảng Thị Vải tăng gấp 3 lần và sẽ hoàn thành trong năm 2026.\n\nNghiên cứu khả thi dự án LNG Sơn Mỹ tại tỉnh Bình Thuận đã được phê duyệt. Giai đoạn đầu tiên của dự án dự kiến có công suất đạt 3,6 triệu tấn và sẽ hoàn thành trong Q4/2027. Giai đoạn 2 dự kiến sẽ có công suất lớn hơn, đạt 6 triệu tấn và có thể đi vào hoạt động trước năm 2030.\n\nSư Tử Trắng, giai đoạn 2B: GAS vẫn đang làm việc với PVN và các chủ mỏ để phát triển dự án nhằm hoàn thiện báo cáo tài chính/nghiên cứu khả thi dự án.\n\nGiai đoạn mở rộng Dung Quất: BSR đã hoàn thành quá trình bồi thường đất và dự kiến sẽ hoàn thiện thiết kế kỹ thuật – FEED, và lựa chọn tổng thầu EPC trong năm 2025. Dự án này sẽ giúp BSR tăng 15,5% công suất từ 148.000 thùng/ngày lên 171.000 thùng/ngày để đáp ứng tiêu chuẩn Euro B.\n\nĐại dự án Lô B – Ô Môn: PQOC (công ty sở hữu phần thượng nguồn của dự án) đã trao nhiều hợp đồng EPC của hầu hết các phần thượng nguồn và trung nguồn (bao gồm giàn đầu giếng, khu sinh hoạt và CPP, đường ống và bọc ống) cho PVS VN (cùng với các đối tác) và PVB VN. Tại thời điểm báo cáo, EPCI #1 và EPCI #2 đã lần lượt đạt 12,8% và 24,4% tiến độ xây dựng. Công việc khoan cũng dự kiến sẽ bắt đầu từ Q1/2026, do đó\n\nviệc đấu thầu và ký hợp đồng khoan sẽ cần phải hoàn thiện trong năm 2025. Phần hạ nguồn (các nhà máy điện Ô Môn II, III, IV) chưa bắt đầu xây dựng, và quyết định đầu tư cuối cùng (FID) cho dự án chưa được PVN quyết định mặc dù MOECO (một trong những nhà đầu tư phần thượng nguồn cùng với PVN và PTTEP) đã thông báo FID trong năm 2024. Trong trường hợp phần hạ nguồn bị trì hoãn mặc dù dự kiến khai thác dòng khí đầu tiên vào năm 2027, toàn bô dư án sẽ phải đơi đến sau năm 2027 mới có thể bắt đầu cung cấp điên cho hệ thống lưới điên quốc gia.\n\nSự phân hóa về tăng trưởng lợi nhuận năm 2023 tiếp diễn trong năm 2024, phù hợp với kỳ vọng của chúng tôi, do 2024 tiếp tục là năm phân hóa cho các cổ phiều dầu khí. Các cổ phiếu trung nguồn như GAS và BSR ghi nhận lợi nhuận yếu hơn/lỗ do: (1) sản lượng tiêu thụ giảm liên quan đến sự cạn kiệt của các mỏ hiện có (đối với GAS), và việc tạm dừng một nhà máy để bảo trì (đối với BSR); và (2) giá bán thấp hơn. PVS cũng ghi nhận tăng trưởng lợi nhuận đi ngang do biên lợi nhuận các hợp đồng EPC quốc tế cho cả dầu khí truyền thống và các trang trại gió ngoài khơi thấp hơn so với các hợp đồng dầu khí trong nước. Ngược lại, PVD ghi nhận tăng trưởng do công suất hoạt động và giá cho thuê ngày cải thiện mạnh từ việc gia hạn các hợp đồng khoan trong điều kiện thị trường thuận lợi hơn. Trong khi đó, PLX tăng nhờ sản lượng tăng từ kênh bán lẻ.\n\nHiệu suất của các cổ phiếu trung nguồn theo sát diễn biến lợi nhuận. PLX vượt trội hơn so với thị trường với mức tăng 18%, trong khi GAS có hiệu suất thấp hơn thị trường với giá cổ phiếu đi ngang trong năm 2024. Tuy nhiên, các cổ phiếu thượng nguồn như PVS và PVD giảm 10-15% trong năm 2024 sau khi tăng mạnh 60-80% trong năm 2023, do tiến độ dự án Lô B chậm hơn dự kiến.\n\nSang năm 2025, mặc dù giá dầu dự kiến giảm, chúng tôi kỳ vọng triển vọng lợi nhuận sẽ tốt hơn năm 2024 nhờ hoạt động E&P cải thiện. Lợi nhuận của BSR được kỳ vọng sẽ tăng 73% svck lên 3,1 nghìn tỷ đồng nhờ sản lượng tiêu thụ phục hồi 15% svck sau khi bảo trì trong năm 2024, và crack spread ổn định sau khi một lượng công suất lọc dầu trên thị trường toàn cầu đóng cửa. PLX dự kiến sẽ đạt tăng trưởng lợi nhuận 1 chữ số nhờ tăng trưởng sản lượng tiêu thụ tự nhiên đạt 4%. Ngoài ra, chúng tôi kỳ vọng lợi nhuận của GAS sẽ đi ngang, do sản lượng LNG tăng sẽ bù đắp cho các mỏ truyền thống cạn kiệt.\n\nMặt khác, những công ty thượng nguồn như PVD và PVS dự kiến sẽ duy trì đà tăng trưởng nhờ hoạt động E&P sôi nổi. Những công ty này cũng được hưởng lợi chính từ dự án Lô B. Chúng tôi dự báo PVD sẽ duy trì đà tăng mạnh ở mức khoảng 50% svck nhờ công suất hoạt động cao và giá thuê ngày của giàn khoan dầu cao hơn 10% svck. PVS được kỳ vọng sẽ tăng 20% svck trong năm 2025 nhờ thu nhập tăng từ các hợp đồng EPC cho phần thượng nguồn dự án Lô B với tổng giá trị hợp đồng ước tính khoảng 1 tỷ đồng.\n\n[Chart: Image 2 - extracted by CV Module]\n\n[Chart: Image 3 - extracted by CV Module]\n\nNguồn: SSI Research\n\nNguồn: PVN, GAS, SSI Research\n\nĐịnh giá: P/E dự phóng hiện nay của ngành dầu khí là 12,5x, thấp hơn mức trung bình 5 năm là 13,5x, do sản lượng và tăng trưởng lợi nhuận của ngành có phần chậm lại, và sự giảm tốc của lợi nhuận/lỗ của các cổ phiếu vốn hóa lớn như GAS và BSR. Năm 2025 dự kiến sẽ có nhiều yếu tố kết hợp, với giá dầu giảm và kỳ vọng về dự án Lô B và tăng trưởng sản lượng tiêu thụ. Do đó, chúng tôi kỳ vọng sẽ có một số cơ hội giao dịch trong trường hợp giá cổ phiếu giảm xuống mức hấp dẫn hơn.\n\nKhuyến nghị: Chúng tôi lựa chọn PVD là cổ phiếu ưa thích, trong khi theo dõi cổ phiếu PLX, BSR.\n\n**Table 1**\n| 0   | 1           | 2                   | 3                   | 4                  | 5                  | 6                  | 7    | 8     | 9     | 10    | 11    | 12    | 13                 | 14                 | 15                 |\n|:----|:------------|:--------------------|:--------------------|:-------------------|:-------------------|:-------------------|:-----|:------|:------|:------|:------|:------|:-------------------|:-------------------|:-------------------|\n| CP  | % tăng giá  | Giá mục tiêu (đồng) | Giá hiện tại (đồng) | Tăng trưởng NPATMI | Tăng trưởng NPATMI | Tăng trưởng NPATMI | P/E  | P/E   | P/E   | ROE   | ROE   | ROE   | Tỷ suất cổ tức (%) | Tỷ suất cổ tức (%) | Tỷ suất cổ tức (%) |\n| CP  | Trong 1 năm | Trong 1 năm         | 31/12/2024          | 2023               | 2024F              | 2025F              | 2023 | 2024F | 2025F | 2023  | 2024F | 2025F | 2023               | 2024F              | 2025F              |\n| GAS | 15,8%       | 79.000              | 68.100              | -21,7%             | -4,8%              | -4,5%              | 175  | 148   | 155   | 18,6% | 16,7% | 14,7% | 3,4%               | 4,4%               | 4,4%               |\n| PVS | 17,6%       | 40.000              | 33.960              | 3,7%               | -6,6%              | 22,8%              | 270  | 242   | 173   | 8,0%  | 7,6%  | 8,8%  | 2,4%               | 2,4%               | 2,4%               |\n| PVD | 21,1%       | 28.700              | 23.700              | n,m,               | 24,5%              | 50,1%              | 232  | 196   | 131   | 3,8%  | 5,1%  | 7,3%  | 0%                 | 0%                 | 4,4%               |\n| PLX | 17,3%       | 44.000              | 37.500              | 61,8%              | 16,2%              | 9,7%               | 158  | 150   | 137   | 10,8% | 12,0% | 12,7% | 4,3%               | 5,2%               | 5,2%               |\n| BSR | 5,3%        | 24.000              | 22.800              | -42,4%             | -79,0%             | 85,4%              | 68   | 389   | 210   | 15,6% | 3,1%  | 5,7%  | 3,8%               | 3,3%               | 2,4%               |\n\nNguồn: SSI Research\n\n### Images Available\nImage 1, Image 2, Image 3\n\n### Question\nMức giá mục tiêu trung bình trong 1 năm của các cổ phiếu dầu khí được phân tích là bao nhiêu đồng?"
+    }
+  ],
+  "split_overlap": {
+    "train_samples": 1380,
+    "val_samples": 345,
+    "shared_images": 184,
+    "val_images": 184
+  }
+}

@@ -20,11 +20,12 @@ sys.path.insert(0, str(PROJECT_ROOT))
 try:
     from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, BitsAndBytesConfig
     from peft import get_peft_model, LoraConfig as PeftLoraConfig, prepare_model_for_kbit_training
-    from trl import SFTTrainer
 except ImportError:
-    print("Please install transformers, peft, trl, bitsandbytes, and datasets.")
+    raise ImportError("Install the project training dependencies")
 
 from vinumqa.nlp_module.training.lora_config import LoraConfig, TrainingConfig
+from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION, RESPONSE_PREFIX
+from vinumqa.nlp_module.training.supervision import encode_supervised, CompletionCollator, validate_dataset_pair
 
 def load_formatted_dataset(json_path: str):
     """
@@ -33,36 +34,37 @@ def load_formatted_dataset(json_path: str):
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
         
-    # We will format this into a single text column for SFTTrainer
-    # Format: [INST] {instruction} {input} [/INST] {output}
-    texts = []
+    rows = []
     for sample in data:
-        text = f"{sample['instruction']}\n\n{sample['input']}\n\n### Response\n{sample['output']}"
-        texts.append(text)
-        
-    return Dataset.from_dict({"text": texts})
+        if sample.get("format_version") != FORMAT_VERSION or sample["instruction"] != INSTRUCTION:
+            raise ValueError("Stale formatted dataset: regenerate with the v4 formatter and real CV")
+        header = "| Step | Output |\n|---|---|\n"
+        if not sample["output"].startswith(header): raise ValueError("Invalid completion format")
+        rows.append({"prompt": sample["instruction"] + "\n\n" + sample["input"] + "\n\n" + RESPONSE_PREFIX,
+                     "completion": sample["output"][len(header):]})
+    return Dataset.from_list(rows)
 
-def train():
+def train(max_seq_length=8192):
     # 1. Configs
     lora_cfg = LoraConfig()
     train_cfg = TrainingConfig()
+    train_cfg.max_seq_length = max_seq_length
     
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
-    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
+    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_split_formatted.json")
+    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "val_split_formatted.json")
     
-    if not os.path.exists(train_data_path):
-        print(f"Training data not found at {train_data_path}. Please run format_training_data.py first.")
-        return
+    validate_dataset_pair(json.loads(Path(train_data_path).read_text(encoding="utf-8")),
+                          json.loads(Path(val_data_path).read_text(encoding="utf-8")), FORMAT_VERSION, INSTRUCTION)
         
     dataset = load_formatted_dataset(train_data_path)
     print(f"Loaded {len(dataset)} training samples.")
     
     val_dataset = load_formatted_dataset(val_data_path) if os.path.exists(val_data_path) else None
     if val_dataset:
-        print(f"Loaded {len(val_dataset)} validation samples (Public Test).")
+        print(f"Loaded {len(val_dataset)} validation samples (grouped internal split).")
     
     # 3. Setup Quantization (4-bit QLoRA)
     bnb_config = BitsAndBytesConfig(
@@ -76,6 +78,12 @@ def train():
     print(f"Loading {model_id} in 4-bit...")
     tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
+
+    # Audit target lengths before allocating the model.
+    def tokenize_function(example):
+        return encode_supervised(tokenizer, example["prompt"], example["completion"], train_cfg.max_seq_length)
+    tokenized_dataset = dataset.map(tokenize_function, remove_columns=["prompt", "completion"])
+    tokenized_val_dataset = val_dataset.map(tokenize_function, remove_columns=["prompt", "completion"])
     
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
@@ -98,31 +106,8 @@ def train():
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
     
-    # 6. Tokenize Dataset (no pre-padding)
-    # With batch_size=1, each sample is processed at its actual length.
-    # DataCollatorForLanguageModeling below will pad per-batch to the
-    # longest sequence in that batch — which with batch_size=1 means NO padding!
-    def tokenize_function(examples):
-        tokens = tokenizer(
-            examples["text"],
-            truncation=True,
-            max_length=train_cfg.max_seq_length,
-            # No padding: samples processed at actual length
-            # e.g. 800-token sample → 800 tokens, not 4096
-        )
-        tokens["labels"] = tokens["input_ids"].copy()
-        return tokens
-        
-    print("Tokenizing train dataset...")
-    tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
-    
-    tokenized_val_dataset = None
-    if val_dataset:
-        print("Tokenizing validation dataset...")
-        tokenized_val_dataset = val_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
-    
-    from transformers import Trainer, DataCollatorForLanguageModeling
-    
+    from transformers import Trainer
+
     training_args = TrainingArguments(
         output_dir=train_cfg.output_dir,
         per_device_train_batch_size=train_cfg.per_device_train_batch_size,
@@ -141,14 +126,8 @@ def train():
         gradient_checkpointing=True,
     )
     
-    data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer,
-        mlm=False,
-        # pad_to_multiple_of=8: round up to nearest multiple of 8
-        # so tensor shapes are GPU-friendly (tensor cores work on multiples of 8)
-        pad_to_multiple_of=8,
-    )
-    
+    data_collator = CompletionCollator(tokenizer)
+
     # 7. Start Training
     trainer = Trainer(
         model=model,
@@ -162,7 +141,18 @@ def train():
     trainer.train()
     
     print(f"Saving final model to {train_cfg.output_dir}/final")
-    trainer.model.save_pretrained(os.path.join(train_cfg.output_dir, "final"))
+    final = Path(train_cfg.output_dir) / "final"
+    trainer.model.save_pretrained(final)
+    tokenizer.save_pretrained(final)
+    import hashlib
+    manifest = {"format_version": FORMAT_VERSION, "base_model": model_id,
+        "prompt_sha256": hashlib.sha256(INSTRUCTION.encode()).hexdigest(),
+        "train_sha256": hashlib.sha256(Path(train_data_path).read_bytes()).hexdigest(),
+        "max_seq_length": train_cfg.max_seq_length}
+    (final / "pipeline_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 if __name__ == "__main__":
-    train()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--max-seq-length", type=int, default=8192)
+    train(parser.parse_args().max_seq_length)

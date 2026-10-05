@@ -10,7 +10,7 @@ import io
 from collections import Counter, defaultdict
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 # Add project root to path (Dynamic for Kaggle/Local)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -117,27 +117,31 @@ def split_dataset(data: list, val_ratio: float = 0.2, seed: int = 42) -> tuple:
     Split data into train and validation sets.
     Stratified by number of steps in the program.
     """
-    random.seed(seed)
-    
-    # Group by step count for stratified split
-    by_steps = defaultdict(list)
-    for s in data:
-        steps = parse_program(s["qa"]["program"])
-        by_steps[len(steps)].append(s)
-    
-    train_data = []
-    val_data = []
-    
-    for n_steps, samples in sorted(by_steps.items()):
-        random.shuffle(samples)
-        n_val = max(1, int(len(samples) * val_ratio))
-        val_data.extend(samples[:n_val])
-        train_data.extend(samples[n_val:])
-    
-    random.shuffle(train_data)
-    random.shuffle(val_data)
-    
-    print(f"\nSplit: {len(train_data)} train + {len(val_data)} val (ratio={val_ratio})")
+    # Connected components prevent a shared document/image crossing splits.
+    import hashlib
+    parents = list(range(len(data)))
+    def root(i):
+        while parents[i] != i:
+            parents[i] = parents[parents[i]]
+            i = parents[i]
+        return i
+    owners = {}
+    for i, sample in enumerate(data):
+        fingerprint = hashlib.sha256(json.dumps({k: sample.get(k) for k in ["text", "tables"]}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        keys = ["doc:" + fingerprint] + ["image:" + x for x in sample.get("images", {}).values()]
+        for key in keys:
+            if key in owners: parents[root(i)] = root(owners[key])
+            else: owners[key] = i
+    groups = defaultdict(list)
+    for i, sample in enumerate(data): groups[root(i)].append(sample)
+    groups = list(groups.values())
+    if len(groups) < 2: raise ValueError("At least two independent document groups are required")
+    random.Random(seed).shuffle(groups)
+    train_data, val_data = [], []
+    target = max(1, round(len(data) * val_ratio))
+    for group in groups[:-1]:
+        (val_data if len(val_data) < target else train_data).extend(group)
+    train_data.extend(groups[-1])
     return train_data, val_data
 
 
@@ -161,7 +165,7 @@ def save_splits(train_data: list, val_data: list, output_dir: str):
 def main():
     # Relative paths based on project root
     project_root = Path(__file__).resolve().parent.parent.parent
-    data_path = project_root / "vlsp-2026-ViTNumChart" / "train.json"
+    data_path = project_root / "data" / "train" / "train.json"
     output_dir = project_root / "vinumqa" / "data"
     
     # Load and analyze

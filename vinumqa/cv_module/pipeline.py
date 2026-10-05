@@ -1,54 +1,35 @@
-"""
-CV Pipeline Orchestrator.
-Uses ChartToTableExtractor (Qwen2-VL) to extract tables from chart images.
-Zoom/sliding-window is removed: EDA shows avg image resolution is ~622k pixels,
-well within MAX_PIXELS=750k, so all images are kept at native resolution.
-"""
-
-from vinumqa.cv_module.chart_to_table.extract_table import ChartToTableExtractor
+"""Persistent content-addressed CV cache; extraction failures never become evidence."""
+import hashlib
+import json
+from pathlib import Path
 
 class CVPipeline:
-    def __init__(self, model_id: str = "Qwen/Qwen2-VL-2B-Instruct"):
-        """
-        Initialize the CV pipeline.
-        Zoom Tool removed: image resolution in dataset is well within MAX_PIXELS=750k,
-        so direct single-pass extraction is sufficient and ~2-3x faster.
-        """
-        print("Initializing CV Pipeline...")
-        self.extractor = ChartToTableExtractor(model_id=model_id)
-        self.image_cache = {}  # Cache: key=image_path, value=markdown table
-        print("CV Pipeline initialized.")
+    CACHE_VERSION = "chart-markdown-v4"
 
-    def process_image(self, image_path: str) -> str:
-        """
-        Process a single chart image and return a Markdown table.
-        Uses caching to avoid reprocessing the same image.
-        """
-        if image_path in self.image_cache:
-            print(f"Loading cached table for {image_path}...")
-            return self.image_cache[image_path]
-            
-        print(f"Extracting table from {image_path}...")
-        
-        # Direct extraction (single pass, no zoom)
-        final_table = self.extractor.extract(image_path)
-        
-        # Save to cache
-        self.image_cache[image_path] = final_table
-        return final_table
+    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", cache_dir="outputs/cv_cache", extractor=None):
+        self.model_id = model_id
+        self.cache_dir = Path(cache_dir)
+        self.extractor = extractor
 
-    def process_batch(self, image_paths: list) -> dict:
-        """
-        Process a batch of images and return a dictionary mapping paths to tables.
-        """
-        results = {}
-        for path in image_paths:
-            results[path] = self.process_image(path)
-        return results
+    def process_image(self, image_path):
+        payload = Path(image_path).read_bytes()
+        key = hashlib.sha256(payload + (self.CACHE_VERSION + self.model_id).encode()).hexdigest()
+        target = self.cache_dir / (key + ".json")
+        if target.exists():
+            table = json.loads(target.read_text(encoding="utf-8"))["table"]
+        else:
+            if self.extractor is None:
+                from vinumqa.cv_module.chart_to_table.extract_table import ChartToTableExtractor
+                self.extractor = ChartToTableExtractor(model_id=self.model_id)
+            table = self.extractor.extract(image_path)
+        if not isinstance(table, str) or len(table.strip().splitlines()) < 3 or "| Lỗi |" in table or "extracted by CV Module" in table:
+            raise ValueError(f"Invalid CV extraction: {image_path}")
+        if not target.exists():
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            temp = target.with_suffix(".tmp")
+            temp.write_text(json.dumps({"table": table, "model": self.model_id, "version": self.CACHE_VERSION}, ensure_ascii=False), encoding="utf-8")
+            temp.replace(target)
+        return table
 
-if __name__ == "__main__":
-    # Test pipeline initialization
-    # pipeline = CVPipeline(use_zoom=True)
-    # table = pipeline.process_image("test_image.png")
-    # print(table)
-    print("CVPipeline module is ready.")
+    def process_batch(self, image_paths):
+        return {p: self.process_image(p) for p in image_paths}

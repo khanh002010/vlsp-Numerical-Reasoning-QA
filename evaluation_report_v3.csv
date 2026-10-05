@@ -1,0 +1,460 @@
+﻿QID;Ground_Truth;Model_Predict;Is_Exact_Match;Is_Shortcut;Calculated_Answer
+bed4e850-a504-5677-9307-184caea40c71;"add(9; 9); add(#0; 8.8); divide(#1; 3)";"table_average(Table 1; Lãi suất cho vay mua nhà; none; 3Q24)";False;False;
+a8849fe2-cc8c-5a24-ae9e-4804fa503b8d;"chart_max(Image 2; % +/-; none; none); chart_min(Image 2; % +/-; none; none); subtract(#0; #1)";"subtract(-7; -1)";False;True;-6.0
+e55ef634-b777-5470-9d6a-75fe742d73e3;"subtract(76000; 61100); divide(#0; 61100); multiply(#1; 100)";"subtract(76000; 61000); divide(#0; 61000); multiply(#1; 100)";False;True;24.59016393442623
+b36cd841-19f1-544e-b95f-fb0234949122;"subtract(39; 12.1)";"divide(39; 12.1)";False;True;3.2231404958677685
+f1127438-f623-586c-8267-b5fc895a26c7;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 9/2/2023; none); chart_at(Image 1; TB 5 năm; 9/2/2023; none); greater(#0; #1)";"chart_average(Image 1; P/E; none; 2023-02-09; 100; none); divide(11.0; #0); subtract(#1; 1)";False;False;
+0d74cdb1-d6f1-556e-b84b-7d1992550266;"subtract(20.08; 16)";"divide(#1; #2)";False;True;LỖI: Reference #1 not found in results
+0dffe7d8-88e4-5eac-9860-e6371fb7930a;"chart_at(Image 1; VNIndex; 30/9/2022; none); chart_at(Image 1; Tham chiếu VNIndex; 30/9/2022; none); subtract(#0; #1)";"subtract(250; 1000)";False;True;-750.0
+0df809eb-c59b-53b9-a8aa-9ea8aa8b7c43;"subtract(28700; 23700)";"divide(#1; #2)";False;True;LỖI: Reference #1 not found in results
+692f4883-1511-547a-8f1c-4c79e0bd3361;"subtract(10766; 5078); divide(#0; 5078); multiply(#1; 100)";"divide(112; 100); subtract(#0; 18822)";False;True;-18820.88
+a9b041a5-8d7e-5afc-acd4-fca7247ad068;"subtract(1.6; 1.61)";"subtract(1.6; 1.61)";True;True;-0.010000000000000009
+cec8dcff-3fa4-5ca6-8e4c-5e0165982140;"subtract(104000; 88500)";"subtract(1300; 127.8)";False;True;1172.2
+9ee8c9d7-e6aa-5279-bb41-56adac7b882c;"divide(370; 532)";"divide(532; 100)";False;True;5.32
+ddfd9968-2114-5f51-b8e5-0ec8f99efc74;"subtract(0.17; 0.105)";"multiply(0.4; 0.175)";False;True;70.0
+56719970-a89f-5792-9469-3852c782b6c2;"table_max(Table 1; Điều chỉnh; none; none); table_min(Table 1; Điều chỉnh; none; none); subtract(#0; #1)";"chart_max(Table 1; T12; none; none); chart_min(Table 1; T12; none; none); subtract(#0; #1)";False;False;
+99c4d9c9-942e-595d-bbe6-a18dfb93d44c;"chart_average(Image 1; 2022; Jan; Mar)";"chart_average(Table 2; Tăng trưởng huy động theo tháng; Jan-Mar 2022; none)";False;False;
+9b1dd460-d98c-57c1-a0b2-04824c5c7e8c;"subtract(46495; 68999); divide(#0; 68999); multiply(#1; 100)";"subtract(46.5; -45.5); divide(#0; -45.5)";False;True;-2.021978021978022
+c9e613ba-a5b4-5dcc-8843-0cacc7f54311;"chart_at(Image 1; 2023; Dec; none); chart_at(Image 1; 2022; Dec; none); subtract(#0; #1)";"divide(100; 100); subtract(#0; 1); multiply(#1; #2); subtract(#3; 1)";False;True;LỖI: Reference #2 not found in results
+bb2cfae7-45c4-5402-8c46-e7a1164df2e9;"multiply(2022; 38); chart_at(Image 1; Doanh thu; 2026; none); chart_at(Image 1; Biên lợi nhuận gộp; 2026; none); multiply(#1; #2); divide(#0; #3)";"divide(700; 2200); divide(13.6; 100); multiply(#0; #1); multiply(#2; 100)";False;True;4.327272727272727
+fc144adb-28b4-5a18-bd29-7720b4702d70;"add(52.3; 53); divide(#0; 2); subtract(61.5; #1); divide(#2; #1); multiply(#3; 100)";"divide(67.5; 100)";False;True;0.675
+4b5fd7f8-890c-5f01-9873-f61069b70efa;"table_average(Table 1; Tiện ích; T9/2022; T9/2022); table_average(Table 1; Y tế; T9/2022; T9/2022); add(#0; #1); divide(#2; 2); table_average(Table 1; VN-Index; T9/2022; T9/2022); subtract(#3; #4)";"chart_average(Image 1; 9/1/2022; 9/30/2022)";False;False;
+32f5441b-ff47-5181-bf01-8172989b3a64;"table_max(Table 1; % thay đổi giá hiện tại so với ngày ra báo cáo; none; none); table_min(Table 1; % thay đổi giá hiện tại so với ngày ra báo cáo; none; none); subtract(#0; #1)";"table_max(Table 3; Thay đổi giá hiện tại so với ngày ra báo cáo; none; none); table_min(Table 3; Thay đổi giá hiện tại so với ngày ra báo cáo; none; none); subtract(#0; #1)";False;False;
+01e1e905-4875-5222-aa9f-14dfb117c8e2;"chart_at(Image 1; NII; 2019; none); chart_at(Image 1; NII; 3Q24 (TTM); none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(158; 69); divide(#0; 69); multiply(#1; 100)";False;True;128.9855072463768
+8a552027-d461-5ec3-97c4-209013720331;"table_max(Table 1; China; Jan-24; Dec-24); table_min(Table 1; China; Jan-24; Dec-24); subtract(#0; #1)";"chart_max(Table 1; China; none; none); chart_min(Table 1; China; none; none); subtract(#0; #1)";False;False;
+d10f5eb2-3009-5e9d-be8b-554a6ab040f2;"chart_at(Image 3; VNIndex; VCB; none); chart_at(Image 3; VNIndex; BCM; none); chart_at(Image 3; VNIndex; MWG; none); add(#0; #1); add(#3; #2)";"add(100; 100); add(#1; 100); add(#2; 100)";False;True;LỖI: Reference #1 not found in results
+9088b59a-9d69-5606-b27b-bc166d2e2438;"chart_at(Image 1; VNIndex; 24/10/2022; none); chart_at(Image 1; VNIndex; 25/10/2022; none); chart_at(Image 1; VNIndex; 26/10/2022; none); add(#0; #1); add(#3; #2); divide(#4; 3); subtract(1000; #5)";"subtract(1000; 1.02794)";False;True;998.97206
+a65347bd-e76f-557c-99d3-c647b5ad8cbd;"subtract(2.7; 1.1)";"chart_max(Image 1; none; 100; none); chart_min(Image 1; none; 100; none); subtract(#0; #1)";False;False;
+769eee4a-8297-5c89-8b97-9d44323ec6bd;"chart_at(Image 2; VNIndex; 31/10/2022; none); chart_at(Image 2; DJIA (Mỹ); 31/10/2022; none); subtract(#0; #1)";"chart_at(Image 2; VNIndex; 31/10/2022; none); chart_at(Image 2; DJIA (Mỹ); 31/10/2022; none); subtract(#1; #2)";False;False;
+425157f4-3411-5a21-8831-3143e6c15678;"chart_max(Image 1; Free float market cap; none; none); chart_min(Image 1; Free float market cap; none; none); subtract(#0; #1)";"subtract(35; 10)";False;True;25.0
+0fae53ec-ddac-597f-9286-a186987659dc;"chart_at(Image 1; NII; 3Q24 (TTM); none); multiply(#0; 1000); divide(#1; 495752)";"divide(158; 53); divide(390; 100); multiply(#0; #1)";False;True;11.626415094339622
+4609ef0b-bda1-5dcb-ae1f-b1ddb5ef62fb;"chart_at(Image 2; Cửu Long; 2026F; none); chart_at(Image 2; Nam Côn Sơn 1; 2026F; none); chart_at(Image 2; Nam Côn Sơn 2; 2026F; none); chart_at(Image 2; PM3; 2026F; none); add(#0; #1); add(#4;#2); add(#5;#3)";"table_sum(Table 1; Lưới; none; none)";False;False;
+27a1ac01-62b5-5982-8469-affdb168bc96;"chart_average(Image 2; %LNTT; none; none)";"table_average(Table 1; LNTT; none; none)";False;False;
+d137719c-8207-5970-8d7b-a051cba55d66;"chart_max(Image 1; VNIndex; none; none)";"chart_max(Image 1; VNIndex; none; Dec-22; Nov-23)";False;False;
+2481009b-3fef-58e9-86cc-c22eebe6c28f;"chart_sum(Image 1; Hyundai Elevator Co., Ltd; none; none); chart_sum(Image 1; Quỹ KIM; none; none); add(#0; #1)";"add(11; 5)";False;True;16.0
+d84447ce-43ac-565f-ba8a-0c0a5fef785b;"subtract(29; 12)";"subtract(29; 12)";True;True;17.0
+af418e60-8643-5f92-b870-382f860f6326;"table_average(Table 1; % thay đổi giá hiện tại so với ngày ra báo cáo; BCM; NLG)";"table_average(Table 2; Tỷ lệ thay đổi giá tại ngày 06/09/2022; none; Tỷ lệ thay đổi giá tại ngày ra báo cáo 05/08/2022)";False;False;
+18ac0acb-1795-5522-a13a-aa1c3eb4a43b;"greater(92000; 85000)";"chart_max(Table 2; BCM; none; none); greater(#0; 100)";False;False;
+76e56e04-9a67-5b48-b050-ff4c74edf2c4;"table_max(Table 1; Vietnam; Jan-24; Jan-25); table_min(Table 1; Vietnam; Jan-24; Jan-25); subtract(#0; #1)";"table_max(Table 1; Jan-24; none; none); table_min(Table 1; Jan-25; none; none); subtract(#0; #1)";False;False;
+e3a52ab6-f4ab-5268-b3ea-6e8e2aa283c1;"divide(9; 6)";"divide(10.1; 9.7)";False;True;1.041237113402062
+de61aa84-1fe9-5c76-b929-32ba356d7f17;"chart_at(Image 3; Lợi nhuận ròng; 2025; none); chart_at(Image 2; ROE; 2025; none); divide(#1; 100); divide(#0; #2); chart_at(Image 4; Nợ/ Vốn chủ sở hữu; 2025; none); multiply(#3; #4)";"divide(904.2; 100); multiply(#0; 13.1); divide(#1; 100); multiply(#2; #3)";False;True;LỖI: Reference #3 not found in results
+8233c19c-097f-58cd-9e63-c1ab4b5ba5a9;"greater(3.444; 1.958)";"greater(Table 1#Jan-25#China#Taiwan; none; none)";False;True;
+260c3976-4957-51fb-8cf4-361367bc00b1;"subtract(1.6; 1.1)";"subtract(1.6; 1.1)";True;True;0.5
+ba5c818c-b578-5c3f-9c61-f188a3f48a12;"add(3444; 1958)";"table_sum(Table 1; Trung Quốc; Jan-25; none; Đài Loan)";False;False;
+5c18faa5-9796-5d39-a85b-70630e533f46;"subtract(14.5; 14.4)";"subtract(14.4; 6)";False;True;8.4
+651d2f9e-184d-5d62-9cf1-f694a3a694bd;"subtract(22; 21.5)";"subtract(1.180; 1.140)";False;True;40.0
+b5005882-dc9e-54c6-b7ea-5a2130f78832;"subtract(12.5; 13.5)";"subtract(12.5; 13.5)";True;True;-1.0
+212fc8b8-f141-5492-b6e6-b9d5dd8bb114;"chart_at(Image 2; S&P 500 (Mỹ); 30/9/2022; none); chart_at(Image 2; S&P 500 (Mỹ); 31/10/2022; none); subtract(#1; #0)";"chart_at(Image 2; S&P 500 (Mỹ); 30/9/2022; none); chart_at(Image 2; S&P 500 (Mỹ); 31/10/2022; none); subtract(#1; #0)";True;False;
+75942c41-9dfa-5dde-9606-65f893287648;"divide(64; 100); multiply(425; #0)";"divide(425; 100); multiply(#0; 64)";False;True;272.0
+8e576d65-e368-5424-8c4b-17786acd1154;"subtract(85800; 84813); divide(#0; 84813); multiply(#1; 100)";"chart_at(Image 1; FPT; none; 05/08/2022; none); chart_at(Image 1; FPT; none; 06/09/2022; none); divide(#1; #0); subtract(#2; 100); multiply(#3; 100)";False;False;
+c3ee700f-5906-5eb6-9ed3-4294e4a1deb4;"chart_at(Image 11; Tổng dự phòng; VPB; none); chart_at(Image 11; Nợ xấu, nợ tái cơ cấu; VPB; none); divide(#0; #1)";"divide(100; 1.5)";False;True;66.66666666666667
+c452a6f2-747d-575a-a654-e6e1a0f68509;"divide(15.4; 10.6)";"divide(#1; #0)";False;True;LỖI: Reference #1 not found in results
+f95efc97-8871-5161-a8c7-d5e28f255df7;"greater(109200; 104000)";"chart_at(Image 1; Giá mục tiêu 1 năm; FPT; none); chart_at(Image 1; Giá mục tiêu 1 năm; VCB; none); greater(#0; #1)";False;False;
+1ad3c036-bb48-5028-ba6c-18652f00d5e4;"chart_at(Image 1; Nhóm Y Tế; Jul-23; none); chart_at(Image 1; Nhóm Y Tế; Nov-23; none); subtract(#1; #0)";"subtract(100; none); divide(#0; none); multiply(#1; 100)";False;True;
+1c9490f5-d4fc-508c-afd4-4eadd8930650;"chart_total(Image 1; Jan-25; none; none)";"divide(86; 100); add(#0; 67.2); add(#1; 64.7)";False;True;132.76
+fd842717-8f50-5c7a-bbbb-6e2eeb3b4f32;"chart_at(Image 1; FPT VN; Nov 24; none); chart_at(Image 1; VN-Index; Nov 24; none); subtract(#0; #1)";"chart_at(Image 1; VN-Index; Nov 24; none); chart_at(Image 1; FPT VN; Nov 24; none); subtract(#1; #2); divide(#3; #2); multiply(#4; 100)";False;False;
+23ed2a6a-cd30-5a3a-ab11-f51f9e8e9653;"subtract(32.5; 24.1)";"chart_average(Table 1; 6M; Change in price; none; none)";False;False;
+850ad259-bf30-5f17-9316-2adb3c7888cd;"table_average(Table 1; ROE (%); FY 2017; FY2019)";"chart_average(Image 1; ROE (LHS); 2017; 2019)";False;False;
+6f6b25cd-4e55-5356-8ba5-331012f6f130;"divide(52102; 3351)";"divide(52.102; 3.351)";False;True;15.548194568785437
+747ede2a-9e1d-5aa6-a055-79d4db280cd1;"add(64.7; 86)";"add(64.7; 86)";True;True;150.7
+b998db1a-0f39-5b70-aa2f-3d179c7b3d60;"table_average(Table 1; P/E@2025F; GAS; BSR); subtract(#0; 12.5)";"table_average(Table 1; P/E 2025F; none; none); subtract(#0; #1)";False;False;
+42523de0-d558-5aba-a87c-21a24feb9939;"subtract(52102; 44733); divide(#0; 44733); multiply(#1; 100)";"subtract(52.102; 44.733); divide(#0; 44.733); multiply(#1; 100)";False;True;16.473297118458408
+3969e23b-bc01-5b42-bfc2-dfe0c1888b8b;"chart_at(Image 3; 2023; DGC; none); chart_at(Image 3; T10/2023; DGC; none); subtract(#0; #1)";"subtract(300; 500)";False;True;-200.0
+f9be0492-5c5f-597f-a224-12e04f0f81cc;"chart_average(Image 3; VNIndex; none; none)";"divide(1280.51; 1206.33); multiply(#0; 6.15)";False;True;6.528177613090946
+b322a100-8e2d-5af8-8610-1a43b57b9674;"chart_max(Image 5; NĐTNN Bán; 9/5; 9/26)";"chart_max(Image 6; GTGD ròng NĐTNN; none; none)";False;False;
+3e804f1a-dbe8-5ca2-a9d8-f7db1645aa83;"divide(38; 100); multiply(2022; #0); chart_at(Image 1; Biên lợi nhuận gộp; 2026; none); divide(#2; 100); multiply(17133.3; #3); divide(#1; #4)";"divide(2000; 1000); divide(1200; 1.1); add(#0; #1)";False;True;1092.9090909090908
+5f4713b5-bb6a-5b16-addf-2fafc4b1ef3f;"greater(7.2; 6.0)";"table_max(Table 1; VPB; Nov-24; CTG)";False;False;
+1be02ac8-8f77-56b4-a7d9-5de24c4ff081;"subtract(-12.3; 15.5)";"subtract(-12.3; -12.3)";False;True;0.0
+78e89c74-e725-5196-9a0e-54586f83ad40;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2020; none); chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 5/2/2020; none); subtract(#0; #1)";"subtract(#1; #2)";False;True;LỖI: Reference #1 not found in results
+cb3871b3-a0a2-5a0a-b1c3-189e8a0956c0;"chart_max(Image 3; Việt Nam; Jan-20; Jan-25)";"table_sum(Table 1; Việt Nam; Jan-20; Jan-25)";False;False;
+506a3d61-3cc3-57e6-86a1-d83411abe879;"chart_at(Image 2; Phát triển (DM); Jan-25; none); divide(46.495; #0)";"divide(46.5; 3)";False;True;15.5
+bd34fd01-9f9a-5a5f-9461-0da564ef493c;"table_average(Table 1; Vùng cắt lỗ; none; none)";"table_average(Table 1; Tỷ lệ giữa mức giá hiện tại và mức giá hợp lý; none; none)";False;False;
+7d48988e-48d6-55fb-97e1-580e9575fdbd;"subtract(503; 370)";"subtract(503; 657)";False;True;-154.0
+e28cfc75-fbcd-5011-b7cf-ff3ee43dcbd4;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2022; none); chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 9/2/2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 1; P/E; Jan-22; none); chart_at(Image 1; P/E; Sep-23; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+56ff49bd-8f8f-5c14-8d0e-c9cde7ad527b;"subtract(2200; 2185)";"subtract(2200; 1786)";False;True;414.0
+f39ab262-420c-5910-bcf7-3be4918f35df;"divide(2893; 65); multiply(#0; 100)";"divide(2893; 65)";False;True;44.50769230769231
+bcedd388-55fb-5f81-a4bd-1d6969757b05;"divide(180.9; 1.3)";"divide(1.5; 0.5)";False;True;3.0
+0479a43e-f63c-59d3-8157-0b89e76c4f6a;"chart_at(Image 1; Ngân hàng; Nov-24; none); chart_at(Image 1; VNIndex; Nov-24; none); subtract(#0; #1)";"subtract(23.0; 12.1)";False;True;10.9
+ed790b80-c43b-5221-a3f1-e7c554db79e1;"subtract(55500; 44600); divide(#0; 44600); multiply(#1; 100); subtract(#2; 24.4)";"divide(1300; 100); divide(1000; 100); subtract(#0; #1); multiply(#2; 100)";False;True;300.0
+6dd0a0ec-b8ed-5498-a6d7-78838130100e;"chart_at(Image 6; NĐTNN Mua; 31/10/2022; none); chart_at(Image 6; NĐTNN Bán; 31/10/2022; none); subtract(#0; #1)";"subtract(0; 0)";False;True;0.0
+f79444d0-596c-5093-a751-658dbb28eae1;"divide(61100; 4863); subtract(20.08; #0)";"divide(12.5; 20)";False;True;0.625
+8e40bd59-76de-5a62-b7da-0d7542a00238;"chart_at(Image 1; Weight in FTSE EM Index; Malaysia; none); chart_at(Image 1; Weight in FTSE EM Index; Philippines; none); greater(#0; #1)";"greater(#1; Table_average(Table 1#none#Philippines#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none#none))";False;True;LỖI: Reference #1 not found in results
+213ef250-ffa3-54c4-a808-f542e213fbc0;"subtract(79000; 68100); divide(#0; 68100); multiply(#1; 100)";"subtract(30; 100); divide(#0; 100); add(1; #1)";False;True;0.30000000000000004
+f109158c-02e5-566e-90ce-5b7a625b35a8;"subtract(4.5; 2.9)";"chart_at(Image 1; NIM; none; none; 2024Q3); chart_at(Image 1; NIM; none; none; 2024Q3); subtract(#0; #1)";False;False;
+f6284e8d-e29b-5706-9e8c-49472cb364b1;"divide(67.1; 67.2)";"divide(67.2; 100)";False;True;0.672
+73460d23-850d-5ef2-90e0-7ff0e282dab4;"add(15; 2); add(13; 1); add(#0; #1); divide(#2; 4); table_average(Table 1; Thay đổi giá vốn hàng bán (GVHB) sau khi tăng giá điện 3%; none; none); divide(#3; #4)";"table_average(Table 1; %GVHB; none; none); table_average(Table 1; %LNTT; none; none); divide(#0; #1)";False;False;
+fca24ba1-5414-5f79-b20c-7b6235865fa9;"chart_at(Image 4; Ấn Độ; Oct-23; none); chart_at(Image 4; Indonesia; Oct-23; none); chart_at(Image 4; Thái Lan; Oct-23; none); chart_at(Image 4; Việt Nam; Oct-23; none); add(#0; #1); add(#4; #2); add(#5; #3); divide(#6; 4)";"table_average(Table 4; India; none; Indonesia; none; Thailand; none; Vietnam; none)";False;False;
+8a7bb4b7-4dc8-5e2c-bedc-c3b91bfb627f;"divide(19.4; 73.3)";"divide(65.7; 100)";False;True;0.657
+35885d57-09b6-5e71-8a45-41bac74eaa2e;"divide(782; 100)";"divide(2200; 1000); divide(#0; 100)";False;True;0.022000000000000002
+71864677-3847-5f46-b314-90f360367e49;"multiply(3558; 6.5)";"chart_at(Image 1; ACB; none; EPS 12T; none)";False;False;
+2356c4a7-57df-5e54-aea5-fe424aa737da;"divide(46.5; 66); chart_at(Image 2; Phát triển (DM); Jan-25; none); divide(46.495; #1); subtract(#0; #2)";"divide(6; 100); divide(100; 100); subtract(#0; #1)";False;True;-0.94
+ddc0f6eb-a2f6-5c96-b141-0510884ba500;"chart_sum(Image 6; NĐTNN Mua; none; none)";"chart_total(Table 6; GTGD ròng NDTNN; none; none)";False;False;
+bc2bd1ef-a214-5f60-89ea-223068203f1d;"chart_at(Image 2; Tăng trưởng tín dụng; 2025F; none); chart_at(Image 2; Tăng trưởng huy động; 2025F; none); subtract(#0; #1)";"subtract(16.0; 8.0)";False;True;8.0
+bc5b0ee5-ebe1-5bed-a53b-93effb92928f;"subtract(21.6; 12.66)";"subtract(12.66; 10)";False;True;2.66
+06683677-cc1c-5c43-b036-5ccfd49bf8ad;"chart_average(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2023; 9/2/2023); chart_at(Image 1; TB năm; 1/2/2023; none); subtract(#0; #1)";"chart_average(Image 1; P/E; 1/2/2023; 9/2/2023; none; none";False;False;
+ddf0814e-1c4a-5af0-b9b4-232b491ba035;"chart_max(Image 1; Biên lợi nhuận gộp; 2022; 2026); chart_min(Image 1; Biên lợi nhuận gộp; 2022; 2026); subtract(#0; #1)";"subtract(38; 35)";False;True;3.0
+b4825aa5-f9c4-51f7-bc1d-2f643c979577;"chart_at(Image 6; NH TMCP Tư nhân; 1-Apr-24; none); chart_at(Image 6; NH TMCP Tư nhân; 1-Sep-24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 6; LHS; Apr-24; none); chart_at(Image 6; LHS; Sep-24; none); subtract(#1; #0)";False;False;
+f3b687ed-17d3-57e6-8244-615717340d75;"chart_average(Image 1; P/E ước tính 2024; 1/2/2024; 11/2/2024)";"chart_average(Image 1; P/E; Jan-24; Nov-24)";False;False;
+8763b48d-5349-5062-879a-8db49ed88c8f;"table_sum(Table 1; Lãi gộp (Vbn); FY 2017; FY2019)";"chart_sum(Image 1; Lãi gộp; none; 2017; none; 2019)";False;False;
+63f835e7-cef9-595a-b63f-417d4f231101;"table_max(Table 1; Tăng trưởng doanh thu@2024F; none; none)";"chart_max(Image 1; Tăng trưởng doanh thu 2024; none; none)";False;False;
+cbced019-3325-55a8-96cf-220f9d77ae59;"greater(12.0; 7.6)";"chart_average(Image 1; ROE (post-tax). 2024F; PLX; none); chart_average(Image 1; ROE (post-tax). 2024F; PVS; none); greater(#0; #1)";False;False;
+ce5a837b-8bc1-5ac0-9c2f-dd38b48426c8;"chart_at(Image 1; NII; 2023; none); divide(14.1; 100); multiply(#0; #1)";"multiply(14.9; 14.1); divide(#0; 100); subtract(#1; 14.9)";False;True;-12.7991
+bc315c29-ef1b-5b5d-ac4b-5b64f419af69;"table_average(Table 1; T9/2022; VN30; VNSmallcap)";"chart_average(VN30#0; VNMidcap#0; VNSmallcap#0)";False;False;
+85a837e5-5c6a-5d4f-a729-67f31c596690;"table_average(Table 2; Lợi nhuận sau thuế (tỷđồng); 2024F; 2026F)";"chart_average(Table 2; LNST sau thuế; 2024F; 2026F)";False;False;
+4f4cf0dd-0dba-50fc-b989-6b52cc7b59d7;"subtract(29.7; 8.27)";"subtract(69.4; #1)";False;True;LỖI: Reference #1 not found in results
+c48cb615-4f74-518c-a940-3273b9042e9a;"add(20.0; 16.6); divide(#0; 2)";"divide(390; 53)";False;True;7.3584905660377355
+d480d3f1-50c0-58f1-802c-3181a3a31786;"chart_at(Image 5; NĐTNN Bán; 9/26; none); chart_at(Image 5; NĐTNN Bán; 9/5; none); greater(#0; #1)";"greater(#0; #1; #2; none; #3)";False;True;LỖI: Reference #0 not found in results
+dd881b5b-986b-553c-9db1-038d164758a5;"chart_sum(Image 1; Index; none; none); chart_sum(Image 2; Index; none; none); subtract(0; #1); greater(#0; #2)";"greater(Table 1#%+/-; -7); greater(#0; -6)";False;True;
+ff8db97f-0b3c-5fb4-be98-6bd660732c6f;"multiply(1.7; 1000); subtract(#0; 1687.5)";"subtract(1.7; 2.5)";False;True;-0.8
+14f7878f-c487-5455-97d5-ed918bef7701;"table_average(Table 2; ROE (%); 2021H; 2023H)";"chart_average(Table 2; ROE; none; 2021H; 2023H)";False;False;
+33e650dc-1631-56d3-a2d4-96131d3abfd6;"add(2875; 532)";"add(2875; 532)";True;True;3407.0
+722c8a6f-c093-50a8-9937-988805f4fc40;"subtract(16.2; 15.3)";"subtract(15.3; -5.6)";False;True;20.9
+1c24e063-55f0-5613-a0f2-c4f8d024dc4f;"table_max(Table 2; Năm 2022; none; none); table_min(Table 2; Năm 2022; none; none); subtract(#0; #1)";"table_max(Table 2; 2022; none; none); table_min(Table 2; 2022; none; none); subtract(#0; #1)";False;False;
+9ec10d7d-aa63-5195-a355-f70454304a12;"table_average(Table 1; Tỷ trọng Chi phí điện/GVHB; none; none)";"table_average(Table 1; %GVHB; Thép; Hóa Chất; Xi măng)";False;False;
+55a0af38-23ac-58b3-8ca0-b20d564f95d2;"chart_at(Image 1; Khác; Hình 1: Cơ cấu cổ đông; none); divide(16; #0)";"divide(37; 100); divide(#0; 59)";False;True;0.006271186440677966
+a6dd6881-6830-5132-80fc-54e06b3e8ec5;"table_average(Table 1; Năm 2022; VN30; VNSmallcap)";"table_average(Table 3; VN30; none; none); table_average(Table 3; VNMidcap; none; none); table_average(Table 3; VNSmallcap; none; none); add(#0; #1); add(#2; #3)";False;False;
+065fbb02-99b8-54b4-b495-c99c47a3a452;"subtract(22.6; 9.5)";"subtract(22.6; 9.5)";True;True;13.100000000000001
+a10d8533-2502-5b88-a3da-28e4fbb09c1a;"greater(0.73; 0.70)";"divide(3.5; 100)";False;True;0.035
+0b7d1e61-d33e-5266-bdfb-97d22970220f;"chart_max(Image 1; Giá điện; none; none)";"chart_max(1920; 1864; none; none)";False;False;
+72ae11f8-8e8e-5c90-b88e-96282be7f2b1;"add(-10.9; -11.9); add(#0; -15.8); divide(#1; 3)";"chart_average(Image 3; VN30; none; none); chart_average(Image 3; VNMidcap; none; none); chart_average(Image 3; VNSmallcap; none; none)";False;False;
+88b08555-76e0-5fde-aa86-71750137ab29;"subtract(15.5; 6.1)";"subtract(15.5; 6.15)";False;True;9.35
+25b630eb-1156-5678-9f2c-5006e60a178e;"chart_sum(Image 3; T10/2023; none; none)";"chart_sum(Image 3; Top CP Nước ngoài mua ròng trong tháng 10; none; none)";False;False;
+71429458-7919-5664-b80f-49364856302e;"chart_at(Image 1; NSI; 2023; none); chart_at(Image 1; NOI; 2023; none); add(#0; #1)";"add(354; 51)";False;True;405.0
+503bf24e-6e8d-5bca-97f5-4e4df7fce562;"chart_at(Image 2; VNIndex; 31/10/2022; none); subtract(-31.4; #0)";"chart_at(Image 2; VNIndex; none; 2022; none); chart_at(Image 2; VNIndex; none; 31/10/2022; none); subtract(#1; #2); divide(#3; #1); multiply(#4; 100)";False;False;
+6e7c66c4-d186-535f-82aa-941c5444f912;"chart_at(Image 4; Index; VNM; none); chart_at(Image 4; Index; CTG; none); chart_at(Image 4; Index; EIB; none); add(#0; #1); add(#3; #2)";"add(3.5; 1.5); add(#0; 0.5)";False;True;5.5
+5310f137-46f9-5cc5-b93d-c6e1dda8a27b;"subtract(-14.5; -11.6)";"subtract(-12.3; 1132.11)";False;True;-1144.4099999999999
+214ca05b-1621-5d07-a2d3-f4420a81cbb6;"table_average(Table 1; Năng lượng; T1/2022; T10/2022)";"chart_average(Image 3; Năng lượng; none; Jan-22; Oct-22)";False;False;
+d3ae532c-ed89-536e-befe-2bd1c7942c53;"chart_max(Image 3; Thái Lan; Jan-20; Jan-25); chart_min(Image 3; Thái Lan; Jan-20; Jan-25); subtract(#0; #1)";"table_max(Table 1; Thái Lan; Jan-20; Jan-25); table_min(Table 1; Thái Lan; Jan-20; Jan-25); subtract(#0; #1)";False;False;
+0db75e38-1c10-5bcb-8bbf-81a49f3b0e30;"chart_max(Image 1; 2023; none; none); chart_min(Image 1; 2023; none; none); subtract(#0; #1)";"chart_max(Table 1; 2023; none; none); chart_min(Table 1; 2023; none; none); subtract(#0; #1)";False;False;
+2ffb1418-9cfa-546a-ae05-5ee0d04bb897;"chart_at(Image 1; NII; 3Q24 (TTM); none); chart_at(Image 1; NSI; 3Q24 (TTM); none); chart_at(Image 1; NOI; 3Q24 (TTM); none); add(#0; #1); add(#3; #2)";"multiply(53; 390); add(#0; 158); multiply(#1; #2)";False;True;LỖI: Reference #2 not found in results
+400bc221-29e5-55aa-8f60-b0e2f29ee394;"subtract(61.5; 48)";"subtract(43.5; 37.5)";False;True;6.0
+f586104f-e262-5eda-aae2-fdf6f92af861;"chart_average(Image 1; % +/-; none; none); chart_average(Image 2; % +/-; none; none); subtract(#0; #1)";"multiply(0.5; -7)";False;True;-3.5
+df06fd16-43d5-58c0-aef8-e22c36d5a404;"add(15; 2); add(13; 1); add(#0; #1); divide(#2; 4)";"divide(15; 1); divide(-1; 1); divide(2; 1); add(#0; #1); add(#2; #3)";False;True;16.0
+e64ef0cf-ebf4-504c-b5f9-f509198e9328;"table_max(Table 1; VN-Index; Jan-23; Oct-23); table_min(Table 1; VN-Index; Jan-23; Oct-23); subtract(#0; #1)";"chart_max(Table 1; VN-Index; none; none); chart_min(Table 1; VN-Index; none; none); subtract(#0; #1)";False;False;
+ac178077-3aad-521d-95bb-9c0100d5e2ed;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2023; none); chart_at(Image 1; TB 5 năm; 1/2/2023; none); subtract(#1; #0)";"chart_average(Image 1; P/E; 1/2/2023; none)";False;False;
+2ddfba1e-dbcf-54c6-bfcb-603021520501;"chart_at(Image 2; VN30; T7/2022; none); chart_at(Image 2; VN30; T8/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(7.2; 100)";False;True;0.07200000000000001
+e6d47c78-4a96-560c-bae8-fddcb05eb927;"table_average(Table 1; Tổng tài sản ròng (tỷ USD); Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF)";"chart_average(Image 1; Tổng tài sản ròng (Tỷ USD); Jan-24; Dec-23)";False;False;
+3d783ce3-baa3-59fb-80cb-3b7e4d5bce08;"subtract(61880; 45241)";"subtract(61880; 45241)";True;True;16639.0
+54d75952-642d-532b-aedf-24b2a95dca6e;"divide(370; 585)";"divide(532; 503); multiply(#0; 100)";False;True;105.76540755467197
+5a358982-e953-5f2b-b16c-cde530ce5e10;"divide(16; 100); divide(37000000; #0)";"divide(37; 100); divide(38.88; 100); multiply(#0; #1); add(#2; 1)";False;True;1.143856
+dae192c6-b0f5-5fcb-a97e-cdbd8647d16a;"chart_at(Image 1; FPT VN; Nov 23; none); chart_at(Image 1; FPT VN; Nov 24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); chart_at(Image 1; VN-Index; Nov 23; none); chart_at(Image 1; VN-Index; Nov 24; none); subtract(#6; #5); divide(#7; #5); multiply(#8; 100); greater(#4; #9)";"chart_at(Image 1; VN-Index; Nov 23; none); chart_at(Image 1; VN-Index; Nov 24; none); subtract(#1; #0); divide(#2; #0); greater(#3; 1)";False;False;
+3c0fa5ae-8acb-5778-8306-db5ea12a6e8f;"subtract(24.4; 3.0)";"table_average(Table 1; Công nghệ thông tin; 3Q23; none; VN-Index)";False;False;
+8fe89d79-48b6-5077-9004-7dccc8142adb;"chart_max(Image 1; Biên lợi nhuận gộp; 2022; 2026)";"chart_max(Image 1; Biên Lợi Nhuận Gồm; none; none)";False;False;
+60dbae1b-2cbf-58d9-9e55-e0cca1ec1388;"chart_max(Image 1; Ngân hàng; Jan-24; Nov-24); chart_min(Image 1; Ngân hàng; Jan-24; Nov-24); subtract(#0; #1)";"chart_max(Image 1; Năm 2024; none; none); chart_min(Image 1; Năm 2024; none; none); subtract(#0; #1)";False;False;
+ecc21dfc-a89e-51d1-8cc8-5d6ff8176476;"chart_at(Image 1; DPG VN; Dec 23; none); chart_at(Image 1; DPG VN; Jun 24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); chart_at(Image 1; VN-Index; Dec 23; none); chart_at(Image 1; VN-Index; Jun 24; none); subtract(#6; #5); divide(#7; #5); multiply(#8; 100); subtract(#4; #9); subtract(#10; 24.1)";"chart_max(Image 1; VN-Index; Jun 22; Dec 23); chart_max(Image 1; DPG VN; Jun 22; none); chart_max(Image 1; DPG VN; Jun 22; Jun 24); chart_total(#1; #2; #3); chart_total(#1; #4; #5); subtract(#6; #7; #8); subtract(#9; #10; #11); subtract(#12; #13; #14)";False;False;
+60db1ebe-cc00-532f-9b26-faa205fb84e7;"chart_at(Image 9; Chi phí tín dụng; 3Q24; none); chart_at(Image 9; Tỷ lệ nợ xấu mới hình thành; 3Q24; none); greater(#0; #1)";"greater(1.22; 1.28)";False;True;0.0
+9e1128e4-ddb1-5e5e-89dc-69895eeaba16;"chart_at(Image 2; Phát triển (DM); Jan-25; none); chart_at(Image 2; Đang phát triển (EM); Jan-25; none); subtract(#0; #1)";"subtract(66.5; -1.1)";False;True;67.6
+121939cc-fc09-5acf-89f7-a0697309d2cd;"chart_at(Image 1; VNIndex; 29/7/2022; none); chart_at(Image 1; VNIndex; 31/8/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(1280.51; 1200); divide(#0; 1200); multiply(#1; 100)";False;True;6.7091666666666665
+16d8a36b-4aa2-5687-b9e4-d24d939c3457;"subtract(-14.3; -12.3)";"subtract(-14.3; -14.1)";False;True;-0.20000000000000107
+532ca091-9dfe-5ac6-8581-e5103dcfb335;"chart_average(Image 5; % +/-; none; none)";"table_average(Table 1; Đả giảm; -26; none)";False;False;
+0e4c653c-7cf8-5197-a11d-dd008a56f7da;"greater(12.5; 13.23)";"chart_min(Table 3; P/E 2024 (left); none; none); 12.5#none";False;False;
+a00efea0-6d07-523f-b227-545fcba3c8e0;"chart_at(Image 1; VNIndex; 31/8/2022; none); chart_at(Image 1; VNIndex; 30/9/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(1300; 1100); divide(#0; 1300); multiply(#1; 100)";False;True;15.384615384615385
+0002d3f2-7d30-533e-80bb-dc3a05ca6770;"table_average(Table 1; Vietnam; Jan-24; Jan-25)";"table_average(Table 1; Việt Nam; Jan-24; Jan-25)";False;False;
+c1ea1492-1dfc-5d4c-a43c-dbd5309a15e6;"chart_at(Image 3; Dầu khí - BSR; 2024E; none); chart_at(Image 3; Dầu khí - BSR; 2025; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(3.1; 100)";False;True;0.031
+0edb77c7-efa4-5a50-a7ba-c8570d9cfeac;"subtract(17.7; 22.6)";"subtract(17.7; 22.6)";True;True;-4.900000000000002
+0b2bee3f-9aee-58c9-856b-21b4984a5d5c;"table_average(Table 2; ROE@2024F; none; none)";"table_average(#1; ROE (post-tax); none; none)";False;False;
+cf650a58-551a-5244-a91f-02b912f431de;"table_max(Table 1; P/E@2025F; none; none); table_min(Table 1; P/E@2025F; none; none); subtract(#0; #1)";"chart_max(Image 1; P/E 2025F; none; none); chart_min(Image 1; P/E 2025F; none; none); subtract(#0; #1)";False;False;
+77495d85-7c39-5aa9-a37b-3171b4b74b88;"chart_min(Image 5; % +/-; none; none)";"table_min(Table 1; % +/-%; none; none)";False;False;
+03c0267b-0adc-58cf-9632-c39ee2bf6eac;"greater(114.0; -13.0)";"table_average(Table 2; NLG; 2023; none); table_average(Table 2; NLG; 2023; 2024F)";False;False;
+6a7c39db-9369-5550-8bd5-069d5f9e4b72;"table_max(Table 2; Biên lợi nhuận gộp (%); 2024F; 2026F)";"subtract(#0; 7); divide(#1; 7); add(7; #2)";False;True;LỖI: Reference #0 not found in results
+891e8826-809a-54a0-b7cb-c6e9d9d096db;"table_max(Table 2; Tỷ suất cổ tức (%)@2024F; none; none); table_min(Table 2; Tỷ suất cổ tức (%)@2024F; none; none); subtract(#0; #1)";"chart_max(Image 1; Tỷ suất cổ tức (2024F; none; none); none); chart_min(Image 1; Tỷ suất cổ tức (2024F; none; none); none); subtract(#0; #1)";False;False;
+3dc9bd3f-10d0-5374-899c-30932ca68f34;"divide(15; 0.3)";"divide(15; 100)";False;True;0.15
+e55302ea-d372-5528-986a-a0702b64dd46;"divide(2185; 13600.9); multiply(#0; 100)";"divide(904.2; 100); divide(#0; #2)";False;True;LỖI: Reference #2 not found in results
+8cc1c9e2-e8f2-506c-8790-759032f17147;"subtract(20.0; 19.1)";"chart_at(Image 1; ROE; VN; none; 100); subtract(#0; 100); divide(#1; 100); multiply(#2; 100)";False;False;
+8d829101-30ce-504a-8f1d-9c4299018ae3;"table_average(Table 1; Giá mục tiêu (đồng)@Trong 1 năm; none; none)";"table_average(Table 1; Giá mục tiêu 1 năm; none; none)";False;False;
+ad9115dc-b52c-5bd2-89ea-6433b9a46538;"divide(26; 3450)";"divide(26; 345)";False;True;0.07536231884057971
+1ae1f424-e901-5b8a-923a-cc4ca2e93a8a;"chart_max(Image 2; %GVHB; none; none); chart_min(Image 2; %GVHB; none; none); subtract(#0; #1)";"table_max(Table 1; %GVHB; Thép; Xi măng); table_min(Table 1; %GVHB; Thép; Xi măng); subtract(#0; #1)";False;False;
+6c8ddd9c-3901-5d52-b2f5-e6240c8cd30f;"chart_at(Image 1; Doanh thu; 2026; none); chart_at(Image 3; Lợi nhuận ròng; 2026; none); divide(#1; #0); multiply(#2; 100); chart_at(Image 3; Biên lợi nhuận ròng; 2026; none); subtract(#3; #4)";"subtract(7.14; 5.8)";False;True;1.3399999999999999
+9a618d93-3814-5a14-9f7e-6d8df7788ffa;"table_max(Table 1; VN-Index; T1/2022; T9/2022); table_min(Table 1; VN-Index; T1/2022; T9/2022); subtract(#0; #1)";"table_max(Table 1; Tăng trưởng HĐTM; none; none); table_min(Table 1; Tăng trưởng HĐTM; none; none); subtract(#0; #1)";False;False;
+0ffc6b47-7493-59ad-b0a7-78247c657723;"chart_at(Image 2; %GVHB; Xi măng; none); chart_at(Image 2; %GVHB; Thép; none); subtract(#0; #1)";"subtract(-13; -15)";False;True;2.0
+4ca15f1a-7c66-5173-82ce-1f8459572e19;"greater(50.1; 22.8)";"chart_average(Image 1; 2025; none; none";False;False;
+c16ef52b-ff9f-52b4-807c-669a4983a82c;"table_average(Table 1; Tài chính; 1Q23; 3Q23)";"chart_average(Table 1; Tài chính; Q1/23; none; Q3/23)";False;False;
+57cb44d1-cc2a-589d-844a-52343018e682;"table_average(Table 1; Thay đổi giá vốn hàng bán (GVHB) sau khi tăng giá điện 3%; none; none)";"table_average(Table 1; %GVHB; Thép; Hóa Chất; Xi măng)";False;False;
+16630d77-0f27-526b-85c6-5ccb5a90a26e;"table_max(Table 1; Biên lãi gộp (%); FY 2015; FY2020(F))";"chart_max(#1; none; none; 2015; 2020)";False;False;
+6374e09d-27e7-5d3c-b83e-168bf9321aeb;"subtract(1.751; 2.821); divide(#0; 2.821); multiply(#1; 100)";"divide(#1; 0.5); subtract(#0; 1); multiply(#1; 100)";False;True;LỖI: Reference #1 not found in results
+ecc0e965-2d46-5ecc-aa2a-f4ceb76cd47e;"table_max(Table 1; Giá mục tiêu cơ bản; none; none)";"table_max(Table 1; Mức giá mục tiêu cơ bản; none; none)";False;False;
+70c37cdb-414c-5e81-93c9-8d815e19ab87;"chart_max(Image 4; Việt Nam; none; none); chart_min(Image 4; Việt Nam; none; none); subtract(#0; #1)";"chart_max(Image 4; TRỤC Y - Tr. USD; none; none); chart_min(Image 5; DM Equity; none; none); subtract(#0; #1)";False;False;
+f83eb72a-8395-59ed-8563-859275237988;"greater(36.78; 34.41)";"multiply(11.4; 100)";False;True;1140.0
+72a604ca-774a-534f-aa88-2afbcee1fcce;"chart_at(Image 2; VN30; T8/2022; none); chart_at(Image 2; VNMidcap; T8/2022; none); chart_at(Image 2; VNSmallcap; T8/2022; none); add(#0; #1); add(#3; #2)";"add(VN30; VNMidcap); add(#0; VNSmallcap)";False;True;
+c3685869-6e02-5034-a125-d8f8a5da1f70;"chart_at(Image 2; Phát triển (DM); Jan-25; none); subtract(#0; 46.495); chart_at(Image 1; Cổ phiếu; Jan-25; none); divide(#1; #2)";"divide(6; 100); multiply(#0; 100)";False;True;6.0
+36cf6f60-9d24-5872-b074-c147675d7a8e;"chart_at(Image 1; T12; Bán lẻ; none); chart_at(Image 1; T12; Thực phẩm và đồ uống; none); chart_at(Image 1; T12; Du lịch và Giải trí; none); add(#0; #1); add(#3; #2); divide(#4; 3)";"chart_average(Table 1; Bán lẻ; none; Thực phẩm đồ uống; Du lịch giải trí)";False;False;
+b95428d9-e2a1-5042-bc19-31254034184e;"subtract(14.9; 14.4)";"subtract(14.9; 14.4)";True;True;0.5
+fbc74d91-1edb-5af7-aac2-da69cab23a26;"multiply(125; 0.04)";"divide(125; 4)";False;True;31.25
+dd392d85-1c2c-597f-85f1-d0b4de549ce9;"table_max(Table 1; Heo hơi; 2022; 2026); table_min(Table 1; Heo hơi; 2022; 2026); subtract(#0; #1)";"table_max(Table 1; Heo; none; 2022; 2026); table_min(Table 1; Heo; none; 2022; 2026); subtract(#0; #1)";False;False;
+b1b311e9-864a-5cc4-8a92-a71057aec326;"chart_at(Image 1; Prov.; 2023; none); chart_at(Image 1; OPEX; 2023; none); divide(#0; #1)";"chart_average(Table 1; Prov; OPEX; none)";False;False;
+18edb297-4a99-597d-be14-b6373e9cb94e;"multiply(6.1; 10)";"divide(6.1; 100)";False;True;0.061
+cdd6a41c-564a-5146-845a-dd729fd0c4af;"divide(4863; 61100)";"divide(14.4; 100); divide(#0; 61000)";False;True;2.360655737704918e-06
+3268ef4f-6cf3-57d8-9b21-9ad8cd22c3d7;"chart_at(Image 4; Nợ/ EBITDA; 2022; none); chart_at(Image 4; Nợ/ EBITDA; 2026; none); greater(#0; #1)";"greater(0.38; 0.18)";False;True;1.0
+95039a40-3e8a-5dc7-890c-e1472903f136;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2021; none); chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(13; 11)";False;True;1.1818181818181819
+21bbe424-7022-525c-b415-077330433d10;"chart_at(Image 1; NII; 2023; none); chart_at(Image 1; OPEX; 2023; none); subtract(#0; #1)";"subtract(52; 30)";False;True;22.0
+fb615f16-7dcd-5ab0-9e4a-14f3cda842d8;"chart_at(Image 2; VN30; T8/2022; none); chart_at(Image 2; VNIndex; T8/2022; none); divide(#0; #1)";"divide(14; 1.206.33); multiply(#0; 100)";False;True;0.011605447928842026
+f29449b3-dc21-58a6-9222-747718073537;"divide(17.7; 9.5)";"divide(17.7; 9.5)";True;True;1.8631578947368421
+39177476-f3d1-5398-820a-971b29972107;"chart_at(Image 3; Lợi nhuận ròng; 2022; none); chart_at(Image 3; Lợi nhuận ròng; 2026; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(1224; 332.6); divide(#0; 332.6); multiply(#1; 100)";False;True;268.00962116656643
+2112c88c-d9e5-5b8c-aacf-a2b9e00eb002;"chart_average(Image 1; 2023; Oct; Dec)";"chart_average(Table 2; Tăng trưởng huy động; none; Dec-23; Sep-23)";False;False;
+9b627d6d-4266-5e18-8704-d33b8e236c0a;"chart_at(Image 1; Giá điện; 2022; none); chart_at(Image 1; Giá điện; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); multiply(#4; 3.5); divide(#5; 100); table_average(Table 1; Tỷ trọng Chi phí điện/GVHB; none; none); multiply(#4; #7); divide(#8; 100); subtract(#9; #6)";"divide(1920; 1864)";False;True;1.0300429184549356
+e24d7dc4-55df-51d0-91ea-22f04eb4ee1e;"chart_sum(Image 3; VNIndex; none; none); chart_sum(Image 4; VNIndex; none; none); add(#0; #1)";"subtract(12.4; -3.6)";False;True;16.0
+c17a6aee-5e61-5902-9636-784a15cc8532;"table_average(Table 1; Tương đối; 1M; 12M)";"chart_average(Table 1; Change; none; none)";False;False;
+33017547-48e2-500d-9451-06b2441ab1d1;"chart_at(Image 1; Cổ phiếu; Dec-24; none); chart_at(Image 1; Cổ phiếu; Jan-25; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(64.7; 100)";False;True;0.647
+af7524c6-5e6e-554c-978b-32f19bf2c364;"chart_max(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2020; 11/2/2020)";"table_max(#1; 2020; none; none)";False;False;
+a573cd27-521f-59ba-ac20-dbeaeca396b5;"subtract(23.5; 2.1)";"table_average(Table 1; Công nghệ thông tin; none; none)";False;False;
+17deebd3-b46f-5ead-987d-218326e01bcd;"chart_max(Image 2; Nam Côn Sơn 2; none; none); chart_min(Image 2; Nam Côn Sơn 2; none; none); subtract(#0; #1)";"chart_max(Image 3; Nam Côn Sơn 2; none; none); chart_min(Image 3; Nam Côn Sơn 2; none; none); subtract(#0; #1)";False;False;
+5a3e25ed-019d-5506-9973-1dac72317fc9;"subtract(6; 3.6)";"subtract(6; 3.6)";True;True;2.4
+f58484f7-b57c-5e11-b659-0f8b48482df9;"subtract(69.4; 36)";"subtract(69.4; 36)";True;True;33.400000000000006
+31c60903-c8c2-5ac9-a1b7-86722d03ac00;"chart_at(Image 1; Index; SSB; none); chart_at(Image 1; Index; LPB; none); divide(#0; #1)";"divide(0.5; 0.4)";False;True;1.25
+26286d85-62c0-5ae6-89e7-5dd2f949b498;"subtract(10.9; -0.5)";"table_average(Table 2; NPATMI; none; 2023; 2024F)";False;False;
+a09d5735-8ea4-59a2-a208-c1aaa471dedf;"chart_max(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2022; 11/2/2022); chart_min(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2022; 11/2/2022); subtract(#0; #1)";"subtract(#1; #0)";False;True;LỖI: Reference #1 not found in results
+53ee3099-ed36-50be-a8af-5c06b827f9ba;"chart_at(Image 3; Ấn Độ; Jan-25; none); chart_at(Image 3; Thái Lan; Jan-25; none); subtract(#0; #1)";"table_sum(Table 1; India; Jan-25; none); table_sum(Table 1; Thailand; Jan-25; none); subtract(#0; #1)";False;False;
+e9e428c0-ed05-58a9-a959-a21762ee77c0;"chart_at(Image 1; Doanh thu; 2026; none); chart_at(Image 1; Biên EBITDA; 2026; none); multiply(#0; #1); divide(#2; 100); chart_at(Image 4; Nợ/ EBITDA; 2026; none); multiply(#3; #4)";"divide(1224; 11.61); multiply(#0; 100); divide(#1; 0.18)";False;True;58570.19810508183
+ebe9aa65-55be-58ca-ab9c-c9162488d824;"chart_at(Image 2; Cửu Long; 2022; none); chart_at(Image 2; Nam Côn Sơn 1; 2022; none); add(#0; #1); chart_at(Image 2; Nam Côn Sơn 2; 2022; none); add(#2; #3); chart_at(Image 2; PM3; 2022; none); add(#4; #5); chart_at(Image 3; Khí khô (bao gồm LNG) - GAS; 2022; none); multiply(#6; 1000); divide(#7; #8)";"chart_average(Image 2; Cổ phiếu khí; 2022; none; none";False;False;
+921dc32d-c40f-5e33-89f2-72adb3e61f24;"chart_at(Image 6; GTGD ròng NĐTNN; HPG; none); chart_at(Image 6; GTGD ròng NĐTNN; PVD; none); chart_at(Image 6; GTGD ròng NĐTNN; DGC; none); add(#0; #1); add(#3; #2)";"add(600; 400); add(#0; 300)";False;True;1300.0
+ba0292f4-30a0-5a33-883e-7c96eee77430;"chart_max(Image 1; 2023; Jan; Dec)";"chart_max(#1; Tăng trưởng huy động theo tháng; none; Jan-23; none)";False;False;
+10876bf5-a133-5d02-a563-fd29992fcccb;"chart_min(Image 4; Nợ/ Vốn chủ sở hữu; 2022; 2026)";"chart_min(Image 4; Nợ/Vốn chủ sở hữu; 2022; 2026)";False;False;
+6b0cfb1c-18fb-56a9-a9fd-75978f962cd3;"chart_at(Image 1; Giá điện; 2009; none); chart_at(Image 1; Giá điện; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(1920; 100); divide(#0; 100); multiply(#1; 100)";False;True;1820.0
+713a60fb-050c-5404-8a2e-aad42a43292f;"chart_at(Image 1; Doanh thu; 2022; none); chart_at(Image 1; Doanh thu; 2026; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(1224; 332.6); divide(#0; 332.6); multiply(#1; 100)";False;True;268.00962116656643
+1329c396-d5e8-5b57-bcf9-1f5a4f9a70c6;"chart_average(Image 3; VNIndex; none; none)";"chart_average(Image 1; VNIndex; none; none)";False;False;
+92b845ce-5fc5-5e46-a539-1b7c48f40486;"chart_at(Image 1; T12; Bán lẻ; none); subtract(#0; 14.2)";"divide(11.4; 100)";False;True;0.114
+07893d87-be07-5109-b499-9fff1e5283dc;"divide(22; 100); add(3.47; #0)";"subtract(3.62; 3.47)";False;True;0.1499999999999999
+5eee0e5f-2e41-5c46-bec5-9b0000cde084;"divide(2.4; 100); divide(12.1; #0)";"divide(50; 2.4); multiply(#0; 100)";False;True;2083.3333333333335
+2fa6c18b-8d9d-5f37-a4b0-7eaaa852622b;"chart_at(Image 2; Cửu Long; 2022; none); chart_at(Image 2; Nam Côn Sơn 1; 2022; none); add(#0; #1); chart_at(Image 2; Nam Côn Sơn 2; 2022; none); add(#2; #3); chart_at(Image 2; PM3; 2022; none); add(#4; #5); chart_at(Image 3; Khí khô (bao gồm LNG) - GAS; 2022; none); divide(#7; 1000); subtract(#6; #8)";"chart_sum(Table 1; Tổng sản lượng khí; none; 2022; none)";False;False;
+20166cec-fd05-5886-8ea7-af0f875d8c50;"chart_at(Image 1; Giá dầu Brent; 1/2/2024; none); chart_at(Image 1; Giá dầu Brent; 11/2/2024; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 1; Brent; 1/2/2024; none); chart_at(Image 1; Brent; 11/2/2024; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+8a40402b-410b-5163-b4bf-913c3960929c;"subtract(20.08; 12.5)";"divide(12.5; 20)";False;True;0.625
+2b29cd19-b308-5b1c-aa23-88544992c084;"divide(24.2; 14.8)";"divide(#1; #3)";False;True;LỖI: Reference #1 not found in results
+169b8dba-e60b-5e77-8bac-42fe72ee90cd;"subtract(23.02; 13.31); divide(#0; 13.31); multiply(#1; 100)";"subtract(37.6; 15); divide(#0; 15); multiply(#1; 100)";False;True;150.66666666666669
+867bd255-373b-5257-9a4c-2ce02fd39f8a;"chart_at(Image 1; NII; 3Q24 (TTM); none); chart_at(Image 1; NII; 2023; none); greater(#0; #1)";"chart_max(Image 1; NII; none; 2023; none); chart_at(Image 1; NII; none; 3Q24 (TTM); none); greater(#0; #1)";False;False;
+7ef22981-672f-539c-aeaa-7eaa51284ab9;"divide(4; 2.7)";"divide(400; 3900)";False;True;0.10256410256410256
+03e2cefb-0caf-53a1-9469-ae6d3fc3529f;"chart_sum(Image 1; VNIndex; 31/10/2022; 31/10/2022); chart_sum(Image 1; VNIndex; 30/9/2022; 30/9/2022); subtract(#0; #1); divide(#2; #1); multiply(#3; 100); subtract(-9.2; #4)";"subtract(-9.2; -9.1)";False;True;-0.09999999999999964
+fdafa460-e8e7-5d37-8434-b4ed171faca0;"chart_average(Image 1; Weight in FTSE EM Index; Thailand; Philippines)";"chart_average(Image 1; none; none; none)";False;False;
+c5ce9fbb-1648-5e24-8e23-2f46a264ebeb;"chart_average(Image 1; VNIndex; Apr-23; Jun-23)";"chart_average(Image 1; VNIndex; none; Apr-23; Jun-23; none)";False;False;
+222e3efe-0bbc-5bbb-aade-879ee5adbffb;"table_sum(Table 1; Vốn hóa (tỷ); VCB; CTG)";"chart_at(Image 1; Vốn hóa thị trường; 3Q24; none; none)";False;False;
+4d4d4f25-caec-5470-91e5-5dcd827ece7b;"table_max(Table 1; Tỷ trọng Chi phí điện/GVHB; none; none); table_min(Table 1; Tỷ trọng Chi phí điện/GVHB; none; none); subtract(#0; #1)";"table_max(Table 1; Chi phí điện trên GVHB; none; none); table_min(Table 1; Chi phí điện trên GVHB; none; none); subtract(#0; #1)";False;False;
+d566c99c-6738-5b56-a010-786236282bf0;"divide(24700; 22100)";"divide(100; 100)";False;True;1.0
+798be3b6-202e-57ab-9b9b-21bcbf875cd0;"chart_at(Image 2; VNIndex; T7/2022; none); chart_at(Image 2; VNIndex; T8/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(14; 13.4)";False;True;1.044776119402985
+9491e29c-d9bd-59c3-9e32-d907c6331128;"subtract(14.1; 2.1)";"subtract(14.1; 2.1)";True;True;12.0
+7dfa2845-f9a0-5f55-8437-64251e01a506;"chart_at(Image 2; Cổ phiếu; Jan-23; none); chart_at(Image 2; Cổ phiếu; Oct-23; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 4; Trụ Y - Lũy kế dòng vốn; Jan-23; none); chart_at(Image 4; Trụ Y - Lũy kế dòng vốn; Oct-23; none); divide(#1; #2); subtract(#3; 1); multiply(#4; 100)";False;False;
+300f6285-c3d4-5e9e-9942-56de9c0082ca;"subtract(16.0; 12.5)";"subtract(#1; #0)";False;True;LỖI: Reference #1 not found in results
+efde61b6-3875-51f1-85b2-618a7fd0578c;"chart_max(Image 1; Giá dầu Brent; 1/2/2024; 11/2/2024); chart_min(Image 1; Giá dầu Brent; 1/2/2024; 11/2/2024); subtract(#0; #1)";"chart_max(Image 1; Brent; none; Jan-24; Dec-24); chart_min(Image 1; Brent; none; Jan-24; Dec-24); subtract(#0; #1)";False;False;
+5836d71e-238a-513f-a689-e1b965210082;"table_average(Table 1; % thay đổi giá hiện tại so với ngày ra báo cáo; none; none)";"chart_average(Image 1; % thay đổi giá hiện tại so với ngày ra báo cáo; none; none)";False;False;
+a6e61bfc-ca92-587d-8f7d-c2a9fb10f94d;"divide(425; 4142)";"divide(425; 4142)";True;True;0.10260743602124578
+3d95c22e-79c3-56dd-8835-9d16841226c1;"chart_at(Image 1; Lê Viết Hải; Hình 1: Cơ cấu cổ đông; none); chart_at(Image 1; Liên quan Ông Lê Viết Hải; Hình 1: Cơ cấu cổ đông; none); add(#0; #1)";"add(21; 5)";False;True;26.0
+619fe5f8-cf61-5829-a683-72c429026f20;"greater(17.7; 16.4)";"greater(17.7; 16.4)";True;True;1.0
+b110f00a-d5d7-5b7c-a581-a8966ceac78e;"chart_at(Image 2; % +/-; VHM; none); subtract(#0; -13.4)";"divide(-7; -6)";False;True;1.1666666666666667
+b35ef64d-8f57-58f3-ae38-3da45c677795;"chart_at(Image 1; Weight in FTSE EM Index; Indonesia; none); chart_at(Image 1; Weight in FTSE EM Index; Turkey; none); chart_at(Image 1; Weight in FTSE EM Index; Kuwait; none); add(#0; #1); add(#3; #2); divide(#4; 3); add(2.28; 1.39); add(#6; 0.92); divide(#7; 3); subtract(#5; #8)";;False;False;
+ef4ec7da-bcae-55c8-8c53-2cb347ed5ed7;"divide(28.3; 100); multiply(45241; #0)";"divide(45241; 100); multiply(#0; 28.5); divide(#1; 100)";False;True;128.93685000000002
+a30c9a64-12f4-5f40-b405-0714326887f9;"chart_at(Image 3; EM Equity; Oct-22; none); chart_at(Image 3; EM Equity; Oct-23; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"divide(-100; 100)";False;True;-1.0
+7322474a-92ff-5c09-9b4e-41ff58e72433;"table_max(Table 1; Tăng trưởng NPATMI@2024F; Hàng tiêu dùng không thiết yếu; Dịch vụ tiện ích); table_min(Table 1; Tăng trưởng NPATMI@2024F; Hàng tiêu dùng không thiết yếu; Dịch vụ tiện ích); subtract(#0; #1)";"subtract(#1; #2)";False;True;LỖI: Reference #1 not found in results
+cee418df-bf3e-58bd-af67-4701af20b4bb;"table_average(Table 2; Tăng trưởng NPATMI@2024F; DBD; TRA)";"table_average(Table 2#NPATMI (svck); 4)";False;False;
+7ae928fc-e97f-545d-8bf4-bd35bea7be9a;"table_average(Table 1; Dividend yield (%); FY21; FY26F)";"chart_average(Image 1; Cổ tức EPS (VNĐ)*; none; none)";False;False;
+7fbaa616-e621-55cf-b49b-68e77e052e39;"chart_max(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2018; 9/2/2023); chart_min(Image 1; P/E ước tính cho năm tài chính hiện tại; 1/2/2018; 9/2/2023); subtract(#0; #1)";"chart_max(Image 1; P/E; none; 12/2018; 1/9/2023); chart_min(Image 1; P/E; none; 12/2018; 1/9/2023); subtract(#0; #1)";False;False;
+bd870cf6-8c39-5ed1-82e9-3c9c2608d3a9;"subtract(-13.3; -11.1)";"subtract(-13.3; 11.5)";False;True;-24.8
+5a9e813f-37fb-5733-8f9f-49cc752f7a49;"divide(36.15; 8.08)";"divide(43.23; 30)";False;True;1.4409999999999998
+1cd59ae1-2b0b-5ed1-9c0b-4c0d154fcaf0;"divide(496.5; 178.6)";"divide(1.8; 1.3)";False;True;1.3846153846153846
+7a497d6b-de1a-5fe5-ab48-4f21cb095bf8;"chart_at(Image 1; Giá điện; 2009; none); chart_at(Image 1; Giá điện; 2019; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); divide(#4; 10); subtract(10; #5)";"divide(10; 100); multiply(#0; 100)";False;True;10.0
+42412944-92f5-592a-a2da-988433d012f4;"table_min(Table 1; P/E@2024F;  none;  none)";"table_min(Table 1; P/E 2024 (x); none; none)";False;False;
+5f87ca46-3542-5ee6-b915-609d6de00ce5;"table_average(Table 2; % Tăng giá@1 năm; none; none)";"chart_average(Image 1; 100; none; none)";False;False;
+4006843d-3883-5d12-bb2f-35c32cce57d4;"chart_at(Image 1; Nhóm Y Tế; Jul-23; none); chart_at(Image 1; VNIndex; Jul-23; none); subtract(#0; #1)";"subtract(29; 12)";False;True;17.0
+eb61a9c5-dac8-5da2-8ac4-36d04539a3b8;"divide(46495; 1000); chart_at(Image 2; Phát triển (DM); Jan-25; none); divide(#0; #1); multiply(#2; 100)";"divide(46.5; 100)";False;True;0.465
+0a17b9f0-ee04-5a6b-9c1f-c2b4bd2594a2;"chart_average(Image 1; NII; 2019; 2023)";"table_average(Table 1; NII; none; none)";False;False;
+7c2ea565-7042-5a47-8be5-4a70ed91d672;"table_max(Table 1; Lãi gộp (Vbn); none; none); table_min(Table 1; Lãi gộp (Vbn); none; none); subtract(#0; #1)";"chart_max(Image 1; Lãi gộp; none; none); chart_min(Image 1; Lãi gộp; none; none); subtract(#0; #1)";False;False;
+b829a517-ff99-5746-a972-9f386ec2e0fb;"chart_at(Image 5; Lợi suất tài sản trung bình; 3Q24; none); chart_at(Image 5; Chi phí vốn trung bình; 3Q24; none); subtract(#0; #1)";"chart_at(Image 5; NIM - RHS; none; none); subtract(#0; none)";False;False;
+e47f0211-a1b6-508d-80a6-dbcef4e02232;"chart_max(Image 1; 2023; Jan; Dec); chart_min(Image 1; 2023; Jan; Dec); subtract(#0; #1)";"chart_max(Table 2; Tăng trưởng huy động theo tháng; none; none); chart_min(Table 2; Tăng trưởng huy động theo tháng; none; none); subtract(#0; #1)";False;False;
+963a03d5-01f5-53e3-ac70-d16843b82b57;"subtract(6; 16)";"subtract(6; 8.4)";False;True;-2.4000000000000004
+4ceb6838-9bf0-5213-b537-6c600ccd2763;"divide(417; 18610)";"divide(417; 100); divide(#0; #2)";False;True;LỖI: Reference #2 not found in results
+439f019d-18ee-5182-bf22-404eda962774;"greater(5.7; -2.1)";"table_average(Table 1; Tài chính; Q3/23; none); table_average(Table 1; Bất động sản; Q3/23; none); greater(#0; #1)";False;False;
+2a4f4298-b500-5af3-bc21-b1eee20640d5;"subtract(51.2; 30)";"subtract(30.5; 15.3)";False;True;15.2
+d43ed3ab-58b3-5388-bccb-5db7c6f98779;"table_max(Table 1; Vốn hóa (tỷ); none; none)";"table_max(Table 1; Vốn hóa; none; none)";False;False;
+c22ca584-8a9f-52f1-a85b-330c034513c8;"chart_average(Image 4; % +/-; none; none)";"table_average(Table 1; % +/-%; 100; none)";False;False;
+583adc96-a4b6-5124-8869-c5823958490e;"chart_sum(Image 7; GTGD ròng NĐTNN; VNM; VNM); multiply(1.5; 1000); divide(#0; #1)";"divide(#1; #0)";False;True;LỖI: Reference #1 not found in results
+bd7bef26-007a-5095-9e5b-0e1589272e5b;"chart_at(Image 3; Dầu khí - BSR; 2024E; none); chart_at(Image 3; Dầu khí - BSR; 2025; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(#4; 15)";"subtract(15; 73)";False;True;-58.0
+efbe8932-40c7-5250-ae6e-eb6cc21d96e3;"chart_at(Image 1; NII; 2023; none); chart_at(Image 1; NSI; 2023; none); add(#0; #1); chart_at(Image 1; NOI; 2023; none); add(#2; #3); chart_at(Image 1; OPEX; 2023; none); chart_at(Image 1; Prov.; 2023; none); add(#5; #6); subtract(#4; #7)";"chart_sum(Table 1; OPEX; none; none); chart_sum(Table 1; NII; 3Q24 (TTM); none); chart_sum(Table 1; NSI; 3Q24 (TTM); none); chart_sum(Table 1; NOI; 3Q24 (TTM); none); subtract(#3; #1); subtract(#4; #2); subtract(#5; #3); subtract(#6; #4)";False;False;
+3c40b517-d714-5c5e-bfe3-f91211368ee3;"chart_max(Image 1; VNIndex; none; none); chart_min(Image 1; VNIndex; none; none); subtract(#0; #1)";"chart_max(Image 1; VNIndex; none; none); chart_min(Image 1; VNIndex; none; none); subtract(#0; #1)";True;False;
+827e6005-5e9e-5c95-ae9a-1baa9d0d7e0e;"table_average(Table 1; Tăng trưởng NPATMI@2025F; none; none)";"chart_average(Image 1; 2025F; none; none)";False;False;
+3c46d896-8490-5e9c-9169-cb4d3de9feef;"add(69.4; 42.9); add(#0; 37.6); add(#1; 36); divide(#2; 4); add(34.41; 25.25); add(#4; 23.02); add(#5; 15.02); divide(#6; 4); subtract(#3; #7)";"chart_average(Table 1; Dịch vụ tài chính; none; none); chart_average(Table 1; Tài nguyên Cơ bản; none; none); chart_average(Table 1; Hóa chất; none; none); chart_average(Table 1; Dầu khí; none; none); subtract(#0; #1); subtract(#2; #3); subtract(#4; #5)";False;False;
+0b5c5933-6f47-5baf-8b74-dea4cea10aae;"add(6.15; 6.1); divide(#0; 2); chart_at(Image 1; VNIndex; 29/7/2022; none); chart_at(Image 1; VNIndex; 31/8/2022; none); subtract(#3; #2); divide(#4; #2); multiply(#5; 100); subtract(#1; #6)";"chart_average(Table 2#Tăng trưởng từ 29/7#none; 2021; 2021; none)";False;False;
+cbdf2226-d316-58f6-8248-af53c906b30f;"chart_at(Image 1; T12; Bán lẻ; none); chart_at(Image 1; T12; Thực phẩm và đồ uống; none); add(#0; #1); chart_at(Image 1; T12; Du lịch và Giải trí; none); add(#2; #3); divide(#4; 3); add(14.2; 9.03); add(#6; 14.44); divide(#7; 3); subtract(#5; #8)";"subtract(-5.2; -11.4); divide(#0; 100)";False;True;0.062
+970a46c7-0fbb-5106-bcc7-06a6721741de;"chart_average(Image 2; Tăng trưởng tín dụng; 2017; 2023)";"table_average(Table 2; Tăng trưởng tín dụng và huy động; none; 2017; 2023)";False;False;
+a864c036-da82-55c7-a66f-95c656a8ba8d;"divide(2893; 417)";"divide(2893; 417)";True;True;6.937649880095924
+17ca622e-1bdf-5da4-b2ed-749d84c88dd8;"subtract(25.6; -21)";"subtract(19.8; 21.0)";False;True;-1.1999999999999993
+0a2b115b-251c-576b-ad21-06c081550eaa;"table_average(Table 2; VN30; T8/2022; T8/2022); table_average(Table 2; VNMidcap; T8/2022; T8/2022); table_average(Table 2; VNSmallcap; T8/2022; T8/2022); add(#0; #1); add(#3; #2); divide(#4; 3)";"table_average(Table 1; VN30; none; VNSmallcap)";False;False;
+f18ebc7f-32d8-532f-a621-d6041e1072cc;"chart_max(Image 1; Prov.; none; none); chart_min(Image 1; Prov.; none; none); subtract(#0; #1)";"chart_max(Table 1#Prov; none; none; none); chart_min(Table 1#Prov; none; none; none); subtract(#0; #1)";False;False;
+bbe8da9a-a189-5ab8-8a92-b7442e7f305c;"subtract(66; 46.5)";"subtract(64.7; 46.5)";False;True;18.200000000000003
+ad73db55-32ee-5334-8e73-d7e95348801e;"subtract(82500; 78000)";"subtract(100; 80); subtract(100; 80); subtract(#0; #1)";False;True;0.0
+9729849a-5c86-5f16-b845-44eea1a7c438;"multiply(425; 0.64)";"divide(425; 64); multiply(#0; 2875)";False;True;19091.796875
+426be3a5-607b-5f0a-b456-7373f6cad449;"chart_at(Image 1; DPG VN; Jun 24; none); chart_at(Image 1; VN-Index; Jun 24; none); subtract(#0; #1)";"chart_at(Image 1; Jun 24; VN-Index; none; 100); subtract(#0; 100); divide(#1; 100)";False;False;
+9c561eeb-7e02-591f-9cf8-20233d1cc8f7;"subtract(10.6; 10.6)";"subtract(10.6; 10.6)";True;True;0.0
+5b6284a2-7c74-5017-bd61-b39c8a80b45c;"table_sum(Table 1; Nova Consumer; 2023; 2023); table_sum(Table 1; AFF(Mặt Trời Mọc); 2023; 2023); table_sum(Table 1; Công ty FMCG; 2023; 2023); add(#0; #1); add(#3; #2)";"add(11000; 1000); add(#0; 100); add(#1; 1000)";False;True;13100.0
+b4b323f9-d82a-51e6-91b5-3cfddd7f4d92;"chart_max(Image 1; Khác; none; none); chart_min(Image 1; PYN Elite Fund; none; none); subtract(#0; #1)";"subtract(59; 5)";False;True;54.0
+13cc59d1-174a-5f9b-9d93-6bb90c262ee1;"subtract(14.4; 14.9); divide(#0; 14.9); multiply(#1; 100)";"subtract(14.4; 14.9); divide(#0; 14.9); multiply(#1; 100)";True;True;-3.3557046979865772
+46c4f0af-27f5-50e7-b25b-a9bee97bd9ad;"chart_max(Image 1; VN-Index; none; none); chart_min(Image 1; VN-Index; none; none); subtract(#0; #1)";"chart_max(Image 1; VN-Index; Jun 22; none); chart_min(Image 1; VN-Index; Jun 22; none); subtract(#0; #1)";False;False;
+582d1c49-ba6e-57e1-ac6c-7b2c646ee89c;"add(5.7; 6); add(#0; 7); add(#1; 6.7); divide(#2; 4)";"table_average(Table 1; Cổ phiếu ưa thích; 12 tháng; none; none)";False;False;
+d2783f93-e1b0-59aa-9b1e-b1440615beb1;"subtract(-22.4; -9.2)";"subtract(-22.4; 1027.94)";False;True;-1050.3400000000001
+af382dc9-8700-5567-86ea-483e6c51e919;"table_max(Table 1; NPL (%); VCB; CTG); table_min(Table 1; NPL (%); VCB; CTG); subtract(#0; #1)";"chart_max(Image 1; NPL; none; CTG; BID; VCB); chart_min(Image 1; NPL; none; CTG; BID; VCB); subtract(#0; #1)";False;False;
+3f548843-c848-50cd-8b98-48bb9e1cc198;"divide(10.8; 12.2)";"chart_divide(Chart 2#P/E 2024#none#P/E 2023#Bất động sản; Chart 2#P/E 2023#none#P/E 2023#Bất động sản)";False;False;
+db168906-e1e6-52c4-9933-eb1aa9750c02;"chart_at(Image 1; NII; 2023; none); chart_at(Image 1; NII; 3Q24 (TTM); none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(14.1; #4)";"subtract(14.1; 100); divide(#0; 100); multiply(#1; 15.8)";False;True;-13.572200000000002
+54acedeb-33d0-5c30-b51b-c8318c6f44ba;"greater(14.4; 6)";"multiply(14.4; 6)";False;True;86.4
+b9fd03b8-ce68-5251-89b1-24f9ff6d1259;"subtract(82500; 88900)";"subtract(100; 97.5)";False;True;2.5
+9bffa4c6-f92f-5987-b5fd-d29e201807dd;"subtract(277; 244)";"subtract(277; 244)";True;True;33.0
+64c63430-7ee9-50e2-930f-25c4f4da3bc4;"subtract(15.3; 15.3)";"subtract(15.3; -5.6)";False;True;20.9
+648c0465-0a34-5ef8-bcf5-57759f395717;"subtract(0.175; 0.105)";"subtract(0.175; 0.105)";True;True;70.0
+f5e10586-f916-5ec2-8b36-12532321c97a;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 9/2/2023; none); chart_at(Image 1; TB 5 năm; 9/2/2023; none); subtract(#0; #1)";"chart_average(Image 1; P/E; none; 2023; none; 2024); chart_at(Image 1; P/E; none; 2024; Jan; none); subtract(#1; #0)";False;False;
+1f32ada5-2e99-5cc3-9df4-0d4f460f432c;"multiply(1; 1000); chart_at(Image 2; Tiền tệ; Oct-23; none); subtract(#0; #1)";"subtract(100; 10)";False;True;90.0
+ba360249-e5c9-5114-b230-6ce0db2a2546;"greater(37.3; 37)";"table_max(Table 1; DCM; none; none); greater(#0; 100.0)";False;False;
+94d3b55e-4cf1-503d-9baa-18b08d9c9d10;"chart_at(Image 3; Dầu khí - BSR; 2025; none); chart_at(Image 3; Dầu khí - BSR; 2023; none); subtract(#0; #1); divide(#2; #1); multiply(#3; 100)";"divide(115; 100)";False;True;1.15
+ff18af6d-67a9-5b8a-959c-8bd805aaa462;"subtract(25.8; 18); divide(#0; 18); multiply(#1; 100)";"divide(40; 35); subtract(#0; 1); multiply(#1; 100)";False;True;14.28571428571428
+0e5bd9e6-e40b-5c8d-b0aa-b9846b26c91f;"table_max(Table 1; VN-Index; T1/2022; T10/2022); table_min(Table 1; VN-Index; T1/2022; T10/2022); subtract(#0; #1)";"chart_max(Image 1; Tỷ lệ thay đổi theo tháng; none; none); chart_min(Image 1; Tỷ lệ thay đổi theo tháng; none; none); subtract(#0; #1)";False;False;
+01fcbeb9-eb77-557c-872c-9f20a514320f;"chart_at(Image 1; VNIndex; 31/8/2022; none); chart_at(Image 1; VNIndex; 29/7/2022; none); subtract(#0; #1); divide(#2; #1); multiply(#3; 100)";"subtract(1280.51; 1200); divide(#0; 1200); multiply(#1; 100)";False;True;6.7091666666666665
+96c33c73-e974-52ef-8159-ddd20aa624f5;"divide(211; 4142)";"divide(211; 4142)";True;True;0.050941574118783195
+ea808364-14ea-5829-a796-63623e24f15e;"subtract(1.0; 0.7); divide(#0; 0.7); multiply(#1; 100)";"divide(100; 0)";False;True;
+38280bd2-b4ca-5e3d-ba8c-9f4cee95862d;"subtract(52102; 44733)";"subtract(52.102; 44.733)";False;True;7369.0
+ae969e3e-5c2e-55d7-b4c9-ddaaa2e3f410;"chart_at(Image 1; OPEX; 2022; none); chart_at(Image 1; OPEX; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_average(Table 1; OPEX; 2022; none); chart_average(Table 1; OPEX; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+a9f5ce5a-1905-5dbf-aed4-72d75dd2a555;"divide(6; 3.6)";"divide(6; 3.6)";True;True;1.6666666666666665
+1aaa76a8-7f57-5893-8727-d8ebef8d61b5;"subtract(11200; 8400); divide(#0; 8400); multiply(#1; 100)";"subtract(11200; 8400)";False;True;2800.0
+f727669a-4bdd-50af-8ef8-b4023f42f9c9;"divide(500; 1000); multiply(#0; 100)";"divide(2000; 100)";False;True;20.0
+dda3614b-843a-543c-8f9d-dfc1e19c1b7b;"table_min(Table 1; T9/2022; none; none)";"table_min(Table 1; Biến động % trong tháng; none; none)";False;False;
+9f40e599-82ae-5246-b2bb-838bad6f350e;"divide(150640; 4798)";"divide(150.64; 100)";False;True;1.5064
+543a1ab6-5209-585b-9e14-604f8dc57e64;"add(43.5; 44.6); divide(#0; 2); subtract(44; #1)";"table_average(Table 1; PLX; none; 100; 100)";False;False;
+5f54a119-afff-5d80-8aae-96af849bab76;"chart_average(Image 1; Index; none; none)";"divide(0.5; 100)";False;True;0.005
+03c489f4-728f-556a-8f3c-f4061be9c2cb;"subtract(15.3; -5.6)";"divide(15.3; -5.6)";False;True;-2.7321428571428577
+5112e3c2-c2d6-5908-925b-29b99d18fb65;"chart_at(Image 1; VNIndex; 30/9/2022; none); chart_at(Image 1; VNIndex; 31/10/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(100; 1027.94); divide(#0; 1000); multiply(#1; 100)";False;True;-92.79400000000001
+570e9b5d-37fb-5afe-bdd6-59a070ed28f0;"chart_min(Image 4; VNIndex; none; none)";"table_min(Table 2; Điểm tác động; none; VNIndex)";False;False;
+e84b465f-769b-5c49-afd0-ff4ef81cad23;"chart_at(Image 5; Giá trị mua/bán ròng; 9/5; none); chart_at(Image 5; Giá trị mua/bán ròng; 9/12; none); chart_at(Image 5; Giá trị mua/bán ròng; 9/19; none); chart_at(Image 5; Giá trị mua/bán ròng; 9/26; none); add(#0; #1); add(#4; #2); add(#5; #3)";"chart_sum(Image 5; GTGD ròng NĐTNN; none; none)";False;False;
+e8d0c58d-5e8a-5011-bb1a-2147af343b9b;"chart_at(Image 1; NII; 3Q24 (TTM); none); chart_at(Image 1; OPEX; 3Q24 (TTM); none); divide(#0; #1)";"divide(158; 158)";False;True;1.0
+9ba29d9a-08ec-5a58-81f4-4599b83842f9;"table_sum(Table 1; EPS 12T; VCB; CTG)";"table_average(Table 1; EPS 12T; none; none)";False;False;
+5298a46e-53af-5a2c-9b8d-e38a46797825;"chart_sum(Image 7; GTGD ròng NĐTNN; none; none)";"table_sum(Table 6; GTGD ròng NDTNN; none; none)";False;False;
+dbe4e294-56e9-51ea-baf0-b0d195001de4;"table_sum(Table 3; Lợi nhuận ròng; 2022; 2024F)";"chart_sum(#0; LNR; none; 2022; 2024F)";False;False;
+c3536c58-9312-526e-bda9-2872841ea97b;"table_max(Table 1; Giá mục tiêu (đồng)@Trong 1 năm; none; none)";"table_max(Table 1; none; Giá mục tiêu (VND/CP); none)";False;False;
+78df809f-a379-501a-a4b7-8bf20e611227;"chart_average(Image 2; ROA; 2022; 2026)";"chart_average(Image 2; ROA; 2022; 2026)";True;False;
+ffa0ab78-f342-553f-a2f7-1c0f25831ee0;"add(45; 33); add(#0; 20)";"add(50; 45); add(#0; 10)";False;True;105.0
+26e337d3-ccc2-5a00-94b5-479f0d0ac11c;"table_max(Table 1; Thay đổi giá vốn hàng bán (GVHB) sau khi tăng giá điện 3%; none; none); table_min(Table 1; Thay đổi giá vốn hàng bán (GVHB) sau khi tăng giá điện 3%; none; none); subtract(#0; #1)";"table_max(Table 1; %GVHB; none; Giày; Thép); table_min(Table 1; %GVHB; none; Giày; Thép); subtract(#0; #1)";False;False;
+73d1865d-8165-5c5b-8eea-9cd48b0ddf3c;"subtract(61880; 52618); divide(#0; 52618); multiply(#1; 100)";"subtract(61880; 59350); divide(#0; 59350); multiply(#1; 100)";False;True;4.26284751474305
+98c4dda8-3d15-5945-b21d-d742575d0f51;"table_average(Table 1; Vietnam (ƯT); Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF)";"table_average(Table 1; Tỷ trọng (%); none; none)";False;False;
+2b769b31-01a0-56d3-b2e8-6d725cca86fc;"table_max(Table 1; Tuyệt đối; 1M; 12M); table_min(Table 1; Tuyệt đối; 1M; 12M); subtract(#0; #1)";"chart_max(Table 1; Change; none; none); chart_min(Table 1; Change; none; none); subtract(#0; #1)";False;False;
+83f22f63-3439-5a46-b513-882a75a4cc76;"chart_sum(Image 1; Index; none; none); chart_sum(Image 2; Index; none; none); add(#0; #1)";"multiply(0.5; -7)";False;True;-3.5
+87a7802f-f47e-50eb-9aef-30ff9489502e;"subtract(2.5; 1.7)";"subtract(2.5; 1.7)";True;True;0.8
+cfc7c28b-208b-5afc-97f0-3900c75c80b1;"greater(1.989; 1.703)";greater(Table 1#Taiwan#none);False;True;
+35f534be-c810-506b-84c2-639aa9e525af;"divide(88.7; 61.5)";"table_divide(#1; 100)";False;False;
+85621d0b-995f-563d-8128-ea0e650b2373;"add(881; 694); add(#0; 364); add(#1; 354); add(#2; 325); add(#3; 255); add(#4; 239); add(#5; 214)";"table_sum(Table 6; GTGD ròng NDTNN; none; VNM; none)";False;False;
+7899eac3-f8ee-5884-88c8-5eef80673dac;"add(9.5; 22.6); add(#0; 17.7); divide(#1; 3)";"add(9.5; 22.6); add(#0; 17.7); divide(#1; 3)";True;True;16.599999999999998
+8ef58221-ea1c-5203-b942-816e6dd98690;"chart_at(Image 1; Nhóm Y Tế; Nov-23; none); chart_at(Image 1; VNIndex; Nov-23; none); subtract(#0; #1)";"subtract(29; 12)";False;True;17.0
+946992bf-c5ca-50cf-a341-f1808f0bea54;"chart_at(Image 2; ROE; 2026; none); chart_at(Image 2; ROA; 2026; none); subtract(#0; #1)";"subtract(13.6; 12.4)";False;True;1.1999999999999993
+01277405-12bc-5d63-a98f-241f5f156577;"chart_at(Image 1; NOI; 3Q24 (TTM); none); chart_at(Image 1; NOI; 2023; none); greater(#0; #1)";"greater(53; 52)";False;True;1.0
+c6122971-780d-562f-8fa4-43a6933013e0;"subtract(1835; 1402); divide(#0; 1402); multiply(#1; 100)";"divide(37387; 33554)";False;True;1.1142337724265363
+70a9e9cc-5dfd-5ead-a16c-2e7d50879bca;"chart_at(Image 1; Nhóm Y Tế; Jun-23; none); subtract(#0; 29)";"chart_average(Image 1; none; none; none)";False;False;
+95866f50-fc97-51c1-9bef-0dba476ada95;"chart_at(Image 2; Cổ phiếu; Oct-23; none); chart_at(Image 2; Trái phiếu; Oct-23; none); chart_at(Image 2; Tiền tệ; Oct-23; none); add(#0; #1); add(#3; #2)";"chart_total(Table 4; Dòng vốn lũy kế từ đầu năm; Oct-23; Oct-23)";False;False;
+5726e52f-00cc-52d5-b27d-1e1162086cc2;"chart_at(Image 1; DPG VN; Mar 24; none); chart_at(Image 1; VN-Index; Mar 24; none); greater(#0; #1)";"greater(Table 2@Mar 24; Table 2@VN-Index)";False;True;
+cc50fda9-20ae-5e1b-8249-204ae462dfeb;"add(69.4; 42.9); add(#0; 37.6); add(#1; 36); add(#2; 43.2); divide(#3; 5); add(11.4; -4.5); add(#5; -5.2); divide(#6; 3); subtract(#4; #7)";"divide(69.4; 100); divide(43.2; 100); divide(37.6; 100); divide(36; 100); divide(43.2; 100); add(#0; #1); add(#2; #3); add(#4; #5); add(#6; #7); divide(83.8; 5); divide(7.3; 3); subtract(#9; #10)";False;True;14.326666666666664
+7d088730-dd28-56f3-a938-20f6f3e69498;"table_max(Table 1; Năm 2022; Tài chính; Y tế); table_min(Table 1; Năm 2022; Tài chính; Y tế); subtract(#0; #1)";"table_max(Table 1; Lợi nhuận lũy kế từ đầu năm; none; none); table_min(Table 1; Lợi nhuận lũy kế từ đầu năm; none; none); subtract(#0; #1)";False;False;
+4de3f754-d893-571d-86af-c874c05ac836;"add(317.4; 20.6); greater(565.8; #0)";"divide(1.7; 2.5)";False;True;0.6799999999999999
+3b60d761-8dd7-5be3-bcb5-edb83266029d;"chart_at(Image 2; ROE; 2025; none); chart_at(Image 2; ROA; 2025; none); subtract(#0; #1)";"subtract(7.14; 6.65)";False;True;0.4899999999999993
+44fb96f7-457f-54af-8f0f-edaa98af36c8;"chart_at(Image 13; Kinh doanh ngoại hối; 9M24; none); chart_at(Image 13; Chứng khoán đầu tư; 9M24; none); add(#0; #1)";"add(24; 7)";False;True;31.0
+452c4562-24b6-59b3-b79d-55a527d5f121;"table_average(Table 1; US; Aug-23; Oct-23)";"chart_average(Table 1; DM Equity; Aug-23; Oct-23; none)";False;False;
+bd6ee8ee-935d-51b5-901a-f82ad0653bcb;"chart_max(Image 1; T12; none; none)";"chart_max(Image 1; T12; none; none)";True;False;
+c787fa68-0742-5e59-91cb-5bec6f27bd77;"chart_at(Image 1; VNIndex; 29/7/2022; none); chart_at(Image 1; VNIndex; 31/8/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(#4; 6.1)";"subtract(1280.51; 1200); divide(#0; 100)";False;True;0.8050999999999999
+be9da4e2-31c6-5322-b71a-ff2271cd4f73;"chart_at(Image 1; Trái phiếu; Dec-24; none); chart_at(Image 1; Trái phiếu; Jan-25; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"multiply(67.2; 64.7); divide(#0; 100)";False;True;43.4784
+da6c7685-ffa5-5847-aa25-2d0815a8f8cc;"subtract(2113; 1835); divide(#0; 1835); multiply(#1; 100)";"subtract(114; 100); divide(#0; 100)";False;True;0.14
+b8488d06-8871-58f6-8b36-464f78cb0384;"subtract(-10.9; -5.7)";"subtract(-7; -6)";False;True;-1.0
+106fa713-c784-582d-b05b-dc7901931320;"chart_at(Image 1; DPG VN; Jun 22; none); chart_at(Image 1; DPG VN; Jun 24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 1; Jun 22; none; 100); chart_at(Image 1; Jun 24; none; 100); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+53198c36-6daa-5653-a34f-b9e0cf2891fa;"divide(897; 2113)";"divide(#1; Table 3#Doanh thu thuần 2024F#none#none)";False;True;LỖI: Reference #1 not found in results
+88ae9b5f-eac4-5d3f-b635-cd6e2cd2ba8a;"chart_at(Image 1; Cổ phiếu; Sep-23; none); chart_at(Image 2; Cổ phiếu; Aug-23; none); chart_at(Image 2; Cổ phiếu; Sep-23; none); subtract(#2; #1); subtract(#0; #3)";"subtract(150; 150)";False;True;0.0
+5747b97e-10a7-5f02-87dc-b910b545c788;"table_max(Table 1; Ước tính dòng vốn (triệu USD); Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF)";"table_max(Table 1; Dòng vốn vào VN (triệu USD); none; none)";False;False;
+bc5630fa-3c65-5643-bc50-d4981ae0291c;"table_average(Table 1; India; Jan-23; Oct-23)";"table_average(Table 1; India; none; Oct-23)";False;False;
+d5e9007e-4905-5d8b-a119-9fb384b39287;"subtract(20; 15)";"subtract(20; 15)";True;True;5.0
+8151ba4d-ca53-544d-afa7-d8d688e9f85b;"chart_at(Image 2; Cửu Long; 2027F; none); chart_at(Image 2; Nam Côn Sơn 1; 2027F; none); chart_at(Image 2; Nam Côn Sơn 2; 2027F; none); chart_at(Image 2; PM3; 2027F; none); add(#0; #1); add(#2; #3); add(#4; #5)";"chart_sum(Image 3; Lưu lượng khí dự phóng năm 2027; none; none)";False;False;
+0b7b5473-0a3d-564a-9b96-29bfcd0a429b;"chart_at(Image 2; Cổ phiếu; Sep-23; none); chart_at(Image 2; Cổ phiếu; Oct-23; none); subtract(#1; #0); subtract(-9853; -7081); subtract(#2; #3)";"chart_at(Image 4; Dòng vốn lũy kế đầu năm 2023; Oct-23; none); chart_at(Image 4; Dòng vốn lũy kế đầu năm 2023; Sep-23; none); subtract(#0; #1); chart_total(#3; DM equity; EM equity)";False;False;
+7d91e260-af71-5018-8d57-ca7690a85187;"subtract(2875; 26)";"subtract(3450; 26)";False;True;3424.0
+2ae0ac58-eb7d-58b4-9453-821335a5c7e1;"add(13; 2.3)";"table_average(Table 2; Tỷ suất cổ tức theo năm; none; 2023; VEA; none); table_average(Table 2; Tỷ suất cổ tức theo năm; none; 2023; PNJ; none); add(#0; #1)";False;False;
+b7e011af-a5aa-5146-98e0-02ab520a283b;"chart_at(Image 2; Cửu Long; 2021; none); chart_at(Image 2; Nam Côn Sơn 1; 2021; none); add(#0; #1); chart_at(Image 2; Nam Côn Sơn 2; 2021; none); add(#2; #3); chart_at(Image 2; PM3; 2021; none); add(#4; #5); chart_at(Image 2; Cửu Long; 2030F; none); chart_at(Image 2; Nam Côn Sơn 1; 2030F; none); add(#7; #8); chart_at(Image 2; Nam Côn Sơn 2; 2030F; none); add(#9; #10); chart_at(Image 2; PM3; 2030F; none); add(#11; #12); subtract(#13; #6); divide(#14; #6); multiply(#15; 100)";"chart_average(Image 1; Cửu Long; 2021; 2030F)";False;False;
+3de72dc8-c9c0-58db-93c3-375c25ad601c;"table_average(Table 1; ROE (%); FY 2015; FY2020(F))";"chart_average(Image 1; ROE; none)";False;False;
+0ff675b0-f61e-59e7-bea2-16173d0a5661;"greater(2.8; -24.4)";"table_average(Table 1; Công nghệ thông tin; none; none)";False;False;
+c1158a75-9471-5259-85ef-71ad90450384;"table_max(Table 3; Lợi nhuận gộp; 2019; 2024F); table_min(Table 3; Lợi nhuận gộp; 2019; 2024F); subtract(#0; #1)";"chart_max(#1; none; 2019; 2024F); chart_min(#1; none; 2019; 2024F); subtract(#0; #1)";False;False;
+f8ff0b92-f471-5b41-b62b-6313e39b9ada;"add(-4; 4.7); add(#0; 14.5); divide(#1; 3)";"table_average(Table 2; Lợi nhuận sau thuế; none; 2024F; none; 100)";False;False;
+b4af41df-d7be-552e-8e0e-78bb664ad037;"chart_at(Image 1; Index; SSB; none); chart_at(Image 2; Index; VHM; none); add(#0; #1)";"multiply(0.5; -7)";False;True;-3.5
+398cd118-5eb8-56fd-a3ca-2b9c18df2353;"table_max(Table 1; Indonesia; Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF); table_min(Table 1; Indonesia; Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF); subtract(#0; #1)";"table_max(Table 1; Indonesia; none; none); table_min(Table 1; Indonesia; none; none); subtract(#0; #1)";False;False;
+53f8d20b-765f-58c5-ae1b-78364d9b6a2f;"table_max(Table 1; Hiện tại; none; none); table_min(Table 1; Hiện tại; none; none); subtract(#0; #1)";"chart_max(Table 3; P/E 2023; none; none); chart_min(Table 3; P/E 2023; none; none); divide(#0; #1)";False;False;
+e2563c70-ff3a-59bd-bc91-d197cb80dab7;"add(69.4; 42.9); add(#0; 37.6); add(#1; 36); add(#2; 43.2); divide(#3; 5)";"chart_average(Table 1; Dịch vụ tài chính; Công nghệ thông tin; Du lịch giải trí; Dầu khí)";False;False;
+64665cb1-161d-5f92-86b7-d823e02d5265;"chart_at(Image 1; Cổ phiếu; Jan-25; none); chart_at(Image 2; Phát triển (DM); Jan-25; none); subtract(#0; #1)";"chart_at(Image 1; Cổ phiếu; Jan-25; none); divide(#0; 100)";False;False;
+87f99443-66bf-5f05-9dde-5fde098f0d51;"subtract(17133.3; 8792.6); divide(#0; 8792.6); multiply(#1; 100)";"divide(100; 100); divide(100; 100); add(#0; #1)";False;True;2.0
+7d3057ca-9abd-5e3a-8151-6c3bf18f78ea;"chart_max(Image 1; 2023; none; none); chart_min(Image 1; 2023; none; none); subtract(#0; #1)";"table_max(Table 3; Tăng trưởng huy động từ đầu năm; none; none); table_min(Table 3; Tăng trưởng huy động từ đầu năm; none; none); subtract(#0; #1)";False;False;
+ab0086fc-52fc-5be2-b378-c3370d5e4697;"chart_at(Image 2; Phát triển (DM); Jan-25; none); chart_at(Image 2; Đang phát triển (EM); Jan-25; none); add(#0; #1); chart_at(Image 1; Cổ phiếu; Jan-25; none); subtract(#3; #2)";"subtract(64.7; -67.3)";False;True;132.0
+b4c64dd5-0920-54fb-99a0-d80d93f6a781;"chart_at(Image 1; Lê Viết Hải; none; none); chart_at(Image 1; Liên quan Ông Lê Viết Hải; none; none); add(#0; #1); subtract(21; #2)";"add(16; 5); subtract(21; #0)";False;True;0.0
+0bc098fa-ec2f-57c8-ac1a-7c803191ecb0;"greater(14; 9)";"divide(15; 10)";False;True;1.5
+4d00fac3-be0e-5a54-9c32-26a6db53e514;"table_max(Table 1; Vùng cắt lỗ; none; none); table_min(Table 1; Vùng cắt lỗ; none; none); subtract(#0; #1)";"chart_max(Image 1; Tỷ lệ phần trăm giảm giá trong 1 năm; none; none); chart_min(Image 1; Tỷ lệ phần trăm giảm giá trong 1 năm; none; none); subtract(#0; #1)";False;False;
+1999e81e-d014-57c1-9f99-c39742d68ea7;"subtract(88.7; 66)";"divide(#1; 100)";False;True;LỖI: Reference #1 not found in results
+19df9c1c-94e9-513c-bcd9-e3325cfcf037;"chart_max(Image 3; Index; none; none); chart_min(Image 4; Index; none; none); subtract(#0; #1)";"subtract(0; 1)";False;True;-1.0
+ca266b41-7619-551c-b7ff-ac09e7f6593e;"chart_at(Image 2; % +/-; VHM; none); subtract(#0; -10.9)";"divide(-7; 100)";False;True;-0.07
+7250382a-39e4-5acf-a1b6-9b8b47d68d70;"chart_at(Image 1; P/E ước tính cho năm tài chính hiện tại; 9/2/2023; none); chart_at(Image 1; P/E ước tính 2024; 11/2/2024; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 1; P/E; Jan-23; none); chart_at(Image 1; P/E; Nov-24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+9a519c89-49c8-5992-b12a-b6cd451b8a23;"chart_average(Image 9; Chi phí tín dụng; 1Q24; 3Q24); greater(#0; 1.28)";"chart_average(#1; Chi phí tín dụng; none; 1Q24; 3Q24); 9.0; subtract(#0; #1)";False;False;
+f877b53f-eed0-5787-a299-34de9ad61bd3;"subtract(69.4; 42.9)";"subtract(42.9; 37.6)";False;True;5.299999999999997
+2b68adc4-d9dc-5a8e-9a69-6e717ab2fd0e;"subtract(80; 60)";"subtract(80; 45)";False;True;35.0
+f2a9be01-bf01-50dd-ae6a-4cde845f9332;"chart_at(Image 5; NĐTNN Mua; 25/8/2022; none); chart_at(Image 5; NĐTNN Bán; 25/8/2022; none); subtract(#0; #1); chart_at(Image 5; Giá trị mua/bán ròng; 25/8/2022; none); subtract(#2; #3)";"subtract(0; 0); subtract(#1; #2)";False;True;LỖI: Reference #1 not found in results
+b4e3a3fb-f025-56a0-a1a0-ff41bc612255;"chart_at(Image 3; Index; NVL; none); chart_at(Image 4; Index; VCB; none); add(#0; #1)";"subtract(-14.0; -8.0)";False;True;-6.0
+a187bde5-2327-5d0a-873e-d846e45ac785;"divide(104.8; 103.9)";"divide(104.8; 103.9)";True;True;1.008662175168431
+84611c3f-23ac-5e0e-8aca-b74e9e765481;"subtract(16.7; 15.4)";"table_average(Table 3; P/E 2024; Công nghệ Thông tin; none); subtract(FPT#P/E 2024; #0)";False;False;
+6adc6bad-e270-572f-bb59-b5fb4034629b;"subtract(4142; 3450); divide(#0; 3450); multiply(#1; 100); subtract(#2; 20)";"subtract(20; 4)";False;True;16.0
+53711127-a34c-5e49-a319-23bd7dbf8a74;"table_sum(Table 1; Jan-25; China; Vietnam); chart_at(Image 2; Đang phát triển (EM); Jan-25; none); subtract(#1; #0)";"table_sum(Table 1; Dòng vốn đầu tư vào một số thị trường chính (tỷ USD); Trung Quốc; Đài Loan); table_sum(Table 1; Dòng vốn đầu tư vào một số thị trường chính (tỷ USD); Indonesia; Hàn Quốc); subtract(#0; #1)";False;False;
+0b1b1093-ac9c-506e-8380-f8f4b49c172f;"subtract(5800; 11400); divide(#0; 11400); multiply(#1; 100)";"subtract(5800; 11400); divide(#0; 11400); multiply(#1; 100)";True;True;-49.122807017543856
+9031d0bd-4724-5bb3-a54a-e6da0fbfa9a9;"divide(5800; 1717)";"divide(5800; 100); divide(#0; 18822)";False;True;0.003081500371905217
+a377ad50-b5ef-573c-b37a-7c295dce35f6;"chart_sum(Image 3; Cho vay trung và dài hạn; 1Q24; 3Q24)";"add(171; 179); add(#0; 179); add(#1; 399)";False;True;928.0
+2ca9a337-b7ca-53c6-9501-2ee145396493;"table_max(Table 2; ROE (%); 2021H; 2026F); table_min(Table 2; ROE (%); 2021H; 2026F); subtract(#0; #1)";"chart_max(#1; ROE; none; 2021H; 2026F); chart_min(#1; ROE; none; 2021H; 2026F); subtract(#0; #1)";False;False;
+d6ffe95d-93ad-54b5-b06c-27cfd58fd4bf;"chart_at(Image 2; VN30; T9/2022; none); chart_at(Image 2; VNIndex; T9/2022; none); divide(#0; #1)";"divide(11.59; 100)";False;True;0.1159
+8e8cab36-cbef-5c36-9e42-2ef03ee339bc;"greater(2022; 2200)";"greater(2200; 1786)";False;True;1.0
+6e899d6f-a5c4-5b1f-91c3-759852c9974e;"chart_at(Image 3; VNIndex; T7/2022; none); chart_at(Image 3; VNIndex; T9/2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_average(Image 3; VNIndex; Jul-22; none); chart_average(Image 3; VNIndex; Sep-22; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";False;False;
+713fcec6-809f-5148-a5c8-54aead79aee5;"chart_at(Image 1; VN-Index; Dec 22; none); chart_at(Image 1; VN-Index; Dec 23; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"chart_at(Image 1; VN-Index; Dec 22; none); chart_at(Image 1; VN-Index; Dec 23; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";True;False;
+eefd4e0b-0767-5903-8a04-523ac0f80f2d;"table_max(Table 1; NPL (%); ACB; VPB); table_min(Table 1; NPL (%); ACB; VPB); subtract(#0; #1)";"chart_max(Image 1; NPL; none; none); chart_min(Image 1; NPL; none; none); subtract(#0; #1)";False;False;
+f1c763d1-cde9-5c62-bf37-6c148f82b99a;"subtract(1.9; 1.5)";"subtract(1.6; 1.9)";False;True;-0.2999999999999998
+cae72f8a-b513-5215-8910-cfa1a128f9a4;"divide(82500; 70000)";"divide(25; 10)";False;True;2.5
+9dcacf50-b005-5ff0-b753-58b218a187a9;"subtract(0.1; 0.07)";"subtract(0.1; 0.7)";False;True;-0.6
+a70f0b1f-07b9-56ae-be4d-3c26fcceedc7;"table_max(Table 1; LNST (VNDbn); FY 2015; FY2020(F)); table_min(Table 1; LNST (VNDbn); FY 2015; FY2020(F)); subtract(#0; #1)";"subtract(859; 417)";False;True;442.0
+f0d3b239-5e53-51b7-94dd-73d85d4645c8;"subtract(86; 64.7)";"subtract(86; 64.7)";True;True;21.299999999999997
+df4d14cd-3414-5a7e-873c-72f6764c4303;"chart_at(Image 1; Cổ phiếu; Jan-25; none); subtract(64.7; #0)";"subtract(64.7; 5.0)";False;True;59.7
+9d1e2066-d7a9-5475-8662-093004ba20a9;"chart_sum(Image 3; Index; none; none); chart_sum(Image 4; Index; none; none); add(#0; #1)";"add(600; -200)";False;True;400.0
+6fe947ea-0288-5c4d-a89f-edaab925ccd1;"add(4221; 1296)";"multiply(100; 100)";False;True;10000.0
+241fb5fe-c2bc-52f8-bc9d-949274a7fdf2;"chart_sum(Image 3; T10/2023; none; none); multiply(4; 1000); divide(#0; #1)";"chart_sum(Image 3; T10/2023; none; none)";False;False;
+704fba48-a281-5a0d-ba98-039934e92941;"table_max(Table 1; DM equity; Jan-23; Oct-23); table_min(Table 1; DM equity; Jan-23; Oct-23); subtract(#0; #1)";"table_max(Table 1; DM Equity; Jan-23; none); table_min(Table 1; DM Equity; Sep-23; none); subtract(#0; #1)";False;False;
+2348a26c-a114-566a-9f7c-7a27546c994f;"chart_average(Image 2; Phát triển (DM); Jan-24; Jan-25)";"table_average(Table 1; Cổ phiếu; Jan-24; none; Sep-24; May-24; Jan-25)";False;False;
+5a2ef8aa-ca89-593a-ab7b-e8e292989639;"chart_average(Image 3; Dầu khí - PLX; none; none)";"chart_average(Image 1; 消费量(百万吨); 2019; 2025#1)";False;False;
+7c2ec6d6-3053-5f7c-a774-cc2a183f5172;"chart_at(Image 1; T12; Dầu khí; none); chart_at(Image 1; 2023; Dầu khí; none); divide(#0; #1)";"divide(10; 100)";False;True;0.1
+d3dde7ea-1f80-5d51-b5c3-7f1097ec2442;"subtract(22.8; 11.2)";"table_average(Table 3; Tăng trưởng NPATMI 2024; Công nghệ Thông tin; none; Công nghiệp)";False;False;
+57967b08-5e32-55f8-bfe1-09a882b5ddc5;"chart_at(Image 3; T10/2023; STB; none); chart_at(Image 3; 2023; STB; none); subtract(#0; #1)";"subtract(700; 500)";False;True;200.0
+f50aeb5a-fb16-5f80-b2a0-d99ec371b6bd;"chart_at(Image 1; Cổ phiếu; Jan-25; none); chart_at(Image 1; Trái phiếu; Jan-25; none); greater(#0; #1)";"chart_at(Image 1; Cổ phiếu; Jan-25; none); chart_at(Image 1; Trái phiếu; Jan-25; none); greater(#0; #1)";True;False;
+f5ce5f40-8089-566d-8ce7-a9ffc4d1617e;"chart_max(Image 1; Tiền tệ; Jan-23; Sep-23); chart_min(Image 1; Tiền tệ; Jan-23; Sep-23); subtract(#0; #1)";"chart_max(Table 1#Tiền tệ#Jan-23#Sep-23; none; none; none); chart_min(Table 1#Tiền tệ#Jan-23#Sep-23; none; none; none); subtract(#1; #2)";False;False;
+408cde68-219c-5025-9406-f0e90f5e169c;"divide(61100; 4863); subtract(#0; 12.5)";"divide(12.5; 10000); divide(76000; #0)";False;True;60800000.0
+3308ae21-c911-52e0-b8e7-a858be9267b6;"subtract(55500; 44600); divide(#0; 44600); multiply(#1; 100)";"subtract(1300; 1000); divide(#0; 1000); multiply(#1; 100)";False;True;30.0
+ed0c6796-3a0e-52d8-a3f0-e2e14b8924bc;"divide(37.5; 28)";"divide(20.5; 18.5)";False;True;1.1081081081081081
+747334f2-ded3-52f7-8287-7e25e65549e6;"subtract(50.1; 50)";"subtract(50; 20)";False;True;30.0
+12740dc4-0990-5d0c-8c3c-9750b8e6bb12;"table_max(Table 1; Giá mục tiêu; none; none); table_min(Table 1; Giá mục tiêu; none; none); subtract(#0; #1)";"chart_max(Table 3; Giá mục tiêu cao nhất; none; none); chart_min(Table 3; Giá mục tiêu thấp nhất; none; none); subtract(#0; #1)";False;False;
+73e618af-72f3-565a-b49d-73fc518e041d;"add(37; 37.5); divide(#0; 2); subtract(44; #1); divide(#2; #1); multiply(#3; 100); add(31; 31.5); divide(#5; 2); subtract(37.5; #6); divide(#7; #6); multiply(#8; 100); add(32; 32.5); divide(#10; 2); subtract(36.4; #11); divide(#12; #11); multiply(#13; 100); add(52.3; 53); divide(#15; 2); subtract(61.5; #16); divide(#17; #16); multiply(#18; 100); add(31.5; 32); divide(#20; 2); subtract(37.3; #21); divide(#22; #21); multiply(#23; 100); add(69; 70); divide(#25; 2); subtract(88.7; #26); divide(#27; #26); multiply(#28; 100); add(21.5; 22); divide(#30; 2); subtract(25.8; #31); divide(#32; #31); multiply(#33; 100); add(#4; #9); add(#35; #14); add(#36; #19); add(#37; #24); add(#38; #29); add(#39; #34); divide(#40; 7)";"table_average(Table 1; Tăng trưởng lợi nhuận 9T21; none; none)";False;False;
+065423fc-5599-554f-a15e-d327e35d0b7d;"subtract(22; 12.1)";"subtract(22; 12.1)";True;True;9.9
+f440b0d5-7fd1-50ef-84cb-e23dcb6d7e69;"table_max(Table 1; P/E (x); FY21; FY26F); table_min(Table 1; P/E (x); FY21; FY26F); subtract(#0; #1)";"chart_max(Table 1; P/E; none; none); chart_min(Table 1; P/E; none; none); subtract(#0; #1)";False;False;
+1594e481-80b5-54d5-8b51-f6e7a7c8d540;"chart_at(Image 1; Giá điện; 2022; none); chart_at(Image 1; Giá điện; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); divide(3.5; 100); multiply(#4; #5)";"subtract(1920; 1864); divide(#0; 5.5)";False;True;10.181818181818182
+f240b1b1-1a4a-5b33-9844-2ae42ffc7e7d;"chart_at(Image 1; T12; Ngân hàng; none); subtract(#0; -11.01)";"subtract(100; -10)";False;True;110.0
+ac6b28c0-1a57-5406-bd5a-011174823cde;"chart_max(Image 1; Giá điện; none; none); chart_min(Image 1; Giá điện; none; none); subtract(#0; #1)";"subtract(1920; 1864)";False;True;56.0
+167701a6-bb9a-5a5f-92f9-c3a53735dfcc;"chart_at(Image 5; 10 Tháng; DM Bond; none); chart_at(Image 5; 10 Tháng; EM Bond; none); subtract(#0; #1)";"subtract(100; 100)";False;True;0.0
+d9d19b61-3601-5c6d-b1c7-2dc73ad7fa58;"subtract(1.9; 1.1)";"subtract(1.9; 1.6)";False;True;0.2999999999999998
+9cceae18-b59f-5d17-ba70-2387956dce14;"chart_max(Image 1; Nhóm Y Tế; none; none); chart_min(Image 1; Nhóm Y Tế; none; none); subtract(#0; #1)";"chart_max(Image 1; Nhóm Y Tế; Dec-22; Nov-23); chart_min(Image 1; Nhóm Y Tế; Dec-22; Nov-23); subtract(#0; #1)";False;False;
+90195875-0d6e-556b-a110-0da5ecb1c87f;"subtract(24.4; 12.8)";"subtract(#1; #0)";False;True;LỖI: Reference #1 not found in results
+77f85190-4012-542d-92b3-21069cae602c;"table_average(Table 3; Tỷ suất cổ tức (2023); none; none)";"chart_average(Image 1; Tỷ suất cổ tức theo ngành; none; none)";False;False;
+b9789da3-9e1e-5e3d-890e-78758972b456;"table_max(Table 2; EPS (VND/CP); 2021H; 2026F); table_min(Table 2; EPS (VND/CP); 2021H; 2026F); subtract(#0; #1)";"chart_max(Image 1; EPS; 2021H; 2026F); chart_min(Image 1; EPS; 2021H; 2026F); subtract(#0; #1)";False;False;
+69952714-4485-546b-af90-0ea2bd52db33;"subtract(10.5; -17.6)";"subtract(#1; none)";False;True;LỖI: Reference #1 not found in results
+b86a8dc0-2fc5-5178-838e-a6106e1d6ad3;"subtract(18610; 18299)";"subtract(18822; 17337)";False;True;1485.0
+6e0db2e8-201d-5c79-a9e9-0133aa1e52c1;"chart_at(Image 1; NOI; 2022; none); chart_at(Image 1; NOI; 2023; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(2.1; #4)";"multiply(2.1; 100); divide(#0; 51); subtract(#1; 100)";False;True;-95.88235294117646
+04e3b943-5fb1-5ca3-b96a-813072456f4f;"greater(36.78; 36.15)";"subtract(11.4; 43.23#0)";False;True;
+0aa096c4-067c-5697-9824-3372cbe368f7;"table_average(Table 1; Đi ngang; none; none)";"chart_average(Table 1; T12; none; none)";False;False;
+1b705956-ae89-55b4-a29d-d1c021c0f310;"chart_at(Image 5; NĐTNN Mua; 9/26; none); chart_at(Image 5; NĐTNN Bán; 9/26; none); subtract(#0; #1); chart_at(Image 5; Giá trị mua/bán ròng; 9/26; none); subtract(#2; #3)";"chart_at(#1; none; 9/26; none)";False;False;
+04319977-5483-5631-81dd-d461782e72c7;"chart_at(Image 5; NĐTNN Mua; 15/8/2022; none); chart_at(Image 5; NĐTNN Bán; 15/8/2022; none); subtract(#0; #1)";"subtract(0; 0)";False;True;0.0
+94e256ae-64e8-5f42-a180-c8e98fd357af;"chart_at(Image 1; VNIndex; 31/8/2022; none); chart_at(Image 1; Tham chiếu VNIndex; 31/8/2022; none); subtract(#0; #1)";"subtract(1280.51; 1206.33)";False;True;74.18000000000006
+91c5164c-4bb5-5e8c-b3ed-6910e5292bb7;"chart_average(Image 1; Giá điện; none; none)";"chart_average(Table 1; (Lần 1)(Lần 2)(Lần 1)(Lần 2); none)";False;False;
+444ff7f2-5747-511f-992d-6505a4a83610;"chart_at(Image 1; FPT VN; Nov 23; none); chart_at(Image 1; FPT VN; Nov 24; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)";"subtract(60; 40); divide(#0; 40); multiply(#1; 100)";False;True;50.0
+582ec57b-7623-5f30-bc41-27ed817f5950;"chart_at(Image 2; VNIndex; T8/2022; none); chart_at(Image 2; VNIndex; T9/2022; none); subtract(#1; #0)";"subtract(11.8; 14.0)";False;True;-2.1999999999999993
+17ba1bbb-c2e0-58ab-975f-0648a565d2cb;"subtract(4142; 3450); divide(#0; 3450); multiply(#1; 100)";"subtract(4.142; 3.450); divide(#1; 3.450); multiply(#2; 100)";False;True;LỖI: Reference #1 not found in results
+8dd222b9-27bd-5425-9ce6-9df5605eee6c;"chart_at(Image 2; Trái phiếu; Oct-23; none); chart_at(Image 5; 10 Tháng; DM Bond; none); chart_at(Image 5; 10 Tháng; EM Bond; none); add(#1; #2); subtract(#0; #3)";"chart_at(Image 4; Trụ Cực Y; none); chart_at(Image 5; EM Bond; none); chart_at(Image 5; DM Bond; none); subtract(#1; #2); subtract(#3; #4)";False;False;
+eeb556da-51c3-51bb-8900-2162e2dbb775;"greater(18.8; 14.4)";"divide(29; 14.4)";False;True;2.013888888888889
+f94ea359-7307-55d9-a1e3-76047c3f67d7;"multiply(-11.6; -1); add(11.59; #0); divide(#1; 2); chart_at(Image 1; VNIndex; 31/8/2022; none); chart_at(Image 1; VNIndex; 30/9/2022; none); subtract(#3; #4); divide(#5; #3); multiply(#6; 100); subtract(#2; #7)";"divide(#0; 2)";False;True;LỖI: Reference #0 not found in results
+0b73db0c-c89c-588e-9adb-5c8d49649228;"subtract(5.2; 4.4)";"table_average(Table 1; Cổ tức dự phóng 2025 (LHS); none; none); subtract(#0; #1); divide(#2; #1); multiply(#3; 100)";False;False;
+15a06da4-e3cd-5611-9b4f-36dc8c51d67b;"subtract(9.2; 11.7); divide(#0; 11.7); multiply(#1; 100)";"subtract(9.2; 11.7)";False;True;-2.5
+c485bd4e-8a74-5ede-934b-eea3d386a9a0;"add(36.15; 16.11)";"add(30; 43.2)";False;True;73.2
+d535a43d-a5d7-58fb-ad2c-0a74513fa670;"table_average(Table 1; Bứt phá; none; none); table_average(Table 1; Đi ngang; none; none); subtract(#0; #1)";"chart_average(Image 1; T12; none; none); subtract(#0; 43.23)";False;False;
+da8d8dbd-7aaa-55f5-9f35-213b9427b995;"table_sum(Table 1; Ước tính dòng vốn (triệu USD); Vanguard Total International Stock Index Fund; Schwab Emerging Markets Equity ETF); chart_at(Image 1; Free float market cap; Vietnam; none); multiply(#1; 1000); divide(#0; #2)";"divide(2000; 1)";False;True;2000.0
+7b6b7542-6f03-5799-87a7-62d8e44b06d7;"chart_max(Image 1; Giá dầu Brent; none; none); chart_min(Image 1; Giá dầu Brent; none; none); subtract(#0; #1)";"chart_max(Image 1; none; none; none); chart_min(Image 1; none; none; none); subtract(#0; #1)";False;False;
+67859de1-7858-5a8e-9d29-048e477da8e7;"subtract(14.0; -12.5)";"subtract(14; 7)";False;True;7.0
+dc36c5fe-7680-53b0-89b3-1d898557c88e;"chart_max(Image 1; VNIndex; 30/9/2022; 31/10/2022); chart_min(Image 1; VNIndex; 30/9/2022; 31/10/2022); subtract(#0; #1)";"subtract(1100; 800)";False;True;300.0
+2252c63f-ec0e-5c67-95ce-8ec7cecd0297;"greater(40.0; 37.6)";"greater(16.5; 15.1)";False;True;1.0

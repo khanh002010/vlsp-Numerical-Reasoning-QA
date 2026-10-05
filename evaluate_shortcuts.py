@@ -47,31 +47,32 @@ def evaluate_submission(submission_path, test_path, output_csv):
             "QID": qid,
             "Ground_Truth": gt_prog,
             "Model_Predict": pred_prog,
+            "Is_Exact_Match": is_em,
             "Is_Shortcut": is_shortcut,
             "Calculated_Answer": final_answer
         })
         
-    print(f"Tổng số câu: {len(preds)}")
-    print(f"Số câu giống hệt đáp án gốc (Exact Match): {em_count}")
-    print(f"Số câu Model 'đi tắt' (Chỉ dùng toán học): {shortcut_count}")
+    print(f"Total rows: {len(preds)}")
+    print(f"Exact Matches: {em_count}")
+    print(f"Shortcut Math Programs: {shortcut_count}")
     
     # Save to CSV for easy inspection
     import csv
     with open(output_csv, 'w', encoding='utf-8-sig', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=["QID", "Ground_Truth", "Model_Predict", "Is_Shortcut", "Calculated_Answer"])
+        writer = csv.DictWriter(f, fieldnames=["QID", "Ground_Truth", "Model_Predict", "Is_Exact_Match", "Is_Shortcut", "Calculated_Answer"], delimiter=';')
         writer.writeheader()
         writer.writerows(results)
         
-    print(f"\nĐã xuất kết quả so sánh ra file: {output_csv}")
-    print("Bạn có thể mở file CSV này bằng Excel để kiểm tra xem con số cuối cùng Model tính ra có hợp lý với đề bài không.")
+    print(f"\nSaved comparison results to: {output_csv}")
+    print("You can open this CSV file with Excel to inspect the results.")
 
 if __name__ == "__main__":
     # Thay đổi đường dẫn cho phù hợp với Kaggle
     sub_path = "content.json" if os.path.exists("content.json") else r"d:\VS CODE\vlsp Numerical Reasoning QA\submission.json"
     test_path = r"d:\VS CODE\vlsp Numerical Reasoning QA\data\public_test\public_test.json"
-    out_csv = "evaluation_report.csv"
+    out_csv = "evaluation_report_v3.csv"
     
     if os.path.exists(sub_path):
         evaluate_submission(sub_path, test_path, out_csv)
     else:
-        print(f"Không tìm thấy file {sub_path}")
+        print(f"File not found: {sub_path}")

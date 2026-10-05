@@ -7,7 +7,11 @@ import re
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftModel
 from vinumqa.nlp_module.inference.constrained_decode import DSLLogitsProcessor
-from vinumqa.nlp_module.data_prep.format_training_data import DSL_HINT_SHORT
+from vinumqa.nlp_module.contracts import DSL_HINT_SHORT, build_prompt, parse_response, FORMAT_VERSION, INSTRUCTION
+from vinumqa.utils.dsl_parser import validate_program
+from pathlib import Path
+import json
+import hashlib
 
 
 class ProgramGenerator:
@@ -17,6 +21,7 @@ class ProgramGenerator:
         lora_weights: str = None,
         device: str = "cuda",
         use_constrained_decoding: bool = True,
+        allow_legacy_adapter: bool = False,
     ):
         """
         Initialize the Program Generator (NLP Module).
@@ -37,8 +42,16 @@ class ProgramGenerator:
         self.dsl_processor = None
         self.dsl_hint = DSL_HINT_SHORT
 
+        if lora_weights and not allow_legacy_adapter:
+            manifest = Path(lora_weights) / "pipeline_manifest.json"
+            info = json.loads(manifest.read_text(encoding="utf-8")) if manifest.is_file() else {}
+            if (info.get("format_version") != FORMAT_VERSION
+                or info.get("base_model") != base_model_id
+                or info.get("prompt_sha256") != hashlib.sha256(INSTRUCTION.encode()).hexdigest()):
+                raise ValueError("Adapter contract mismatch. Retrain v4 or explicitly allow_legacy_adapter for comparison.")
         try:
-            self.tokenizer = AutoTokenizer.from_pretrained(base_model_id)
+            self.tokenizer = AutoTokenizer.from_pretrained(lora_weights if lora_weights and not allow_legacy_adapter else base_model_id)
+            self.tokenizer.pad_token = self.tokenizer.eos_token
 
             # Load in 4-bit QLoRA — SAME as training setup.
             # Fixes 2 problems:
@@ -51,11 +64,11 @@ class ProgramGenerator:
                 bnb_4bit_use_double_quant=True,
                 bnb_4bit_quant_type="nf4",
                 bnb_4bit_compute_dtype=torch.float16,
-            )
+            ) if self.device == "cuda" else None
             self.model = AutoModelForCausalLM.from_pretrained(
                 base_model_id,
                 quantization_config=bnb_config,
-                device_map="auto",
+                device_map="auto" if self.device == "cuda" else "cpu",
             )
 
             if lora_weights:
@@ -77,6 +90,8 @@ class ProgramGenerator:
             import traceback
             print(f"[ERROR] Failed to load NLP module: {e}")
             traceback.print_exc()
+            self.model = None
+            raise RuntimeError("NLP model/adapter initialization failed") from e
 
     def generate(
         self,
@@ -104,19 +119,23 @@ class ProgramGenerator:
             print("[ERROR] Model not loaded. Cannot generate.")
             return {"error": "Model not loaded", "extracted_values": "", "program": ""}
 
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        inputs = self.tokenizer(prompt, return_tensors="pt", add_special_tokens=False).to(self.model.get_input_embeddings().weight.device)
+        limit = getattr(self.model.config, "max_position_embeddings", 32768)
+        if inputs.input_ids.shape[1] + 1536 > limit:
+            return {"error": "Prompt exceeds model context budget", "program": "", "extracted_values": ""}
 
         # Build logits_processor list
         logits_processor = []
         if self.use_constrained_decoding and self.dsl_processor is not None:
+            self.dsl_processor.reset(inputs.input_ids.shape[1])
             logits_processor.append(self.dsl_processor)
 
         try:
             with torch.no_grad():
                 outputs = self.model.generate(
                     **inputs,
-                    max_new_tokens=768,
-                    temperature=0.0,    # Greedy decoding — deterministic
+                    max_new_tokens=1536,
+                    pad_token_id=self.tokenizer.pad_token_id,
                     do_sample=False,
                     logits_processor=logits_processor,
                 )
@@ -129,7 +148,11 @@ class ProgramGenerator:
             # Always log raw output for diagnosis
             print(f"[DEBUG] Raw model output: {repr(response_text[:300])}")
 
-            return self._parse_response(response_text)
+            result = self._parse_response(response_text)
+            result["prompt_sha256"] = hashlib.sha256(prompt.encode()).hexdigest()
+            result["generated_tokens"] = outputs.shape[1] - inputs.input_ids.shape[1]
+            result["termination"] = "eos" if int(outputs[0][-1]) == self.tokenizer.eos_token_id else "length_or_stop"
+            return result
 
         except Exception as e:
             import traceback
@@ -147,37 +170,8 @@ class ProgramGenerator:
         """
         Build the prompt exactly matching the training data format.
         """
-        # DSL hint formatting exactly as in val data
-        dsl_line = f"\n{self.dsl_hint}\n"
-        
-        instruction = (
-            "### Instruction\n"
-            "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
-            "va thong tin lien quan de tra loi cau hoi.\n"
-            "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
-            f"tinh toan duoi dang reasoning program.{dsl_line}\n"
-            "LUY TẬP CHÚ Ý:\n"
-            "- Nếu dữ liệu nằm trong BẢNG hoặc BIỂU ĐỒ, bắt buộc phải dùng các hàm table_... và chart_... để trích xuất.\n"
-            "- Nếu dữ liệu nằm trong văn bản (Text), bạn CÓ THỂ dùng trực tiếp các hàm toán học (add, subtract...).\n"
-            "- Nếu là phép Trừ/Chia, chú ý kỹ thứ tự biến (đại lượng nào trừ đại lượng nào).\n"
-            "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
-        )
-
-        # Build inline context similar to training
-        inline_context = context_text
-        if markdown_table:
-            # If a separate table is provided, append it
-            inline_context += f"\n\n{markdown_table}"
-            
-        if images_available_str:
-            inline_context += f"\n\n### Images Available\n{images_available_str}"
-
-        # EXACT match with train format: "### Context\n..."
-        context = f"### Context\n{inline_context.strip()}\n\n### Question\n{question}"
-
-        # In qlora, the prompt given to the model includes the response prefix
-        prompt = f"{instruction}\n\n{context}\n\n### Response\n| Step | Output |\n|---|---|\n"
-        return prompt
+        context = context_text + ("\n\n" + markdown_table if markdown_table else "")
+        return build_prompt(context, question, images_available_str)
 
     def _parse_response(self, response_text: str) -> dict:
         """
@@ -185,26 +179,4 @@ class ProgramGenerator:
         Uses regex to be robust against minor whitespace variations.
         Returns: {extracted_values, program}. No answer field (executor removed).
         """
-        result = {
-            "extracted_values": "",
-            "program": "",
-        }
-
-        # Robust regex: handles | 1 |, |1|, | 1|, etc.
-        step1_match = re.search(r'\|\s*1\s*\|\s*(.+?)\s*\|', response_text)
-        step2_match = re.search(r'\|\s*2\s*\|\s*(.+?)\s*\|', response_text)
-
-        if step1_match:
-            result["extracted_values"] = step1_match.group(1).strip()
-        if step2_match:
-            result["program"] = step2_match.group(1).strip()
-
-        if not result["program"]:
-            print(f"[WARNING] Could not parse program from response. Full text: {repr(response_text[:500])}")
-
-        return result
-
-
-if __name__ == "__main__":
-    print("ProgramGenerator module is ready.")
-    print("NOTE: Run train_qlora.py first to produce LoRA weights before inference.")
+        return parse_response(response_text)

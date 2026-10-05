@@ -1,207 +1,52 @@
-"""
-Format the ViNumQA data into the Step-wise Pipeline instruction format.
-This prepares the data for QLoRA fine-tuning of the NLP module (Qwen2.5-7B).
-"""
-
+"""Format real multimodal inputs using the same contract as inference."""
+import argparse
 import json
-import os
-import re
-from typing import List, Dict
-
-from vinumqa.nlp_module.inference.constrained_decode import VALID_DSL_OPERATORS
-
-# Short 1-line DSL hint for validation/inference (~30 tokens vs 400 tokens)
-DSL_HINT_SHORT = (
-    "Operators: "
-    + ", ".join(VALID_DSL_OPERATORS)
-    + ". Use #0, #1... to reference previous results."
+import hashlib
+from pathlib import Path
+from vinumqa.data.context import build_inline_context, dict_to_markdown_table
+from vinumqa.nlp_module.contracts import (
+    FORMAT_VERSION, INSTRUCTION, DSL_HINT_SHORT, input_text, evidence_from_program,
 )
+from vinumqa.utils.dsl_parser import normalize_program
 
-from vinumqa.utils.dsl_parser import parse_program
+extract_values_from_program = evidence_from_program
 
-def extract_values_from_program(program: str) -> str:
-    """
-    Extract the arguments from a reasoning program to act as the 'evidence' for Step 1.
-    For example: 'chart_at(Image 1; P/B trượt; Jul-21; none); subtract(#0; 2.1)'
-    Returns: 'Image 1#P/B trượt#Jul-21#none#2.1'
-    """
-    try:
-        steps = parse_program(program)
-    except Exception:
-        steps = []
-        
-    values = []
-    for step in steps:
-        for arg in step.args:
-            if not str(arg).startswith('#'):
-                values.append(str(arg))
-                
-    # Remove duplicates while preserving order
-    seen = set()
-    unique_values = []
-    for v in values:
-        if v not in seen:
-            seen.add(v)
-            unique_values.append(v)
-            
-    return "#".join(unique_values)
-
-
-def dict_to_markdown_table(table_dict: Dict) -> str:
-    """
-    Convert the table HTML string in the dataset to Markdown.
-    (Assuming the dictionary values are HTML strings, as seen in data analysis).
-    """
-    import pandas as pd
-    from bs4 import BeautifulSoup
-    from io import StringIO
-
-    md_tables = []
-    for table_name, table_html in table_dict.items():
-        try:
-            # Parse HTML table
-            soup = BeautifulSoup(table_html, 'html.parser')
-            table_tag = soup.find('table')
-            if not table_tag:
-                continue
-                
-            # Convert to Pandas DataFrame
-            # wrap in StringIO to avoid pandas FutureWarning
-            dfs = pd.read_html(StringIO(str(table_tag)))
-            if dfs:
-                df = dfs[0]
-                # Convert DataFrame to Markdown
-                md_table = df.to_markdown(index=False)
-                md_tables.append(f"**{table_name}**\n{md_table}")
-        except Exception as e:
-            md_tables.append(f"**{table_name}**\n[Lỗi parsing HTML: {e}]")
-            
-    return "\n\n".join(md_tables)
-
-def format_sample(sample: Dict, include_dsl_prompt: bool = False, cv_pipeline=None, image_dir: str = None) -> Dict:
-    """
-    Format a single sample into the Step-wise Pipeline instruction format.
-    Uses inline placeholder injection (same logic as full_pipeline.py)
-    to replace ### Image N ### and ### Table N ### with actual content.
-
-    Args:
-        include_dsl_prompt: If True, inject short 1-line DSL hint into instruction.
-                            Set False for training (model learns from examples).
-                            Set True for validation/inference (short reminder only).
-    """
-    question = sample['qa']['question']
-    program = sample['qa']['program']
-
-    # --- Build inline context (placeholders replaced inline) ---
-    placeholder_re = re.compile(
-        r'^###\s*(Image|Table)\s+(\d+)\s*###$', re.IGNORECASE
-    )
-    tables_md_map = {}
-    if sample.get('tables'):
-        for k, v in sample['tables'].items():
-            tables_md_map[k] = dict_to_markdown_table({k: v})
-
-    # Images: during training we reference them by name only (CV output used at inference)
-    image_keys = list(sample.get('images', {}).keys())
-    image_placeholder_map = {}
-    if cv_pipeline and image_dir:
-        for img_key, img_filename in sample.get('images', {}).items():
-            img_path = os.path.join(image_dir, img_filename)
-            if os.path.exists(img_path):
-                image_placeholder_map[img_key] = f"**{img_key}**\n" + cv_pipeline.process_image(img_path)
-            else:
-                image_placeholder_map[img_key] = f"[Image not found: {img_path}]"
-    else:
-        for k in image_keys:
-            image_placeholder_map[k] = f"[Chart: {k} - extracted by CV Module]"
-
-    result_segs = []
-    for seg in sample.get('text', []):
-        m = placeholder_re.match(seg.strip())
-        if m:
-            kind = m.group(1).capitalize()
-            num  = m.group(2)
-            key  = f"{kind} {num}"
-            if kind == 'Table' and key in tables_md_map:
-                result_segs.append(tables_md_map[key])
-            elif kind == 'Image' and key in image_placeholder_map:
-                result_segs.append(image_placeholder_map[key])
-            # silently drop unmatched placeholders
-        else:
-            result_segs.append(seg)
-
-    inline_context = "\n\n".join(result_segs)
-    if image_keys:
-        inline_context += f"\n\n### Images Available\n{', '.join(image_keys)}"
-
-    # 1. Extractor Step
-    extracted_values = extract_values_from_program(program)
-
-    # DSL hint: empty for training (model learns from examples)
-    #            short 1-line for val/inference (just a reminder)
-    dsl_line = f"\n{DSL_HINT_SHORT}\n" if include_dsl_prompt else ""
-
-    instruction = (
-        "### Instruction\n"
-        "Step 1 - Extractor: Tu bang va van ban duoi day, hay trich xuat cac gia tri so "
-        "va thong tin lien quan de tra loi cau hoi.\n"
-        "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
-        f"tinh toan duoi dang reasoning program.{dsl_line}\n"
-        "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
-    )
-
-    context = f"### Context\n{inline_context}\n\n### Question\n{question}"
-
-    response = (
-        "| Step | Output |\n"
-        "|---|---|\n"
-        f"| 1 | {extracted_values} |\n"
-        f"| 2 | {program} |"
-    )
-
-    return {
-        "instruction": instruction,
-        "input": context,
-        "output": response,
-    }
+def format_sample(sample, include_dsl_prompt=True, cv_pipeline=None, image_dir=None):
+    # include_dsl_prompt retained for callers; the contract is always identical.
+    images = {k: str(Path(image_dir or ".") / v) for k, v in sample.get("images", {}).items()}
+    context = build_inline_context(sample.get("text", []), sample.get("tables", {}), images, cv_pipeline)
+    program = normalize_program(sample["qa"]["program"])
+    evidence = evidence_from_program(program)
+    return {"qid": sample["qid"], "format_version": FORMAT_VERSION,
+        "group_keys": ["image:" + v for v in sample.get("images", {}).values()] + ["doc:" + hashlib.sha256(
+            json.dumps({k: sample.get(k) for k in ["text", "tables"]}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()],
+        "instruction": INSTRUCTION,
+        "input": input_text(context, sample["qa"]["question"], ", ".join(images)),
+        "output": "| Step | Output |\n|---|---|\n| 1 | " + evidence + " |\n| 2 | " + program + " |"}
 
 def main():
-    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-    TRAIN_JSON = os.path.join(PROJECT_ROOT, "data", "train", "train.json")
-    TRAIN_IMAGES = os.path.join(PROJECT_ROOT, "data", "train", "train_images")
-    TEST_JSON  = os.path.join(PROJECT_ROOT, "data", "public_test", "public_test.json")
-    TEST_IMAGES = os.path.join(PROJECT_ROOT, "data", "public_test", "public_test_images")
-    OUT_DIR = os.path.join(PROJECT_ROOT, "vinumqa", "data")
-    os.makedirs(OUT_DIR, exist_ok=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", required=True)
+    parser.add_argument("--images", required=True)
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--skip-invalid", action="store_true", help="Quarantine invalid gold programs; CV failures always stop formatting")
+    args = parser.parse_args()
+    from vinumqa.cv_module.pipeline import CVPipeline
+    cv = CVPipeline()
+    data = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    formatted, rejected, failures = [], [], []
+    for sample in data:
+        try: normalize_program(sample["qa"]["program"])
+        except ValueError as e:
+            rejected.append({"qid": sample["qid"], "error": str(e), "stage": "gold_validation"})
+            continue
+        try: formatted.append(format_sample(sample, cv_pipeline=cv, image_dir=args.images))
+        except Exception as e: failures.append({"qid": sample["qid"], "error": str(e), "stage": "context"})
+    path = Path(args.output)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.with_suffix(".rejected.json").write_text(json.dumps(rejected + failures, ensure_ascii=False, indent=2), encoding="utf-8")
+    if failures or (rejected and not args.skip_invalid) or not formatted:
+        raise ValueError(f"{len(rejected)} invalid golds, {len(failures)} context failures; inspect {path.with_suffix('.rejected.json')}. Existing dataset was not overwritten.")
+    path.write_text(json.dumps(formatted, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    try:
-        from vinumqa.cv_module.pipeline import CVPipeline
-        print("Loading CV Pipeline for pre-extraction...")
-        cv_pipeline = CVPipeline()
-    except Exception as e:
-        print(f"Warning: CV Pipeline could not be loaded: {e}")
-        cv_pipeline = None
-
-    with open(TRAIN_JSON, 'r', encoding='utf-8') as f:
-        train_data = json.load(f)
-
-    with open(TEST_JSON, 'r', encoding='utf-8') as f:
-        val_data = json.load(f)
-
-    # Train: no DSL prompt (model learns from examples, saves ~400 tokens/sample)
-    # Val:   short 1-line DSL hint (~30 tokens, just a reminder)
-    configs = [
-        ("train",       train_data, False, TRAIN_IMAGES),
-        ("public_test", val_data,   True,  TEST_IMAGES),
-    ]
-
-    for name, data, include_dsl, img_dir in configs:
-        out_path = os.path.join(OUT_DIR, f"{name}_formatted.json")
-        print(f"Formatting {len(data)} samples -> {out_path} (DSL hint: {include_dsl})")
-        formatted = [format_sample(s, include_dsl_prompt=include_dsl, cv_pipeline=cv_pipeline, image_dir=img_dir) for s in data]
-        with open(out_path, 'w', encoding='utf-8') as f:
-            json.dump(formatted, f, ensure_ascii=False, indent=2)
-        print(f"Saved {len(formatted)} samples to {out_path}")
-
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()

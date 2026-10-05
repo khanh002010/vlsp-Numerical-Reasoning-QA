@@ -48,9 +48,11 @@ def execution_accuracy(pred_answers: List[Optional[float]],
     total = 0
     
     for pred, gold in zip(pred_answers, gold_answers):
-        if pred is None or gold is None:
+        if gold is None:
             continue
         total += 1
+        if pred is None:
+            continue
         
         if gold == 0:
             if pred == 0:

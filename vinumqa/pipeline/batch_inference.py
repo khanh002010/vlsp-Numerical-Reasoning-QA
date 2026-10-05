@@ -1,95 +1,56 @@
-"""
-Batch Inference Script for ViNumQA.
-Runs the Full Pipeline over a test dataset and outputs a submission file.
-"""
-
+"""Resumable batch generation. Invalid candidates stay in diagnostics, not submissions."""
+import argparse
+import hashlib
 import json
-import os
-import sys
 from pathlib import Path
-
-# Add project root to sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
 from vinumqa.pipeline.full_pipeline import ViNumQAPipeline
+from vinumqa.utils.dsl_parser import validate_program
+from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION
 
-def run_batch_inference(test_json_path: str, output_path: str, img_dir: str, lora_path: str = None):
-    """
-    Run the end-to-end pipeline on the test set.
-    """
-    if not os.path.exists(test_json_path):
-        print(f"Test file not found: {test_json_path}")
-        return
-        
-    with open(test_json_path, 'r', encoding='utf-8') as f:
-        test_data = json.load(f)
-        
-    print(f"Loaded {len(test_data)} test samples.")
-    
-    # Initialize Pipeline
-    if lora_path is None:
-        lora_path = str(PROJECT_ROOT / "outputs" / "nlp_module" / "final")
-        
-    pipeline = ViNumQAPipeline(
-        cv_model_id="Qwen/Qwen2-VL-2B-Instruct",
-        nlp_model_id="Qwen/Qwen2.5-7B-Instruct",
-        nlp_lora_weights=lora_path,
-    )
-    
-    results = []
-    
-    for i, sample in enumerate(test_data):
-        print(f"Processing sample {i+1}/{len(test_data)} (QID: {sample['qid']})")
-        
-        question = sample['qa']['question']
-        # IMPORTANT: pass as list, NOT joined string!
-        # build_inline_context() iterates over segments to match ### Image N ### placeholders.
-        # Joining to a string causes it to iterate individual characters → no placeholders matched.
-        text_segments = sample.get('text', [])
-        tables_dict = sample.get('tables', {})
-        
-        # Resolve image paths keeping the image key
-        image_dict = {}
-        if 'images' in sample:
-            for img_key, img_filename in sample['images'].items():
-                img_path = os.path.join(img_dir, img_filename)
-                image_dict[img_key] = img_path
-                
-        # Run Pipeline
-        output = pipeline.run(text_segments, tables_dict, image_dict, question)
+def save_json(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(path)
 
-        reasoning = output.get('reasoning_result', {})
-        program = reasoning.get('program', "")
-
-        # Log if something went wrong
-        if not program:
-            error = reasoning.get('error', 'unknown')
-            print(f"  [WARNING] No program generated for QID {sample['qid']}. Error: {error}")
-
-        results.append({
-            "qid": sample['qid'],
-            "program": program
-        })
-        
-        # Save intermediate occasionally
-        if (i + 1) % 10 == 0:
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(results, f, ensure_ascii=False, indent=2)
-                
-    # Final save
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-        
-    print(f"Batch inference completed. Results saved to {output_path}")
+def run_batch_inference(test_json_path, output_path, img_dir, lora_path=None, pipeline=None):
+    data = json.loads(Path(test_json_path).read_text(encoding="utf-8"))
+    if len({s["qid"] for s in data}) != len(data): raise ValueError("Duplicate QIDs")
+    output = Path(output_path)
+    diagnostics = output.with_suffix(".diagnostics.json")
+    lora_path = lora_path or "outputs/nlp_module/final"
+    manifest = Path(lora_path) / "pipeline_manifest.json"
+    identity = hashlib.sha256(Path(test_json_path).read_bytes() + str(Path(lora_path).resolve()).encode()
+                              + (manifest.read_bytes() if manifest.exists() else b"") + FORMAT_VERSION.encode() + INSTRUCTION.encode()).hexdigest()
+    records = {}
+    if diagnostics.exists():
+        previous = json.loads(diagnostics.read_text(encoding="utf-8"))
+        if previous.get("run_id") != identity: raise ValueError("Output belongs to another dataset/adapter; choose another output path")
+        records = previous["records"]
+    if pipeline is None: pipeline = ViNumQAPipeline(nlp_lora_weights=lora_path)
+    for sample in data:
+        qid = sample["qid"]
+        if records.get(qid, {}).get("valid"): continue
+        try:
+            result = pipeline.run(sample.get("text", []), sample.get("tables", {}),
+                {k: str(Path(img_dir) / v) for k, v in sample.get("images", {}).items()}, sample["qa"]["question"])
+            reasoning = result["reasoning_result"]
+            valid, reason = validate_program(reasoning.get("program", ""), sources=set(sample.get("tables", {})) | set(sample.get("images", {})))
+            records[qid] = {**reasoning, "valid": valid and not reasoning.get("error") and reasoning.get("valid", True), "validation_error": reason if not valid else reasoning.get("validation_error", "")}
+        except Exception as e: records[qid] = {"valid": False, "error": str(e), "program": ""}
+        save_json(diagnostics, {"run_id": identity, "format_version": FORMAT_VERSION, "records": records})
+    failures = [s["qid"] for s in data if not records.get(s["qid"], {}).get("valid")]
+    if failures: raise RuntimeError(f"{len(failures)} invalid/failed predictions. See {diagnostics}; rerun to retry. Submission was not overwritten.")
+    results = [{"qid": s["qid"], "program": records[s["qid"]]["program"]} for s in data]
+    save_json(output, results)
+    return results
 
 if __name__ == "__main__":
-    import sys
-    
-    test_file = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT / "test.json")
-    img_dir = sys.argv[2] if len(sys.argv) > 2 else str(PROJECT_ROOT / "test_images")
-    lora_path = sys.argv[3] if len(sys.argv) > 3 else None
-    output_file = str(PROJECT_ROOT / "submission.json")
-    
-    print(f"Starting batch inference on {test_file}...")
-    run_batch_inference(test_file, output_file, img_dir, lora_path)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default="data/public_test/public_test.json")
+    parser.add_argument("--images", default="data/public_test/public_test_images")
+    parser.add_argument("--adapter", default="outputs/nlp_module/final")
+    parser.add_argument("--output", default="submission.json")
+    args = parser.parse_args()
+    run_batch_inference(args.input, args.output, args.images, args.adapter)
