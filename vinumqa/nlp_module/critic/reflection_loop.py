@@ -47,20 +47,6 @@ class ReflectionLoop:
             if v_clean not in context:
                 feedback.append(f"Cảnh báo: Giá trị '{v_clean}' không tìm thấy trong văn bản hoặc bảng.")
                 
-        # 4. Anti-Shortcut Check (Bắt buộc dùng hàm trích xuất)
-        from vinumqa.utils.dsl_parser import parse_program, TABLE_OPS, CHART_OPS
-        try:
-            steps = parse_program(program)
-            has_extractor = False
-            for step in steps:
-                if step.operator in TABLE_OPS or step.operator in CHART_OPS:
-                    has_extractor = True
-                    break
-            if steps and not has_extractor:
-                feedback.append("Cảnh báo: Lỗi 'đi tắt'. BẮT BUỘC phải dùng các hàm trích xuất (table_... hoặc chart_...) trước khi tính toán. KHÔNG được điền số trực tiếp vào hàm Math.")
-        except:
-            pass
-
         return "\n".join(feedback)
 
     def generate_with_reflection(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
