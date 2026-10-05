@@ -156,6 +156,10 @@ class ProgramGenerator:
             "va thong tin lien quan de tra loi cau hoi.\n"
             "Step 2 - Reasoner: Dua tren cac gia tri da trich xuat, hay sinh ra cong thuc "
             f"tinh toan duoi dang reasoning program.{dsl_line}\n"
+            "LUY TẬP CHÚ Ý:\n"
+            "- KHÔNG ĐƯỢC tự tính nhẩm hoặc điền số trực tiếp (VD: cấm dùng subtract(-7; -1)).\n"
+            "- BẮT BUỘC dùng các hàm table_... và chart_... để trích xuất dữ liệu.\n"
+            "- Nếu là phép Trừ/Chia, chú ý kỹ thứ tự biến (đại lượng nào trừ đại lượng nào).\n"
             "Dung #0, #1, ... de tham chieu ket qua buoc truoc."
         )
 
