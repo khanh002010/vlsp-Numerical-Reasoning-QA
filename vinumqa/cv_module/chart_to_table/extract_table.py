@@ -94,7 +94,8 @@ class ChartToTableExtractor:
             self.model = Qwen2VLForConditionalGeneration.from_pretrained(
                 model_id, 
                 torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-                device_map="auto" if self.device == "cuda" else None
+                device_map="auto" if self.device == "cuda" else None,
+                attn_implementation="flash_attention_2" if self.device == "cuda" else None
             )
             self.processor = AutoProcessor.from_pretrained(model_id)
             self.model.eval()
