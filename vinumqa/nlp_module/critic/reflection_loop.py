@@ -47,7 +47,21 @@ class ReflectionLoop:
             if v_clean not in context:
                 feedback.append(f"Cảnh báo: Giá trị '{v_clean}' không tìm thấy trong văn bản hoặc bảng.")
                 
-        return " ".join(feedback)
+        # 4. Anti-Shortcut Check (Bắt buộc dùng hàm trích xuất)
+        from vinumqa.utils.dsl_parser import parse_program, TABLE_OPS, CHART_OPS
+        try:
+            steps = parse_program(program)
+            has_extractor = False
+            for step in steps:
+                if step.operator in TABLE_OPS or step.operator in CHART_OPS:
+                    has_extractor = True
+                    break
+            if steps and not has_extractor:
+                feedback.append("Cảnh báo: Lỗi 'đi tắt'. BẮT BUỘC phải dùng các hàm trích xuất (table_... hoặc chart_...) trước khi tính toán. KHÔNG được điền số trực tiếp vào hàm Math.")
+        except:
+            pass
+
+        return "\n".join(feedback)
 
     def generate_with_reflection(self, context_text: str, markdown_table: str, images_available_str: str, question: str) -> dict:
         """
@@ -71,12 +85,12 @@ class ReflectionLoop:
             print(f"Reflection triggered (Attempt {attempt+1}): {feedback}")
             
             # Re-build prompt with feedback
-            original_prompt = self.generator._build_prompt(context_text, markdown_table, images_available_str, question)
             retry_prompt = (
                 original_prompt + 
                 f"| 1 | {result['extracted_values']} |\n"
                 f"| 2 | {result['program']} |\n\n"
-                f"### Feedback từ Critic\n{feedback}\nHãy làm lại từ đầu và sinh ra kết quả đúng.\n\n"
+                f"### System Critic Feedback:\n{feedback}\n"
+                f"Yêu cầu: Hãy suy nghĩ lại, sửa các lỗi trên và TUYỆT ĐỐI tuân thủ cú pháp DSL.\n\n"
                 "### Response\n| Step | Output |\n|---|---|\n"
             )
             
