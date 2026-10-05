@@ -45,12 +45,8 @@ def main():
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.with_suffix(".rejected.json").write_text(json.dumps(rejected + failures, ensure_ascii=False, indent=2), encoding="utf-8")
-    if (failures and not args.skip_invalid) or (rejected and not args.skip_invalid) or not formatted:
+    if failures or (rejected and not args.skip_invalid) or not formatted:
         raise ValueError(f"{len(rejected)} invalid golds, {len(failures)} context failures; inspect {path.with_suffix('.rejected.json')}. Existing dataset was not overwritten.")
-    
-    if args.skip_invalid and (failures or rejected):
-        print(f"WARNING: Skipped {len(rejected)} invalid golds and {len(failures)} CV failures. See {path.with_suffix('.rejected.json')} for details.")
-        
     path.write_text(json.dumps(formatted, ensure_ascii=False, indent=2), encoding="utf-8")
 
 if __name__ == "__main__": main()
