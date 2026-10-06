@@ -1,22 +1,46 @@
-# Full train + public validation, adaptive OCR
+# OCR ghi trực tiếp và training từ file đã chuẩn bị
 
-Chạy từ project root, dùng dữ liệu formatted mới có CV thật:
+Chạy từ thư mục gốc project:
 
-```powershell
+```bash
 python -m vinumqa.nlp_module.data_prep.format_training_data --input data/train/train.json --images data/train/train_images --output vinumqa/data/train_formatted.json
 python -m vinumqa.nlp_module.data_prep.format_training_data --input data/public_test/public_test.json --images data/public_test/public_test_images --output vinumqa/data/public_test_formatted.json
 python -m vinumqa.nlp_module.training.train_qlora --max-seq-length 8192
 ```
 
-Không chạy bước split. Train đọc toàn bộ `train_formatted.json`; validation đọc `public_test_formatted.json`. Loader vẫn từ chối format cũ và QID trùng giữa hai tập. Chia sẻ ảnh/tài liệu giữa train/public không còn là lý do chặn, theo cấu hình validation được yêu cầu.
+Không split: training dùng toàn bộ train, validation dùng public test. QID trùng giữa hai tập và format cũ không hợp lệ vẫn bị từ chối.
 
-## Mang dữ liệu đã OCR sang máy/notebook khác
+## Lưu từng ảnh vào file chính
 
-Hai file `train_formatted.json` và `public_test_formatted.json` đã chứa Markdown ảnh, bảng, câu hỏi và nhãn. Sau khi formatter báo `Saved ... prepared samples`, lưu/tải hai file này hoặc đưa vào một Kaggle Dataset. Khi training không cần ảnh gốc, model OCR hay thư mục `outputs/cv_cache`. Việc token hóa cho model NLP vẫn chạy khi bắt đầu training.
+Formatter ghi file --output ngay khi bắt đầu và sau từng ảnh bằng file tạm + flush/fsync + replace. Nếu tắt giữa chừng, các ảnh đã ghi vẫn còn; file JSON không bị ghi dở. Không đọc/ghi `outputs/cv_cache/` trong luồng chuẩn bị dữ liệu này. Cache OCR của luồng inference khác giữ nguyên và không tự nhập vào output mới.
 
-Có thể xuất thẳng vào `/kaggle/working/prepared/` bằng cách đổi `--output` trong hai lệnh format phía trên. Để giữ file qua phiên Kaggle, lưu notebook output hoặc tải file/đưa vào Kaggle Dataset trước khi kết thúc phiên. Nếu đã có hai file formatted hợp lệ từ lần chạy trước, dùng trực tiếp, không chạy lại formatter.
+File chính là object `artifact_version: vinumqa-prepared-v1`, gồm:
 
-Ví dụ notebook training mới (thay `vinumqa-prepared` bằng đường dẫn Dataset đã thêm):
+- `images`: tên ảnh, index, status (`pending`, `ok`, `error`), Markdown hoặc lỗi.
+- `samples`: mỗi QID có status (`pending`, `ready`, `error`). Mẫu ready chứa dữ liệu training trong `data`; mẫu lỗi/chưa đủ ảnh giữ `source` gốc và lý do.
+- `summary`: số mẫu ready/error/pending.
+
+Ảnh lỗi vẫn được ghi vào file chính và được sao sang `<output-stem>.ocr_errors.json`. Danh sách QID chưa sẵn sàng nằm ở `<output-stem>.rejected.json`. Các ảnh thành công tiếp theo vẫn được ghi bình thường. Lỗi khởi tạo model dừng tiến trình nhưng giữ tiến độ đã lưu; không đánh dấu ảnh là lỗi vì vấn đề môi trường.
+
+Training đọc được cả object mới lẫn JSON list hợp lệ từ formatter cũ. Formatter không ghi đè file list cũ: nếu output đã là kiểu cũ, dùng tên output mới để giữ dữ liệu cũ.
+
+## Tiếp tục OCR từ ảnh số N
+
+Thứ tự ảnh tính từ 1, theo lần đầu tên ảnh xuất hiện trong dataset. Ảnh dùng chung chỉ có một số thứ tự, ổn định giữa các lần chạy cùng input.
+
+```bash
+python -m vinumqa.nlp_module.data_prep.format_training_data \
+  --input data/train/train.json --images data/train/train_images \
+  --output vinumqa/data/train_formatted.json --start-image 50
+```
+
+`--start-image` mặc định 1 và chỉ áp dụng OCR, không cắt tập training. Giữ cùng input/output khi tiếp tục. Ảnh đã lưu thành công hoặc lỗi không OCR lại. Thêm `--retry-failed` để thử lại ảnh lỗi từ số N trở đi. Nếu bắt đầu ở N nhưng output chưa có kết quả 1..N-1, các ảnh trước đó giữ pending; chạy lại từ 1 để bổ sung. Khi input hoặc hợp đồng định dạng đổi, chọn output mới.
+
+Log terminal hiện `[OCR image N/TOTAL] filename: START/SAVED_OK/SAVED_ERROR`, kèm thời gian và thống kê mẫu. Mỗi lượt tăng token vẫn có log budget, số token và thời gian.
+
+## Training trên notebook khác
+
+Lưu/tải hai file formatted hoặc đưa vào Kaggle Dataset. Khi training không cần ảnh gốc, model OCR hay cache OCR; chỉ cần base model NLP và dependency training. Trước khi kết thúc phiên Kaggle, lưu notebook output hoặc tải file để giữ qua phiên.
 
 ```bash
 python -m vinumqa.nlp_module.training.train_qlora \
@@ -26,31 +50,14 @@ python -m vinumqa.nlp_module.training.train_qlora \
   --max-seq-length 8192
 ```
 
-Training đọc hai JSON từ thư mục chỉ đọc được; checkpoint và kết quả validation ghi vào `--output-dir`. Bước này vẫn cần tải/cache base model NLP và các dependency training. Đây là luồng GPU QLoRA hiện có, chưa phải bản training TPU.
+Thay `vinumqa-prepared` bằng đường dẫn dataset của bạn. Mặc định mọi mẫu phải ready. Nếu chấp nhận chỉ train/evaluate trên phần dữ liệu sẵn sàng, thêm `--skip-unready`; log báo số mẫu bị loại khỏi mỗi tập. Validation khi đó là tập con, không đủ QID public test. Mẫu lỗi vẫn giữ trong file nguồn. `--skip-invalid` ở formatter chỉ còn là cờ tương thích; mẫu lỗi luôn được lưu.
 
-Nếu formatter báo gold không hợp lệ, xem file `.rejected.json` và sửa nhãn đã xác minh trước khi format lại để giữ đầy đủ tập train. `--skip-invalid` chỉ dành cho trường hợp chấp nhận loại các nhãn lỗi, không phải full train tuyệt đối.
+Sau mỗi epoch, tính eval loss rồi sinh kết quả vào `outputs/nlp_module/validation_predictions/epoch_N_step_S.json` và `.diagnostics.json` (hoặc dưới --output-dir). File kết quả dùng `[{"qid": "...", "predicted": "..."}]`. Prompt generation không chứa gold. Callback hiện hỗ trợ một process/GPU; đây chưa phải training TPU.
 
-Sau eval loss mỗi epoch, model hiện tại sinh autoregressive cho toàn bộ public test, không dùng output gold trong prompt. Kết quả:
+## Cấu hình OCR
 
-```text
-outputs/nlp_module/validation_predictions/epoch_1_step_N.json
-outputs/nlp_module/validation_predictions/epoch_1_step_N.diagnostics.json
-```
+Giới hạn ảnh 750.000 pixel. Budget khởi đầu 1024/2048/4096 theo heuristic mật độ cạnh; chạm trần chưa EOS thì sinh lại với budget gấp đôi đến tối đa 16384. Nếu vẫn không hoàn thành, lưu trạng thái lỗi. Retry sinh lại từ đầu vẫn có thể tốn thời gian với bảng dài.
 
-File kết quả có dạng `[{"qid": "...", "predicted": "add(1; 2)"}]`. Candidate sai DSL vẫn được ghi để đánh giá trung thực; lỗi generation ghi `predicted: ""` và lý do ở diagnostics. Mỗi epoch có file riêng, ghi atomically. Batch inference cũng xuất khóa `predicted`; khóa `program` chỉ dùng nội bộ và diagnostics.
+T4 dùng SDPA; FlashAttention-2 chỉ được chọn khi phần cứng và thư viện phù hợp. Model/processor ưu tiên snapshot local đầy đủ để tránh tokenizer gọi Hub rồi gặp HTTP 429. Cache thiếu thì tải bổ sung; nếu vẫn bị 429, giữ cache, chờ khoảng retry hoặc cấu hình HF_TOKEN qua Kaggle Secrets. Không ghi token vào source/log.
 
-Generation mỗi epoch làm tăng thời gian so với chỉ tính eval loss. Callback hiện hỗ trợ training một process/GPU, khôi phục chế độ train, gradient checkpointing và use_cache sau generation. Chưa benchmark GPU trong phiên sửa code.
-
-OCR giữ `MAX_PIXELS=750000` cả resize và processor. Budget khởi đầu 1024/2048/4096 theo mật độ cạnh trên ảnh thumbnail; đây là heuristic độ phức tạp, không phải đếm chữ chính xác. Output gặp EOS thì dừng ngay; output chạm budget chưa EOS được chạy lại với budget gấp đôi, tối đa 16384. Nếu vẫn bị cắt hoặc extraction lỗi/kết quả không hợp lệ, ghi lỗi vào `outputs/cv_cache/failures/`. Các lần gặp cùng nội dung ảnh và model sẽ bỏ qua OCR, kể cả chạy lại script. Lỗi khởi tạo model không đánh dấu ảnh lỗi. Metadata lần chạy có tại `extractor.last_generation`.
-
-Log terminal hiện `[OCR image N/TOTAL; seen=M] filename: STATUS`, trong đó N là số thứ tự ảnh theo lần đầu gặp trong tiến trình, M là số đường dẫn ảnh duy nhất đã gặp (không phải số ảnh thành công). TOTAL do formatter đếm từ dataset, gồm cả cache hit. Các trạng thái là START, DONE, CACHE_HIT, FAILED, SKIP_FAILED. Mỗi lượt tăng token có log budget, số token thực sinh và thời gian. Log sự kiện ảnh và metadata các lượt generation hoàn tất được lưu nối tiếp ở `outputs/cv_cache/progress.jsonl`. Số thứ tự đếm lại từ 1 khi khởi động tiến trình mới.
-
-Ảnh bị bỏ qua không được thay bằng bảng giả. Formatter tiếp tục duyệt mẫu, ghi các QID thiếu context vào `.rejected.json`, rồi báo lỗi và không ghi đè dataset nếu còn lỗi ảnh. Muốn thử lại một ảnh đã đánh dấu thất bại sau khi xử lý nguyên nhân, chỉ xóa file JSON tương ứng trong `failures/` (trường `image` chứa tên ảnh).
-
-Cache thành công vẫn dùng version `chart-markdown-v5-adaptive-750k`, nên nâng trần lên 16384 không buộc OCR lại các ảnh đã thành công ở v5. Cache v4 không được đọc. Giảm budget không tăng tốc ảnh vốn đã EOS sớm; retry sinh lại từ đầu có thể tăng thời gian với ảnh được ước lượng quá thấp.
-
-Tài liệu này thay thế phần split/train/validation trong `PIPELINE_V4.md`.
-
-Trên Kaggle T4, OCR tự chọn `sdpa`, không yêu cầu cài `flash_attn`. FlashAttention-2 chỉ được chọn khi mọi GPU nhìn thấy thuộc Ampere/Ada/Hopper và Transformers xác nhận thư viện khả dụng. Log khởi tạo hiển thị backend đã chọn. Nếu khởi tạo model thất bại, formatter dừng ngay, không nạp lại model theo từng câu hỏi và không đánh dấu ảnh là lỗi. Khởi động lại tiến trình sau khi cập nhật code để dùng cấu hình mới.
-
-OCR ưu tiên snapshot Hugging Face đã cache, kiểm tra các file cấu hình, tokenizer, chat template và các shard trọng số. Khi đủ file, processor và model được nạp từ đường dẫn local với `local_files_only=True`; tránh tokenizer gọi API `model_info` rồi bị HTTP 429 dù đã tải trọng số. Processor được nạp trước trọng số GPU. Nếu cache thiếu, chỉ tải snapshot bổ sung với hai worker; vẫn có thể bị giới hạn tải của Hub. Khi đó giữ cache, chờ khoảng retry mà lỗi báo hoặc cấu hình `HF_TOKEN` qua Kaggle Secrets rồi chạy lại. Không ghi token vào source code hay log.
+Tài liệu này thay thế hướng dẫn split/train/validation và lưu OCR cũ trong PIPELINE_V4.md.

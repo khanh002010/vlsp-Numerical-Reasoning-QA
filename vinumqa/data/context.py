@@ -60,13 +60,16 @@ def dict_to_markdown_table(tables):
         output.append("\n".join(lines))
     return "\n\n".join(output)
 
-def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline):
+def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, prepared_images=None):
     if not isinstance(text_segments, list): raise TypeError("text_segments must be a list")
     blocks = {k: dict_to_markdown_table({k: v}) for k, v in tables_dict.items()}
     for key, path in image_dict.items():
-        if cv_pipeline is None: raise ValueError("Real CV extraction/cache is required; placeholders are not training data")
-        if not Path(path).is_file(): raise FileNotFoundError(path)
-        table = cv_pipeline.process_image(str(path))
+        if prepared_images is not None:
+            table = prepared_images[key]
+        else:
+            if cv_pipeline is None: raise ValueError("Real CV extraction/cache is required; placeholders are not training data")
+            if not Path(path).is_file(): raise FileNotFoundError(path)
+            table = cv_pipeline.process_image(str(path))
         if not table.strip() or "| Lỗi |" in table or "extracted by CV Module" in table:
             raise ValueError(f"CV extraction failed for {key}")
         blocks[key] = f"**{key}**\n{table}"

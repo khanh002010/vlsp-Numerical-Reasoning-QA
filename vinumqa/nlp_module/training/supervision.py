@@ -1,5 +1,5 @@
 """Completion-only labels; fail on overflow instead of silently losing the target."""
-def load_prepared_pair(train_path, val_path):
+def load_prepared_pair(train_path, val_path, skip_unready=False):
     """Load portable, self-contained JSON datasets without opening images or OCR cache."""
     import json
     from pathlib import Path
@@ -10,6 +10,15 @@ def load_prepared_pair(train_path, val_path):
         if not path.is_file():
             raise FileNotFoundError(f"Prepared dataset not found: {path}. Run format_training_data once and copy its output JSON here.")
         rows = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(rows, dict) and rows.get("artifact_version") == "vinumqa-prepared-v1":
+            records = rows["samples"]
+            unready = [r for r in records if r["status"] != "ready"]
+            if unready and not skip_unready:
+                raise ValueError(f"{path}: {len(unready)} samples have failed/pending OCR or invalid labels. "
+                                 "Finish/repair preparation or explicitly use --skip-unready to train/evaluate a subset.")
+            if unready:
+                print(f"{path}: excluding {len(unready)} unready samples; using a subset of this dataset.", flush=True)
+            rows = [r["data"] for r in records if r["status"] == "ready"]
         if not isinstance(rows, list):
             raise ValueError(f"Prepared dataset must be a JSON list: {path}")
         datasets.append(rows)
