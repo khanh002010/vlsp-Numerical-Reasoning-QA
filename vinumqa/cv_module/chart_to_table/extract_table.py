@@ -12,6 +12,7 @@ import sys
 import time
 from pathlib import Path
 from vinumqa.cv_module.chart_to_table.backend import select_attention_backend
+from vinumqa.cv_module.chart_to_table.model_files import resolve_model_directory
 from vinumqa.cv_module.chart_to_table.token_budget import initial_token_budget, budget_schedule, reached_eos, MAX_NEW_TOKENS
 
 
@@ -100,20 +101,25 @@ class ChartToTableExtractor:
                             if self.device == "cuda" else [])
             attention = select_attention_backend(capabilities, is_flash_attn_2_available())
             print(f"OCR attention backend: {attention}; GPU capabilities: {capabilities}", flush=True)
+            model_directory = resolve_model_directory(model_id)
+            # A local path avoids tokenizer metadata probes such as model_info().
+            # Load the processor before allocating model weights on GPU.
+            self.processor = AutoProcessor.from_pretrained(
+                model_directory, max_pixels=MAX_PIXELS, local_files_only=True)
             self.model = Qwen2VLForConditionalGeneration.from_pretrained(
-                model_id, 
+                model_directory,
+                local_files_only=True,
                 torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
                 device_map="auto" if self.device == "cuda" else None,
                 attn_implementation=attention
             )
-            self.processor = AutoProcessor.from_pretrained(model_id, max_pixels=MAX_PIXELS)
             self.model.eval()
             print("Model loaded successfully.")
         except Exception as e:
             print(f"Failed to load model: {e}")
             self.model = None
             self.processor = None
-            raise RuntimeError("CV initialization failed") from e
+            raise RuntimeError(f"CV initialization failed: {e}") from e
             
         self.base_prompt = (
             "You are an expert data analyst. Convert the following chart image into a well-structured "

@@ -34,3 +34,5 @@ Cache thành công vẫn dùng version `chart-markdown-v5-adaptive-750k`, nên n
 Tài liệu này thay thế phần split/train/validation trong `PIPELINE_V4.md`.
 
 Trên Kaggle T4, OCR tự chọn `sdpa`, không yêu cầu cài `flash_attn`. FlashAttention-2 chỉ được chọn khi mọi GPU nhìn thấy thuộc Ampere/Ada/Hopper và Transformers xác nhận thư viện khả dụng. Log khởi tạo hiển thị backend đã chọn. Nếu khởi tạo model thất bại, formatter dừng ngay, không nạp lại model theo từng câu hỏi và không đánh dấu ảnh là lỗi. Khởi động lại tiến trình sau khi cập nhật code để dùng cấu hình mới.
+
+OCR ưu tiên snapshot Hugging Face đã cache, kiểm tra các file cấu hình, tokenizer, chat template và các shard trọng số. Khi đủ file, processor và model được nạp từ đường dẫn local với `local_files_only=True`; tránh tokenizer gọi API `model_info` rồi bị HTTP 429 dù đã tải trọng số. Processor được nạp trước trọng số GPU. Nếu cache thiếu, chỉ tải snapshot bổ sung với hai worker; vẫn có thể bị giới hạn tải của Hub. Khi đó giữ cache, chờ khoảng retry mà lỗi báo hoặc cấu hình `HF_TOKEN` qua Kaggle Secrets rồi chạy lại. Không ghi token vào source code hay log.
