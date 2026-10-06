@@ -42,7 +42,7 @@ def run_batch_inference(test_json_path, output_path, img_dir, lora_path=None, pi
         save_json(diagnostics, {"run_id": identity, "format_version": FORMAT_VERSION, "records": records})
     failures = [s["qid"] for s in data if not records.get(s["qid"], {}).get("valid")]
     if failures: raise RuntimeError(f"{len(failures)} invalid/failed predictions. See {diagnostics}; rerun to retry. Submission was not overwritten.")
-    results = [{"qid": s["qid"], "program": records[s["qid"]]["program"]} for s in data]
+    results = [{"qid": s["qid"], "predicted": records[s["qid"]]["program"]} for s in data]
     save_json(output, results)
     return results
 

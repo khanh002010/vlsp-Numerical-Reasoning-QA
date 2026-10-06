@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 class CVPipeline:
-    CACHE_VERSION = "chart-markdown-v4"
+    CACHE_VERSION = "chart-markdown-v5-adaptive-750k"
 
     def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", cache_dir="outputs/cv_cache", extractor=None):
         self.model_id = model_id

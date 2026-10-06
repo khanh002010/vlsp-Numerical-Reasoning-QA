@@ -204,6 +204,34 @@ class PipelineTests(unittest.TestCase):
             run_batch_inference(inp, out, tmp, pipeline=p)
             run_batch_inference(inp, out, tmp, pipeline=p)
             self.assertEqual(p.calls, 2)
-            self.assertEqual(json.loads(out.read_text())[0]["program"], "divide(9; 3)")
+            self.assertEqual(json.loads(out.read_text())[0]["predicted"], "divide(9; 3)")
+
+    def test_epoch_exports_do_not_leak_gold(self):
+        from vinumqa.nlp_module.training.epoch_predictions import export_epoch_predictions
+        samples = [{"qid": "q1", "instruction": "instruction", "input": "context", "output": "SECRET_GOLD"},
+                   {"qid": "q2", "instruction": "instruction", "input": "context", "output": "SECRET_GOLD"}]
+        seen = []
+        def generate(prompt):
+            self.assertNotIn("SECRET_GOLD", prompt)
+            seen.append(prompt)
+            if len(seen) % 2 == 0: raise ValueError("test failure")
+            return "| 1 | [] |\n| 2 | add(1; 2) |"
+        with tempfile.TemporaryDirectory() as tmp:
+            for epoch in [1, 2]:
+                rows = export_epoch_predictions(samples, generate, tmp, epoch, epoch * 100)
+                self.assertEqual(rows, [{"qid": "q1", "predicted": "add(1; 2)"}, {"qid": "q2", "predicted": ""}])
+            self.assertEqual(len(list(Path(tmp).glob("*.json"))), 4)
+
+    def test_adaptive_ocr_budget(self):
+        from vinumqa.cv_module.chart_to_table.token_budget import budget_schedule, reached_eos, initial_token_budget
+        from PIL import Image
+        self.assertEqual(list(budget_schedule(1024)), [1024, 2048, 4096, 8192])
+        self.assertEqual(list(budget_schedule(4096)), [4096, 8192])
+        self.assertTrue(reached_eos(2, [1, 2]))
+        self.assertFalse(reached_eos(3, [1, 2]))
+        image = Image.new("RGB", (1000, 750), "white")
+        before = image.size
+        self.assertIn(initial_token_budget(image), [1024, 2048, 4096])
+        self.assertEqual(image.size, before)
 
 if __name__ == "__main__": unittest.main()

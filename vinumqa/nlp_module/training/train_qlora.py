@@ -26,6 +26,7 @@ except ImportError:
 from vinumqa.nlp_module.training.lora_config import LoraConfig, TrainingConfig
 from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION, RESPONSE_PREFIX
 from vinumqa.nlp_module.training.supervision import encode_supervised, CompletionCollator, validate_dataset_pair
+from vinumqa.nlp_module.training.epoch_predictions import make_epoch_callback
 
 def load_formatted_dataset(json_path: str):
     """
@@ -53,18 +54,19 @@ def train(max_seq_length=8192):
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_split_formatted.json")
-    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "val_split_formatted.json")
+    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
+    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
     
     validate_dataset_pair(json.loads(Path(train_data_path).read_text(encoding="utf-8")),
-                          json.loads(Path(val_data_path).read_text(encoding="utf-8")), FORMAT_VERSION, INSTRUCTION)
+                          json.loads(Path(val_data_path).read_text(encoding="utf-8")), FORMAT_VERSION, INSTRUCTION,
+                          allow_group_overlap=True)
         
     dataset = load_formatted_dataset(train_data_path)
     print(f"Loaded {len(dataset)} training samples.")
     
     val_dataset = load_formatted_dataset(val_data_path) if os.path.exists(val_data_path) else None
     if val_dataset:
-        print(f"Loaded {len(val_dataset)} validation samples (grouped internal split).")
+        print(f"Loaded {len(val_dataset)} validation samples (Public Test).")
     
     # 3. Setup Quantization (4-bit QLoRA)
     bnb_config = BitsAndBytesConfig(
@@ -135,6 +137,7 @@ def train(max_seq_length=8192):
         eval_dataset=tokenized_val_dataset,
         args=training_args,
         data_collator=data_collator,
+        callbacks=[make_epoch_callback(json.loads(Path(val_data_path).read_text(encoding="utf-8")), tokenizer)],
     )
     
     print("Starting training...")

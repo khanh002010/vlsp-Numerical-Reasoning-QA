@@ -9,6 +9,7 @@ from typing import Union, List, Dict
 from PIL import Image
 import io
 import sys
+from vinumqa.cv_module.chart_to_table.token_budget import initial_token_budget, budget_schedule, reached_eos
 
 
 try:
@@ -97,7 +98,7 @@ class ChartToTableExtractor:
                 device_map="auto" if self.device == "cuda" else None,
                 attn_implementation="flash_attention_2" if self.device == "cuda" else None
             )
-            self.processor = AutoProcessor.from_pretrained(model_id)
+            self.processor = AutoProcessor.from_pretrained(model_id, max_pixels=MAX_PIXELS)
             self.model.eval()
             print("Model loaded successfully.")
         except Exception as e:
@@ -157,11 +158,18 @@ class ChartToTableExtractor:
             )
             inputs = inputs.to(self.device)
 
-            # Inference
-            with torch.inference_mode():
-                generated_ids = self.model.generate(**inputs, max_new_tokens=8192, do_sample=False)
-            if generated_ids.shape[1] - inputs.input_ids.shape[1] >= 8192:
-                raise ValueError("CV output reached token limit; incomplete table")
+            # Retry only truncated outputs, never cache a partial table.
+            self.last_generation = {"initial_budget": initial_token_budget(image), "attempts": []}
+            for budget in budget_schedule(self.last_generation["initial_budget"]):
+                with torch.inference_mode():
+                    generated_ids = self.model.generate(**inputs, max_new_tokens=budget, do_sample=False)
+                count = generated_ids.shape[1] - inputs.input_ids.shape[1]
+                eos = reached_eos(generated_ids[0, -1], self.model.generation_config.eos_token_id)
+                self.last_generation["attempts"].append({"budget": budget, "tokens": count, "eos": eos})
+                if eos or count < budget:
+                    break
+            else:
+                raise ValueError("CV output reached maximum 8192 tokens; incomplete table")
             generated_ids_trimmed = [
                 out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
             ]

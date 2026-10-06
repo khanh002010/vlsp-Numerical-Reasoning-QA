@@ -1,5 +1,5 @@
 """Completion-only labels; fail on overflow instead of silently losing the target."""
-def validate_dataset_pair(train, val, format_version, instruction):
+def validate_dataset_pair(train, val, format_version, instruction, allow_group_overlap=False):
     """Reject stale artifacts, overlapping document groups and duplicate question IDs."""
     from vinumqa.nlp_module.contracts import parse_response
     groups = []
@@ -17,7 +17,7 @@ def validate_dataset_pair(train, val, format_version, instruction):
             if "extracted by CV Module" in s["input"]: raise ValueError("Placeholder CV input")
             if not parse_response(s["output"])["valid"]: raise ValueError("Invalid target program")
         groups.append(keys)
-    if groups[0] & groups[1]: raise ValueError("Train/validation document or image overlap")
+    if groups[0] & groups[1] and not allow_group_overlap: raise ValueError("Train/validation document or image overlap")
 
 def pad_supervised(features, pad_id, multiple=8):
     n = max(len(f["input_ids"]) for f in features)
