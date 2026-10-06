@@ -52,6 +52,11 @@ def main():
     path.with_suffix(".rejected.json").write_text(json.dumps(rejected + failures, ensure_ascii=False, indent=2), encoding="utf-8")
     if failures or (rejected and not args.skip_invalid) or not formatted:
         raise ValueError(f"{len(rejected)} invalid golds, {len(failures)} context failures; inspect {path.with_suffix('.rejected.json')}. Existing dataset was not overwritten.")
-    path.write_text(json.dumps(formatted, ensure_ascii=False, indent=2), encoding="utf-8")
+    temp = path.with_suffix(path.suffix + ".tmp")
+    temp.write_text(json.dumps(formatted, ensure_ascii=False, indent=2), encoding="utf-8")
+    temp.replace(path)
+    print(f"Saved {len(formatted)} prepared samples to {path.resolve()}. "
+          "OCR Markdown is embedded: copy this JSON to the training machine; "
+          "original images and OCR cache are not required for training.", flush=True)
 
 if __name__ == "__main__": main()

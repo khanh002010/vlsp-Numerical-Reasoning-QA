@@ -1,4 +1,21 @@
 """Completion-only labels; fail on overflow instead of silently losing the target."""
+def load_prepared_pair(train_path, val_path):
+    """Load portable, self-contained JSON datasets without opening images or OCR cache."""
+    import json
+    from pathlib import Path
+    from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION
+    datasets = []
+    for path in (train_path, val_path):
+        path = Path(path)
+        if not path.is_file():
+            raise FileNotFoundError(f"Prepared dataset not found: {path}. Run format_training_data once and copy its output JSON here.")
+        rows = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(rows, list):
+            raise ValueError(f"Prepared dataset must be a JSON list: {path}")
+        datasets.append(rows)
+    validate_dataset_pair(*datasets, FORMAT_VERSION, INSTRUCTION, allow_group_overlap=True)
+    return tuple(datasets)
+
 def validate_dataset_pair(train, val, format_version, instruction, allow_group_overlap=False):
     """Reject stale artifacts, overlapping document groups and duplicate question IDs."""
     from vinumqa.nlp_module.contracts import parse_response

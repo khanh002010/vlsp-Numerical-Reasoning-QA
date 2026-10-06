@@ -118,6 +118,33 @@ class PipelineTests(unittest.TestCase):
         b["format_version"] = "v3"
         with self.assertRaisesRegex(ValueError, "Stale"): validate_dataset_pair([a], [b], FORMAT_VERSION, INSTRUCTION)
 
+    def test_prepared_json_is_portable_without_images_or_ocr(self):
+        from unittest.mock import patch
+        from vinumqa.nlp_module.training.supervision import load_prepared_pair
+        from vinumqa.nlp_module.training.epoch_predictions import validation_prompt
+        class Extractor:
+            def extract(self, path):
+                return "| Year | Value |\n|---|---|\n| 2025 | 123 |"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            image = root / "original.png"
+            image.write_bytes(b"test-image")
+            cv = CVPipeline(cache_dir=root / "cache", extractor=Extractor())
+            rows = [format_sample({"qid": qid, "text": ["### Image 1 ###"],
+                     "images": {"Image 1": image.name}, "qa": {"question": "?", "program": "add(1; 2)"}},
+                     cv_pipeline=cv, image_dir=root) for qid in ("train", "val")]
+            paths = [root / "train.json", root / "val.json"]
+            for path, row in zip(paths, rows):
+                path.write_text(json.dumps([row]), encoding="utf-8")
+            image.unlink()
+            with patch.object(CVPipeline, "process_image", side_effect=AssertionError("OCR must not run")):
+                train, val = load_prepared_pair(*paths)
+                self.assertIn("| 2025 | 123 |", train[0]["input"])
+                self.assertIn("| 2025 | 123 |", validation_prompt(val[0]))
+                self.assertEqual(train[0], rows[0])
+            with self.assertRaisesRegex(FileNotFoundError, "Prepared dataset not found"):
+                load_prepared_pair(root / "missing.json", paths[1])
+
     def test_reflection_retry_and_last_validation(self):
         g = FakeGenerator([{"program": "divide(#1; #2)"}, {"program": "divide(9; 3)"}])
         r = ReflectionLoop(g).generate_with_reflection("", "", "", "Tỷ số?")

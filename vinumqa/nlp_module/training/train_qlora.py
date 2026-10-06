@@ -25,7 +25,7 @@ except ImportError:
 
 from vinumqa.nlp_module.training.lora_config import LoraConfig, TrainingConfig
 from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION, RESPONSE_PREFIX
-from vinumqa.nlp_module.training.supervision import encode_supervised, CompletionCollator, validate_dataset_pair
+from vinumqa.nlp_module.training.supervision import encode_supervised, CompletionCollator, load_prepared_pair
 from vinumqa.nlp_module.training.epoch_predictions import make_epoch_callback
 
 def load_formatted_dataset(json_path: str):
@@ -45,21 +45,22 @@ def load_formatted_dataset(json_path: str):
                      "completion": sample["output"][len(header):]})
     return Dataset.from_list(rows)
 
-def train(max_seq_length=8192):
+def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_dir=None):
     # 1. Configs
     lora_cfg = LoraConfig()
     train_cfg = TrainingConfig()
     train_cfg.max_seq_length = max_seq_length
+    if output_dir is not None:
+        train_cfg.output_dir = str(output_dir)
     
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
-    val_data_path = str(PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
+    train_data_path = str(Path(train_data_path).resolve() if train_data_path else PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
+    val_data_path = str(Path(val_data_path).resolve() if val_data_path else PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
     
-    validate_dataset_pair(json.loads(Path(train_data_path).read_text(encoding="utf-8")),
-                          json.loads(Path(val_data_path).read_text(encoding="utf-8")), FORMAT_VERSION, INSTRUCTION,
-                          allow_group_overlap=True)
+    _, validation_rows = load_prepared_pair(train_data_path, val_data_path)
+    print(f"Training from prepared JSON; no OCR required.\nTrain: {train_data_path}\nValidation: {val_data_path}")
         
     dataset = load_formatted_dataset(train_data_path)
     print(f"Loaded {len(dataset)} training samples.")
@@ -137,7 +138,7 @@ def train(max_seq_length=8192):
         eval_dataset=tokenized_val_dataset,
         args=training_args,
         data_collator=data_collator,
-        callbacks=[make_epoch_callback(json.loads(Path(val_data_path).read_text(encoding="utf-8")), tokenizer)],
+        callbacks=[make_epoch_callback(validation_rows, tokenizer)],
     )
     
     print("Starting training...")
@@ -158,4 +159,8 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-seq-length", type=int, default=8192)
-    train(parser.parse_args().max_seq_length)
+    parser.add_argument("--train-data", help="Prepared training JSON with embedded OCR Markdown")
+    parser.add_argument("--val-data", help="Prepared public-test JSON with embedded OCR Markdown")
+    parser.add_argument("--output-dir", help="Writable directory for checkpoints and epoch validation results")
+    args = parser.parse_args()
+    train(args.max_seq_length, args.train_data, args.val_data, args.output_dir)

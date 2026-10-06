@@ -10,6 +10,24 @@ python -m vinumqa.nlp_module.training.train_qlora --max-seq-length 8192
 
 Không chạy bước split. Train đọc toàn bộ `train_formatted.json`; validation đọc `public_test_formatted.json`. Loader vẫn từ chối format cũ và QID trùng giữa hai tập. Chia sẻ ảnh/tài liệu giữa train/public không còn là lý do chặn, theo cấu hình validation được yêu cầu.
 
+## Mang dữ liệu đã OCR sang máy/notebook khác
+
+Hai file `train_formatted.json` và `public_test_formatted.json` đã chứa Markdown ảnh, bảng, câu hỏi và nhãn. Sau khi formatter báo `Saved ... prepared samples`, lưu/tải hai file này hoặc đưa vào một Kaggle Dataset. Khi training không cần ảnh gốc, model OCR hay thư mục `outputs/cv_cache`. Việc token hóa cho model NLP vẫn chạy khi bắt đầu training.
+
+Có thể xuất thẳng vào `/kaggle/working/prepared/` bằng cách đổi `--output` trong hai lệnh format phía trên. Để giữ file qua phiên Kaggle, lưu notebook output hoặc tải file/đưa vào Kaggle Dataset trước khi kết thúc phiên. Nếu đã có hai file formatted hợp lệ từ lần chạy trước, dùng trực tiếp, không chạy lại formatter.
+
+Ví dụ notebook training mới (thay `vinumqa-prepared` bằng đường dẫn Dataset đã thêm):
+
+```bash
+python -m vinumqa.nlp_module.training.train_qlora \
+  --train-data /kaggle/input/vinumqa-prepared/train_formatted.json \
+  --val-data /kaggle/input/vinumqa-prepared/public_test_formatted.json \
+  --output-dir /kaggle/working/outputs/nlp_module \
+  --max-seq-length 8192
+```
+
+Training đọc hai JSON từ thư mục chỉ đọc được; checkpoint và kết quả validation ghi vào `--output-dir`. Bước này vẫn cần tải/cache base model NLP và các dependency training. Đây là luồng GPU QLoRA hiện có, chưa phải bản training TPU.
+
 Nếu formatter báo gold không hợp lệ, xem file `.rejected.json` và sửa nhãn đã xác minh trước khi format lại để giữ đầy đủ tập train. `--skip-invalid` chỉ dành cho trường hợp chấp nhận loại các nhãn lỗi, không phải full train tuyệt đối.
 
 Sau eval loss mỗi epoch, model hiện tại sinh autoregressive cho toàn bộ public test, không dùng output gold trong prompt. Kết quả:
