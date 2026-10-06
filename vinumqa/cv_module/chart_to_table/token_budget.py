@@ -11,7 +11,9 @@ def initial_token_budget(image):
     if density > .09: return 2048
     return 1024
 
-def budget_schedule(initial, maximum=8192):
+MAX_NEW_TOKENS = 16384
+
+def budget_schedule(initial, maximum=MAX_NEW_TOKENS):
     if initial <= 0 or maximum < initial: raise ValueError("Invalid token budget")
     while True:
         yield initial

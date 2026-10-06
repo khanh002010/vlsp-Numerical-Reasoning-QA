@@ -31,9 +31,12 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--skip-invalid", action="store_true", help="Quarantine invalid gold programs; CV failures always stop formatting")
     args = parser.parse_args()
-    from vinumqa.cv_module.pipeline import CVPipeline
-    cv = CVPipeline()
+    from vinumqa.cv_module.pipeline import CVPipeline, CVInitializationError
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    total_images = len({str((Path(args.images) / name).resolve())
+                        for sample in data for name in sample.get("images", {}).values()})
+    cv = CVPipeline(total_images=total_images)
+    print(f"Preparing {len(data)} samples, {total_images} unique image paths. OCR log: {cv.cache_dir / 'progress.jsonl'}", flush=True)
     formatted, rejected, failures = [], [], []
     for sample in data:
         try: normalize_program(sample["qa"]["program"])
@@ -41,6 +44,8 @@ def main():
             rejected.append({"qid": sample["qid"], "error": str(e), "stage": "gold_validation"})
             continue
         try: formatted.append(format_sample(sample, cv_pipeline=cv, image_dir=args.images))
+        except CVInitializationError:
+            raise
         except Exception as e: failures.append({"qid": sample["qid"], "error": str(e), "stage": "context"})
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)

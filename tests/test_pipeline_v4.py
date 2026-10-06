@@ -225,13 +225,77 @@ class PipelineTests(unittest.TestCase):
     def test_adaptive_ocr_budget(self):
         from vinumqa.cv_module.chart_to_table.token_budget import budget_schedule, reached_eos, initial_token_budget
         from PIL import Image
-        self.assertEqual(list(budget_schedule(1024)), [1024, 2048, 4096, 8192])
-        self.assertEqual(list(budget_schedule(4096)), [4096, 8192])
+        self.assertEqual(list(budget_schedule(1024)), [1024, 2048, 4096, 8192, 16384])
+        self.assertEqual(list(budget_schedule(4096)), [4096, 8192, 16384])
         self.assertTrue(reached_eos(2, [1, 2]))
         self.assertFalse(reached_eos(3, [1, 2]))
         image = Image.new("RGB", (1000, 750), "white")
         before = image.size
         self.assertIn(initial_token_budget(image), [1024, 2048, 4096])
         self.assertEqual(image.size, before)
+
+    def test_ocr_backend_supports_t4_without_flash(self):
+        from vinumqa.cv_module.chart_to_table.backend import select_attention_backend
+        self.assertEqual(select_attention_backend([(7, 5)], False), "sdpa")
+        self.assertEqual(select_attention_backend([(7, 5)], True), "sdpa")
+        self.assertEqual(select_attention_backend([(8, 0)], False), "sdpa")
+        self.assertEqual(select_attention_backend([(8, 0)], True), "flash_attention_2")
+        self.assertEqual(select_attention_backend([(8, 0), (7, 5)], True), "sdpa")
+        self.assertEqual(select_attention_backend([], False), "sdpa")
+
+    def test_ocr_initialization_failure_is_not_retried_or_blacklisted(self):
+        from unittest.mock import Mock, patch
+        from types import ModuleType
+        from vinumqa.cv_module.pipeline import CVInitializationError
+        module_name = "vinumqa.cv_module.chart_to_table.extract_table"
+        fake_module = ModuleType(module_name)
+        fake_module.ChartToTableExtractor = Mock(side_effect=RuntimeError("backend unavailable"))
+        with tempfile.TemporaryDirectory() as tmp, patch.dict("sys.modules", {module_name: fake_module}):
+            image = Path(tmp) / "image.png"
+            image.write_bytes(b"image")
+            cache = Path(tmp) / "cache"
+            pipeline = CVPipeline(cache_dir=cache)
+            for _ in range(2):
+                with self.assertRaises(CVInitializationError): pipeline.process_image(image)
+            fake_module.ChartToTableExtractor.assert_called_once()
+            self.assertFalse((cache / "failures").exists())
+
+    def test_failed_ocr_is_skipped_across_runs_and_logs_progress(self):
+        from vinumqa.cv_module.pipeline import SkippedImageError
+        class Extractor:
+            calls = 0
+            def extract(self, path):
+                self.calls += 1
+                raise ValueError("CV output reached maximum 16384 tokens; incomplete table")
+        with tempfile.TemporaryDirectory() as tmp:
+            image = Path(tmp) / "image-id.png"
+            image.write_bytes(b"bad-image")
+            cache = Path(tmp) / "cache"
+            extractor = Extractor()
+            first = CVPipeline(cache_dir=cache, extractor=extractor, total_images=1)
+            for pipeline in [first, first, CVPipeline(cache_dir=cache, extractor=extractor, total_images=1)]:
+                with self.assertRaises(SkippedImageError): pipeline.process_image(image)
+            self.assertEqual(extractor.calls, 1)
+            self.assertEqual(len(list((cache / "failures").glob("*.json"))), 1)
+            self.assertEqual(list(cache.glob("*.json")), [])
+            events = [json.loads(line) for line in (cache / "progress.jsonl").read_text(encoding="utf-8").splitlines()]
+            self.assertEqual([e["status"] for e in events], ["START", "FAILED", "SKIP_FAILED", "SKIP_FAILED"])
+            self.assertTrue(all(e["image_number"] == 1 and e["total_images"] == 1 for e in events))
+
+    def test_invalid_ocr_output_is_not_retried(self):
+        from vinumqa.cv_module.pipeline import SkippedImageError
+        class Extractor:
+            calls = 0
+            def extract(self, path):
+                self.calls += 1
+                return "incomplete"
+        with tempfile.TemporaryDirectory() as tmp:
+            image = Path(tmp) / "image.png"
+            image.write_bytes(b"image")
+            extractor = Extractor()
+            pipeline = CVPipeline(cache_dir=Path(tmp) / "cache", extractor=extractor)
+            for _ in range(2):
+                with self.assertRaises(SkippedImageError): pipeline.process_image(image)
+            self.assertEqual(extractor.calls, 1)
 
 if __name__ == "__main__": unittest.main()

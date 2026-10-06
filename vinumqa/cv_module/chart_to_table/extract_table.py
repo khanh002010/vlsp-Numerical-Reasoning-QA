@@ -9,7 +9,10 @@ from typing import Union, List, Dict
 from PIL import Image
 import io
 import sys
-from vinumqa.cv_module.chart_to_table.token_budget import initial_token_budget, budget_schedule, reached_eos
+import time
+from pathlib import Path
+from vinumqa.cv_module.chart_to_table.backend import select_attention_backend
+from vinumqa.cv_module.chart_to_table.token_budget import initial_token_budget, budget_schedule, reached_eos, MAX_NEW_TOKENS
 
 
 try:
@@ -92,11 +95,16 @@ class ChartToTableExtractor:
         print(f"Loading {model_id} on {self.device}...")
         
         try:
+            from transformers.utils import is_flash_attn_2_available
+            capabilities = ([torch.cuda.get_device_capability(i) for i in range(torch.cuda.device_count())]
+                            if self.device == "cuda" else [])
+            attention = select_attention_backend(capabilities, is_flash_attn_2_available())
+            print(f"OCR attention backend: {attention}; GPU capabilities: {capabilities}", flush=True)
             self.model = Qwen2VLForConditionalGeneration.from_pretrained(
                 model_id, 
                 torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
                 device_map="auto" if self.device == "cuda" else None,
-                attn_implementation="flash_attention_2" if self.device == "cuda" else None
+                attn_implementation=attention
             )
             self.processor = AutoProcessor.from_pretrained(model_id, max_pixels=MAX_PIXELS)
             self.model.eval()
@@ -161,15 +169,19 @@ class ChartToTableExtractor:
             # Retry only truncated outputs, never cache a partial table.
             self.last_generation = {"initial_budget": initial_token_budget(image), "attempts": []}
             for budget in budget_schedule(self.last_generation["initial_budget"]):
+                started = time.monotonic()
+                print(f"[OCR] {Path(image_path).name}: generating, budget={budget}/{MAX_NEW_TOKENS}", flush=True)
                 with torch.inference_mode():
                     generated_ids = self.model.generate(**inputs, max_new_tokens=budget, do_sample=False)
                 count = generated_ids.shape[1] - inputs.input_ids.shape[1]
                 eos = reached_eos(generated_ids[0, -1], self.model.generation_config.eos_token_id)
-                self.last_generation["attempts"].append({"budget": budget, "tokens": count, "eos": eos})
+                seconds = round(time.monotonic() - started, 2)
+                self.last_generation["attempts"].append({"budget": budget, "tokens": count, "eos": eos, "seconds": seconds})
+                print(f"[OCR] {Path(image_path).name}: tokens={count}, eos={eos}, seconds={seconds}", flush=True)
                 if eos or count < budget:
                     break
             else:
-                raise ValueError("CV output reached maximum 8192 tokens; incomplete table")
+                raise ValueError(f"CV output reached maximum {MAX_NEW_TOKENS} tokens; incomplete table")
             generated_ids_trimmed = [
                 out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
             ]
@@ -181,7 +193,7 @@ class ChartToTableExtractor:
             
         except Exception as e:
             print(f"Error extracting table from {image_path}: {e}")
-            raise RuntimeError(f"CV extraction failed: {image_path}") from e
+            raise RuntimeError(f"CV extraction failed: {image_path}: {e}") from e
 
     def extract_batch(self, image_paths: List[str]) -> List[str]:
         """
