@@ -4,6 +4,7 @@ import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from vinumqa.cv_module.chart_to_table.quality import OCR_VERSION, validate_table
 
 class SkippedImageError(RuntimeError):
     """An image failed OCR and must not be retried automatically."""
@@ -12,8 +13,7 @@ class CVInitializationError(RuntimeError):
     """Fatal environment/model error; do not retry for every dataset row."""
 
 class CVPipeline:
-    # Keep successful v5 cache entries when increasing the generation cap.
-    CACHE_VERSION = "chart-markdown-v5-adaptive-750k"
+    CACHE_VERSION = OCR_VERSION
 
     def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", cache_dir="outputs/cv_cache", extractor=None, total_images=None):
         self.model_id = model_id
@@ -92,6 +92,7 @@ class CVPipeline:
 
     @staticmethod
     def _validate(table, image_path):
+        validate_table(table)
         if not isinstance(table, str) or len(table.strip().splitlines()) < 3 or "| Lỗi |" in table or "extracted by CV Module" in table:
             raise ValueError(f"Invalid CV extraction: {image_path}")
 

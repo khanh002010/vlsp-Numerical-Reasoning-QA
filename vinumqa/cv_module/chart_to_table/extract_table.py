@@ -1,215 +1,129 @@
-"""
-Chart-to-Table extraction using a Vision Language Model (VLM).
-This module uses Qwen2-VL-2B-Instruct to convert chart images into Markdown tables.
-Includes Aspect Ratio classification and Smart Image Resizing (MAX_PIXELS).
-"""
-
-import torch
-from typing import Union, List, Dict
-from PIL import Image
-import io
-import sys
+"""Chart-to-table OCR with bounded retries and early repetition detection."""
+import copy
 import time
 from pathlib import Path
+
+import torch
+from PIL import Image
+from transformers import AutoProcessor, Qwen2VLForConditionalGeneration, StoppingCriteria, StoppingCriteriaList
+from qwen_vl_utils import process_vision_info
+
 from vinumqa.cv_module.chart_to_table.backend import select_attention_backend
 from vinumqa.cv_module.chart_to_table.model_files import resolve_model_directory
 from vinumqa.cv_module.chart_to_table.token_budget import initial_token_budget, budget_schedule, reached_eos, MAX_NEW_TOKENS
-
-
-try:
-    from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
-    from qwen_vl_utils import process_vision_info
-except ImportError:
-    print("Please install transformers and qwen_vl_utils: pip install transformers qwen-vl-utils")
-
-# ==============================================================
-# HELPER FUNCTIONS
-# ==============================================================
+from vinumqa.cv_module.chart_to_table.quality import OCR_PROMPT, FALLBACK_PROMPT, OCR_VERSION, repetition_reason, extract_with_retries
 
 MAX_PIXELS = 750_000
-LANDSCAPE_RATIO_THRESHOLD = 1.2
-SQUARE_RATIO_THRESHOLD = 0.8
 
-def classify_chart_type(image: Image.Image) -> dict:
-    """
-    Phân loại loại biểu đồ dựa trên Aspect Ratio (Tỷ lệ khung hình).
-    """
-    w, h = image.size
-    ratio = w / h if h > 0 else 1.0
-    
-    if ratio > LANDSCAPE_RATIO_THRESHOLD:
-        return {
-            'shape': 'Landscape',
-            'prompt_hint': (
-                "[CHART TYPE HINT - Landscape Chart]: Đây là biểu đồ nằm ngang (Cột / Đường / Vùng). "
-                "Hãy đọc kỹ: (1) TRỤC X - thường là mốc thời gian (Tháng/Quý/Năm) hoặc danh mục; "
-                "(2) TRỤC Y - thường là đơn vị số (Tỷ VNĐ, Tr. USD, %, điểm...); "
-                "(3) LEGEND (Chú thích màu sắc) - xác định tên của từng series dữ liệu."
-            )
-        }
-    elif SQUARE_RATIO_THRESHOLD <= ratio <= LANDSCAPE_RATIO_THRESHOLD:
-        return {
-            'shape': 'Square',
-            'prompt_hint': (
-                "[CHART TYPE HINT - Square Chart]: Có thể là biểu đồ tròn (Pie) hoặc biểu đồ cột/đường dạng vuông. "
-                "Hãy đọc kỹ: (1) TÊN CÁC LÁT CẮT / TRỤC - nhãn tên của từng phần; "
-                "(2) TỶ LỆ % HOẶC SỐ - con số ghi bên trong hoặc bên ngoài; "
-                "(3) LEGEND - bảng chú thích màu nếu nhãn không hiển thị trực tiếp."
-            )
-        }
-    else:
-        return {
-            'shape': 'Portrait',
-            'prompt_hint': (
-                "[CHART TYPE HINT - Portrait Chart]: Đây là biểu đồ dạng dọc. "
-                "Hãy đọc kỹ các trục, nhãn dữ liệu và chú thích màu (nếu có)."
-            )
-        }
 
-def preprocess_image(image: Image.Image) -> Image.Image:
-    """
-    Chuẩn hóa ảnh: giữ nguyên Aspect Ratio, nhưng giới hạn pixel tối đa = MAX_PIXELS.
-    Tránh OOM khi đi thi với ảnh độ phân giải quá cao.
-    """
+def preprocess_image(image):
     w, h = image.size
-    current_pixels = w * h
-    
-    if current_pixels > MAX_PIXELS:
-        scale = (MAX_PIXELS / current_pixels) ** 0.5
-        new_w = int(w * scale)
-        new_h = int(h * scale)
-        return image.resize((new_w, new_h), Image.LANCZOS)
+    if w * h > MAX_PIXELS:
+        scale = (MAX_PIXELS / (w * h)) ** 0.5
+        return image.resize((max(1, int(w * scale)), max(1, int(h * scale))), Image.Resampling.LANCZOS)
     return image
 
 
-# ==============================================================
-# EXTRACTOR CLASS
-# ==============================================================
+class RepetitionStop(StoppingCriteria):
+    """Check a short decoded suffix periodically, ignoring the input prompt."""
+    def __init__(self, processor, input_length):
+        self.processor = processor
+        self.input_length = input_length
+        self.reason = None
+
+    def __call__(self, input_ids, scores, **kwargs):
+        count = input_ids.shape[1] - self.input_length
+        if count >= 128 and count % 32 == 0:
+            tail = input_ids[:, max(self.input_length, input_ids.shape[1] - 512):]
+            text = self.processor.batch_decode(tail, skip_special_tokens=True,
+                                                clean_up_tokenization_spaces=False)[0]
+            self.reason = repetition_reason(text)
+        return torch.full((input_ids.shape[0],), self.reason is not None,
+                          device=input_ids.device, dtype=torch.bool)
+
 
 class ChartToTableExtractor:
-    def __init__(self, model_id: str = "Qwen/Qwen2-VL-2B-Instruct", device: str = "cuda"):
-        """
-        Initialize the Chart-to-Table extractor.
-        Uses Qwen2-VL-2B-Instruct by default as it fits on T4 (16GB) and supports Vietnamese.
-        """
+    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", device="cuda"):
         self.device = device if torch.cuda.is_available() else "cpu"
-        print(f"Loading {model_id} on {self.device}...")
-        
+        print(f"Loading {model_id} on {self.device}...", flush=True)
+        from transformers.utils import is_flash_attn_2_available
+        capabilities = ([torch.cuda.get_device_capability(i) for i in range(torch.cuda.device_count())]
+                        if self.device == "cuda" else [])
+        attention = select_attention_backend(capabilities, is_flash_attn_2_available())
+        print(f"OCR attention backend: {attention}; GPU capabilities: {capabilities}", flush=True)
+        model_directory = resolve_model_directory(model_id)
+        self.processor = AutoProcessor.from_pretrained(
+            model_directory, max_pixels=MAX_PIXELS, local_files_only=True)
+        self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+            model_directory, local_files_only=True,
+            torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
+            device_map="auto" if self.device == "cuda" else None,
+            attn_implementation=attention)
+        self.model.eval()
+        self.base_prompt = OCR_PROMPT
+        # Normalize irrelevant sampling settings without mutating model defaults.
+        self.generation_config = copy.deepcopy(self.model.generation_config)
+        self.generation_config.do_sample = False
+        self.generation_config.temperature = 1.0
+        self.generation_config.top_p = 1.0
+        self.generation_config.top_k = 50
+        self.generation_config.num_beams = 1
+        self.generation_config.num_return_sequences = 1
+        self.last_generation = {}
+
+    def prepare_inputs(self, image, prompt=None):
+        messages = [{"role": "user", "content": [
+            {"type": "image", "image": image},
+            {"type": "text", "text": prompt or self.base_prompt}]}]
+        text = self.processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        images, videos = process_vision_info(messages)
+        inputs = self.processor(text=[text], images=images, videos=videos, padding=True,
+                                return_tensors="pt").to(self.device)
+        return inputs, text
+
+    def generate_once(self, inputs, budget):
+        started = time.monotonic()
+        guard = RepetitionStop(self.processor, inputs.input_ids.shape[1])
+        with torch.inference_mode():
+            output = self.model.generate(
+                **inputs, max_new_tokens=budget, generation_config=self.generation_config,
+                stopping_criteria=StoppingCriteriaList([guard]))
+        ids = output[0, inputs.input_ids.shape[1]:].detach().cpu().tolist()
+        eos = bool(ids) and reached_eos(ids[-1], self.generation_config.eos_token_id)
+        text = self.processor.batch_decode([ids], skip_special_tokens=True,
+                                          clean_up_tokenization_spaces=False)[0].strip()
+        reason = guard.reason or repetition_reason(text)
+        return {"text": text,
+                "raw_text": self.processor.batch_decode([ids], skip_special_tokens=False,
+                                                         clean_up_tokenization_spaces=False)[0],
+                "token_ids": ids, "tokens": len(ids), "eos": eos,
+                "stop_reason": "repetition" if reason else "eos" if eos else "token_limit",
+                "seconds": round(time.monotonic() - started, 2)}
+
+    def extract(self, image_path):
+        self.last_generation = {"version": OCR_VERSION, "attempts": []}
         try:
-            from transformers.utils import is_flash_attn_2_available
-            capabilities = ([torch.cuda.get_device_capability(i) for i in range(torch.cuda.device_count())]
-                            if self.device == "cuda" else [])
-            attention = select_attention_backend(capabilities, is_flash_attn_2_available())
-            print(f"OCR attention backend: {attention}; GPU capabilities: {capabilities}", flush=True)
-            model_directory = resolve_model_directory(model_id)
-            # A local path avoids tokenizer metadata probes such as model_info().
-            # Load the processor before allocating model weights on GPU.
-            self.processor = AutoProcessor.from_pretrained(
-                model_directory, max_pixels=MAX_PIXELS, local_files_only=True)
-            self.model = Qwen2VLForConditionalGeneration.from_pretrained(
-                model_directory,
-                local_files_only=True,
-                torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-                device_map="auto" if self.device == "cuda" else None,
-                attn_implementation=attention
-            )
-            self.model.eval()
-            print("Model loaded successfully.")
-        except Exception as e:
-            print(f"Failed to load model: {e}")
-            self.model = None
-            self.processor = None
-            raise RuntimeError(f"CV initialization failed: {e}") from e
-            
-        self.base_prompt = (
-            "You are an expert data analyst. Convert the following chart image into a well-structured "
-            "Markdown table. Extract all text, labels, and numerical values accurately. "
-            "Preserve the original language (Vietnamese) and formatting of the numbers. "
-            "Output ONLY the markdown table, without any conversational text or explanation."
-        )
+            with Image.open(image_path) as source:
+                image = preprocess_image(source.convert("RGB"))
+            initial = initial_token_budget(image)
+            self.last_generation["initial_budget"] = initial
+            inputs, _ = self.prepare_inputs(image)
+            fallback_inputs = None
 
-    def extract(self, image_path: str) -> str:
-        """
-        Extract a Markdown table from a chart image.
-        """
-        if self.model is None or self.processor is None:
-            raise RuntimeError("CV model not loaded")
-            
-        try:
-            raw_image = Image.open(image_path).convert("RGB")
-            
-            # 1. Image Preprocessing (MAX_PIXELS)
-            image = preprocess_image(raw_image)
-            
-            # 2. Chart Type Classification
-            chart_info = classify_chart_type(image)
-            prompt_hint = chart_info['prompt_hint']
-            
-            # 3. Combine prompt
-            full_prompt = f"{prompt_hint}\n\n{self.base_prompt}"
-            
-            messages = [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "image", "image": image},
-                        {"type": "text", "text": full_prompt},
-                    ],
-                }
-            ]
-            
-            # Preparation for inference
-            text = self.processor.apply_chat_template(
-                messages, tokenize=False, add_generation_prompt=True
-            )
-            image_inputs, video_inputs = process_vision_info(messages)
-            inputs = self.processor(
-                text=[text],
-                images=image_inputs,
-                videos=video_inputs,
-                padding=True,
-                return_tensors="pt",
-            )
-            inputs = inputs.to(self.device)
+            def generate(budget, fallback):
+                nonlocal fallback_inputs
+                if fallback and fallback_inputs is None:
+                    fallback_inputs, _ = self.prepare_inputs(image, FALLBACK_PROMPT)
+                print(f"[OCR] {Path(image_path).name}: generating, budget={budget}/{MAX_NEW_TOKENS}, "
+                      f"prompt={'fallback' if fallback else 'primary'}", flush=True)
+                result = self.generate_once(fallback_inputs if fallback else inputs, budget)
+                print(f"[OCR] {Path(image_path).name}: tokens={result['tokens']}, "
+                      f"stop={result['stop_reason']}, seconds={result['seconds']}", flush=True)
+                return result
 
-            # Retry only truncated outputs, never cache a partial table.
-            self.last_generation = {"initial_budget": initial_token_budget(image), "attempts": []}
-            for budget in budget_schedule(self.last_generation["initial_budget"]):
-                started = time.monotonic()
-                print(f"[OCR] {Path(image_path).name}: generating, budget={budget}/{MAX_NEW_TOKENS}", flush=True)
-                with torch.inference_mode():
-                    generated_ids = self.model.generate(**inputs, max_new_tokens=budget, do_sample=False)
-                count = generated_ids.shape[1] - inputs.input_ids.shape[1]
-                eos = reached_eos(generated_ids[0, -1], self.model.generation_config.eos_token_id)
-                seconds = round(time.monotonic() - started, 2)
-                self.last_generation["attempts"].append({"budget": budget, "tokens": count, "eos": eos, "seconds": seconds})
-                print(f"[OCR] {Path(image_path).name}: tokens={count}, eos={eos}, seconds={seconds}", flush=True)
-                if eos or count < budget:
-                    break
-            else:
-                raise ValueError(f"CV output reached maximum {MAX_NEW_TOKENS} tokens; incomplete table")
-            generated_ids_trimmed = [
-                out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
-            ]
-            output_text = self.processor.batch_decode(
-                generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
-            )
-            
-            return output_text[0].strip()
-            
-        except Exception as e:
-            print(f"Error extracting table from {image_path}: {e}")
-            raise RuntimeError(f"CV extraction failed: {image_path}: {e}") from e
+            return extract_with_retries(generate, budget_schedule(initial), self.last_generation["attempts"])
+        except Exception as error:
+            raise RuntimeError(f"CV extraction failed: {image_path}: {error}") from error
 
-    def extract_batch(self, image_paths: List[str]) -> List[str]:
-        """
-        Extract Markdown tables from a batch of chart images.
-        (Simplified sequential implementation for now; can be optimized for actual batching)
-        """
+    def extract_batch(self, image_paths):
         return [self.extract(path) for path in image_paths]
-
-
-if __name__ == "__main__":
-    # Test script
-    extractor = ChartToTableExtractor()
-    print("ChartToTableExtractor module is ready.")

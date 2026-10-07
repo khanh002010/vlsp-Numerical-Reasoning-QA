@@ -113,5 +113,32 @@ class IncrementalPreparationTests(unittest.TestCase):
                 prepare_incrementally(changed, root, output)
             self.assertEqual(output.read_bytes(), original)
 
+    def test_invalid_saved_table_rejected_and_failure_diagnostics_persist(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.images(root)
+            output = root / "prepared.json"
+            class Extractor:
+                def extract(self, path): return "| x |\n|---|\n| 1 |"
+            saved = prepare_incrementally(self.data(), root, output, extractor=Extractor())
+            bad = "| Chart |\n|---|---|\n| " + "TRỤC X - TRỤC Y - " * 20
+            saved["images"][0]["markdown"] = bad
+            output.write_text(json.dumps(saved, ensure_ascii=False), encoding="utf-8")
+            # A formerly ready sample must not survive rejection of its evidence.
+            saved = prepare_incrementally(self.data(), root, output, extractor=Extractor())
+            self.assertEqual(saved["samples"][0]["status"], "error")
+            self.assertEqual(saved["samples"][2]["status"], "error")
+            self.assertEqual(saved["images"][0]["rejected_markdown"], bad)
+            class FailingExtractor:
+                last_generation = {"attempts": [{"text": bad, "stop_reason": "repetition"}]}
+                def extract(self, path): raise ValueError("repetition")
+            prepare_incrementally(self.data(), root, output, extractor=FailingExtractor(), retry_failed=True)
+            errors = json.loads(output.with_suffix(".ocr_errors.json").read_text(encoding="utf-8"))
+            self.assertEqual(errors[0]["generation"]["attempts"][0]["text"], bad)
+            saved = prepare_incrementally(self.data(), root, output, extractor=Extractor(), retry_failed=True)
+            self.assertEqual(saved["summary"]["ready"], 4)
+            self.assertNotIn("generation", saved["images"][0])
+            self.assertNotIn("rejected_markdown", saved["images"][0])
+
 
 if __name__ == "__main__": unittest.main()

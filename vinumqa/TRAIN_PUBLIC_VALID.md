@@ -56,6 +56,28 @@ Sau mỗi epoch, tính eval loss rồi sinh kết quả vào `outputs/nlp_module
 
 ## Cấu hình OCR
 
+OCR dùng prompt bảng dữ liệu: mỗi hàng là một mốc thời gian/danh mục, mỗi series có tên và đơn vị riêng. Số ghi trực tiếp trên ảnh được yêu cầu giữ nguyên; số đọc theo chiều cao cột/đường phải có dấu `~`, không đọc được thì `N/A`. Đây là yêu cầu cho model, không phải bảo đảm độ chính xác: vẫn cần đối chiếu ảnh, nhất là biểu đồ không in số trên từng điểm.
+
+Guard kiểm tra lặp chữ sau mỗi 32 token, bắt đầu từ token 128. Khi phát hiện lặp trong dòng, dừng lượt sinh và thử một prompt khác với budget ban đầu tối đa 2048. Nếu prompt thay thế vẫn lặp hoặc trả bảng sai cấu trúc, lưu lỗi thay vì tiếp tục tăng token. Kiểm tra cấu trúc không chứng minh các giá trị trong bảng đúng với ảnh.
+
+File formatted lưu `images[].generation.attempts` gồm đầu ra từng lượt, token, lý do dừng và lỗi kiểm tra. Ảnh lỗi cũng có thông tin này trong `.ocr_errors.json`. Các bảng đã lưu được kiểm tra lại khi chạy formatter; bảng không hợp lệ chuyển sang lỗi và các mẫu liên quan không còn ready. Ảnh đã lỗi chỉ thử lại khi thêm `--retry-failed`. Các bảng hợp lệ đã lưu không tự OCR lại theo prompt mới; muốn kiểm tra lại toàn bộ nội dung, chọn file output mới.
+
+Thử ảnh từng bị lặp trước khi chạy cả tập:
+
+```bash
+python -m vinumqa.cv_module.ocr_token_probe --image data/train/train_images/dcb828d6-2de7-4858-af50-d0f33fcd4ebb.png --budgets 1024 2048 4096 --output-dir outputs/ocr_probe_guarded
+```
+
+Probe dùng cùng prompt và guard như pipeline, nhưng mỗi mức token là một lượt độc lập, không dùng prompt thay thế. Đọc Markdown và các trường `stop_reason`, `table_structure_valid`, `quality_error` trong JSON. `usable` chỉ báo đạt điều kiện EOS/cấu trúc/không lặp; không phải điểm chính xác số liệu.
+
+Thử lại ảnh lỗi trong file đã chuẩn bị trên Kaggle (chọn đúng đường dẫn output cũ):
+
+```bash
+python -m vinumqa.nlp_module.data_prep.format_training_data --input data/train/train.json --images data/train/train_images --output /kaggle/working/prepared/train_formatted.json --start-image 1 --retry-failed
+```
+
+Luồng inference dùng phiên bản cache OCR mới để tránh đọc kết quả theo prompt cũ. Luồng formatter vẫn ghi trực tiếp vào file output, không dùng cache này.
+
 Giới hạn ảnh 750.000 pixel. Budget khởi đầu 1024/2048/4096 theo heuristic mật độ cạnh; chạm trần chưa EOS thì sinh lại với budget gấp đôi đến tối đa 16384. Nếu vẫn không hoàn thành, lưu trạng thái lỗi. Retry sinh lại từ đầu vẫn có thể tốn thời gian với bảng dài.
 
 T4 dùng SDPA; FlashAttention-2 chỉ được chọn khi phần cứng và thư viện phù hợp. Model/processor ưu tiên snapshot local đầy đủ để tránh tokenizer gọi Hub rồi gặp HTTP 429. Cache thiếu thì tải bổ sung; nếu vẫn bị 429, giữ cache, chờ khoảng retry hoặc cấu hình HF_TOKEN qua Kaggle Secrets. Không ghi token vào source/log.

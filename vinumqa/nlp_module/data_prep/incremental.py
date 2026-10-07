@@ -46,6 +46,14 @@ def prepare_incrementally(data, image_dir, output, start_image=1, extractor=None
                     "images": [{"image": name, "index": i, "status": "pending", "markdown": None}
                                for i, name in enumerate(names, 1)], "samples": []}
     records = {r["image"]: r for r in artifact["images"]}
+    # Previously accepted malformed tables must not remain training evidence.
+    for record in artifact["images"]:
+        if record["status"] == "ok":
+            try:
+                CVPipeline._validate(record["markdown"], record["image"])
+            except ValueError as error:
+                record.update(status="error", rejected_markdown=record["markdown"],
+                              markdown=None, error=f"Saved OCR failed validation: {error}")
 
     def rebuild_samples():
         rows = []
@@ -99,14 +107,23 @@ def prepare_incrementally(data, image_dir, output, start_image=1, extractor=None
             except Exception as error:
                 raise CVInitializationError(f"Cannot initialize OCR model: {error}. Progress saved to {output}") from error
         started = time.monotonic()
+        generation = None
         try:
             if not image_path.is_file(): raise FileNotFoundError(image_path)
-            table = extractor.extract(str(image_path))
+            try:
+                table = extractor.extract(str(image_path))
+            finally:
+                generation = getattr(extractor, "last_generation", None)
             CVPipeline._validate(table, image_path)
             record.update(status="ok", markdown=table)
             record.pop("error", None)
+            record.pop("rejected_markdown", None)
         except Exception as error:
             record.update(status="error", markdown=None, error=str(error))
+        if generation is not None:
+            record["generation"] = generation
+        else:
+            record.pop("generation", None)
         record["seconds"] = round(time.monotonic() - started, 2)
         # Persist the image before rebuilding dependent samples; a restart can rebuild them.
         write_json(output, artifact)
