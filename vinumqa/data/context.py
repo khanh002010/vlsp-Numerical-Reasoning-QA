@@ -60,10 +60,14 @@ def dict_to_markdown_table(tables):
         output.append("\n".join(lines))
     return "\n\n".join(output)
 
-def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, prepared_images=None):
+def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, prepared_images=None, chart_structures=None):
     if not isinstance(text_segments, list): raise TypeError("text_segments must be a list")
     blocks = {k: dict_to_markdown_table({k: v}) for k, v in tables_dict.items()}
     for key, path in image_dict.items():
+        if chart_structures is not None:
+            from vinumqa.cv_module.structure import render_structure
+            blocks[key] = f"**{key}**\n" + render_structure(key, chart_structures[key])
+            continue
         if prepared_images is not None:
             table = prepared_images[key]
         else:

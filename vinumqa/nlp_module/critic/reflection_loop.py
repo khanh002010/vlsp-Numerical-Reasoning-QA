@@ -17,6 +17,8 @@ class ReflectionLoop:
         history = []
         for attempt in range(self.max_retries + 1):
             result = self.generator.generate_with_prompt(prompt)
+            if "cv_request" in result:
+                return {**result, "valid": False, "attempts": history}
             if result.get("error"):
                 return {**result, "valid": False, "attempts": history}
             feedback = self._critique(result.get("program", ""), result.get("extracted_values", ""), context_text + "\n" + markdown_table)

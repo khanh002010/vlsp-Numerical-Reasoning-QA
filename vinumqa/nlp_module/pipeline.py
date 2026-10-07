@@ -31,5 +31,8 @@ class NLPPipeline:
         else:
             return ReflectionLoop(self.generator, max_retries=0).generate_with_reflection(context_text, markdown_table, images_available_str, question)
 
+    def close(self):
+        self.generator.close()
+
 if __name__ == "__main__":
     print("NLPPipeline module is ready.")

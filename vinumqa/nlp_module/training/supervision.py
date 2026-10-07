@@ -10,7 +10,7 @@ def load_prepared_pair(train_path, val_path, skip_unready=False):
         if not path.is_file():
             raise FileNotFoundError(f"Prepared dataset not found: {path}. Run format_training_data once and copy its output JSON here.")
         rows = json.loads(path.read_text(encoding="utf-8"))
-        if isinstance(rows, dict) and rows.get("artifact_version") == "vinumqa-prepared-v1":
+        if isinstance(rows, dict) and rows.get("artifact_version") in {"vinumqa-prepared-v1", "vinumqa-prepared-structures-v1"}:
             records = rows["samples"]
             unready = [r for r in records if r["status"] != "ready"]
             if unready and not skip_unready:

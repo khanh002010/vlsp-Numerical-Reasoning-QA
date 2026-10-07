@@ -48,17 +48,12 @@ class ProgramGenerator:
             if (info.get("format_version") != FORMAT_VERSION
                 or info.get("base_model") != base_model_id
                 or info.get("prompt_sha256") != hashlib.sha256(INSTRUCTION.encode()).hexdigest()):
-                raise ValueError("Adapter contract mismatch. Retrain v4 or explicitly allow_legacy_adapter for comparison.")
+                raise ValueError("Adapter contract mismatch. Retrain with chart structures or explicitly allow a legacy comparison.")
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(lora_weights if lora_weights and not allow_legacy_adapter else base_model_id)
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-            # Load in 4-bit QLoRA — SAME as training setup.
-            # Fixes 2 problems:
-            #   1. OOM: FP16 7B model takes ~14GB but T4 only has 14.56GB total.
-            #           4-bit reduces to ~4GB, leaving room for CV model (~4.5GB).
-            #   2. torchao incompatibility: BnB 4-bit bypasses the torchao
-            #      dispatch path in PEFT's inject_adapter.
+            # Match the 4-bit training setup. The orchestrator releases CV before loading NLP.
             bnb_config = BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_use_double_quant=True,
@@ -69,6 +64,7 @@ class ProgramGenerator:
                 base_model_id,
                 quantization_config=bnb_config,
                 device_map="auto" if self.device == "cuda" else "cpu",
+                attn_implementation="sdpa",
             )
 
             if lora_weights:
@@ -138,6 +134,7 @@ class ProgramGenerator:
                     pad_token_id=self.tokenizer.pad_token_id,
                     do_sample=False,
                     logits_processor=logits_processor,
+                    max_time=120,
                 )
 
             response_text = self.tokenizer.decode(
@@ -152,6 +149,8 @@ class ProgramGenerator:
             result["prompt_sha256"] = hashlib.sha256(prompt.encode()).hexdigest()
             result["generated_tokens"] = outputs.shape[1] - inputs.input_ids.shape[1]
             result["termination"] = "eos" if int(outputs[0][-1]) == self.tokenizer.eos_token_id else "length_or_stop"
+            if result["termination"] != "eos":
+                result.update(valid=False, error="Generation stopped before EOS")
             return result
 
         except Exception as e:
@@ -180,3 +179,11 @@ class ProgramGenerator:
         Returns: {extracted_values, program}. No answer field (executor removed).
         """
         return parse_response(response_text)
+
+    def close(self):
+        import gc
+        self.model = None
+        self.tokenizer = None
+        self.dsl_processor = None
+        gc.collect()
+        if torch.cuda.is_available(): torch.cuda.empty_cache()

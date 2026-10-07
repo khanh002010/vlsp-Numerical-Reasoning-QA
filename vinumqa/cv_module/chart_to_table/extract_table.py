@@ -128,3 +128,10 @@ class ChartToTableExtractor:
 
     def extract_batch(self, image_paths):
         return [self.extract(path) for path in image_paths]
+
+    def close(self):
+        import gc
+        self.model = None
+        self.processor = None
+        gc.collect()
+        if torch.cuda.is_available(): torch.cuda.empty_cache()

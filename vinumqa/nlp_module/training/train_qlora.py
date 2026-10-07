@@ -27,6 +27,7 @@ from vinumqa.nlp_module.training.lora_config import LoraConfig, TrainingConfig
 from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION, RESPONSE_PREFIX
 from vinumqa.nlp_module.training.supervision import encode_supervised, CompletionCollator, load_prepared_pair
 from vinumqa.nlp_module.training.epoch_predictions import make_epoch_callback
+from vinumqa.nlp_module.training.session_control import SessionBudget, make_session_callback
 
 def load_formatted_dataset(json_path: str, prepared_rows=None):
     """
@@ -41,14 +42,17 @@ def load_formatted_dataset(json_path: str, prepared_rows=None):
     rows = []
     for sample in data:
         if sample.get("format_version") != FORMAT_VERSION or sample["instruction"] != INSTRUCTION:
-            raise ValueError("Stale formatted dataset: regenerate with the v4 formatter and real CV")
+            raise ValueError("Stale formatted dataset: regenerate using the structure formatter")
         header = "| Step | Output |\n|---|---|\n"
         if not sample["output"].startswith(header): raise ValueError("Invalid completion format")
         rows.append({"prompt": sample["instruction"] + "\n\n" + sample["input"] + "\n\n" + RESPONSE_PREFIX,
                      "completion": sample["output"][len(header):]})
     return Dataset.from_list(rows)
 
-def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_dir=None, skip_unready=False):
+def train(max_seq_length=4096, train_data_path=None, val_data_path=None, output_dir=None, skip_unready=False,
+          resume_from_checkpoint=None, max_train_hours=10.5, save_steps=50):
+    session = SessionBudget(max_train_hours)
+    if save_steps <= 0: raise ValueError("save-steps must be positive")
     # 1. Configs
     lora_cfg = LoraConfig()
     train_cfg = TrainingConfig()
@@ -59,8 +63,20 @@ def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_
     model_id = "Qwen/Qwen2.5-7B-Instruct"
     
     # 2. Load dataset
-    train_data_path = str(Path(train_data_path).resolve() if train_data_path else PROJECT_ROOT / "vinumqa" / "data" / "train_formatted.json")
-    val_data_path = str(Path(val_data_path).resolve() if val_data_path else PROJECT_ROOT / "vinumqa" / "data" / "public_test_formatted.json")
+    train_data_path = str(Path(train_data_path).resolve() if train_data_path else PROJECT_ROOT / "prepared" / "train_structured.json")
+    val_data_path = str(Path(val_data_path).resolve() if val_data_path else PROJECT_ROOT / "prepared" / "public_test_structured.json")
+    import hashlib
+    manifest = {"format_version": FORMAT_VERSION, "base_model": model_id,
+        "prompt_sha256": hashlib.sha256(INSTRUCTION.encode()).hexdigest(),
+        "train_sha256": hashlib.sha256(Path(train_data_path).read_bytes()).hexdigest(),
+        "val_sha256": hashlib.sha256(Path(val_data_path).read_bytes()).hexdigest(),
+        "max_seq_length": train_cfg.max_seq_length, "skip_unready": skip_unready,
+        "microbatch": train_cfg.per_device_train_batch_size,
+        "gradient_accumulation_steps": train_cfg.gradient_accumulation_steps,
+        "num_train_epochs": train_cfg.num_train_epochs}
+    if resume_from_checkpoint:
+        saved = json.loads((Path(resume_from_checkpoint) / "pipeline_manifest.json").read_text(encoding="utf-8"))
+        if saved != manifest: raise ValueError("Resume checkpoint does not match the dataset/prompt/training length")
     
     train_rows, validation_rows = load_prepared_pair(train_data_path, val_data_path, skip_unready=skip_unready)
     print(f"Training from prepared JSON; no OCR required.\nTrain: {train_data_path}\nValidation: {val_data_path}")
@@ -95,10 +111,12 @@ def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_
         model_id,
         quantization_config=bnb_config,
         device_map="auto",
+        attn_implementation="sdpa",
         trust_remote_code=True
     )
     
     model = prepare_model_for_kbit_training(model)
+    model.config.use_cache = False
     
     # 5. Setup LoRA
     peft_config = PeftLoraConfig(
@@ -127,9 +145,13 @@ def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_
         max_steps=train_cfg.max_steps,
         num_train_epochs=train_cfg.num_train_epochs,
         warmup_steps=train_cfg.warmup_steps,
-        save_strategy="epoch",
+        save_strategy="steps",
+        save_steps=save_steps,
+        save_total_limit=2,
         eval_strategy="epoch" if tokenized_val_dataset else "no",
         gradient_checkpointing=True,
+        prediction_loss_only=True,
+        report_to="none",
     )
     
     data_collator = CompletionCollator(tokenizer)
@@ -141,30 +163,33 @@ def train(max_seq_length=8192, train_data_path=None, val_data_path=None, output_
         eval_dataset=tokenized_val_dataset,
         args=training_args,
         data_collator=data_collator,
-        callbacks=[make_epoch_callback(validation_rows, tokenizer)],
+        callbacks=[make_session_callback(session, manifest, tokenizer),
+                   make_epoch_callback(validation_rows, tokenizer, session_budget=session)],
     )
     
     print("Starting training...")
-    trainer.train()
+    trainer.train(resume_from_checkpoint=resume_from_checkpoint)
+    if session.expired() and trainer.state.global_step < trainer.state.max_steps:
+        print("Session budget reached. Resume from the latest checkpoint; no completed final model was declared.")
+        return
     
     print(f"Saving final model to {train_cfg.output_dir}/final")
     final = Path(train_cfg.output_dir) / "final"
     trainer.model.save_pretrained(final)
     tokenizer.save_pretrained(final)
-    import hashlib
-    manifest = {"format_version": FORMAT_VERSION, "base_model": model_id,
-        "prompt_sha256": hashlib.sha256(INSTRUCTION.encode()).hexdigest(),
-        "train_sha256": hashlib.sha256(Path(train_data_path).read_bytes()).hexdigest(),
-        "max_seq_length": train_cfg.max_seq_length}
     (final / "pipeline_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--max-seq-length", type=int, default=8192)
-    parser.add_argument("--train-data", help="Prepared training JSON with embedded OCR Markdown")
-    parser.add_argument("--val-data", help="Prepared public-test JSON with embedded OCR Markdown")
+    parser.add_argument("--max-seq-length", type=int, default=4096)
+    parser.add_argument("--train-data", help="Prepared training JSON with embedded chart structures")
+    parser.add_argument("--val-data", help="Prepared public-test JSON with embedded chart structures")
     parser.add_argument("--output-dir", help="Writable directory for checkpoints and epoch validation results")
     parser.add_argument("--skip-unready", action="store_true", help="Explicitly exclude failed/pending samples from train and validation")
+    parser.add_argument("--resume-from-checkpoint")
+    parser.add_argument("--max-train-hours", type=float, default=10.5, help="Soft per-process time budget, including loading and validation")
+    parser.add_argument("--save-steps", type=int, default=50)
     args = parser.parse_args()
-    train(args.max_seq_length, args.train_data, args.val_data, args.output_dir, args.skip_unready)
+    train(args.max_seq_length, args.train_data, args.val_data, args.output_dir, args.skip_unready,
+          args.resume_from_checkpoint, args.max_train_hours, args.save_steps)
