@@ -24,8 +24,8 @@ class ViNumQAPipeline:
                  use_reflection: bool = True):
         """
         Initialize the complete end-to-end pipeline.
-        Note: Zoom Tool has been removed. EDA shows image resolution averages ~622k pixels,
-        well within max_pixels=750k, so single-pass extraction is sufficient.
+        OCR preserves each image's dimensions below a 1,400,000-pixel cap.
+        Extraction quality still needs validation independently of image resolution.
         """
         from vinumqa.cv_module.pipeline import CVPipeline
         from vinumqa.nlp_module.pipeline import NLPPipeline

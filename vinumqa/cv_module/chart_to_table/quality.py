@@ -1,27 +1,43 @@
 """OCR output checks and retry policy, independent of the GPU runtime."""
 import re
+from .prompts import GROUNDED_PROMPT, CONCISE_PROMPT
 
-OCR_VERSION = "chart-markdown-v6-guarded-750k"
-OCR_PROMPT = (
-    "Read the chart and output its data as a Markdown table. "
-    "Use one row per category or time period, in the order shown. Include the year "
-    "with each quarter/month. Use separate columns for each series, with the original "
-    "legend names and units in the headers. Preserve Vietnamese labels, signs and "
-    "number formatting. Copy printed data values exactly. For values without a printed "
-    "label, use ~ before an estimate only when the axis scale is readable; otherwise "
-    "write N/A. Never present estimates as exact numbers. Include reference lines as "
-    "separate named series. Output only the table, with one header and one separator row."
-)
-FALLBACK_PROMPT = (
-    "Transcribe this chart into a Markdown data table. First column: category or full "
-    "date. Other columns: named data series with units. Keep Vietnamese labels. Copy "
-    "printed numbers exactly; prefix visually estimated values with ~; use N/A when "
-    "unreadable. One row per category. Return only the table."
-)
+OCR_VERSION = "chart-markdown-v7-grounded-1400k"
+OCR_PROMPT = GROUNDED_PROMPT
+FALLBACK_PROMPT = CONCISE_PROMPT
+
+
+def repeated_estimates_reason(text):
+    """Flag a suspicious flat matrix of estimates, not an ordinary flat series.
+
+    Twelve consecutive rows must copy the SAME estimate into every value column
+    (at least two). This is a review heuristic, not proof the image is wrong.
+    Exact repeated numbers, missing values and a flat reference line are allowed.
+    """
+    previous, run = None, 0
+    for line in text.splitlines():
+        line = line.strip()
+        if not line.startswith("|") or not line.endswith("|"):
+            continue
+        cells = [re.sub(r"\s+", "", cell) for cell in re.split(r"(?<!\\)\|", line[1:-1])]
+        values = cells[1:]
+        if (len(values) >= 2 and cells[0] and len(set(values)) == 1
+                and re.fullmatch(r"~[-+]?\d[\d.,]*%?", values[0])):
+            signature = tuple(values)
+            run = run + 1 if signature == previous else 1
+            previous = signature
+            if run >= 12:
+                return "suspicious_repeated_estimates: identical estimates across 12 rows and all series"
+        else:
+            previous, run = None, 0
+    return None
 
 
 def repetition_reason(text):
     """Detect sustained textual cycles inside a cell, not repeated numeric values."""
+    suspicious = repeated_estimates_reason(text)
+    if suspicious:
+        return suspicious
     for line in text[-8192:].splitlines():
         words = re.findall(r"\w+", line.casefold())[-256:]
         for width in range(2, 25):
