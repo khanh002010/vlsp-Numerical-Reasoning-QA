@@ -49,10 +49,11 @@ def load_formatted_dataset(json_path: str, prepared_rows=None):
                      "completion": sample["output"][len(header):]})
     return Dataset.from_list(rows)
 
-def train(max_seq_length=4096, train_data_path=None, val_data_path=None, output_dir=None, skip_unready=False,
-          resume_from_checkpoint=None, max_train_hours=10.5, save_steps=50):
+def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_dir=None, skip_unready=False,
+          resume_from_checkpoint=None, max_train_hours=10.5, save_steps=50, loss_mode="completion"):
     session = SessionBudget(max_train_hours)
     if save_steps <= 0: raise ValueError("save-steps must be positive")
+    if loss_mode not in {"completion", "full"}: raise ValueError("Invalid loss mode")
     # 1. Configs
     lora_cfg = LoraConfig()
     train_cfg = TrainingConfig()
@@ -131,6 +132,8 @@ def train(max_seq_length=4096, train_data_path=None, val_data_path=None, output_
     model.print_trainable_parameters()
     
     from transformers import Trainer
+    from vinumqa.nlp_module.training.completion_logits import CompletionLogitsTrainer
+    trainer_class = CompletionLogitsTrainer if loss_mode == "completion" else Trainer
 
     training_args = TrainingArguments(
         output_dir=train_cfg.output_dir,
@@ -157,7 +160,7 @@ def train(max_seq_length=4096, train_data_path=None, val_data_path=None, output_
     data_collator = CompletionCollator(tokenizer)
 
     # 7. Start Training
-    trainer = Trainer(
+    trainer = trainer_class(
         model=model,
         train_dataset=tokenized_dataset,
         eval_dataset=tokenized_val_dataset,
@@ -182,7 +185,7 @@ def train(max_seq_length=4096, train_data_path=None, val_data_path=None, output_
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--max-seq-length", type=int, default=4096)
+    parser.add_argument("--max-seq-length", type=int, default=7680)
     parser.add_argument("--train-data", help="Prepared training JSON with embedded chart structures")
     parser.add_argument("--val-data", help="Prepared public-test JSON with embedded chart structures")
     parser.add_argument("--output-dir", help="Writable directory for checkpoints and epoch validation results")
@@ -190,6 +193,8 @@ if __name__ == "__main__":
     parser.add_argument("--resume-from-checkpoint")
     parser.add_argument("--max-train-hours", type=float, default=10.5, help="Soft per-process time budget, including loading and validation")
     parser.add_argument("--save-steps", type=int, default=50)
+    parser.add_argument("--loss-mode", choices=("completion", "full"), default="completion",
+                        help="completion keeps full context but skips logits for masked prompt positions; full is the baseline")
     args = parser.parse_args()
     train(args.max_seq_length, args.train_data, args.val_data, args.output_dir, args.skip_unready,
-          args.resume_from_checkpoint, args.max_train_hours, args.save_steps)
+          args.resume_from_checkpoint, args.max_train_hours, args.save_steps, args.loss_mode)
