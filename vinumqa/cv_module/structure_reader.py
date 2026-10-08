@@ -2,7 +2,8 @@
 import json
 from pathlib import Path
 from PIL import Image
-from vinumqa.cv_module.structure import STRUCTURE_PROMPT, json_object, validate_structure, validate_box
+from vinumqa.cv_module.structure import STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, json_object, validate_box
+from vinumqa.cv_module.structure_output import parse_structure_output, json_repetition_reason
 
 
 class ChartStructureReader:
@@ -10,10 +11,11 @@ class ChartStructureReader:
         from vinumqa.cv_module.chart_to_table.extract_table import ChartToTableExtractor
         self.backend = ChartToTableExtractor(model_id=model_id)
         self.backend.generation_config.max_time = 120
+        self.backend.repetition_check = json_repetition_reason
         self.last_generation = {}
 
-    def _read(self, path, prompt, box=None):
-        self.last_generation = {"attempts": []}
+    def _read(self, path, prompt, box=None, *, structure=False, budgets=(1024, 2048), reset=True, phase="primary"):
+        if reset: self.last_generation = {"attempts": []}
         with Image.open(path) as opened:
             image = opened.convert("RGB")
         self.last_generation["original_size"] = list(image.size)
@@ -25,26 +27,47 @@ class ChartStructureReader:
             if bounds[2] <= bounds[0] or bounds[3] <= bounds[1]: raise ValueError("Empty crop")
             image = image.crop(bounds)
         inputs, _ = self.backend.prepare_inputs(image, prompt)
-        for budget in (1024, 2048):
-            print(f"[Structure] {Path(path).name}: budget={budget}, crop={box is not None}", flush=True)
+        for budget in budgets:
+            print(f"[Structure] {Path(path).name}: budget={budget}, crop={box is not None}, phase={phase}", flush=True)
             result = self.backend.generate_once(inputs, budget)
-            self.last_generation["attempts"].append({"budget": budget, **{k: result[k] for k in ("text", "tokens", "eos", "seconds", "stop_reason")}})
+            attempt = {"budget": budget, "phase": phase, **{k: result[k] for k in ("text", "tokens", "eos", "seconds", "stop_reason")}}
+            self.last_generation["attempts"].append(attempt)
             print(f"[Structure] tokens={result['tokens']}, stop={result['stop_reason']}, seconds={result['seconds']}", flush=True)
-            if result["stop_reason"] == "repetition": raise ValueError("Repetitive structure output")
-            if result["eos"]: return json_object(result["text"])
+            reason = json_repetition_reason(result["text"])
+            if result["stop_reason"] == "repetition" or reason:
+                attempt["quality_error"] = reason or "Repetitive structure output"
+                raise ValueError(attempt["quality_error"])
+            if result["eos"]:
+                try:
+                    if structure:
+                        value, attempt["repairs"] = parse_structure_output(result["text"])
+                        return value
+                    return json_object(result["text"])
+                except ValueError as error:
+                    attempt["quality_error"] = str(error)
+                    raise
             if len(result["token_ids"]) < budget: break  # Time limit; do not start another long retry.
         raise ValueError("Structure read incomplete at the bounded token/time limit")
 
+    def _structure(self, path, focus="", box=None):
+        try:
+            return self._read(path, STRUCTURE_PROMPT + focus, box, structure=True)
+        except ValueError as error:
+            self.last_generation["retry_reason"] = str(error)
+            # One different, compact prompt. Never continue a failed/truncated JSON.
+            prompt = STRUCTURE_RETRY_PROMPT + focus + "\nValidation error: " + str(error)[:250]
+            return self._read(path, prompt, box, structure=True, budgets=(2048,), reset=False, phase="retry")
+
     def read_structure(self, path):
-        return validate_structure(self._read(path, STRUCTURE_PROMPT))
+        return self._structure(path)
 
     def inspect(self, path, request, structure):
         box = request.get("box") or structure.get("regions", {}).get(request["region"])
         hint = json.dumps({"region": request["region"], "unverified_series_hint": request["series"]}, ensure_ascii=False)
-        prompt = STRUCTURE_PROMPT + "\nFocus request: " + hint + (
+        focus = "\nFocus request: " + hint + (
             "\nThe hint is NOT evidence: read the actual pixels, correct misspellings. "
             "If cropped, report only visible labels and set both completeness flags false.")
-        return {"structure": validate_structure(self._read(path, prompt, box)), "full_image": box is None}
+        return {"structure": self._structure(path, focus, box), "full_image": box is None}
 
     def read_values(self, path, lookup, structure):
         from vinumqa.nlp_module.dsl_operators import DSL_OPERATORS

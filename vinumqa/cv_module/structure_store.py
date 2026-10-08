@@ -2,7 +2,9 @@
 import hashlib
 import json
 from pathlib import Path
-from vinumqa.cv_module.structure import STORE_VERSION, STRUCTURE_PROMPT, validate_structure, merge_observation
+from vinumqa.cv_module.structure import (
+    STORE_VERSION, STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, LEGACY_STRUCTURE_PROMPT_SHA256, validate_structure, merge_observation,
+)
 from vinumqa.nlp_module.data_prep.incremental import write_json
 from vinumqa.cv_module.pipeline import CVInitializationError
 
@@ -17,12 +19,22 @@ class ChartStructureStore:
         self.reader_factory = reader_factory
         self._initialization_error = None
         self.identity = {"version": STORE_VERSION, "model": model_id,
-                         "prompt_sha256": hashlib.sha256(STRUCTURE_PROMPT.encode()).hexdigest(), "max_pixels": 1400000}
+                         "prompt_sha256": hashlib.sha256((STRUCTURE_PROMPT + "\n" + STRUCTURE_RETRY_PROMPT).encode()).hexdigest(), "max_pixels": 1400000}
         self.data = {"identity": self.identity, "images": {}}
         if self.path.exists():
             self.data = json.loads(self.path.read_text(encoding="utf-8"))
             if self.data.get("identity") != self.identity:
-                raise ValueError("Chart store contract changed; use a new store filename")
+                previous = self.data.get("identity", {})
+                expected_legacy = {**self.identity, "prompt_sha256": LEGACY_STRUCTURE_PROMPT_SHA256}
+                if previous != expected_legacy:
+                    raise ValueError("Chart store contract changed; use a new store filename")
+                # This prompt-only upgrade keeps the same schema, model and pixels.
+                # Retain successful reads and sticky failures, with original provenance.
+                for record in self.data["images"].values():
+                    record.setdefault("prompt_sha256", previous["prompt_sha256"])
+                self.data.setdefault("migrations", []).append({"from": previous, "to": self.identity})
+                self.data["identity"] = self.identity
+                self.save()
         self._keys = {}
 
     def _key(self, path):
@@ -55,17 +67,25 @@ class ChartStructureStore:
 
     def has_request(self, path, kind, payload):
         payload = {k: v for k, v in payload.items() if k != "image_id"}
-        key = hashlib.sha256(json.dumps([kind, payload], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"]], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         return key in (self.record(path) or {}).get("requests", {})
 
     def get(self, path, retry_failed=False):
         key = self._key(path)
         record = self.data["images"].get(key)
         if record:
-            if record["status"] == "ok": return validate_structure(record["structure"])
+            if record["status"] == "ok":
+                try:
+                    return validate_structure(record["structure"])
+                except ValueError as error:
+                    record.update(status="error", error="Saved structure failed validation: " + str(error))
+                    self.save()
             if not retry_failed: raise SavedVisionFailure(record["error"])
         reader = self._reader()  # Initialization failure must not blacklist the image.
-        record = {"image": Path(path).name, "sha256": key, "requests": {}}
+        previous_generation = record.get("generation") if record else None
+        record = {"image": Path(path).name, "sha256": key, "requests": {},
+                  "prompt_sha256": self.identity["prompt_sha256"]}
+        if previous_generation is not None: record["previous_generation"] = previous_generation
         try:
             structure = validate_structure(reader.read_structure(str(path)))
             record.update(status="ok", structure=structure)
@@ -82,7 +102,7 @@ class ChartStructureStore:
         record = self.data["images"][self._key(path)]
         # Image IDs are sample-local; they must not prevent reuse across questions.
         payload = {k: v for k, v in payload.items() if k != "image_id"}
-        key = hashlib.sha256(json.dumps([kind, payload], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"]], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         saved = record["requests"].get(key)
         if saved is not None:
             if saved["status"] != "ok": raise SavedVisionFailure(saved["error"])
@@ -93,7 +113,8 @@ class ChartStructureStore:
             saved = {"status": "ok", "result": result}
         except Exception as error:
             saved = {"status": "error", "error": str(error)}
-        saved.update(kind=kind, request=payload, generation=getattr(reader, "last_generation", {}))
+        saved.update(kind=kind, request=payload, generation=getattr(reader, "last_generation", {}),
+                     prompt_sha256=self.identity["prompt_sha256"])
         record["requests"][key] = saved
         self.save()
         if saved["status"] != "ok": raise SavedVisionFailure(saved["error"])

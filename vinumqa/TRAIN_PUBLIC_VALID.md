@@ -28,9 +28,11 @@ python -m vinumqa.nlp_module.data_prep.format_training_data \
 
 `--max-minutes` là giới hạn mềm **của từng lệnh**, kiểm tra giữa các ảnh. Không cộng
 hai lượt 600 phút rồi mặc định vừa một phiên 12 giờ; chia phiên nếu không đủ giờ.
-CV thử 1024 token, chỉ tăng đến 2048 nếu chạm trần token. Mỗi lượt generation có
-`max_time=120` giây (giới hạn mềm theo bước sinh, không gồm tải model/tiền xử lý).
-Lặp/JSON sai/hết thời gian được lưu lỗi; không có vòng tăng đến 16K như Markdown cũ.
+CV thử 1024 token, chỉ tăng đến 2048 nếu chạm trần token. Nếu lặp, JSON/schema sai
+hoặc chưa hoàn tất, thử thêm đúng một lượt bằng prompt ngắn hơn, tối đa 2048 token.
+Mỗi lượt generation có `max_time=120` giây (giới hạn mềm theo bước sinh, không gồm
+tải model/tiền xử lý). Tối đa ba lượt sinh mỗi lần đọc cấu trúc; thất bại sau đó
+được lưu lỗi. Không có vòng tăng đến 16K như Markdown cũ.
 
 Trần **1.400.000 pixel** giữ nguyên. Ảnh dưới trần giữ kích thước riêng trước
 processor; ảnh lớn được thu nhỏ giữ tỷ lệ. Processor vẫn căn theo lưới patch Qwen.
@@ -45,8 +47,19 @@ Sau từng ảnh, chương trình ghi bằng file tạm + flush/fsync + replace:
 - `*.ocr_errors.json`: ảnh lỗi; `*.rejected.json`: QID chưa sẵn sàng.
 
 Ảnh lỗi đã ghi trong store không đọc lại ở câu/phiên sau. Thêm `--retry-failed` để
-thử lại. Lỗi khởi tạo model dừng chương trình, không đánh dấu ảnh hỏng. Dùng store
-và output mới nếu thay hợp đồng/model/prompt; không trộn dữ liệu theo hai hợp đồng.
+thử lại. Lỗi khởi tạo model dừng chương trình, không đánh dấu ảnh hỏng. Riêng bản sửa
+prompt/schema này tự nhận diện store v1 của pipeline trước, giữ các ảnh đã thành
+công và ghi lại nguồn gốc prompt; ảnh lỗi vẫn chỉ thử lại với `--retry-failed`.
+Đổi model, trần pixel hoặc hợp đồng không tương thích vẫn cần store/output mới.
+
+Prompt mới không dùng chuỗi lựa chọn kiểu `line/bar/pie/...` làm giá trị mẫu, yêu
+cầu đọc đủ các dòng trong từng mục chú giải và không chép vạch số trục Y vào
+`y_labels`. Bộ đọc có thể sửa thiếu dấu nháy quanh khóa JSON hoặc dấu phẩy cuối,
+nhưng không tự đóng JSON bị cắt dở hay sửa nội dung tên series. Nhãn Y rỗng/trùng
+được chuẩn hóa như một danh mục tên; không tự loại các nhãn số vì chúng cũng có thể
+là category thật. Series trùng vẫn bị từ chối và yêu cầu đọc lại để tránh nhập ba
+nhóm khác nhau thành một nhóm. Đầu ra gốc và các sửa định dạng được lưu trong
+`generation.attempts`; JSON hợp lệ vẫn chưa chứng minh nội dung đúng với ảnh.
 
 Tiếp tục bằng cùng lệnh và đường dẫn, mặc định từ ảnh 1 nhưng dùng lại ảnh đã lưu.
 Có thể thêm `--start-image 50`: STT theo lần đầu tên ảnh xuất hiện **trong từng file
@@ -77,6 +90,13 @@ không split. Mọi mẫu phải ready; chỉ thêm `--skip-unready` khi chấp 
 QID trùng giữa hai tập bị từ chối. Tokenization kiểm tra độ dài trước khi nạp model,
 **không cắt mất target**. Nếu `Sequence overflow`, tăng `--max-seq-length` (ví dụ
 8192), với chi phí VRAM/thời gian cao hơn. 4096 không bảo đảm mọi mẫu đều vừa.
+
+Formatter chuẩn hóa dấu phân cách còn thiếu khi hai operation hợp lệ được ngăn
+bằng xuống dòng ở cấp ngoài cùng. Điều này sửa QID
+`05a85e9c-7c27-529f-924b-466218915da3`: thiếu `;` giữa `chart_average` và
+`table_average`, từng bị parser báo `INVALID`. Giữ nguyên dataset gốc, các toán tử,
+nhãn và tham chiếu; không bỏ mẫu này. Kiểm tra program do NLP sinh vẫn yêu cầu DSL
+đúng cú pháp, không bật sửa dấu phân cách tự động.
 
 Lưu checkpoint mỗi 50 optimizer step và sau epoch, giữ hai checkpoint gần nhất.
 `--max-train-hours 10.5` tính từ đầu tiến trình, gồm tải model/validation; yêu cầu

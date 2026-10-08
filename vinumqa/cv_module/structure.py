@@ -4,7 +4,39 @@ import math
 
 STRUCTURE_VERSION = "chart-structure-v1"
 STORE_VERSION = "vinumqa-chart-store-v1"
-STRUCTURE_PROMPT = '''Read the chart structure, not the numerical data at every point.
+LEGACY_STRUCTURE_PROMPT_SHA256 = "b3ec22b96363055b9a72dd1b8e31392fe45dd171cbac35f4cc5bc47066da1f99"
+STRUCTURE_PROMPT = '''Read the visible chart labels. Return one compact JSON object, without Markdown.
+Do not extract numerical data points or numerical scale ticks.
+Use this empty template; fill only information actually visible in the image:
+{"title":"", "kind":"unknown", "series":[], "x_labels":[], "y_labels":[], "x_labels_complete":false, "series_complete":false, "regions":{}, "uncertain":[]}
+Choose ONE kind: line, bar, pie, mixed, table, or unknown. Never output a list of choices.
+Each series is an object with name, color, axis, unit. Copy its full visible legend name,
+including ALL lines of a multiline legend entry. Keep each colored legend entry separate.
+Choose ONE axis: left, right, or none. If not sure, use none. Do not invent color codes.
+x_labels contains visible category/time labels in order. Do not invent intermediate dates.
+y_labels contains categorical labels ONLY, e.g. row names in a horizontal bar chart.
+For a vertical line/bar chart with a numerical Y scale, y_labels MUST be [].
+Do not list percentages, scale ticks, empty strings or standalone parentheses in y_labels.
+Do not repeat a legend name for different colored series: re-read their complete labels.
+Copy Vietnamese accents and text exactly. Do not paraphrase or complete unreadable words.
+If unreadable, leave the field empty, mark completeness false and briefly say why in uncertain.
+Sparse time-axis ticks mean x_labels_complete=false. Mark completeness true only when all
+relevant labels are readable. Optional regions use normalized boxes [left,top,right,bottom]
+for legend, x_axis, y_axis or plot; leave regions={} if unsure. No explanation or program.'''
+
+STRUCTURE_RETRY_PROMPT = '''Re-read this image carefully; the previous structure response failed validation.
+Return ONLY compact valid JSON with double-quoted keys. Required fields:
+{"title":"","kind":"unknown","series":[],"x_labels":[],"y_labels":[],"x_labels_complete":false,"series_complete":false,"regions":{},"uncertain":[]}
+Read each legend entry separately, joining its visible lines into ONE full name.
+series entries: {"name":"visible full text","color":"","axis":"none","unit":""}.
+Do not copy the template text as a name. Do not repeat one legend name across colors.
+kind is one of line, bar, pie, mixed, table, unknown; axis is left, right or none.
+Copy only visible X category/time labels. For a numerical Y scale use y_labels: [].
+Never enumerate Y scale ticks or repeat parentheses. Omit optional coordinates/colors if unsure.
+Unreadable labels remain unknown, not guessed; completeness flags must then be false.
+Finish the JSON object. No Markdown, explanation, numerical point values or program.'''
+
+LEGACY_STRUCTURE_PROMPT = '''Read the chart structure, not the numerical data at every point.
 Return ONLY a JSON object with these fields:
 {"title":"", "kind":"line/bar/pie/mixed/table/unknown", "series":[{"name":"exact legend text","color":"","axis":"left/right/none","unit":""}], "x_labels":[], "y_labels":[], "x_labels_complete":false, "series_complete":false, "regions":{}, "uncertain":[]}
 Copy original Vietnamese spelling and visible category/time labels, in image order.
@@ -51,6 +83,10 @@ def validate_structure(value):
     for key in ("title", "kind"):
         if not isinstance(value.get(key), str): raise ValueError(f"Missing chart {key}")
         result[key] = value[key].strip()
+    if result["kind"] == "line/bar/pie/mixed/table/unknown":
+        result["kind"] = "unknown"  # Legacy prompt echoed its enum template.
+    if result["kind"] not in {"line", "bar", "pie", "mixed", "table", "unknown"}:
+        raise ValueError("kind must be one chart type")
     series = value.get("series")
     if not isinstance(series, list): raise ValueError("Missing chart series")
     result["series"] = []
@@ -61,6 +97,8 @@ def validate_structure(value):
         for field in ("color", "axis", "unit"):
             if not isinstance(s.get(field, ""), str): raise ValueError(f"Invalid series {field}")
             row[field] = s.get(field, "").strip()
+        if row["axis"] in {"", "left/right/none"}: row["axis"] = "none"
+        if row["axis"] not in {"left", "right", "none"}: raise ValueError("axis must be left, right or none")
         result["series"].append(row)
     strings([s["name"] for s in result["series"]], "series")
     for key in ("x_labels", "y_labels", "uncertain"):

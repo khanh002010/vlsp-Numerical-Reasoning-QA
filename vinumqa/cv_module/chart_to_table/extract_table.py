@@ -16,10 +16,11 @@ from vinumqa.cv_module.chart_to_table.image_preprocessing import MAX_PIXELS, pre
 
 class RepetitionStop(StoppingCriteria):
     """Check a short decoded suffix periodically, ignoring the input prompt."""
-    def __init__(self, processor, input_length):
+    def __init__(self, processor, input_length, check=repetition_reason):
         self.processor = processor
         self.input_length = input_length
         self.reason = None
+        self.check = check
 
     def __call__(self, input_ids, scores, **kwargs):
         count = input_ids.shape[1] - self.input_length
@@ -27,7 +28,7 @@ class RepetitionStop(StoppingCriteria):
             tail = input_ids[:, max(self.input_length, input_ids.shape[1] - 512):]
             text = self.processor.batch_decode(tail, skip_special_tokens=True,
                                                 clean_up_tokenization_spaces=False)[0]
-            self.reason = repetition_reason(text)
+            self.reason = self.check(text)
         return torch.full((input_ids.shape[0],), self.reason is not None,
                           device=input_ids.device, dtype=torch.bool)
 
@@ -79,7 +80,8 @@ class ChartToTableExtractor:
 
     def generate_once(self, inputs, budget):
         started = time.monotonic()
-        guard = RepetitionStop(self.processor, inputs.input_ids.shape[1])
+        check = getattr(self, "repetition_check", repetition_reason)
+        guard = RepetitionStop(self.processor, inputs.input_ids.shape[1], check)
         with torch.inference_mode():
             output = self.model.generate(
                 **inputs, max_new_tokens=budget, generation_config=self.generation_config,
@@ -88,7 +90,7 @@ class ChartToTableExtractor:
         eos = bool(ids) and reached_eos(ids[-1], self.generation_config.eos_token_id)
         text = self.processor.batch_decode([ids], skip_special_tokens=True,
                                           clean_up_tokenization_spaces=False)[0].strip()
-        reason = guard.reason or repetition_reason(text)
+        reason = guard.reason or check(text)
         return {"text": text,
                 "raw_text": self.processor.batch_decode([ids], skip_special_tokens=False,
                                                          clean_up_tokenization_spaces=False)[0],

@@ -16,7 +16,7 @@ def format_sample(sample, include_dsl_prompt=True, cv_pipeline=None, image_dir=N
     images = {k: str(Path(image_dir or ".") / v) for k, v in sample.get("images", {}).items()}
     context = build_inline_context(sample.get("text", []), sample.get("tables", {}), images, cv_pipeline,
                                    prepared_images=image_tables, chart_structures=image_structures)
-    program = normalize_program(sample["qa"]["program"])
+    program = normalize_program(sample["qa"]["program"], allow_newline_separators=True)
     evidence = evidence_from_program(program)
     result = {"qid": sample["qid"], "format_version": FORMAT_VERSION,
         "group_keys": ["image:" + v for v in sample.get("images", {}).values()] + ["doc:" + hashlib.sha256(

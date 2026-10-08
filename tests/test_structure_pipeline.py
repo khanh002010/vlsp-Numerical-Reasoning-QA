@@ -162,7 +162,7 @@ class ReaderTests(unittest.TestCase):
             for results, expected in [([self.result(1024), self.result(2048)], [1024, 2048]),
                                       ([self.result(100)], [1024])]:
                 reader = self.make_reader(results)
-                with self.assertRaisesRegex(ValueError, "bounded"): reader.read_structure(path)
+                with self.assertRaisesRegex(ValueError, "bounded"): reader._read(path, "test", structure=True)
                 self.assertEqual([call.args[1] for call in reader.backend.generate_once.call_args_list], expected)
 
     def test_reader_crops_region_and_explains_lookup_argument_order(self):

@@ -117,8 +117,18 @@ def execute_program(steps, tables=None, charts=None):
         results[s.step_id] = value
     return results
 
-def normalize_program(program_str):
-    """Syntax whitespace only; preserve labels and literal spelling."""
+def normalize_program(program_str, allow_newline_separators=False):
+    """Preserve labels/operands. Dataset preparation may repair newline step separators."""
+    if allow_newline_separators:
+        chars, depth = [], 0
+        for index, char in enumerate(program_str):
+            depth += (char == "(") - (char == ")")
+            if char == "\n" and depth == 0 and "".join(chars).rstrip().endswith(")"):
+                following = re.match(r"\s*([a-z_]+)\(", program_str[index + 1:])
+                if following and following[1] in ALL_OPS:
+                    chars.append(";")
+            chars.append(char)
+        program_str = "".join(chars)
     valid, reason = validate_program(program_str)
     if not valid: raise ValueError(reason)
     return "; ".join(f"{s.operator}({'; '.join(s.args)})" for s in parse_program(program_str))
