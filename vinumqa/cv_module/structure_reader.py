@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 from vinumqa.cv_module.structure import STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, json_object, validate_box
 from vinumqa.cv_module.structure_output import parse_structure_output, json_repetition_reason
-from vinumqa.cv_module.structure_parts import validate_part
+from vinumqa.cv_module.structure_parts import validate_part, normalize_locator_box
 
 
 class ChartStructureReader:
@@ -106,7 +106,7 @@ class ChartStructureReader:
         merged["uncertain"] = list(dict.fromkeys(merged["uncertain"]))
         result, repairs = parse_structure_output(json.dumps(merged, ensure_ascii=False))
         self.last_generation["focused_repairs"] = repairs
-        self.last_generation["recovery_version"] = "localized-fields-v2"
+        self.last_generation["recovery_version"] = "localized-fields-v3"
         return result
 
     def _read_part(self, path, phase, prompt, box=None):
@@ -116,6 +116,23 @@ class ChartStructureReader:
             result, repairs = validate_part(phase, value)
         except ValueError as error:
             self.last_generation.setdefault("part_errors", {})[phase] = str(error)
+            if phase == "y_axis":
+                # Classification is a separate visual observation. Do not ask a
+                # numerical-axis classifier to transcribe a category list at all.
+                try:
+                    axis = self._read(path,
+                        'Is the vertical Y axis a numerical scale, category names, or absent? '
+                        'Percentages and negative numbers are numerical. Ignore the legend. '
+                        'Return ONE JSON field: {"y_axis_type":"numerical"}, '
+                        'or categorical, none, unknown. No labels or explanation.',
+                        box, budgets=(128,), reset=False, phase="classify_y_axis")
+                    axis_type = axis.get("y_axis_type")
+                    if axis_type in {"numerical", "none"}:
+                        self.last_generation["y_axis_classification"] = axis_type
+                        return {"y_labels": [], "uncertain": [
+                            "Y categories omitted after separate visual classification: " + axis_type]}
+                except ValueError as classification_error:
+                    self.last_generation["y_axis_classification_error"] = str(classification_error)
             # Locate from pixels, never assume the legend is at the top or the
             # X axis at the bottom (negative bars often cross in mid-image).
             locator = ('Locate the ' + phase + ' in the FULL image. Return ONLY JSON '
@@ -124,8 +141,27 @@ class ChartStructureReader:
                        'For legend include all colored keys and their complete names. '
                        'For y_axis include the plotted area and left/right scales so axis type is visible. '
                        'Do not transcribe text. If uncertain return {"box":null}.')
-            located = self._read(path, locator, budgets=(256,), reset=False, phase="locate_" + phase)
-            crop = validate_box(located.get("box"))
+            try:
+                located = self._read(path, locator, budgets=(256,), reset=False, phase="locate_" + phase)
+                crop = normalize_locator_box(located.get("box"))
+            except ValueError as location_error:
+                self.last_generation.setdefault("locator_errors", {})[phase] = str(location_error)
+                # Small-model coordinates often degenerate into nested objects or
+                # long scene descriptions. One coarse choice needs no coordinates.
+                coarse = self._read(path,
+                    'Where are the ' + phase + ' labels in the FULL image? '
+                    'Return only {"region":"top"} or {"region":"middle"} '
+                    'or {"region":"bottom"} or {"region":"full"}. '
+                    'Choose full if labels span multiple regions or you are unsure. '
+                    'No coordinates, transcription or explanation.',
+                    budgets=(128,), reset=False, phase="locate_coarse_" + phase)
+                regions = {"top": [0, 0, 1, 0.55], "middle": [0, 0.2, 1, 0.8],
+                           "bottom": [0, 0.45, 1, 1], "full": [0, 0, 1, 1]}
+                region = coarse.get("region")
+                if not isinstance(region, str) or region not in regions:
+                    raise ValueError("Locator could not identify a valid coarse region")
+                crop = regions[region]
+                self.last_generation.setdefault("coarse_regions", {})[phase] = region
             # Inspection requests may already be cropped; keep the new crop inside
             # the authorized observation so it cannot be mistaken for full coverage.
             if box is not None:

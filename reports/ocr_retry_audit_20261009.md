@@ -1,5 +1,20 @@
 # Kiểm tra kết quả OCR cập nhật ngày 2026-10-09
 
+## Lượt cập nhật tiếp theo: 6 ảnh lỗi
+
+Kết quả mới: train 1718 ready / 7 error (1 ảnh lỗi), public_test 333 ready / 126 error
+(5 ảnh lỗi). Không có pending. Cả sáu dừng tại locator: ba lần tọa độ sai định dạng,
+ba lần locator sinh thêm nội dung và chạm giới hạn token. Object tọa độ hợp lệ với
+left/top/right/bottom bị code cũ từ chối vì chỉ chấp nhận mảng. Một kết quả còn là
+danh sách lồng nhau chứa cả nhãn và tọa độ, không thể coi là một box hợp lệ.
+
+Bản sửa localized-fields-v3 nhận object bốn tọa độ có kiểm tra hình học; locator lỗi
+chuyển sang một lượt chọn vùng top/middle/bottom/full hữu hạn. Với lỗi Y, phân loại
+trục trong lượt đọc riêng không yêu cầu sinh danh sách nhãn. Chỉ kết quả numerical/none
+mới dẫn đến danh sách Y rỗng. Chưa sửa artifact hoặc chạy GPU lại; 111 test CPU/mock qua.
+
+## Lượt trước: 9 ảnh lỗi
+
 Dữ liệu đọc từ `prepared/`, chưa thực hiện OCR GPU lại hoặc sửa artifact.
 
 | Tập | Ready | Error | Ảnh lỗi |

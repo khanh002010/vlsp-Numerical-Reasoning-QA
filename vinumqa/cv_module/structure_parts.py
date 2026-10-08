@@ -1,6 +1,16 @@
 """Validate focused observations before spending time on the next image region."""
 import json
+from vinumqa.cv_module.structure import validate_box
 from vinumqa.cv_module.structure_output import parse_structure_output
+
+
+def normalize_locator_box(value):
+    """Accept equivalent coordinate encodings, never infer units or fix geometry."""
+    if isinstance(value, dict):
+        if set(value) != {"left", "top", "right", "bottom"}:
+            raise ValueError("Locator object needs exactly left/top/right/bottom")
+        value = [value[key] for key in ("left", "top", "right", "bottom")]
+    return validate_box(value)
 
 
 def validate_part(phase, value):

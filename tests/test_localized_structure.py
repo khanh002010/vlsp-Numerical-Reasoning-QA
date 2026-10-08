@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import Mock
 from vinumqa.cv_module.structure_output import json_repetition_reason, parse_structure_output
 from vinumqa.cv_module.structure_reader import ChartStructureReader
-from vinumqa.cv_module.structure_parts import validate_part
+from vinumqa.cv_module.structure_parts import validate_part, normalize_locator_box
 
 
 class LocalizedTests(unittest.TestCase):
@@ -55,11 +55,48 @@ class LocalizedTests(unittest.TestCase):
     def test_y_unit_error_can_recover_to_observed_numerical_axis(self):
         cv = ChartStructureReader.__new__(ChartStructureReader)
         cv.last_generation = {}
-        cv._read = Mock(side_effect=[{'y_labels': ['%']}, {'box': [0,0,1,1]},
-                                    {'y_axis_type': 'numerical', 'y_labels': []}])
+        cv._read = Mock(side_effect=[{'y_labels': ['%']}, {'y_axis_type': 'numerical'}])
         result = cv._read_part('chart.png', 'y_axis', 'prompt')
         self.assertEqual(result['y_labels'], [])
         self.assertTrue(result['uncertain'])
+
+    def test_locator_accepts_named_coordinates_but_not_nested_or_pixel_boxes(self):
+        self.assertEqual(normalize_locator_box(dict(left=0, top=.15, right=.9, bottom=.85)),
+                         [0, .15, .9, .85])
+        for bad in (None, [[0,0,1,1], ['legend'], [0,0,1,1]],
+                    dict(left=0, top=0, right=900, bottom=800),
+                    dict(left=0, top=.9, right=1, bottom=.1),
+                    dict(left=False, top=0, right=1, bottom=1)):
+            with self.assertRaises(ValueError): normalize_locator_box(bad)
+
+    def test_truncated_locator_uses_one_coarse_location_then_reads_pixels(self):
+        cv = ChartStructureReader.__new__(ChartStructureReader)
+        cv.last_generation = {}
+        cv._read = Mock(side_effect=[ValueError('bad date loop'), ValueError('token limit'),
+            {'region': 'bottom'}, {'x_labels': ['29/7/2022', '1/8/2022'], 'x_labels_complete': True}])
+        result = cv._read_part('chart.png', 'x_axis', 'read X')
+        self.assertEqual(result['x_labels'], ['29/7/2022', '1/8/2022'])
+        self.assertEqual(cv._read.call_args.args[2], [0, .45, 1, 1])
+        self.assertFalse(result['x_labels_complete'])
+        self.assertFalse(result['x_order_known'])
+        self.assertEqual(cv._read.call_count, 4)
+
+    def test_uncertain_y_classification_does_not_erase_categories(self):
+        cv = ChartStructureReader.__new__(ChartStructureReader)
+        cv.last_generation = {}
+        cv._read = Mock(side_effect=[{'y_labels': ['2020']}, {'y_axis_type': 'unknown'},
+            {'box': dict(left=0, top=0, right=.5, bottom=1)},
+            {'y_axis_type': 'categorical', 'y_labels': ['2020', '2021']}])
+        result = cv._read_part('chart.png', 'y_axis', 'read Y')
+        self.assertEqual(result['y_labels'], ['2020', '2021'])
+
+    def test_invalid_coarse_locator_stops_without_inventing_a_crop(self):
+        cv = ChartStructureReader.__new__(ChartStructureReader)
+        cv.last_generation = {}
+        cv._read = Mock(side_effect=[ValueError('loop'), {'box': None}, {'region': 'guess'}])
+        with self.assertRaisesRegex(ValueError, 'valid coarse region'):
+            cv._read_part('chart.png', 'legend', 'read legend')
+        self.assertEqual(cv._read.call_count, 3)
 
 
 if __name__ == '__main__': unittest.main()
