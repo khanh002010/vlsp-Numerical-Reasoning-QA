@@ -77,6 +77,11 @@ def parse_structure_output(text):
         value = json.loads(fixed, object_pairs_hook=_unique_object)
     if not isinstance(value, dict): raise ValueError("Expected a JSON object")
     value = deepcopy(value)
+    # Missing evidence of completeness must never become an affirmative claim.
+    for field in ("x_labels_complete", "series_complete"):
+        if field not in value:
+            value[field] = False
+            repairs.append("defaulted missing " + field + " to false")
     # y_labels is a vocabulary, not a positional series of values. Remove empty
     # entries and exact duplicates only; retain numeric strings (could be categories).
     if isinstance(value.get("y_labels"), list):

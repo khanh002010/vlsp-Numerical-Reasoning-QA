@@ -11,10 +11,13 @@ ARTIFACT_VERSION = "vinumqa-prepared-structures-v1"
 
 
 def prepare_structured(data, image_dir, output, store_path="prepared/chart_structures.json",
-                       start_image=1, retry_failed=False, max_minutes=None, store=None):
+                       start_image=1, retry_failed=False, max_minutes=None, store=None,
+                       only_failed=False):
     from vinumqa.nlp_module.data_prep.format_training_data import format_sample
     from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION
     output = Path(output)
+    if only_failed and not output.is_file():
+        raise FileNotFoundError("Failed-only retry requires an existing prepared artifact")
     names = list(dict.fromkeys(name for sample in data for name in sample.get("images", {}).values()))
     if not 1 <= start_image <= max(1, len(names) + 1): raise ValueError("Invalid start-image")
     if max_minutes is not None and max_minutes <= 0: raise ValueError("max-minutes must be positive")
@@ -56,6 +59,7 @@ def prepare_structured(data, image_dir, output, store_path="prepared/chart_struc
     save()
     try:
         for record in artifact["images"]:
+            if only_failed and record["status"] != "error": continue
             if record["index"] < start_image: continue
             if max_minutes is not None and time.monotonic() - started >= max_minutes * 60:
                 print("Preparation time budget reached; progress is saved. Resume using the same paths.", flush=True)
@@ -63,7 +67,7 @@ def prepare_structured(data, image_dir, output, store_path="prepared/chart_struc
             path = Path(image_dir) / record["image"]
             print(f"[Structure {record['index']}/{len(names)}] {record['image']}", flush=True)
             try:
-                record.update(structure=store.get(path, retry_failed), status="ok")
+                record.update(structure=store.get(path, retry_failed or only_failed), status="ok")
                 record["sha256"] = store.record(path)["sha256"]
                 record.pop("error", None)
             except CVInitializationError:
@@ -75,6 +79,8 @@ def prepare_structured(data, image_dir, output, store_path="prepared/chart_struc
             if saved is not None: record["generation"] = saved.get("generation", {})
             save()
             print(f"Saved {record['status']}: {artifact['summary']}", flush=True)
+            if record['status'] == 'error':
+                print(f"[Structure error] {record['image']}: {record['error']}", flush=True)
     finally:
         store.close()
     return artifact

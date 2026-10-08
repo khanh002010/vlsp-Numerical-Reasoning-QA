@@ -56,7 +56,60 @@ class ChartStructureReader:
             self.last_generation["retry_reason"] = str(error)
             # One different, compact prompt. Never continue a failed/truncated JSON.
             prompt = STRUCTURE_RETRY_PROMPT + focus + "\nValidation error: " + str(error)[:250]
-            return self._read(path, prompt, box, structure=True, budgets=(2048,), reset=False, phase="retry")
+            try:
+                return self._read(path, prompt, box, structure=True, budgets=(2048,), reset=False, phase="retry")
+            except ValueError as retry_error:
+                print(f"[Structure] focused recovery: {retry_error}", flush=True)
+                return self._read_parts(path, focus, box)
+
+    def _read_parts(self, path, focus="", box=None):
+        """Reduce generation length by reading independent fields from actual pixels.
+
+        Never salvage a truncated JSON or invent names to pass the validator.
+        Every part must finish, and the combined structure must pass validation.
+        """
+        fields = [
+            ("legend", {"title": "", "kind": "unknown", "series": [], "series_complete": False},
+             'Read ONLY title and legend. Choose kind: line, bar, pie, mixed, table, unknown. '
+             'Each series: {"name":"exact full visible name","color":"","axis":"none","unit":""}. '
+             'Join ALL lines of each legend entry. Distinguish neighboring colored entries. '
+             'Never repeat a name across different colors or invent suffixes. '
+             'If there is no legend, use a printed series title only when unambiguous. '
+             'If a series name is unreadable, return series_complete=false and explain in uncertain.'),
+            ("x_axis", {"x_labels": [], "x_labels_complete": False},
+             'Read ONLY X category/time labels, in visual order. Copy visible text exactly. '
+             'For grouped categories include the visible parent with each child to distinguish them. '
+             'Never invent dates, omit duplicate positions, or add artificial numbering. '
+             'Sparse ticks or unreadable labels mean x_labels_complete=false.'),
+            ("y_axis", {"y_labels": []},
+             'Read ONLY categorical Y labels (horizontal bar row names). '
+             'For a numerical Y axis return y_labels: [] -- percentages, parentheses, minus signs '
+             'and numerical scale ticks are NOT category labels. '
+             'For horizontal bars copy full row names, not bar values. Do not list data points.'),
+        ]
+        merged = {"regions": {}, "uncertain": []}
+        for phase, template, instruction in fields:
+            prompt = ('Read the actual image. Return ONLY compact JSON, no Markdown. '
+                      'Do not guess unreadable text. Template: '
+                      + json.dumps({**template, "uncertain": []}) + '\n' + instruction + focus)
+            value = self._read(path, prompt, box, budgets=(1024, 2048),
+                               reset=False, phase="focused_" + phase)
+            for key in template:
+                if key not in value:
+                    if key.endswith("_complete"):
+                        value[key] = False
+                    else:
+                        raise ValueError("Focused read missing " + key)
+                merged[key] = value[key]
+            uncertain = value.get("uncertain", [])
+            if not isinstance(uncertain, list) or any(not isinstance(v, str) for v in uncertain):
+                raise ValueError("Focused uncertainty must be a string list")
+            merged["uncertain"].extend(v for v in uncertain if v.strip())
+        merged["uncertain"] = list(dict.fromkeys(merged["uncertain"]))
+        result, repairs = parse_structure_output(json.dumps(merged, ensure_ascii=False))
+        self.last_generation["focused_repairs"] = repairs
+        self.last_generation["recovery_version"] = "focused-fields-v1"
+        return result
 
     def read_structure(self, path):
         return self._structure(path)
