@@ -70,6 +70,33 @@ Giữ ba file chính bằng Kaggle Output/Dataset để mang sang phiên sau. Ha
 `*_structured.json` đủ để train; store và ảnh gốc dùng cho inference đọc bổ sung.
 Chỉ ghi `/kaggle/working` mà không giữ Output/Dataset không bảo đảm còn khi mất phiên.
 
+## Phục hồi khi store trong phiên có ít kết quả hơn bản trên Git
+
+Git clone đặt `prepared` bên trong repository, khác `/kaggle/working/prepared`.
+Nếu vô tình chạy ở thư mục mới, store mới có thể thiếu các kết quả thành công đã
+push. Không ghi đè tiến độ mới bằng snapshot cũ. Dừng lượt OCR hiện tại, cập nhật
+code bằng `git pull --ff-only origin main`, rồi chạy từ gốc repository:
+
+```bash
+python -m vinumqa.cv_module.recover_store \
+  --current-store /kaggle/working/prepared/chart_structures.json \
+  --baseline-ref origin/main \
+  --output-store /kaggle/working/prepared_recovered/chart_structures.json
+```
+
+Lệnh đọc snapshot trực tiếp từ Git nên không cần file baseline còn trong thư mục
+làm việc. Ghép theo SHA-256 nội dung ảnh, ưu tiên kết quả `ok` qua kiểm tra schema;
+nếu cả hai bản đều `ok`, giữ kết quả phiên hiện tại. Kiểm tra model/pixel/prompt
+trước khi ghép, giữ nguồn gốc mỗi bản ghi. Không chạy CV, không sửa các file gốc;
+từ chối ghi đè output đã có. Schema hợp lệ không chứng minh nhãn đúng với pixel.
+
+Sau đó chạy lại formatter cho cả train/public test, đổi `--output` và
+`--structure-store` sang `/kaggle/working/prepared_recovered/`. Formatter tạo lại
+các mẫu từ raw dataset và store đã ghép; thêm `--retry-failed` để đọc lại những ảnh
+còn lỗi. Dùng hai file structured trong **thư mục recovered** khi kiểm tra/training.
+Nếu dùng cell Python hiện log trực tiếp, đổi biến `PREP` sang thư mục này trước khi
+chạy cell retry. Store ghép xong chưa có nghĩa hai file structured đã được cập nhật.
+
 ## Training T4 16 GB và resume
 
 Nên tách phiên chuẩn bị ảnh khỏi phiên train. Training không nạp CV, không cần ảnh.
