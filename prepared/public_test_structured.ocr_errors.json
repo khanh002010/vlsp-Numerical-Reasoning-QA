@@ -1,56 +1,286 @@
 [
   {
-    "image": "a223f08d-b23b-4e82-a037-a9630b847c28.png",
-    "index": 7,
+    "image": "bd062164-5bd0-43bb-9ee3-15e1b5c6305d.png",
+    "index": 30,
     "status": "error",
-    "error": "Duplicate labels in series",
+    "sha256": "4368a4a5c609e6b33614b7d53347e328679ee44ceba493e59be03b18a08e4e27",
     "generation": {
       "attempts": [
         {
           "budget": 1024,
-          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line/bar/pie/mixed/table/unknown\",\n  \"series\": [\n    {\n      \"name\": \"Nhà nước\",\n      \"color\": \"#800000\",\n      \"axis\": \"left\",\n      \"unit\": \"\"\n    },\n    {\n      \"name\": \"Nhà nước\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"left\",\n      \"unit\": \"\"\n    },\n    {\n      \"name\": \"Nhà nước\",\n      \"color\": \"#000000\",\n      \"axis\": \"left\",\n      \"unit\": \"\"\n    }\n  ],\n  \"x_labels\": [],\n  \"y_labels\": [],\n  \"x_labels_complete\": false,\n  \"y_labels_complete\": false,\n  \"series_complete\": false,\n  \"regions\": {},\n  \"uncertain\": []\n}\n```",
-          "tokens": 190,
+          "phase": "primary",
+          "box": null,
+          "prompt": "Read the visible chart labels. Return one compact JSON object, without Markdown.\nDo not extract numerical data points or numerical scale ticks.\nUse this empty template; fill only information actually visible in the image:\n{\"title\":\"\", \"kind\":\"unknown\", \"series\":[], \"x_labels\":[], \"y_labels\":[], \"x_labels_complete\":false, \"series_complete\":false, \"regions\":{}, \"uncertain\":[]}\nChoose ONE kind: line, bar, pie, mixed, table, or unknown. Never output a list of choices.\nEach series is an object with name, color, axis, unit. Copy its full visible legend name,\nincluding ALL lines of a multiline legend entry. Keep each colored legend entry separate.\nChoose ONE axis: left, right, or none. If not sure, use none. Do not invent color codes.\nx_labels contains visible category/time labels in order. Do not invent intermediate dates.\ny_labels contains categorical labels ONLY, e.g. row names in a horizontal bar chart.\nFor a vertical line/bar chart with a numerical Y scale, y_labels MUST be [].\nDo not list percentages, scale ticks, empty strings or standalone parentheses in y_labels.\nDo not repeat a legend name for different colored series: re-read their complete labels.\nCopy Vietnamese accents and text exactly. Do not paraphrase or complete unreadable words.\nIf unreadable, leave the field empty, mark completeness false and briefly say why in uncertain.\nSparse time-axis ticks mean x_labels_complete=false. Mark completeness true only when all\nrelevant labels are readable. Optional regions use normalized boxes [left,top,right,bottom]\nfor legend, x_axis, y_axis or plot; leave regions={} if unsure. No explanation or program.",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"VN-Index\",\n      \"color\": \"blue\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"DPG VN\",\n      \"color\": \"orange\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [\"Jun 22\", \"Sep 22\", \"Dec 22\", \"Mar 23\", \"Jun 23\", \"Sep 23\", \"Dec 23\", \"Mar 24\", \"Jun 24\"],\n  \"y_labels\": [\"%\"],\n  \"x_labels_complete\": false,\n  \"series_complete\": false,\n  \"regions\": {},\n  \"uncertain\": []\n}\n```",
+          "tokens": 173,
           "eos": true,
-          "seconds": 13.05,
-          "stop_reason": "eos"
-        }
-      ],
-      "original_size": [
-        1279,
-        970
-      ],
-      "max_pixels": 1400000
-    }
-  },
-  {
-    "image": "05101ddf-e6cf-4965-83b4-51d0aa3eb9d5.png",
-    "index": 10,
-    "status": "error",
-    "error": "Structure read incomplete at the bounded token/time limit",
-    "generation": {
-      "attempts": [
-        {
-          "budget": 1024,
-          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line/bar/pie/mixed/table/unknown\",\n  \"series\": [\n    {\n      \"name\": \"Tỷ lệ bao nọc xâu\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"left\",\n      \"unit\": \"\"\n    },\n    {\n      \"name\": \"Tỷ lệ nọc xâu\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"right\",\n      \"unit\": \"\"\n    }\n  ],\n  \"x_labels\": [\"1Q19\", \"3Q19\", \"1Q20\", \"3Q20\", \"1Q21\", \"3Q21\", \"1Q22\", \"3Q22\", \"1Q23\", \"3Q23\", \"1Q24\", \"3Q24\"],\n  \"y_labels\": [\"0%\", \"50%\", \"100%\", \"150%\", \"200%\", \"250%\", \"300%\", \"350%\", \"400%\", \"450%\", \"500%\", \"550%\", \"600%\", \"650%\", \"700%\", \"750%\", \"800%\", \"850%\", \"900%\", \"950%\", \"1000%\", \"1100%\", \"1200%\", \"1300%\", \"1400%\", \"1500%\", \"1600%\", \"1700%\", \"1800%\", \"1900%\", \"2000%\", \"2100%\", \"2200%\", \"2300%\", \"2400%\", \"2500%\", \"2600%\", \"2700%\", \"2800%\", \"2900%\", \"3000%\", \"3100%\", \"3200%\", \"3300%\", \"3400%\", \"3500%\", \"3600%\", \"3700%\", \"3800%\", \"3900%\", \"4000%\", \"4100%\", \"4200%\", \"4300%\", \"4400%\", \"4500%\", \"4600%\", \"4700%\", \"4800%\", \"4900%\", \"5000%\", \"5100%\", \"5200%\", \"5300%\", \"5400%\", \"5500%\", \"5600%\", \"5700%\", \"5800%\", \"5900%\", \"6000%\", \"6100%\", \"6200%\", \"6300%\", \"6400%\", \"6500%\", \"6600%\", \"6700%\", \"6800%\", \"6900%\", \"7000%\", \"7100%\", \"7200%\", \"7300%\", \"7400%\", \"7500%\", \"7600%\", \"7700%\", \"7800%\", \"7900%\", \"8000%\", \"8100%\", \"8200%\", \"8300%\", \"8400%\", \"8500%\", \"8600%\", \"8700%\", \"8800%\", \"8900%\", \"9000%\", \"9100%\", \"9200%\", \"9300%\", \"9400%\", \"9500%\", \"9600%\", \"9700%\", \"9800%\", \"9900%\", \"10000%\", \"10100%\", \"10200%\", \"10300%\", \"10400%\", \"10500%\", \"10600%\", \"10700%\", \"10800%\", \"10900%\", \"11000%\", \"11100%\", \"11200%\", \"11300%\", \"11400%\", \"11500%\", \"11600%\", \"11700%\", \"11800%\", \"11900%\", \"12000%\", \"12100%\", \"12200%\", \"12300%\", \"12400%\", \"12500%\", \"12600%\", \"12",
-          "tokens": 1024,
-          "eos": false,
-          "seconds": 61.54,
-          "stop_reason": "token_limit"
+          "seconds": 8.88,
+          "stop_reason": "eos",
+          "quality_error": "Punctuation-only y label; re-read chart structure"
         },
         {
           "budget": 2048,
-          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line/bar/pie/mixed/table/unknown\",\n  \"series\": [\n    {\n      \"name\": \"Tỷ lệ bao nọc xâu\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"left\",\n      \"unit\": \"\"\n    },\n    {\n      \"name\": \"Tỷ lệ nọc xâu\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"right\",\n      \"unit\": \"\"\n    }\n  ],\n  \"x_labels\": [\"1Q19\", \"3Q19\", \"1Q20\", \"3Q20\", \"1Q21\", \"3Q21\", \"1Q22\", \"3Q22\", \"1Q23\", \"3Q23\", \"1Q24\", \"3Q24\"],\n  \"y_labels\": [\"0%\", \"50%\", \"100%\", \"150%\", \"200%\", \"250%\", \"300%\", \"350%\", \"400%\", \"450%\", \"500%\", \"550%\", \"600%\", \"650%\", \"700%\", \"750%\", \"800%\", \"850%\", \"900%\", \"950%\", \"1000%\", \"1100%\", \"1200%\", \"1300%\", \"1400%\", \"1500%\", \"1600%\", \"1700%\", \"1800%\", \"1900%\", \"2000%\", \"2100%\", \"2200%\", \"2300%\", \"2400%\", \"2500%\", \"2600%\", \"2700%\", \"2800%\", \"2900%\", \"3000%\", \"3100%\", \"3200%\", \"3300%\", \"3400%\", \"3500%\", \"3600%\", \"3700%\", \"3800%\", \"3900%\", \"4000%\", \"4100%\", \"4200%\", \"4300%\", \"4400%\", \"4500%\", \"4600%\", \"4700%\", \"4800%\", \"4900%\", \"5000%\", \"5100%\", \"5200%\", \"5300%\", \"5400%\", \"5500%\", \"5600%\", \"5700%\", \"5800%\", \"5900%\", \"6000%\", \"6100%\", \"6200%\", \"6300%\", \"6400%\", \"6500%\", \"6600%\", \"6700%\", \"6800%\", \"6900%\", \"7000%\", \"7100%\", \"7200%\", \"7300%\", \"7400%\", \"7500%\", \"7600%\", \"7700%\", \"7800%\", \"7900%\", \"8000%\", \"8100%\", \"8200%\", \"8300%\", \"8400%\", \"8500%\", \"8600%\", \"8700%\", \"8800%\", \"8900%\", \"9000%\", \"9100%\", \"9200%\", \"9300%\", \"9400%\", \"9500%\", \"9600%\", \"9700%\", \"9800%\", \"9900%\", \"10000%\", \"10100%\", \"10200%\", \"10300%\", \"10400%\", \"10500%\", \"10600%\", \"10700%\", \"10800%\", \"10900%\", \"11000%\", \"11100%\", \"11200%\", \"11300%\", \"11400%\", \"11500%\", \"11600%\", \"11700%\", \"11800%\", \"11900%\", \"12000%\", \"12100%\", \"12200%\", \"12300%\", \"12400%\", \"12500%\", \"12600%\", \"12700%\", \"12800%\", \"12900%\", \"13000%\", \"13100%\", \"13200%\", \"13300%\", \"13400%\", \"13500%\", \"13600%\", \"13700%\", \"13800%\", \"13900%\", \"14000%\", \"14100%\", \"14200%\", \"14300%\", \"14400%\", \"14500%\", \"14600%\", \"14700%\", \"14800%\", \"14900%\", \"15000%\", \"15100%\", \"15200%\", \"15300%\", \"15400%\", \"15500%\", \"15600%\", \"15700%\", \"15800%\", \"15900%\", \"16000%\", \"16100%\", \"16200%\", \"16300%\", \"16400%\", \"16500%\", \"16600%\", \"16700%\", \"16800%\", \"16900%\", \"17000%\", \"17100%\", \"17200%\", \"17300%\", \"17400%\", \"17500%\", \"17600%\", \"17700%\", \"17800%\", \"17900%\", \"18000%\", \"18100%\", \"18200%\", \"18300%\", \"18400%\", \"18500%\", \"18600%\", \"18700%\", \"18800%\", \"18900%\", \"19000%\", \"19100%\", \"19200%\", \"19300%\", \"19400%\", \"19500%\", \"19600%\", \"19700%\", \"19800%\", \"19900%\", \"20000%\", \"20100%\", \"20200%\", \"20300%\", \"20400%\", \"20500%\", \"20600%\", \"20700%\", \"20800%\", \"20900%\", \"21000%\", \"21100%\", \"21200%\", \"21300%\", \"21400%\", \"21500%\", \"21600%\", \"21700%\", \"21800%\", \"21900%\", \"22000%\", \"22100%\", \"22200%\", \"22300%\", \"22400%\", \"22500%\", \"22600%\", \"22700%\", \"22800%\", \"22900%\", \"23000%\", \"23100%\", \"23200%\", \"23300%\", \"23400%\", \"23500%\", \"23600%\", \"23700%\", \"23800%\", \"23900%\", \"24000%\", \"24100%\", \"24200%\", \"24300%\", \"24400%\", \"24500%\", \"24600%\", \"24700%\", \"24800%\", \"24900%\", \"25000%\", \"25100%\", \"25200%\", \"25300%\", \"25400%\", \"25500%\", \"25600%\", \"25700%\", \"25800%\", \"25900%\", \"26000%\", \"26100%\", \"26200%\", \"26300%\", \"26400%\", \"26500%\", \"26600%\", \"26700%\", \"26800%\", \"26900%\", \"27000",
-          "tokens": 2028,
+          "phase": "retry",
+          "box": null,
+          "prompt": "Re-read this image carefully; the previous structure response failed validation.\nReturn ONLY compact valid JSON with double-quoted keys. Required fields:\n{\"title\":\"\",\"kind\":\"unknown\",\"series\":[],\"x_labels\":[],\"y_labels\":[],\"x_labels_complete\":false,\"series_complete\":false,\"regions\":{},\"uncertain\":[]}\nRead each legend entry separately, joining its visible lines into ONE full name.\nseries entries: {\"name\":\"visible full text\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}.\nDo not copy the template text as a name. Do not repeat one legend name across colors.\nkind is one of line, bar, pie, mixed, table, unknown; axis is left, right or none.\nCopy only visible X category/time labels. For a numerical Y scale use y_labels: [].\nNever enumerate Y scale ticks or repeat parentheses. Omit optional coordinates/colors if unsure.\nUnreadable labels remain unknown, not guessed; completeness flags must then be false.\nFinish the JSON object. No Markdown, explanation, numerical point values or program.\nValidation error: Punctuation-only y label; re-read chart structure",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"VN-Index\",\n      \"color\": \"blue\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"DPG VN\",\n      \"color\": \"orange\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [\"Jun 22\", \"Sep 22\", \"Dec 22\", \"Mar 23\", \"Jun 23\", \"Sep 23\", \"Dec 23\", \"Mar 24\", \"Jun 24\"],\n  \"y_labels\": [\"%\"],\n  \"x_labels_complete\": false,\n  \"series_complete\": false,\n  \"regions\": {}\n}\n```",
+          "tokens": 167,
+          "eos": true,
+          "seconds": 8.5,
+          "stop_reason": "eos",
+          "quality_error": "Punctuation-only y label; re-read chart structure"
+        },
+        {
+          "budget": 1024,
+          "phase": "focused_legend",
+          "box": null,
+          "prompt": "Read the actual image. Return ONLY compact JSON, no Markdown. Do not guess unreadable text. Template: {\"title\": \"\", \"kind\": \"unknown\", \"series\": [], \"series_complete\": false, \"uncertain\": []}\nRead ONLY title and legend. Choose kind: line, bar, pie, mixed, table, unknown. Each series: {\"name\":\"exact full visible name\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}. axis must be left, right or none; for pie use none. Do not invent a title: if no title is printed, use an empty string. Do not translate names. Join ALL lines of each legend entry. Distinguish neighboring colored entries. Never repeat a name across different colors or invent suffixes. If there is no legend, use a printed series title only when unambiguous. If a series name is unreadable, return series_complete=false and explain in uncertain.",
+          "text": "{\"title\":\"VN-Index and DPG VN\", \"kind\": \"line\", \"series\": [{\"name\":\"VN-Index\",\"color\":\"#2876dd\",\"axis\":\"none\",\"unit\":\"%\"},{\"name\":\"DPG VN\",\"color\":\"#ff8c00\",\"axis\":\"none\",\"unit\":\"%\"}], \"series_complete\": true, \"uncertain\": []}",
+          "tokens": 81,
+          "eos": true,
+          "seconds": 4.15,
+          "stop_reason": "eos"
+        },
+        {
+          "budget": 1024,
+          "phase": "focused_x_axis",
+          "box": null,
+          "prompt": "Read the actual image. Return ONLY compact JSON, no Markdown. Do not guess unreadable text. Template: {\"x_labels\": [], \"x_labels_complete\": false, \"uncertain\": []}\nRead ONLY X category/time labels, in visual order. Copy visible text exactly. For grouped categories include the visible parent with each child to distinguish them. Never invent dates, omit duplicate positions, or add artificial numbering. Read rotated labels individually. Do not enumerate a calendar or continue a quarter cycle. For quarter/year tiers, copy each printed quarter together with its printed year. Sparse ticks or unreadable labels mean x_labels_complete=false.",
+          "text": "```json\n{\n  \"x_labels\": [\n    \"Jun 22\",\n    \"Sep 22\",\n    \"Dec 22\",\n    \"Mar 23\",\n    \"Jun 23\",\n    \"Sep 23\",\n    \"Dec 23\",\n    \"Mar 24\",\n    \"Jun 24\"\n  ],\n  \"x_labels_complete\": false,\n  \"uncertain\": []\n}\n```",
+          "tokens": 92,
+          "eos": true,
+          "seconds": 4.69,
+          "stop_reason": "eos"
+        },
+        {
+          "budget": 1024,
+          "phase": "focused_y_axis",
+          "box": null,
+          "prompt": "Read the actual image. Return ONLY compact JSON, no Markdown. Do not guess unreadable text. Template: {\"y_axis_type\": \"unknown\", \"y_labels\": [], \"uncertain\": []}\nRead ONLY categorical Y labels (horizontal bar row names). First choose y_axis_type: numerical, categorical, none, unknown. A legend beside colored marks is NOT a Y axis. A percent sign is a UNIT, not a category. For a numerical Y axis return y_labels: [] -- percentages, parentheses, minus signs and numerical scale ticks are NOT category labels. For horizontal bars copy full row names, not bar values. Do not list data points.",
+          "text": "```json\n{\n  \"y_axis_type\": \"numerical\",\n  \"y_labels\": [\"%\"],\n  \"uncertain\": []\n}\n```",
+          "tokens": 31,
+          "eos": true,
+          "seconds": 1.77,
+          "stop_reason": "eos"
+        },
+        {
+          "budget": 128,
+          "phase": "classify_y_axis",
+          "box": null,
+          "prompt": "Is the vertical Y axis a numerical scale, category names, or absent? Percentages and negative numbers are numerical. Ignore the legend. Return ONE JSON field: {\"y_axis_type\":\"numerical\"}, or categorical, none, unknown. No labels or explanation.",
+          "text": "The vertical Y axis is a numerical scale.",
+          "tokens": 10,
+          "eos": true,
+          "seconds": 0.66,
+          "stop_reason": "eos",
+          "quality_error": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "budget": 256,
+          "phase": "locate_y_axis",
+          "box": null,
+          "prompt": "Locate the y_axis in the FULL image. Return ONLY JSON {\"box\":[left,top,right,bottom]}. Coordinates normalized 0..1. Include all visible labels, rotated text and parent/year tiers. For legend include all colored keys and their complete names. For y_axis include the plotted area and left/right scales so axis type is visible. Do not transcribe text. If uncertain return {\"box\":null}.",
+          "text": "```json\n{\n  \"box\": {\n    \"left\": 0.0,\n    \"top\": 0.15,\n    \"right\": 0.99,\n    \"bottom\": 0.85\n  },\n  \"y_axis\": {\n    \"plot_area\": {\n      \"left\": 0.0,\n      \"top\": 0.15,\n      \"right\": 0.99,\n      \"bottom\": 0.85\n    },\n    \"left\": \"y_axis\",\n    \"right\": \"y_axis\",\n    \"bottom\": \"y_axis\",\n    \"top\": \"y_axis\"\n  },\n  \"x_axis\": {\n    \"plot_area\": {\n      \"left\": 0.0,\n      \"top\": 0.15,\n      \"right\": 0.99,\n      \"bottom\": 0.85\n    },\n    \"left\": \"x_axis\",\n    \"right\": \"x_axis\",\n    \"bottom\": \"x_axis\",\n    \"top\": \"x_axis\"\n  },\n  \"color\": {\n    \"VN-Index\": \"blue\",\n    \"DPG VN\": \"orange\"\n  },\n  \"legend\": {\n    \"",
+          "tokens": 256,
           "eos": false,
-          "seconds": 120.06,
-          "stop_reason": "stopped_without_eos"
+          "seconds": 12.8,
+          "stop_reason": "token_limit"
+        },
+        {
+          "budget": 128,
+          "phase": "locate_coarse_y_axis",
+          "box": null,
+          "prompt": "Where are the y_axis labels in the FULL image? Return only {\"region\":\"top\"} or {\"region\":\"middle\"} or {\"region\":\"bottom\"} or {\"region\":\"full\"}. Choose full if labels span multiple regions or you are unsure. No coordinates, transcription or explanation.",
+          "text": "full",
+          "tokens": 2,
+          "eos": true,
+          "seconds": 0.31,
+          "stop_reason": "eos",
+          "quality_error": "Expecting value: line 1 column 1 (char 0)"
         }
       ],
       "original_size": [
-        1288,
-        944
+        550,
+        388
       ],
-      "max_pixels": 1400000
-    }
+      "max_pixels": 1400000,
+      "retry_reason": "Punctuation-only y label; re-read chart structure",
+      "part_repairs": {
+        "legend": [],
+        "x_axis": []
+      },
+      "part_errors": {
+        "y_axis": "Numerical/absent Y axis must have empty category labels; re-read"
+      },
+      "y_axis_classification_error": "Expecting value: line 1 column 1 (char 0)",
+      "locator_errors": {
+        "y_axis": "Structure read incomplete at the bounded token/time limit"
+      }
+    },
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "image": "31854725-508e-4207-a106-f57b3f18334f.png",
+    "index": 35,
+    "status": "error",
+    "sha256": "a392d8e4dcc583dbb3d098b1f7730bfd226aff9ba36730c6de13ddb2e544e1e7",
+    "generation": {
+      "attempts": [
+        {
+          "budget": 1024,
+          "phase": "primary",
+          "box": null,
+          "prompt": "Read the visible chart labels. Return one compact JSON object, without Markdown.\nDo not extract numerical data points or numerical scale ticks.\nUse this empty template; fill only information actually visible in the image:\n{\"title\":\"\", \"kind\":\"unknown\", \"series\":[], \"x_labels\":[], \"y_labels\":[], \"x_labels_complete\":false, \"series_complete\":false, \"regions\":{}, \"uncertain\":[]}\nChoose ONE kind: line, bar, pie, mixed, table, or unknown. Never output a list of choices.\nEach series is an object with name, color, axis, unit. Copy its full visible legend name,\nincluding ALL lines of a multiline legend entry. Keep each colored legend entry separate.\nChoose ONE axis: left, right, or none. If not sure, use none. Do not invent color codes.\nx_labels contains visible category/time labels in order. Do not invent intermediate dates.\ny_labels contains categorical labels ONLY, e.g. row names in a horizontal bar chart.\nFor a vertical line/bar chart with a numerical Y scale, y_labels MUST be [].\nDo not list percentages, scale ticks, empty strings or standalone parentheses in y_labels.\nDo not repeat a legend name for different colored series: re-read their complete labels.\nCopy Vietnamese accents and text exactly. Do not paraphrase or complete unreadable words.\nIf unreadable, leave the field empty, mark completeness false and briefly say why in uncertain.\nSparse time-axis ticks mean x_labels_complete=false. Mark completeness true only when all\nrelevant labels are readable. Optional regions use normalized boxes [left,top,right,bottom]\nfor legend, x_axis, y_axis or plot; leave regions={} if unsure. No explanation or program.",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"Phát triển (DM)\",\n      \"color\": \"gray\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Đang phát triển (EM)\",\n      \"color\": \"red\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [\"Jan-20\", \"May-20\", \"Sep-20\", \"Jan-21\", \"Jan-22\", \"May-21\", \"Sep-21\", \"Jan-22\", \"May-22\", \"Sep-22\", \"Jan-23\", \"May-23\", \"Sep-23\", \"Jan-24\", \"May-24\", \"Sep-24\", \"Jan-25\"],\n  \"y_labels\": [\"(50)\", \"(100)\"],\n  \"x_labels_complete\": false,\n  \"series_complete\": false,\n  \"regions\": {}\n}\n```",
+          "tokens": 228,
+          "eos": true,
+          "seconds": 13.02,
+          "stop_reason": "eos",
+          "quality_error": "Duplicate labels in x_labels"
+        },
+        {
+          "budget": 2048,
+          "phase": "retry",
+          "box": null,
+          "prompt": "Re-read this image carefully; the previous structure response failed validation.\nReturn ONLY compact valid JSON with double-quoted keys. Required fields:\n{\"title\":\"\",\"kind\":\"unknown\",\"series\":[],\"x_labels\":[],\"y_labels\":[],\"x_labels_complete\":false,\"series_complete\":false,\"regions\":{},\"uncertain\":[]}\nRead each legend entry separately, joining its visible lines into ONE full name.\nseries entries: {\"name\":\"visible full text\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}.\nDo not copy the template text as a name. Do not repeat one legend name across colors.\nkind is one of line, bar, pie, mixed, table, unknown; axis is left, right or none.\nCopy only visible X category/time labels. For a numerical Y scale use y_labels: [].\nNever enumerate Y scale ticks or repeat parentheses. Omit optional coordinates/colors if unsure.\nUnreadable labels remain unknown, not guessed; completeness flags must then be false.\nFinish the JSON object. No Markdown, explanation, numerical point values or program.\nValidation error: Duplicate labels in x_labels",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"Phát triển (DM)\",\n      \"color\": \"#87CEFA\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Đang phát triển (EM)\",\n      \"color\": \"#FF69B4\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [\"Jan-20\", \"May-20\", \"Sep-20\", \"Jan-21\", \"Jan-22\", \"May-21\", \"Sep-21\", \"Jan-22\", \"May-22\", \"Sep-22\", \"Jan-23\", \"May-23\", \"Sep-23\", \"Jan-24\", \"May-24\", \"Sep-24\", \"Jan-25\"],\n  \"y_labels\": [\"(50)\", \"(100)\"],\n  \"x_labels_complete\": false,\n  \"series_complete\": false,\n  \"regions\": {}\n}\n```",
+          "tokens": 235,
+          "eos": true,
+          "seconds": 13.38,
+          "stop_reason": "eos",
+          "quality_error": "Duplicate labels in x_labels"
+        },
+        {
+          "budget": 1024,
+          "phase": "focused_legend",
+          "box": null,
+          "prompt": "Read the actual image. Return ONLY compact JSON, no Markdown. Do not guess unreadable text. Template: {\"title\": \"\", \"kind\": \"unknown\", \"series\": [], \"series_complete\": false, \"uncertain\": []}\nRead ONLY title and legend. Choose kind: line, bar, pie, mixed, table, unknown. Each series: {\"name\":\"exact full visible name\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}. axis must be left, right or none; for pie use none. Do not invent a title: if no title is printed, use an empty string. Do not translate names. Join ALL lines of each legend entry. Distinguish neighboring colored entries. Never repeat a name across different colors or invent suffixes. If there is no legend, use a printed series title only when unambiguous. If a series name is unreadable, return series_complete=false and explain in uncertain.",
+          "text": "{\"title\":\"Dòng vốn vào các quỹ cổ phiếu theo thị trường theo tháng (Tỷ USD)\",\"kind\":\"line\",\"series\":[{\"name\":\"Phát triển (DM)\",\"color\":\"#878787\",\"axis\":\"none\",\"unit\":\"(100)\"}]}; {\"title\":\"Đang phát triển (EM)\",\"kind\":\"line\",\"series\":[{\"name\":\"Phát triển (DM)\",\"color\":\"#878787\",\"axis\":\"none\",\"unit\":\"(100)\"}]}",
+          "tokens": 110,
+          "eos": true,
+          "seconds": 6.93,
+          "stop_reason": "eos",
+          "quality_error": "Extra data: line 1 column 177 (char 176)"
+        },
+        {
+          "budget": 256,
+          "phase": "locate_legend",
+          "box": null,
+          "prompt": "Locate the legend in the FULL image. Return ONLY JSON {\"box\":[left,top,right,bottom]}. Coordinates normalized 0..1. Include all visible labels, rotated text and parent/year tiers. For legend include all colored keys and their complete names. For y_axis include the plotted area and left/right scales so axis type is visible. Do not transcribe text. If uncertain return {\"box\":null}.",
+          "text": "```json\n{\n  \"box\": [\n    [0.13, 0.13, 0.87, 0.87],\n    [\"Phát triển (DM)\", \"Đang phát triển (EM)\"],\n    [0.13, 0.13, 0.87, 0.87]\n  ]\n}\n```",
+          "tokens": 81,
+          "eos": true,
+          "seconds": 5.47,
+          "stop_reason": "eos"
+        },
+        {
+          "budget": 128,
+          "phase": "locate_coarse_legend",
+          "box": null,
+          "prompt": "Where are the legend labels in the FULL image? Return only {\"region\":\"top\"} or {\"region\":\"middle\"} or {\"region\":\"bottom\"} or {\"region\":\"full\"}. Choose full if labels span multiple regions or you are unsure. No coordinates, transcription or explanation.",
+          "text": "full",
+          "tokens": 2,
+          "eos": true,
+          "seconds": 1.59,
+          "stop_reason": "eos",
+          "quality_error": "Expecting value: line 1 column 1 (char 0)"
+        }
+      ],
+      "original_size": [
+        1450,
+        720
+      ],
+      "max_pixels": 1400000,
+      "retry_reason": "Duplicate labels in x_labels",
+      "part_errors": {
+        "legend": "Extra data: line 1 column 177 (char 176)"
+      },
+      "locator_errors": {
+        "legend": "Crop box must be [left, top, right, bottom] within 0..1"
+      }
+    },
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+    "image": "9ccd08ec-17a6-4701-8390-36d04362ed67.png",
+    "index": 60,
+    "status": "error",
+    "sha256": "85207339a3d1469b21d890869258176ff0013a6abb95039abc7fb17cc547d83c",
+    "generation": {
+      "attempts": [
+        {
+          "budget": 1024,
+          "phase": "primary",
+          "box": null,
+          "prompt": "Read the visible chart labels. Return one compact JSON object, without Markdown.\nDo not extract numerical data points or numerical scale ticks.\nUse this empty template; fill only information actually visible in the image:\n{\"title\":\"\", \"kind\":\"unknown\", \"series\":[], \"x_labels\":[], \"y_labels\":[], \"x_labels_complete\":false, \"series_complete\":false, \"regions\":{}, \"uncertain\":[]}\nChoose ONE kind: line, bar, pie, mixed, table, or unknown. Never output a list of choices.\nEach series is an object with name, color, axis, unit. Copy its full visible legend name,\nincluding ALL lines of a multiline legend entry. Keep each colored legend entry separate.\nChoose ONE axis: left, right, or none. If not sure, use none. Do not invent color codes.\nx_labels contains visible category/time labels in order. Do not invent intermediate dates.\ny_labels contains categorical labels ONLY, e.g. row names in a horizontal bar chart.\nFor a vertical line/bar chart with a numerical Y scale, y_labels MUST be [].\nDo not list percentages, scale ticks, empty strings or standalone parentheses in y_labels.\nDo not repeat a legend name for different colored series: re-read their complete labels.\nCopy Vietnamese accents and text exactly. Do not paraphrase or complete unreadable words.\nIf unreadable, leave the field empty, mark completeness false and briefly say why in uncertain.\nSparse time-axis ticks mean x_labels_complete=false. Mark completeness true only when all\nrelevant labels are readable. Optional regions use normalized boxes [left,top,right,bottom]\nfor legend, x_axis, y_axis or plot; leave regions={} if unsure. No explanation or program.",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"An Đô\",\n      \"color\": \"#008000\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Indonesia\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Thái Lan\",\n      \"color\": \"#FFA500\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Việt Nam\",\n      \"color\": \"#FF00FF\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [],\n  \"y_labels\": [\"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\",",
+          "tokens": 192,
+          "eos": false,
+          "seconds": 10.19,
+          "stop_reason": "repetition",
+          "quality_error": "Repeated empty/punctuation-only JSON labels"
+        },
+        {
+          "budget": 2048,
+          "phase": "retry",
+          "box": null,
+          "prompt": "Re-read this image carefully; the previous structure response failed validation.\nReturn ONLY compact valid JSON with double-quoted keys. Required fields:\n{\"title\":\"\",\"kind\":\"unknown\",\"series\":[],\"x_labels\":[],\"y_labels\":[],\"x_labels_complete\":false,\"series_complete\":false,\"regions\":{},\"uncertain\":[]}\nRead each legend entry separately, joining its visible lines into ONE full name.\nseries entries: {\"name\":\"visible full text\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}.\nDo not copy the template text as a name. Do not repeat one legend name across colors.\nkind is one of line, bar, pie, mixed, table, unknown; axis is left, right or none.\nCopy only visible X category/time labels. For a numerical Y scale use y_labels: [].\nNever enumerate Y scale ticks or repeat parentheses. Omit optional coordinates/colors if unsure.\nUnreadable labels remain unknown, not guessed; completeness flags must then be false.\nFinish the JSON object. No Markdown, explanation, numerical point values or program.\nValidation error: Repeated empty/punctuation-only JSON labels",
+          "text": "```json\n{\n  \"title\": \"\",\n  \"kind\": \"line\",\n  \"series\": [\n    {\n      \"name\": \"Án Đô\",\n      \"color\": \"#008000\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Indonesia\",\n      \"color\": \"#FF0000\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Thái Lan\",\n      \"color\": \"#FFA500\",\n      \"axis\": \"none\"\n    },\n    {\n      \"name\": \"Việt Nam\",\n      \"color\": \"#FF00FF\",\n      \"axis\": \"none\"\n    }\n  ],\n  \"x_labels\": [\"Jan-20\", \"Apr-20\", \"Jul-20\", \"Oct-20\", \"Jan-21\", \"Apr-21\", \"Jul-21\", \"Oct-21\", \"Jan-22\", \"Apr-22\", \"Jul-22\", \"Oct-22\", \"Jan-23\", \"Apr-23\", \"Jul-23\", \"Oct-23\"],\n  \"y_labels\": [\"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\",",
+          "tokens": 352,
+          "eos": false,
+          "seconds": 18.14,
+          "stop_reason": "repetition",
+          "quality_error": "Repeated cycle in chart label array; re-read the visible axis"
+        },
+        {
+          "budget": 1024,
+          "phase": "focused_legend",
+          "box": null,
+          "prompt": "Read the actual image. Return ONLY compact JSON, no Markdown. Do not guess unreadable text. Template: {\"title\": \"\", \"kind\": \"unknown\", \"series\": [], \"series_complete\": false, \"uncertain\": []}\nRead ONLY title and legend. Choose kind: line, bar, pie, mixed, table, unknown. Each series: {\"name\":\"exact full visible name\",\"color\":\"\",\"axis\":\"none\",\"unit\":\"\"}. axis must be left, right or none; for pie use none. Do not invent a title: if no title is printed, use an empty string. Do not translate names. Join ALL lines of each legend entry. Distinguish neighboring colored entries. Never repeat a name across different colors or invent suffixes. If there is no legend, use a printed series title only when unambiguous. If a series name is unreadable, return series_complete=false and explain in uncertain.",
+          "text": "{\"title\":\"Vietnam, Indonesia, Thailand, and Vietnam's economic performance in 2020-2023\",\"kind\":\"line\",\"series\":[{\"name\":\"Vietnam\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FFA500\",\"axis\":\"none\"},{\"name\":\"Thailand\",\"color\":\"#FF00FF\",\"axis\":\"none\"},{\"name\":\"An Đô\",\"color\":\"#FF0000\",\"axis\":\"none\"},{\"name\":\"Indonesia\",\"color\":\"#FF",
+          "tokens": 384,
+          "eos": false,
+          "seconds": 19.57,
+          "stop_reason": "repetition",
+          "quality_error": "inline_repetition: ffa500 axis none name thailand color ff00ff axis none name an đô color ff0000 axis none name indonesia color"
+        },
+        {
+          "budget": 256,
+          "phase": "locate_legend",
+          "box": null,
+          "prompt": "Locate the legend in the FULL image. Return ONLY JSON {\"box\":[left,top,right,bottom]}. Coordinates normalized 0..1. Include all visible labels, rotated text and parent/year tiers. For legend include all colored keys and their complete names. For y_axis include the plotted area and left/right scales so axis type is visible. Do not transcribe text. If uncertain return {\"box\":null}.",
+          "text": "```json\n{\n  \"box\": [\n    {\n      \"left\": 0.0,\n      \"top\": 0.0,\n      \"right\": 0.18,\n      \"bottom\": 0.18\n    },\n    {\n      \"left\": 0.18,\n      \"top\": 0.0,\n      \"right\": 0.36,\n      \"bottom\": 0.36\n    },\n    {\n      \"left\": 0.36,\n      \"top\": 0.0,\n      \"right\": 0.54,\n      \"bottom\": 0.54\n    },\n    {\n      \"left\": 0.54,\n      \"top\": 0.0,\n      \"right\": 0.72,\n      \"bottom\": 0.72\n    },\n    {\n      \"left\": 0.72,\n      \"top\": 0.0,\n      \"right\": 0.9,\n      \"bottom\": 0.9\n    }\n  ],\n  \"y_axis\": {\n    \"plot_area\": {\n      \"type\": \"area\",\n      \"color\": \"green\",\n      \"fill_color\": \"green",
+          "tokens": 256,
+          "eos": false,
+          "seconds": 13.33,
+          "stop_reason": "token_limit"
+        },
+        {
+          "budget": 128,
+          "phase": "locate_coarse_legend",
+          "box": null,
+          "prompt": "Where are the legend labels in the FULL image? Return only {\"region\":\"top\"} or {\"region\":\"middle\"} or {\"region\":\"bottom\"} or {\"region\":\"full\"}. Choose full if labels span multiple regions or you are unsure. No coordinates, transcription or explanation.",
+          "text": "full",
+          "tokens": 2,
+          "eos": true,
+          "seconds": 0.74,
+          "stop_reason": "eos",
+          "quality_error": "Expecting value: line 1 column 1 (char 0)"
+        }
+      ],
+      "original_size": [
+        1085,
+        526
+      ],
+      "max_pixels": 1400000,
+      "retry_reason": "Repeated empty/punctuation-only JSON labels",
+      "part_errors": {
+        "legend": "inline_repetition: ffa500 axis none name thailand color ff00ff axis none name an đô color ff0000 axis none name indonesia color"
+      },
+      "locator_errors": {
+        "legend": "Structure read incomplete at the bounded token/time limit"
+      }
+    },
+    "error": "Expecting value: line 1 column 1 (char 0)"
   }
 ]
