@@ -31,6 +31,10 @@ bounding box (256 token) rồi đọc lại crop một lần (2048 token). Khôn
 Locator chấp nhận cả mảng bốn số và object left/top/right/bottom trong 0..1.
 Nếu locator bị cắt hoặc sai cấu trúc, thử đúng một lượt chọn vùng top/middle/bottom/full
 (128 token) rồi đọc crop đó; không nhận JSON chưa hoàn tất hay tự đoán tọa độ từ text.
+Các lượt chọn vùng/phân loại Y chấp nhận cả JSON và lựa chọn văn bản ngắn như `full`,
+`numerical`, hoặc câu khẳng định chính xác `The vertical Y axis is a numerical scale.`.
+Chỉ áp dụng khi generation hoàn tất với EOS. Không tìm keyword trong câu phủ định,
+mơ hồ, hoặc nhiều lựa chọn; JSON cấu trúc và numerical lookup vẫn được kiểm tra riêng.
 Nếu Y bị nhầm chú giải/đơn vị, thêm một lượt phân loại trục độc lập (128 token).
 Chỉ khi lượt này xác nhận numerical hoặc none mới xuất y_labels=[]; categorical/unknown
 vẫn phải đọc nhãn từ ảnh, không xóa danh mục để vượt kiểm tra.

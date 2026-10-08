@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 from vinumqa.cv_module.structure import STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, json_object, validate_box
 from vinumqa.cv_module.structure_output import parse_structure_output, json_repetition_reason
-from vinumqa.cv_module.structure_parts import validate_part, normalize_locator_box
+from vinumqa.cv_module.structure_parts import validate_part, normalize_locator_box, parse_visual_choice
 
 
 class ChartStructureReader:
@@ -43,6 +43,11 @@ class ChartStructureReader:
                 try:
                     if structure:
                         value, attempt["repairs"] = parse_structure_output(result["text"])
+                        return value
+                    if phase == "classify_y_axis" or phase.startswith("locate_coarse_"):
+                        field = "y_axis_type" if phase == "classify_y_axis" else "region"
+                        value = parse_visual_choice(result["text"], field)
+                        attempt["parsed_choice"] = value
                         return value
                     return json_object(result["text"])
                 except ValueError as error:
@@ -106,7 +111,7 @@ class ChartStructureReader:
         merged["uncertain"] = list(dict.fromkeys(merged["uncertain"]))
         result, repairs = parse_structure_output(json.dumps(merged, ensure_ascii=False))
         self.last_generation["focused_repairs"] = repairs
-        self.last_generation["recovery_version"] = "localized-fields-v3"
+        self.last_generation["recovery_version"] = "localized-fields-v4"
         return result
 
     def _read_part(self, path, phase, prompt, box=None):

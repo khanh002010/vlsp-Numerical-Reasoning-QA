@@ -1,5 +1,19 @@
 # Kiểm tra kết quả OCR cập nhật ngày 2026-10-09
 
+## Lượt mới nhất: 4 ảnh lỗi
+
+Train 1718 ready / 7 error (1 ảnh), public_test 385 ready / 74 error (3 ảnh), pending=0.
+Các ảnh: edf4f430, bd062164, 31854725, 9ccd08ec. Raw output phân loại Y là câu
+`The vertical Y axis is a numerical scale.` và chọn vùng là `full`, đều có EOS.
+Parser JSON tổng quát từ chối các câu trả lời này trước khi nhánh phục hồi sử dụng được.
+
+Bản localized-fields-v4 dùng bộ đọc lựa chọn riêng cho classify_y_axis/locate_coarse_*:
+chấp nhận enum JSON, enum văn bản hoặc một số câu khẳng định đầy đủ có nghĩa tương đương.
+Không dò keyword trong câu phủ định/mơ hồ, không nhận output bị cắt. Giữ raw output và
+parsed_choice trong diagnostics. 116 kiểm thử qua, gồm kiểm thử đường generate với
+phản hồi mock trùng raw Kaggle. Chưa chạy GPU lại hoặc thay đổi artifact. Việc sửa parser
+không chứng minh bước đọc legend tiếp theo sẽ thành công; vẫn cần retry và kiểm tra kết quả.
+
 ## Lượt cập nhật tiếp theo: 6 ảnh lỗi
 
 Kết quả mới: train 1718 ready / 7 error (1 ảnh lỗi), public_test 333 ready / 126 error
