@@ -1,0 +1,35 @@
+# Kiểm tra kết quả OCR cập nhật ngày 2026-10-09
+
+Dữ liệu đọc từ `prepared/`, chưa thực hiện OCR GPU lại hoặc sửa artifact.
+
+| Tập | Ready | Error | Ảnh lỗi |
+|---|---:|---:|---:|
+| train | 1633 | 92 | 4 |
+| public_test | 333 | 126 | 5 |
+
+Không còn pending. Chín ảnh lỗi gồm:
+
+| Ảnh | Nguyên nhân quan sát được trong raw generation |
+|---|---|
+| 91833dc9-7f8c-4480-a38d-e91332c41d97 | Lặp Q1–Q4 hàng trăm lần; ảnh thực tế gồm 16 quý dưới bốn năm 2018–2021 |
+| b9dd9800-0e5b-43ca-84d9-955b460f4870 | Đưa chú giải GTGD ròng và % +/- vào Y; focused X còn đọc nhầm VPB thành VTB |
+| e0161323-b293-46f5-9037-3a23f8599478 | Gán axis=x cho series của pie |
+| edf4f430-e67e-4966-8fc1-2bca5c715aab | Đưa đơn vị % vào danh sách Y |
+| 9a3fd5f9-bf4a-4a47-aaba-077cf59cffee | Đưa chú giải Index và % +/- vào Y |
+| bd062164-5bd0-43bb-9ee3-15e1b5c6305d | Đưa đơn vị % vào danh sách Y |
+| 31854725-508e-4207-a106-f57b3f18334f | Chèn Jan-22 giữa Jan-21 và May-21, rồi lặp Jan-22 |
+| 68ba3ef1-119a-4f7e-8651-3d5d9e694c54 | Tự liệt kê ngày lùi và cả ngày vô hiệu; ảnh thực tế nhãn xoay từ 29/7/2022 đến 31/8/2022 |
+| 9ccd08ec-17a6-4701-8390-36d04362ed67 | Dịch tên, bịa tiêu đề và lặp series; ảnh thực tế chú giải ở dưới: Ấn Độ, Indonesia, Thái Lan, Việt Nam |
+
+Đã xem trực tiếp ảnh 91833dc9, b9dd9800, 68ba3ef1, 9ccd08ec để đối chiếu.
+Các dòng còn lại mô tả đầu ra đã lưu; chưa chứng nhận nội dung OCR đúng ảnh.
+
+Sửa code: chặn chu kỳ nhãn lặp trong generation; axis pie=none; validation từng phần;
+phân loại trục Y trước khi chấp nhận danh mục; yêu cầu vị trí vùng từ ảnh và crop lại
+một lần khi đọc phần đó thất bại. Lưu prompt, box, lỗi và raw output để truy nguyên.
+Giữ lỗi nếu crop vẫn không vượt validation. Không suy ra dữ liệu từ đáp án ground truth.
+
+107 kiểm thử CPU/mock đã qua. Chưa chạy Qwen trên GPU cho chín ảnh này. Schema hợp lệ
+không chứng minh độ chính xác nội dung; ví dụ VPB/VTB vẫn có thể cần đối chiếu ảnh.
+Dùng lại script `retry_failed_structures` với artifact hiện tại để xử lý chín ảnh lỗi,
+sao lưu và cập nhật sau từng ảnh như trước.

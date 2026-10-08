@@ -69,7 +69,7 @@ class RecoveryTests(unittest.TestCase):
         cv.last_generation = {}
         value = chart()
         value['series'] *= 2
-        cv._read = Mock(side_effect=[value, value, value])
+        cv._read = Mock(side_effect=[value, {"box": [0, 0, 1, 0.3]}, value])
         with self.assertRaisesRegex(ValueError, 'Duplicate labels in series'):
             cv._read_parts('image.png')
 

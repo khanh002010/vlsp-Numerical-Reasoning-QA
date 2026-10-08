@@ -25,8 +25,14 @@ công của ảnh khác giữ nguyên. Chạy lại cùng lệnh để tiếp t�
 
 Giới hạn 90 phút áp dụng riêng từng split, kiểm tra giữa các ảnh; một ảnh đang chạy
 có thể vượt thời điểm này. Mỗi lượt generation giữ giới hạn mềm 120 giây, 1024/2048 token.
-Sau lượt đọc chính và retry, nếu vẫn lỗi thì đọc riêng legend, X, Y từ ảnh đầy đủ.
-Fallback có tối đa 2 lượt generation mỗi phần, không có vòng lặp vô hạn. Không nhận
+Sau lượt đọc chính và retry, nếu vẫn lỗi thì đọc riêng legend, X, Y từ ảnh đầy đủ
+(1024 token/phần). Mỗi phần được kiểm tra ngay. Nếu sai/lặp/hết token, CV xác định
+bounding box (256 token) rồi đọc lại crop một lần (2048 token). Không có vòng lặp vô hạn.
+Crop không chứng minh đủ toàn ảnh: completeness=false; crop X còn có x_order_known=false.
+Guard chặn chu kỳ nhãn lặp kéo dài, kể cả Q1–Q4 hoặc chuỗi số 0 trong danh sách nhãn.
+Kết quả Y phải phân biệt numerical/categorical/none/unknown; không tự xóa nhãn chưa rõ.
+Biểu đồ pie được chuẩn hóa series.axis=none vì không có trục Cartesian.
+Không nhận
 JSON bị cắt, không đoán tên series, không tự xóa nhãn X trùng để vượt validation.
 Thiếu cờ completeness được coi là false, không phải true. Trần pixel vẫn 1.400.000.
 

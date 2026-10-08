@@ -109,14 +109,14 @@ class RetryTests(unittest.TestCase):
             Image.new("RGB", (100, 100)).save(path)
             # Even syntactically complete text without EOS is not declared successful.
             cv = reader([generation(structure(), eos=False), generation('{"title":"partial'),
-                         generation('{"title":"partial')])
+                         generation('{"title":"partial'), generation({"box": None})])
             with self.assertRaises(ValueError): cv.read_structure(path)
-            self.assertEqual(cv.backend.generate_once.call_count, 3)
+            self.assertEqual(cv.backend.generate_once.call_count, 4)
             cv = reader([generation('{"x_labels":[', False, 1024),
                          generation('{"x_labels":[', False, 2048), generation('{"title":"partial'),
-                         generation('{"title":"partial')])
+                         generation('{"title":"partial'), generation({"box": None})])
             with self.assertRaises(ValueError): cv.read_structure(path)
-            self.assertEqual([c.args[1] for c in cv.backend.generate_once.call_args_list], [1024, 2048, 2048, 1024])
+            self.assertEqual([c.args[1] for c in cv.backend.generate_once.call_args_list], [1024, 2048, 2048, 1024, 256])
 
 
 class MigrationTests(unittest.TestCase):

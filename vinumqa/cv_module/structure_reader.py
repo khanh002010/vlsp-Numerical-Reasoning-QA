@@ -4,6 +4,7 @@ from pathlib import Path
 from PIL import Image
 from vinumqa.cv_module.structure import STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, json_object, validate_box
 from vinumqa.cv_module.structure_output import parse_structure_output, json_repetition_reason
+from vinumqa.cv_module.structure_parts import validate_part
 
 
 class ChartStructureReader:
@@ -30,7 +31,8 @@ class ChartStructureReader:
         for budget in budgets:
             print(f"[Structure] {Path(path).name}: budget={budget}, crop={box is not None}, phase={phase}", flush=True)
             result = self.backend.generate_once(inputs, budget)
-            attempt = {"budget": budget, "phase": phase, **{k: result[k] for k in ("text", "tokens", "eos", "seconds", "stop_reason")}}
+            attempt = {"budget": budget, "phase": phase, "box": box, "prompt": prompt,
+                       **{k: result[k] for k in ("text", "tokens", "eos", "seconds", "stop_reason")}}
             self.last_generation["attempts"].append(attempt)
             print(f"[Structure] tokens={result['tokens']}, stop={result['stop_reason']}, seconds={result['seconds']}", flush=True)
             reason = json_repetition_reason(result["text"])
@@ -72,6 +74,8 @@ class ChartStructureReader:
             ("legend", {"title": "", "kind": "unknown", "series": [], "series_complete": False},
              'Read ONLY title and legend. Choose kind: line, bar, pie, mixed, table, unknown. '
              'Each series: {"name":"exact full visible name","color":"","axis":"none","unit":""}. '
+             'axis must be left, right or none; for pie use none. '
+             'Do not invent a title: if no title is printed, use an empty string. Do not translate names. '
              'Join ALL lines of each legend entry. Distinguish neighboring colored entries. '
              'Never repeat a name across different colors or invent suffixes. '
              'If there is no legend, use a printed series title only when unambiguous. '
@@ -80,9 +84,13 @@ class ChartStructureReader:
              'Read ONLY X category/time labels, in visual order. Copy visible text exactly. '
              'For grouped categories include the visible parent with each child to distinguish them. '
              'Never invent dates, omit duplicate positions, or add artificial numbering. '
+             'Read rotated labels individually. Do not enumerate a calendar or continue a quarter cycle. '
+             'For quarter/year tiers, copy each printed quarter together with its printed year. '
              'Sparse ticks or unreadable labels mean x_labels_complete=false.'),
-            ("y_axis", {"y_labels": []},
+            ("y_axis", {"y_axis_type": "unknown", "y_labels": []},
              'Read ONLY categorical Y labels (horizontal bar row names). '
+             'First choose y_axis_type: numerical, categorical, none, unknown. '
+             'A legend beside colored marks is NOT a Y axis. A percent sign is a UNIT, not a category. '
              'For a numerical Y axis return y_labels: [] -- percentages, parentheses, minus signs '
              'and numerical scale ticks are NOT category labels. '
              'For horizontal bars copy full row names, not bar values. Do not list data points.'),
@@ -92,23 +100,50 @@ class ChartStructureReader:
             prompt = ('Read the actual image. Return ONLY compact JSON, no Markdown. '
                       'Do not guess unreadable text. Template: '
                       + json.dumps({**template, "uncertain": []}) + '\n' + instruction + focus)
-            value = self._read(path, prompt, box, budgets=(1024, 2048),
-                               reset=False, phase="focused_" + phase)
-            for key in template:
-                if key not in value:
-                    if key.endswith("_complete"):
-                        value[key] = False
-                    else:
-                        raise ValueError("Focused read missing " + key)
-                merged[key] = value[key]
-            uncertain = value.get("uncertain", [])
-            if not isinstance(uncertain, list) or any(not isinstance(v, str) for v in uncertain):
-                raise ValueError("Focused uncertainty must be a string list")
-            merged["uncertain"].extend(v for v in uncertain if v.strip())
+            value = self._read_part(path, phase, prompt, box)
+            merged["uncertain"].extend(value.pop("uncertain"))
+            merged.update(value)
         merged["uncertain"] = list(dict.fromkeys(merged["uncertain"]))
         result, repairs = parse_structure_output(json.dumps(merged, ensure_ascii=False))
         self.last_generation["focused_repairs"] = repairs
-        self.last_generation["recovery_version"] = "focused-fields-v1"
+        self.last_generation["recovery_version"] = "localized-fields-v2"
+        return result
+
+    def _read_part(self, path, phase, prompt, box=None):
+        try:
+            value = self._read(path, prompt, box, budgets=(1024,),
+                               reset=False, phase="focused_" + phase)
+            result, repairs = validate_part(phase, value)
+        except ValueError as error:
+            self.last_generation.setdefault("part_errors", {})[phase] = str(error)
+            # Locate from pixels, never assume the legend is at the top or the
+            # X axis at the bottom (negative bars often cross in mid-image).
+            locator = ('Locate the ' + phase + ' in the FULL image. Return ONLY JSON '
+                       '{"box":[left,top,right,bottom]}. Coordinates normalized 0..1. '
+                       'Include all visible labels, rotated text and parent/year tiers. '
+                       'For legend include all colored keys and their complete names. '
+                       'For y_axis include the plotted area and left/right scales so axis type is visible. '
+                       'Do not transcribe text. If uncertain return {"box":null}.')
+            located = self._read(path, locator, budgets=(256,), reset=False, phase="locate_" + phase)
+            crop = validate_box(located.get("box"))
+            # Inspection requests may already be cropped; keep the new crop inside
+            # the authorized observation so it cannot be mistaken for full coverage.
+            if box is not None:
+                crop = validate_box([max(crop[0], box[0]), max(crop[1], box[1]),
+                                     min(crop[2], box[2]), min(crop[3], box[3])])
+            print(f"[Structure] re-read {phase} crop={crop}: {error}", flush=True)
+            value = self._read(path, prompt + '\nThis is a crop: report only visible text. '
+                               'Set completeness flags false. Close JSON after the last printed label. '
+                               'Previous validation error: ' + str(error)[:200], crop,
+                               budgets=(2048,), reset=False, phase="crop_" + phase)
+            result, repairs = validate_part(phase, value)
+            if phase == "legend":
+                result["series_complete"] = False
+            elif phase == "x_axis":
+                result["x_labels_complete"] = False
+                result["x_order_known"] = False
+            result["uncertain"].append("Recovered " + phase + " from a crop; global coverage unverified")
+        self.last_generation.setdefault("part_repairs", {})[phase] = repairs
         return result
 
     def read_structure(self, path):

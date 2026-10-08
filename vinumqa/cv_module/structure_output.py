@@ -14,6 +14,15 @@ def json_repetition_reason(text):
     # sustained arrays of empty strings/parentheses are not useful labels either.
     if re.search(r'(?:"[\s()\[\]{}%]*"\s*,\s*){12}', text):
         return "Repeated empty/punctuation-only JSON labels"
+    # Scope this guard to LABEL arrays: repeated numeric data values are legitimate.
+    # It also runs on unfinished JSON during generation, before a token-limit retry.
+    for match in re.finditer(r'"(?:x_labels|y_labels)"\s*:\s*\[([^\]]*)', text):
+        labels = re.findall(r'"((?:\\.|[^"\\])*)"', match[1])
+        for width in range(1, 33):
+            count = max(4, (32 + width - 1) // width)
+            size = width * count
+            if len(labels) >= size and labels[-size:] == labels[-width:] * count:
+                return "Repeated cycle in chart label array; re-read the visible axis"
     return None
 
 
@@ -77,6 +86,12 @@ def parse_structure_output(text):
         value = json.loads(fixed, object_pairs_hook=_unique_object)
     if not isinstance(value, dict): raise ValueError("Expected a JSON object")
     value = deepcopy(value)
+    if value.get("kind") == "pie" and isinstance(value.get("series"), list):
+        # A pie has no Cartesian axis. Correct metadata, never the slice names.
+        for series in value["series"]:
+            if isinstance(series, dict) and series.get("axis", "none") != "none":
+                series["axis"] = "none"
+                repairs.append("pie series axis set to none")
     # Missing evidence of completeness must never become an affirmative claim.
     for field in ("x_labels_complete", "series_complete"):
         if field not in value:
