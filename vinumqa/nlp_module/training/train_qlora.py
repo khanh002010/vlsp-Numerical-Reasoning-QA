@@ -108,11 +108,14 @@ def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_
     tokenized_dataset = dataset.map(tokenize_function, remove_columns=["prompt", "completion"])
     tokenized_val_dataset = val_dataset.map(tokenize_function, remove_columns=["prompt", "completion"])
     
+    from vinumqa.nlp_module.training.memory_attention import register_memory_attention, check_cuda_attention
+    attention_backend = register_memory_attention()
+    check_cuda_attention()
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         quantization_config=bnb_config,
         device_map="auto",
-        attn_implementation="sdpa",
+        attn_implementation=attention_backend,
         trust_remote_code=True
     )
     

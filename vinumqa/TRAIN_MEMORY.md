@@ -61,3 +61,32 @@ python -m unittest discover -s tests -p test_completion_logits.py
 So sánh loss/gradient toàn model và LoRA, gradient checkpointing, accumulation có số
 target khác nhau, training/evaluation qua Trainer thật, và greedy generation sau train.
 Test này cần torch, transformers, accelerate, peft; nếu thiếu thư viện sẽ báo skip.
+
+
+## OOM trong backward tr?n T4
+
+Log OOM m?i x?y ra trong backward, d? ?? gi?m logits. M?t ???ng c? th? g?y l?i l?
+SDPA native GQA r?i v? math kernel tr?n m?t s? phi?n b?n PyTorch/CUDA d?ng T4: kernel n?y c?n b? nh? b?c hai theo ??
+d?i context. Traceback kh?ng ?? ?? x?c nh?n tensor g?y OOM; c?n ?o tr?n GPU.
+
+Training hi?n ??ng k? `vinumqa_memory_sdpa`: m? r?ng KV heads r?i g?i SDPA g?c,
+ch? cho ph?p efficient/flash CUDA kernels, kh?ng cho fallback sang math. ??ng k?
+c? mask builder SDPA ?? gi? causal/padding mask. CPU v?n d?ng SDPA b?nh th??ng
+cho ki?m th?. Kh?ng ??i context, target, s? m?u, LoRA, optimizer ho?c epoch.
+Validation generation ch?y trong FP16 autocast, ph? h?p v?i QLoRA tr?n T4.
+
+Tr??c khi n?p tr?ng s?, ch??ng tr?nh ki?m tra fused forward/backward tr?n t?ng GPU:
+`[Attention] cuda:... fused SDPA forward/backward OK; math fallback disabled`.
+N?u b? PyTorch/CUDA kh?ng h? tr? kernel, ch??ng tr?nh b?o l?i ngay. Ki?m tra nh?
+n?y x?c nh?n backend ho?t ??ng, kh?ng ??m b?o to?n b? model lu?n ?? VRAM.
+
+Sau `git pull`, ch?y l?i cell training c? b?ng subprocess m?i. Kh?ng c?n OCR l?i;
+gi? `--max-seq-length` c? n?u resume checkpoint. Kh?ng ??i `prepared`.
+
+Ki?m th? b? sung: `python -m unittest discover -s tests -p test_memory_attention.py`.
+So s?nh logits/gradient, padding, checkpoint recomputation, causal prefix, generation
+c? v? kh?ng c? KV cache. CPU parity kh?ng thay th? benchmark VRAM hay accuracy tr?n T4;
+fused kernels c? th? kh?c sai s? l?m tr?n so v?i math kernel.
+
+Ngu?n: [Hugging Face attention registry v? mask](https://huggingface.co/docs/transformers/main/en/attention_interface),
+[PyTorch SDPA](https://docs.pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html).

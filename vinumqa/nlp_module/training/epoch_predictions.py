@@ -79,7 +79,7 @@ def make_epoch_callback(samples, tokenizer, max_new_tokens=1536, session_budget=
                     if length + max_new_tokens > getattr(model.config, "max_position_embeddings", 32768):
                         raise ValueError("Validation prompt exceeds generation context budget")
                     processor.reset(length)
-                    with torch.inference_mode():
+                    with torch.inference_mode(), torch.autocast("cuda", dtype=torch.float16, enabled=torch.cuda.is_available()):
                         outputs = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False,
                             pad_token_id=tokenizer.pad_token_id, logits_processor=[processor], use_cache=True,
                             max_time=120)

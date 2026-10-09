@@ -10,6 +10,7 @@ if AVAILABLE:
     from transformers import Qwen2Config, Qwen2ForCausalLM, Trainer, TrainingArguments
     from peft import LoraConfig, get_peft_model
     from vinumqa.nlp_module.training.completion_logits import completion_loss_inputs, CompletionLogitsTrainer
+    from vinumqa.nlp_module.training.memory_attention import register_memory_attention
 
 
 @unittest.skipUnless(AVAILABLE, 'Requires CPU torch, transformers, accelerate and peft')
@@ -64,6 +65,7 @@ class CompletionLossTests(unittest.TestCase):
             with self.subTest(lora=lora, checkpointing=checkpointing):
                 reference = self.model(lora)
                 optimized = copy.deepcopy(reference)
+                optimized.set_attn_implementation(register_memory_attention())
                 if checkpointing:
                     for model in (reference, optimized):
                         model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
@@ -80,6 +82,7 @@ class CompletionLossTests(unittest.TestCase):
     def test_accumulated_token_denominator_matches_with_unequal_targets(self):
         reference = self.model(True)
         optimized = copy.deepcopy(reference)
+        optimized.set_attn_implementation(register_memory_attention())
         batches = [self.batch(), self.batch()]
         batches[1]['labels'][:,:21] = -100
         count = sum(b['labels'][:,1:].ne(-100).sum() for b in batches)
@@ -98,6 +101,7 @@ class CompletionLossTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             reference = self.model(True)
             optimized = copy.deepcopy(reference)
+            optimized.set_attn_implementation(register_memory_attention())
             batches = [self.batch(), self.batch()]
             samples = [{k:v[i] for k,v in b.items()} for b in batches for i in range(2)]
             # Unequal final accumulation window: 3 examples, 2 microbatches/step.
