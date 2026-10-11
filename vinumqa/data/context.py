@@ -31,7 +31,11 @@ def dict_to_markdown_table(tables):
         parser = _TableParser()
         parser.feed(html)
         grid = {}
-        rows = parser.rows
+        rows = list(parser.rows)
+        # Exported HTML may begin with a decorative empty row. It must not
+        # replace real year/metric headers with column_1, column_2, ... .
+        while rows and all(not c["text"].strip() and int(c.get("rowspan", 1)) == 1 for c in rows[0]):
+            rows.pop(0)
         for r, row in enumerate(rows):
             c = 0
             for cell in row:
@@ -60,12 +64,16 @@ def dict_to_markdown_table(tables):
         output.append("\n".join(lines))
     return "\n\n".join(output)
 
-def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, prepared_images=None, chart_structures=None):
+def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, prepared_images=None, chart_structures=None,
+                         allow_unavailable_images=False):
     if not isinstance(text_segments, list): raise TypeError("text_segments must be a list")
     blocks = {k: dict_to_markdown_table({k: v}) for k, v in tables_dict.items()}
     for key, path in image_dict.items():
         if chart_structures is not None:
             from vinumqa.cv_module.structure import render_structure
+            if key not in chart_structures and allow_unavailable_images:
+                blocks[key] = f"**{key}**\nImage structure unavailable. Do not guess its labels or values. Request CV inspection if this image is needed."
+                continue
             blocks[key] = f"**{key}**\n" + render_structure(key, chart_structures[key])
             continue
         if prepared_images is not None:

@@ -1,0 +1,50 @@
+{
+  "da065b611745bee2a3cf67df33942777bf57b5107cfd3adaf3093a7d36f86062": {
+    "provenance": {
+      "method": "manual visual transcription of source image; no program labels used",
+      "image": "7f47c7cf-3c7f-5e7f-b151-33ece024c0ec.png",
+      "review_date": "2026-10-11",
+      "note": "Correct legend/category roles. Numerical point values intentionally excluded."
+    },
+    "structure": {
+      "title": "Độ rộng sàn HOSE",
+      "kind": "bar",
+      "series": [
+        {"name": "% Số mã duy trì trên ngưỡng MA200", "color": "black", "axis": "none", "unit": "%"},
+        {"name": "% Số mã duy trì trên ngưỡng MA50", "color": "red", "axis": "none", "unit": "%"},
+        {"name": "% Số mã duy trì trên ngưỡng MA20", "color": "gray", "axis": "none", "unit": "%"}
+      ],
+      "x_labels": ["Cao nhất 1 năm", "Thấp nhất 1 năm", "12/31/2024", "1/24/2025", "2/28/2025", "3/7/2025", "3/14/2025", "3/21/2025", "3/31/2025", "4/4/2025"],
+      "y_labels": [],
+      "x_labels_complete": true,
+      "series_complete": true,
+      "x_order_known": true,
+      "regions": {},
+      "uncertain": []
+    }
+  },
+  "ea5fa01ed23381c012b1370fed75e452cd5132212b5eb6e669a54e598f207d88": {
+    "provenance": {
+      "method": "manual visual transcription of source image; no program labels used",
+      "image": "bfc9c8d1-9a1a-511f-a4a9-94a0df005167.png",
+      "review_date": "2026-10-11",
+      "note": "Correct Vietnamese legend accents and colors; sparse printed time ticks only."
+    },
+    "structure": {
+      "title": "Dòng vốn vào tài sản tài chính suy yếu đồng đều",
+      "kind": "line",
+      "series": [
+        {"name": "Cổ phiếu", "color": "red", "axis": "left", "unit": "Tỷ USD"},
+        {"name": "Trái phiếu", "color": "black", "axis": "left", "unit": "Tỷ USD"},
+        {"name": "Tiền tệ", "color": "gray", "axis": "left", "unit": "Tỷ USD"}
+      ],
+      "x_labels": ["Aug-20", "Oct-20", "Dec-20", "Feb-21", "Apr-21", "Jun-21", "Aug-21", "Oct-21", "Dec-21", "Feb-22", "Apr-22", "Jun-22", "Aug-22"],
+      "y_labels": [],
+      "x_labels_complete": false,
+      "series_complete": true,
+      "x_order_known": true,
+      "regions": {},
+      "uncertain": ["Only printed time ticks transcribed; intermediate monthly dates are not explicitly labelled."]
+    }
+  }
+}

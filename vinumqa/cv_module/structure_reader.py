@@ -195,6 +195,10 @@ class ChartStructureReader:
         hint = json.dumps({"region": request["region"], "unverified_series_hint": request["series"]}, ensure_ascii=False)
         focus = "\nFocus request: " + hint + (
             "\nThe hint is NOT evidence: read the actual pixels, correct misspellings. "
+            "Identify the colored legend entries separately from labels along the category axis. "
+            "Captions for highest/lowest periods may be X categories, not series. "
+            "Do not turn printed point values into Y categories. Read Vietnamese accents exactly. "
+            "A full-image review replaces incorrect labels; do not preserve a previous guess. "
             "If cropped, report only visible labels and set both completeness flags false.")
         return {"structure": self._structure(path, focus, box), "full_image": box is None}
 

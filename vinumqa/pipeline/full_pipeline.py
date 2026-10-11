@@ -2,8 +2,10 @@
 from vinumqa.data.context import build_inline_context
 from vinumqa.cv_module.structure import validate_request
 from vinumqa.cv_module.structure_store import ChartStructureStore
+from vinumqa.cv_module.pipeline import CVInitializationError
 from vinumqa.nlp_module.inference.evidence_validation import validate_evidence
 from vinumqa.utils.dsl_parser import parse_program, execute_program
+from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE
 
 
 class ViNumQAPipeline:
@@ -43,7 +45,14 @@ class ViNumQAPipeline:
                for path in image_dict.values()):
             self._close_nlp()
         try:
-            charts = {key: self.store.get(path) for key, path in image_dict.items()}
+            charts, unavailable = {}, {}
+            for key, path in image_dict.items():
+                try:
+                    charts[key] = self.store.get(path)
+                except CVInitializationError:
+                    raise
+                except (ValueError, OSError, RuntimeError) as error:
+                    unavailable[key] = str(error)
         finally:
             self.store.close()
         history, feedback, requested = [], "", set()
@@ -52,8 +61,9 @@ class ViNumQAPipeline:
         sources = set(image_dict) | set(tables_dict)
         result = {"program": "", "valid": False}
         for _ in range(self.max_cv_requests + max_corrections + 1):
-            context = build_inline_context(text_segments, tables_dict, image_dict, None, chart_structures=charts)
-            nlp_context = context + ("\n\n### Validation feedback\n" + feedback if feedback else "")
+            context = build_inline_context(text_segments, tables_dict, image_dict, None, chart_structures=charts,
+                                           allow_unavailable_images=True)
+            nlp_context = context + "\n\n### Source review\n" + REVIEW_GUIDANCE + ("\n\n### Validation feedback\n" + feedback if feedback else "")
             result = self._nlp().process(nlp_context, "", ", ".join(image_dict), question)
             if result.get("error"):
                 result["valid"] = False
@@ -61,9 +71,13 @@ class ViNumQAPipeline:
             request = result.get("cv_request")
             if request is None:
                 check = validate_evidence(result.get("program", ""), charts, sources,
-                                          evidence=result.get("extracted_values", ""))
+                                          evidence=result.get("extracted_values", ""), tables=tables_dict,
+                                          text_segments=text_segments, question=question)
                 history.append({"program": result.get("program", ""), "validation": check})
                 if check["valid"]:
+                    if result.get("termination") not in (None, "eos"):
+                        result.update(valid=False, error="Generation did not finish at EOS")
+                        break
                     result.update(valid=True, validation_error="", evidence_validation=check)
                     break
                 result.update(valid=False, validation_error="; ".join(check["errors"]))
@@ -78,7 +92,10 @@ class ViNumQAPipeline:
                     path = image_dict[request["image_id"]]
                     if not self.store.has_request(path, "inspect", request): self._close_nlp()
                     try:
-                        charts[request["image_id"]] = self.store.inspect(path, request)
+                        if request["image_id"] not in charts:
+                            charts[request["image_id"]] = self.store.get(path, retry_failed=True)
+                        else:
+                            charts[request["image_id"]] = self.store.inspect(path, request)
                     finally:
                         self.store.close()
                     history.append({"cv_request": request, "status": "read"})

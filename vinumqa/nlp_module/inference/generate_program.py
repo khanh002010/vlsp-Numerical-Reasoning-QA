@@ -12,6 +12,7 @@ from vinumqa.utils.dsl_parser import validate_program
 from pathlib import Path
 import json
 import hashlib
+from contextlib import nullcontext
 
 
 class ProgramGenerator:
@@ -72,6 +73,10 @@ class ProgramGenerator:
                 self.model = PeftModel.from_pretrained(self.model, lora_weights)
 
             self.model.eval()
+            if self.device == "cuda":
+                from vinumqa.nlp_module.training.memory_attention import register_memory_attention
+                self.model.set_attn_implementation(register_memory_attention())
+            self.model.config.use_cache = True
 
             # DSL Constrained Decoder
             if self.use_constrained_decoding:
@@ -127,7 +132,8 @@ class ProgramGenerator:
             logits_processor.append(self.dsl_processor)
 
         try:
-            with torch.no_grad():
+            precision = torch.autocast("cuda", dtype=torch.float16) if self.device == "cuda" else nullcontext()
+            with torch.inference_mode(), precision:
                 outputs = self.model.generate(
                     **inputs,
                     max_new_tokens=1536,

@@ -4,7 +4,7 @@ from vinumqa.utils.dsl_parser import validate_program, parse_program
 from vinumqa.cv_module.structure import validate_structure
 
 
-def validate_evidence(program, charts, sources, evidence=None):
+def validate_evidence(program, charts, sources, evidence=None, *, tables=None, text_segments=None, question=""):
     valid, reason = validate_program(program, sources=sources)
     if not valid: return {"valid": False, "errors": [reason], "cv_requests": []}
     steps = parse_program(program)
@@ -14,6 +14,7 @@ def validate_evidence(program, charts, sources, evidence=None):
         image_id = step.args[0]
         if image_id not in charts:
             errors.append(f"Missing chart structure for {image_id}")
+            requests.append({"image_id": image_id, "kind": "inspect", "region": "full", "series": ""})
             continue
         chart = validate_structure(charts[image_id])
         total = step.operator == "chart_total"
@@ -51,5 +52,11 @@ def validate_evidence(program, charts, sources, evidence=None):
         except (ValueError, TypeError) as error:
             errors.append(str(error))
     unique = {json.dumps(r, sort_keys=True): r for r in requests}
-    return {"valid": not errors, "errors": errors, "cv_requests": list(unique.values()),
-            "scope": "DSL, source labels, range order and declared operand positions; not a proof of question understanding"}
+    warnings = []
+    if tables is not None:
+        from vinumqa.nlp_module.inference.semantic_validation import validate_semantics
+        semantic = validate_semantics(program, tables, text_segments or [], question)
+        errors.extend(semantic["errors"])
+        warnings.extend(semantic["warnings"])
+    return {"valid": not errors, "errors": errors, "warnings": warnings, "cv_requests": list(unique.values()),
+            "scope": "DSL, labels, ranges, argument positions and optional source/graph checks; not proof of question understanding"}

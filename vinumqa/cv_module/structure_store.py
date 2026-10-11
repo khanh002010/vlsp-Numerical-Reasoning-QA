@@ -13,6 +13,9 @@ class SavedVisionFailure(RuntimeError):
     pass
 
 
+INSPECTION_VERSION = "legend-axis-review-v2"
+
+
 class ChartStructureStore:
     def __init__(self, path="prepared/chart_structures.json", model_id="Qwen/Qwen2-VL-2B-Instruct", reader=None, reader_factory=None):
         self.path, self.model_id, self.reader = Path(path), model_id, reader
@@ -67,7 +70,7 @@ class ChartStructureStore:
 
     def has_request(self, path, kind, payload):
         payload = {k: v for k, v in payload.items() if k != "image_id"}
-        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"]], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"], INSPECTION_VERSION], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         return key in (self.record(path) or {}).get("requests", {})
 
     def get(self, path, retry_failed=False):
@@ -102,7 +105,7 @@ class ChartStructureStore:
         record = self.data["images"][self._key(path)]
         # Image IDs are sample-local; they must not prevent reuse across questions.
         payload = {k: v for k, v in payload.items() if k != "image_id"}
-        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"]], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        key = hashlib.sha256(json.dumps([kind, payload, self.identity["prompt_sha256"], INSPECTION_VERSION], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         saved = record["requests"].get(key)
         if saved is not None:
             if saved["status"] != "ok": raise SavedVisionFailure(saved["error"])
@@ -125,9 +128,16 @@ class ChartStructureStore:
             observed = reader.inspect(str(path), request, original)
             observed["structure"] = validate_structure(observed["structure"])
             return observed
+        cached = self.has_request(path, "inspect", request)
         result = self._request(path, "inspect", request, read)
         record = self.data["images"][self._key(path)]
-        record["structure"] = merge_observation(record["structure"], result["structure"], result.get("full_image", False))
+        if cached:
+            # A repeated old request must not roll back a newer full-image review.
+            return validate_structure(record["structure"])
+        updated = merge_observation(record["structure"], result["structure"], result.get("full_image", False))
+        if updated != record["structure"]:
+            record.setdefault("structure_history", []).append(record["structure"])
+        record["structure"] = updated
         self.save()
         return record["structure"]
 
