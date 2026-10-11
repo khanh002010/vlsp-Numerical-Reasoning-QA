@@ -1,0 +1,3922 @@
+[
+  {
+    "qid": "db40e7f2-e32b-5603-9007-c3eca56f0635",
+    "program": "divide(-23647; 1000); divide(#0; 2105)"
+  },
+  {
+    "qid": "d64223b8-fd56-59e5-95dd-243915b1be57",
+    "program": "divide(5055; 26269); multiply(#0; 100); subtract(19.7; #1)"
+  },
+  {
+    "qid": "0e8b824b-90cb-5790-b581-7abd5f356a80",
+    "program": "divide(5055; 10842)"
+  },
+  {
+    "qid": "280a359e-a874-5093-a2ab-f30420fd7276",
+    "program": "subtract(23; 19.2)"
+  },
+  {
+    "qid": "68a2c2a2-986e-5f21-87b6-0d26040178e6",
+    "program": "chart_at(Image 2; Tổ chức trong nước; T12/23; none); subtract(6.2; #0)"
+  },
+  {
+    "qid": "8926c50d-2782-50a9-993e-ce99d70d43f0",
+    "program": "chart_at(Image 1; Tiền tệ; Mar-25; none)"
+  },
+  {
+    "qid": "0759a0a7-4e49-5763-87f6-32c44e9d057a",
+    "program": ""
+  },
+  {
+    "qid": "3c98a1c6-c487-5912-997d-550285909edf",
+    "program": "table_max(Table 1; 26-30'@CAGR; none; none)"
+  },
+  {
+    "qid": "bc91bba7-96ad-5e7d-bbb0-456d163d88a1",
+    "program": "subtract(14; 12.2)"
+  },
+  {
+    "qid": "befc55e8-cb4c-5ed8-a4ca-993aa270ccd9",
+    "program": "subtract(23.2; 15.5)"
+  },
+  {
+    "qid": "f9c3c06d-5ad9-5c9e-b19a-9bb335b201df",
+    "program": "chart_at(Image 2; Bất động sản; T12; none); subtract(#0; 3.2)"
+  },
+  {
+    "qid": "59096e0e-fa8a-5c36-b08e-6c15a73aec01",
+    "program": "divide(6702; 69900)"
+  },
+  {
+    "qid": "1487b2c2-c792-5828-8238-578d6d2a7186",
+    "program": "chart_at(Image 1; VCB VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "16333b87-941a-5559-89fb-733a16d32be7",
+    "program": ""
+  },
+  {
+    "qid": "bea29e16-7b0d-56ff-8ea1-1a0244282012",
+    "program": ""
+  },
+  {
+    "qid": "15d54abd-82e4-51d3-a8fd-be187c40d94b",
+    "program": "chart_sum(Image 8; 2026; T1; T7); subtract(425300; #0)"
+  },
+  {
+    "qid": "fa84902a-830b-5a9f-bb7f-fc92dc636eac",
+    "program": ""
+  },
+  {
+    "qid": "09e778b8-f3df-55f5-96d0-ae38c73df5c8",
+    "program": "chart_at(Image 2; Cổ phiếu EM (LHS); Jul-22; none); subtract(#0; 1.3)"
+  },
+  {
+    "qid": "d2be0fe0-105d-5426-b1b0-6f30395730ec",
+    "program": "chart_at(Image 3; 2024; VGC; none); chart_at(Image 3; 2024; BCM; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "331acc90-51d0-534f-b9d1-1012b745e0a0",
+    "program": "chart_at(Image 1; VHC VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ab8149dd-955e-56bc-bca6-24f88d24624d",
+    "program": ""
+  },
+  {
+    "qid": "11dd66aa-d7dd-507d-baaa-0a4db1fff8d1",
+    "program": "multiply(2.4; 1000)"
+  },
+  {
+    "qid": "b570aa21-c4d3-5187-86ed-a083cdba06a9",
+    "program": ""
+  },
+  {
+    "qid": "49a32b13-e21a-59d8-8f02-f83dda4c9db3",
+    "program": "subtract(1200; 1250.5)"
+  },
+  {
+    "qid": "853379ca-f456-5eed-a65b-0de98d00ce96",
+    "program": ""
+  },
+  {
+    "qid": "cd9d414d-68ea-5508-a3fd-ae216d765261",
+    "program": "table_average(Table 1; EPS (đồng); 2026F; 2028F)"
+  },
+  {
+    "qid": "55ad21b0-95cf-54f7-869c-313506422b2a",
+    "program": "subtract(2392; 2441); divide(#0; 2441); multiply(#1; 100)"
+  },
+  {
+    "qid": "ba70716d-9187-5a71-83c3-aa8a0499640f",
+    "program": ""
+  },
+  {
+    "qid": "3d68a4c5-f1f1-5ac0-812c-46bbe64d8394",
+    "program": "subtract(100.5; 22.5)"
+  },
+  {
+    "qid": "8b5250d5-624d-5ea6-8164-b7b47eb1af41",
+    "program": "subtract(27.9; 15.6)"
+  },
+  {
+    "qid": "e82e77fa-1c62-515f-939e-ec6b86ba3e3d",
+    "program": "subtract(6.1; 3.2)"
+  },
+  {
+    "qid": "2e9f2416-5ef8-57e2-806d-b82211b82b9c",
+    "program": "subtract(1590494; 1260150)"
+  },
+  {
+    "qid": "0e769c67-9150-5df7-aa8d-a336d5b2cf44",
+    "program": "subtract(-1.625; 0)"
+  },
+  {
+    "qid": "5011e506-2a3b-591b-ad68-e4b770d62d9e",
+    "program": ""
+  },
+  {
+    "qid": "f11eac13-9735-579d-b3ec-cdfbc4398b9a",
+    "program": ""
+  },
+  {
+    "qid": "09e3a0a0-04be-5bcc-a30a-8e0c50b7383a",
+    "program": ""
+  },
+  {
+    "qid": "dd98ac8b-3deb-5d0b-aa45-e789dce8675c",
+    "program": "chart_at(Image 1; Tiền tệ; Mar-25; none); subtract(#0; -14.9)"
+  },
+  {
+    "qid": "5718bdec-239c-5e1a-b3ca-050d60fad5c9",
+    "program": ""
+  },
+  {
+    "qid": "03b30e2f-ace4-5ad2-8100-c51509504c0d",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "0f5e8da8-605a-5ced-baaa-2e756b762903",
+    "program": "subtract(42.1; 41.0)"
+  },
+  {
+    "qid": "19649c74-82f3-552d-9ed4-1badb86d6509",
+    "program": "subtract(1856; 1067)"
+  },
+  {
+    "qid": "be137b7b-eb67-5ac8-a54b-5ed48442b1fc",
+    "program": ""
+  },
+  {
+    "qid": "3c7a2161-a986-5e5b-84ac-40f85aadaed4",
+    "program": ""
+  },
+  {
+    "qid": "607986ff-4f17-55eb-bb4b-c2633339c343",
+    "program": "divide(1759; 1873)"
+  },
+  {
+    "qid": "fa5c80af-ae7f-589c-bfdd-7e8bc8e139d7",
+    "program": "chart_average(Image 1; Tỷ lệ SHNN; 2022; 2024)"
+  },
+  {
+    "qid": "51253dd6-a695-5211-8f57-cd3b5049ee8e",
+    "program": "table_average(Table 1; Cổ tức/thị giá (%); FY 2021; FY 2026 (F))"
+  },
+  {
+    "qid": "a254fb90-556c-533c-b30d-22142a5c5941",
+    "program": "chart_at(Image 1; Khối ngoại mua ròng; T12/23; none); subtract(#0; 10)"
+  },
+  {
+    "qid": "29f9c0f9-be9a-52c1-a97e-01732627b933",
+    "program": "subtract(28.1; 23.2)"
+  },
+  {
+    "qid": "672f8f79-0c99-5dfb-a366-5b54d1960225",
+    "program": ""
+  },
+  {
+    "qid": "d5c238ec-dbe5-55c5-9a12-914eb2e0e135",
+    "program": "divide(11200; 19317)"
+  },
+  {
+    "qid": "8c081e18-70e7-510f-a18c-3f93fb80dcae",
+    "program": "chart_at(Image 1; Lãi suất huy động VND >12 tháng - cao nhất; 2025; none); chart_at(Image 1; Lãi suất VNIndex (Nghĩch dạo PE FW); 2025; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "a95b98d6-2f54-56e9-b08a-755d503e2a46",
+    "program": "subtract(1068; 852); divide(#0; 852); multiply(#1; 100)"
+  },
+  {
+    "qid": "ae3e08f0-a845-5710-93c7-6cd74592fb80",
+    "program": "chart_at(Image 4; Lãi suất tiền gửi; 1/2024; none); chart_at(Image 4; Lãi suất tiền gửi; 1/2026; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "a8df0553-d818-52f5-a9b4-1e580e8d8291",
+    "program": "chart_at(Image 1; Châu Âu; 2024; none); chart_at(Image 1; Châu Âu; 2023; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "04d3fd5a-c919-52fe-8339-6e26905b5092",
+    "program": "chart_at(Image 1; IMP VN; Mar 26; none); chart_at(Image 1; VN-Index; Mar 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "f8a0fbb6-d5b0-59d8-a3bd-fbf7417eef3f",
+    "program": "greater(1403; 1105)"
+  },
+  {
+    "qid": "d870a2c8-d55d-5ea6-be4a-1db8c2f84de0",
+    "program": "chart_at(Image 1; IMP VN; Mar 26; none); chart_at(Image 1; VN-Index; Mar 26; none); greater(#0; #1)"
+  },
+  {
+    "qid": "b7259600-4672-5f67-ab8f-3710526d410d",
+    "program": "add(1440; 2103)"
+  },
+  {
+    "qid": "23155b48-9b7b-5c5f-ba39-0bbaaef332e5",
+    "program": "greater(85.1; 72.1)"
+  },
+  {
+    "qid": "dafd549c-4748-55b4-8c2d-9a10631c0e38",
+    "program": ""
+  },
+  {
+    "qid": "999172b3-f4a0-5567-acd3-4ac9992177f6",
+    "program": "subtract(11998; 4549)"
+  },
+  {
+    "qid": "6547943c-45de-5ae8-9ca8-a1ed8c856047",
+    "program": ""
+  },
+  {
+    "qid": "2563ec78-4852-5460-a233-be515eb0db87",
+    "program": "chart_max(Image 1; Tỷ lệ SHNN; none; none); chart_min(Image 1; Tỷ lệ SHNN; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "9ac99109-fc6c-57bb-86c1-e340438b7031",
+    "program": "chart_at(Image 1; Hàng tồn kho (T6/2026); VHM; none); chart_at(Image 1; Hàng tồn kho (cuối 2025); VHM; none); subtract(#0; #1); divide(#2; #1); multiply(#3; 100)"
+  },
+  {
+    "qid": "4aec9b2b-9263-5fa3-ab35-5680fa29ff71",
+    "program": "divide(6712; 16631)"
+  },
+  {
+    "qid": "33c77ebe-f358-548d-81da-35e5a0c7731c",
+    "program": ""
+  },
+  {
+    "qid": "1952439b-b774-58ff-8d7b-d58ef66d5cf6",
+    "program": ""
+  },
+  {
+    "qid": "b6f07064-7ecf-50df-92b1-729dcb94e3c8",
+    "program": "subtract(83.7; 13.9)"
+  },
+  {
+    "qid": "d79401df-725a-503a-b8cf-acc40fd829db",
+    "program": "divide(1803; 17206)"
+  },
+  {
+    "qid": "d2d25ad0-5f5a-53b7-8a8e-8979ac1a358a",
+    "program": "table_average(Table 1; LNHĐKD (%); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "ef18ea9f-9f2b-5de6-a41d-87f739972498",
+    "program": "subtract(18260; 13848)"
+  },
+  {
+    "qid": "d45a0028-5e74-5977-85f5-a1bc8612b5e2",
+    "program": ""
+  },
+  {
+    "qid": "32fb3de4-ecf7-5eee-97db-213dee34fafe",
+    "program": "chart_at(Image 1; VN-Index; Aug 25; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "55417b61-57b5-520e-8366-22365959976f",
+    "program": ""
+  },
+  {
+    "qid": "bb1ea3eb-43b6-56a4-98ff-212b7d348462",
+    "program": "divide(498; 1301)"
+  },
+  {
+    "qid": "7555ec67-3e7a-5540-8f0f-06eddd983024",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2023; none); chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; #1); subtract(21; 19.5)"
+  },
+  {
+    "qid": "bdce78e6-87c9-5b42-abf0-336fb53a77a7",
+    "program": "multiply(2065; 17.5)"
+  },
+  {
+    "qid": "e4b46c11-3a8a-5fd6-9038-12bdc9bf0c7f",
+    "program": "table_sum(Table 1; LNST cổ đông kiểm soát (tỷ đồng); 2023; 2025)"
+  },
+  {
+    "qid": "48933968-362b-5def-9752-cd4fabcbb3c8",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(88; #0)"
+  },
+  {
+    "qid": "7aa756bb-1183-5843-8467-62acd1feaff5",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2023; none); subtract(#0; 22.2)"
+  },
+  {
+    "qid": "0f0ef8b2-9f39-5528-b589-9c3f920fb487",
+    "program": "chart_at(Image 2; 2023; Nov; none); chart_at(Image 2; 2022; Nov; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "6f068bb8-efc6-5300-84a3-4e77e856e510",
+    "program": "chart_max(Image 1; VN-Index; Sep 25; Sep 26); chart_min(Image 1; VN-Index; Sep 25; Sep 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "2d7b7b63-df1a-525f-8aa2-83e7f4ba0b0f",
+    "program": "subtract(3.2; 2.6)"
+  },
+  {
+    "qid": "cb1ca1ae-1fcb-58ed-a049-a5829152029f",
+    "program": ""
+  },
+  {
+    "qid": "fe2bf312-4ed5-5198-8cc6-0cc099149152",
+    "program": "subtract(53517; 43862)"
+  },
+  {
+    "qid": "403965a5-efef-5c9c-9b75-31629f290b3e",
+    "program": ""
+  },
+  {
+    "qid": "d0be18ff-3d1c-523d-8a8e-14f641b2ef20",
+    "program": "table_average(Table 2; Ngày giao dịch ước tính; none; none)"
+  },
+  {
+    "qid": "f443e34b-6228-548a-88e6-211a92f6f17a",
+    "program": "divide(7500; 4600)"
+  },
+  {
+    "qid": "2dfcbd58-2fe5-5ab9-96de-fd938fe09590",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2019; none); chart_at(Image 1; Tỷ lệ SHNN; 2012; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "331a72cd-4823-54d5-8030-886f685b9c86",
+    "program": "subtract(11; 28)"
+  },
+  {
+    "qid": "10809d1a-fa09-5f83-bd97-3dc0681a10c5",
+    "program": "chart_at(Image 2; Cổ phiếu DM (LHS); Jul-22; none); subtract(11.8; #0)"
+  },
+  {
+    "qid": "5f7d5bd2-9f72-5d7f-af29-b643afc30b3e",
+    "program": ""
+  },
+  {
+    "qid": "8a58c828-c7b5-57d0-99e5-55eeaf3abba9",
+    "program": "chart_max(Image 4; LS VND kỳ hạn qua đêm; none; none); chart_min(Image 4; LS VND kỳ hạn qua đêm; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "1b35c656-d10b-5c62-8fe7-6739f40fce8b",
+    "program": "divide(24.4; 100); multiply(23.2; #0); subtract(28.1; #1)"
+  },
+  {
+    "qid": "6852fd82-1187-50fe-b454-0c58babc68f6",
+    "program": "chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); divide(14.6; 100); multiply(#0; #1)"
+  },
+  {
+    "qid": "33d020dc-0d99-562d-9dd2-5b51049683da",
+    "program": "subtract(375.71; 227.51)"
+  },
+  {
+    "qid": "7ba53d7d-698c-5ee1-8083-f4714cba670f",
+    "program": "add(13202; 18880)"
+  },
+  {
+    "qid": "967a96dd-df5e-5251-a01c-319823219072",
+    "program": "chart_at(Image 1; DCM VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); greater(#0; #1)"
+  },
+  {
+    "qid": "5f306836-860e-55c4-84ca-17f045995523",
+    "program": "divide(26.6; 17.5)"
+  },
+  {
+    "qid": "abaefba0-5e2f-5d56-9c03-56e2b1252b62",
+    "program": "table_max(Table 1; Tổng tài sản (tỷ đồng); 12/22; 12/27F)"
+  },
+  {
+    "qid": "db84aa01-a243-5e95-b077-8198cc58268b",
+    "program": "subtract(232; 200.8)"
+  },
+  {
+    "qid": "3e722e6e-bd4a-593d-9c95-c179870fcc9e",
+    "program": "divide(837; 7582)"
+  },
+  {
+    "qid": "7ce903f1-05d1-5049-b707-49ba24becadd",
+    "program": "divide(28.1; 1000); divide(23.2; 1000); subtract(#0; #1); subtract(28.1; 23.2); divide(#3; 1000); subtract(#2; #4)"
+  },
+  {
+    "qid": "d1fdf5ed-4336-5417-8c50-2ef5234577c0",
+    "program": "chart_at(Image 1; TCB VN; Aug 25; none); chart_at(Image 1; TCB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "23196e3e-164b-5fda-9e41-e056c103299d",
+    "program": "table_average(Table 1; Lãi ròng (tỷ đồng); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "36b282a8-878a-5e50-8e57-7a6aeaf2110a",
+    "program": ""
+  },
+  {
+    "qid": "d1baa894-afa1-523a-8b6f-6660dc9d907d",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "a17144cb-d494-547e-afdf-eb6cd41d753d",
+    "program": "subtract(66044; 57245); divide(#0; 57245); multiply(#1; 100)"
+  },
+  {
+    "qid": "c8f7d550-fe58-5c63-8a42-080d82223dad",
+    "program": "greater(104.9; 28.4)"
+  },
+  {
+    "qid": "edfd9399-8be6-5618-ac67-a7cece8e7148",
+    "program": "chart_average(Image 2; Cổ phiếu DM (LHS); Jan-22; Jul-22)"
+  },
+  {
+    "qid": "edbb6b07-bc0f-5457-b2ff-085eacf72c0f",
+    "program": ""
+  },
+  {
+    "qid": "fe303636-ff90-5603-8cec-720bf903878a",
+    "program": "subtract(9292; 8906); divide(#0; 8906); multiply(#1; 100)"
+  },
+  {
+    "qid": "4b21bf2b-2333-57af-b05b-7e3355dda43a",
+    "program": "subtract(18; 4.4)"
+  },
+  {
+    "qid": "a230d5f6-4617-563c-b105-985aae598349",
+    "program": ""
+  },
+  {
+    "qid": "089eee9d-d345-52f9-9daf-73aaf48d4e3b",
+    "program": "chart_at(Image 2; Cho vay ký quỹ/Tổng vốn hóa free-flow trên HOSE; 4Q24; none); chart_at(Image 2; Cho vay ký quỹ/Tổng vốn hóa free-flow trên HOSE; 1Q26; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "d02b5d00-d9af-536f-8e2f-f1d9471d012f",
+    "program": "add(4131; 809)"
+  },
+  {
+    "qid": "de1704b8-b7fd-522b-b05f-dc12b8b6e4ce",
+    "program": "greater(16.1; 12.3)"
+  },
+  {
+    "qid": "fadd2e31-615b-55d5-864f-d3ff6b135776",
+    "program": "table_average(Table 1; Thực phẩm và đồ uống: số mã GTGD bình quân ngày từ 10 tỷ đồng trở lên; T11; T12)"
+  },
+  {
+    "qid": "15b439ea-241a-5e39-bb0f-8a902338ce39",
+    "program": "table_max(Table 1; ROE (%); FY 2021; FY 2026 (F)); table_min(Table 1; ROE (%); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "12d0eea4-ccfd-597b-92fa-7e40c0092bfe",
+    "program": "table_max(Table 1; P/E (x); 2023; 2028F); table_min(Table 1; P/E (x); 2023; 2028F); subtract(#0; #1)"
+  },
+  {
+    "qid": "b0f4d53d-29eb-5596-a515-427b1087406e",
+    "program": "greater(6.0; 5.6)"
+  },
+  {
+    "qid": "05316708-b25a-5c62-bb24-acf2e3c156ac",
+    "program": "divide(9610; 9292); multiply(#0; 100); subtract(#1; 50.8)"
+  },
+  {
+    "qid": "9af6076a-841e-5688-bf6d-3174ce7d003c",
+    "program": ""
+  },
+  {
+    "qid": "ad3521d2-c1f8-5182-bb7a-d4683e8c75a1",
+    "program": "table_max(Table 2; Tỷ trọng ước tính của Việt Nam (FTSE); none; none); table_min(Table 2; Tỷ trọng ước tính của Việt Nam (FTSE); none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "61547029-cdad-58e3-a25b-4a4804012617",
+    "program": "subtract(17206; 13315); divide(#0; 13315); multiply(#1; 100); subtract(#2; 29.2)"
+  },
+  {
+    "qid": "f3458e32-ad6e-5676-8aea-77d8aad2aca4",
+    "program": "chart_at(Image 3; 2024; IDC; none); divide(#0; 100); subtract(#1; 1)"
+  },
+  {
+    "qid": "bd423fe5-4ea7-5f5f-8bb3-7f88ec3461d4",
+    "program": "chart_max(Image 1; DCM VN; Aug 25; Aug 26); chart_min(Image 1; DCM VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "bf062abc-120e-5148-945d-41d5baabdac0",
+    "program": "add(115; 99); greater(498; #0)"
+  },
+  {
+    "qid": "a4da9145-7240-5f6a-87d8-cd5292ed0fe1",
+    "program": "subtract(240000; 200000); divide(#0; 200000); multiply(#1; 100)"
+  },
+  {
+    "qid": "d52b37ce-30d4-5dcd-b271-e59fb27aca3d",
+    "program": "subtract(21; 19.5)"
+  },
+  {
+    "qid": "8313a88a-2e4e-5b43-a9dc-1ce365d555b5",
+    "program": "add(1440; 2103)"
+  },
+  {
+    "qid": "1974a2c4-d071-59e8-935e-40f7e07b9a80",
+    "program": ""
+  },
+  {
+    "qid": "a38b5b63-2dae-5eb0-9004-a782874b0726",
+    "program": "subtract(363; 166)"
+  },
+  {
+    "qid": "1df072cf-15a7-5550-b802-8aae00a1cf6b",
+    "program": "chart_max(Image 1; Nhóm Y Tế; none; none); chart_min(Image 1; Nhóm Y Tế; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "5310c387-0d9e-5bb5-8d8d-c3585549860e",
+    "program": "chart_max(Image 1; VN-Index; none; none); chart_min(Image 1; VN-Index; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4c013a6c-47b1-5d51-b5b5-20fa55af92ba",
+    "program": "subtract(22.2; 21)"
+  },
+  {
+    "qid": "ead3660f-ed90-5037-9e5d-e2025722b72b",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2023; none); subtract(#0; 22.2)"
+  },
+  {
+    "qid": "96fd6d3e-ab65-5203-8b69-cf7817122eda",
+    "program": ""
+  },
+  {
+    "qid": "708861a2-b91c-59d3-8415-7c450b98c9e6",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2021; none); subtract(20.3; #0)"
+  },
+  {
+    "qid": "8483e126-e9f0-565f-9540-7cba1dd6556e",
+    "program": ""
+  },
+  {
+    "qid": "5c495f61-b3d2-549f-9d1f-4b879b325268",
+    "program": ""
+  },
+  {
+    "qid": "8356de3a-b898-5f74-91a1-661ec7bd4b64",
+    "program": "subtract(252.1; 180.0); divide(#0; 180.0); multiply(#1; 100)"
+  },
+  {
+    "qid": "f690d09b-110c-5980-a75b-ee68eb28c564",
+    "program": "subtract(27; 42)"
+  },
+  {
+    "qid": "b6caa878-64a5-547c-9f39-52f3dba93f37",
+    "program": "subtract(779.3; 493.3)"
+  },
+  {
+    "qid": "db7f6f85-caab-5571-b8c7-ae0a876f9c99",
+    "program": "divide(-1156; -47)"
+  },
+  {
+    "qid": "b046d271-c3e0-57ee-92db-932154ddc4ce",
+    "program": "chart_at(Image 1; LS cho vay bình quân trung và dài hạn; 01/25; none); chart_at(Image 1; LS cho vay bình quân trung và dài hạn; 07/26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "96394af6-deb3-5047-b93f-5f83ab920334",
+    "program": ""
+  },
+  {
+    "qid": "9d068bff-24c7-5edf-8142-2243550581d3",
+    "program": "table_average(Table 2; Lợi suất tích lũy trước ngày phân loại@5 năm; none; none)"
+  },
+  {
+    "qid": "df9343ce-d210-524e-ae9e-523bb279c066",
+    "program": "chart_at(Image 2; Dòng vốn Quỹ chủ động theo tháng (trái); Jan-24; none)"
+  },
+  {
+    "qid": "0c6a0b7b-c3d2-5a2e-8f1a-cc9e1f45b93e",
+    "program": "divide(1500; 2441)"
+  },
+  {
+    "qid": "e17c80e2-d8a4-57e4-9492-865795f9c175",
+    "program": "table_max(Table 1; P/E (x); 12/22; 12/27F); table_min(Table 1; P/E (x); 12/22; 12/27F); subtract(#0; #1)"
+  },
+  {
+    "qid": "9e0e5423-7072-5526-a364-298259eee2de",
+    "program": "chart_at(Image 1; Dòng vốn ETF theo tháng (trái); Jan-24; none); chart_at(Image 2; Dòng vốn Quỹ chủ động theo tháng (trái); Jan-24; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "aa411b66-d98a-5c53-8ee1-181d9c381bff",
+    "program": "chart_at(Image 1; VN-Index; Aug 26; none); chart_at(Image 1; VHC VN; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "85b2bab3-c436-5cb5-8a3c-ba7a2a4421dd",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2017; none); chart_at(Image 1; Tỷ lệ SHNN; 2018; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "420db696-0203-5860-ba35-0021f319e637",
+    "program": ""
+  },
+  {
+    "qid": "020ae3c0-3798-5330-8ec7-137427e95b1c",
+    "program": "subtract(80; 30.3)"
+  },
+  {
+    "qid": "15cafe0b-610e-5bae-8e6a-2825c4be28ed",
+    "program": ""
+  },
+  {
+    "qid": "9b9fce44-6ace-55f3-82f9-92d12160c7f8",
+    "program": "subtract(24.4; 3.5)"
+  },
+  {
+    "qid": "f37a1bd9-85ac-5920-a684-cbc507b46cac",
+    "program": "chart_at(Image 1; CNTT nước ngoài; 1H26; none); chart_at(Image 1; CNTT trong nước; 1H26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "5d3ba507-856a-538d-b9e2-0b05c9de2681",
+    "program": "chart_at(Image 3; Xuất khẩu; 07-25; none); chart_at(Image 3; Xuất khẩu; 01-26; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "48689bd7-6d22-5a52-90dc-491c677aa703",
+    "program": ""
+  },
+  {
+    "qid": "c1f2e992-bfab-551f-8ee8-40a9d3314f31",
+    "program": "divide(12; 25)"
+  },
+  {
+    "qid": "a5ff2665-0b83-5529-b084-bb866d50ecaf",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Nov-23; none); subtract(29.8; #0)"
+  },
+  {
+    "qid": "44cde40c-bd7e-5491-808f-4717aa5e48e9",
+    "program": "chart_at(Image 1; Tan Cang 8; none; none); subtract(28; #0)"
+  },
+  {
+    "qid": "d6ed4ee0-336b-599d-af38-5bc2128db0c4",
+    "program": ""
+  },
+  {
+    "qid": "627327ba-0395-5540-8d5d-77c17c282d64",
+    "program": "subtract(13.6; 0.9)"
+  },
+  {
+    "qid": "85e6876b-5e8d-5eff-abd0-cc3da2205d17",
+    "program": ""
+  },
+  {
+    "qid": "b884d3c4-c4f7-55c6-8cbe-4a782e41f5f5",
+    "program": "chart_max(Image 1; GT mua/bán ròng; none; none)"
+  },
+  {
+    "qid": "29f7851f-6aab-5acd-8c4e-bc83e368b516",
+    "program": "greater(5080; 3203)"
+  },
+  {
+    "qid": "8fa4ab05-6175-5841-9d93-c425fa361c91",
+    "program": ""
+  },
+  {
+    "qid": "e0c271d4-7f86-5a33-94ee-c69d5be27692",
+    "program": "subtract(23.5; 13.4)"
+  },
+  {
+    "qid": "4dc8c9be-51e8-55f4-bd8d-1566f31c75e1",
+    "program": "subtract(31.1; 2.8)"
+  },
+  {
+    "qid": "19a88b97-8abd-52dc-86eb-43819e62b232",
+    "program": "table_max(Table 1; 2026 TĐN; none; none); table_min(Table 1; 2026 TĐN; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "30cb9378-c8cb-5ffc-bb6a-9b47df5ba67b",
+    "program": "divide(11; 2.1)"
+  },
+  {
+    "qid": "eb0c8566-a844-503a-a679-4288c5a1fd98",
+    "program": "chart_at(Image 1; Thấp nhất 1 năm; 3/31/2025; none); chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "0b024f82-fea4-5385-8e3a-cc88b8c11194",
+    "program": "table_max(Table 1; P/E (x); 12/25; 12/27F); table_min(Table 1; P/E (x); 12/25; 12/27F); subtract(#0; #1)"
+  },
+  {
+    "qid": "35b20f33-e801-5b62-8b23-cb87b8ebb8f5",
+    "program": "subtract(29.8; 12)"
+  },
+  {
+    "qid": "5a37b7ea-e7f0-5755-b2dc-969c643f863a",
+    "program": ""
+  },
+  {
+    "qid": "2e778bd4-b4f3-5afb-ab5f-252a01b9e079",
+    "program": "divide(2690; 20785)"
+  },
+  {
+    "qid": "32c07e0b-bb10-525c-892d-3bf0384138c4",
+    "program": "table_max(Table 1; P/E (x); FY23; FY27F); table_min(Table 1; P/E (x); FY23; FY27F); subtract(#0; #1)"
+  },
+  {
+    "qid": "02f3d227-3adb-5b43-9b8a-75594e779f5b",
+    "program": "subtract(40; 30); divide(#0; 30); multiply(#1; 100)"
+  },
+  {
+    "qid": "4f382c4a-29e1-5649-8480-36ce737b42d5",
+    "program": "divide(15333; 29222)"
+  },
+  {
+    "qid": "9931088f-86dd-5752-8ad5-02df00b3d85b",
+    "program": "divide(66.4; 3.0)"
+  },
+  {
+    "qid": "4914d3fa-7642-5044-8a27-749a62f0af13",
+    "program": "chart_at(Image 2; Cá nhân trong nước; T12/23; none); chart_at(Image 2; Tổ chức trong nước; T12/23; none); add(#0; #1); subtract(#2; 10)"
+  },
+  {
+    "qid": "514324a7-ef49-5354-857b-d2e8305479f1",
+    "program": "chart_at(Image 2; Cổ phiếu DM (LHS); Mar-21; none); chart_at(Image 2; Cổ phiếu DM (LHS); May-22; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "d9ceb4c4-6619-5ac0-b48a-3b1dd65db61a",
+    "program": "table_max(Table 1; P/E (x); FY 2021; FY 2026 (F)); table_min(Table 1; P/E (x); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "625553cb-8b03-5e52-bf6b-e539d68094c3",
+    "program": "table_average(Table 1; column_5; none; none)"
+  },
+  {
+    "qid": "2f365a1d-4c23-511c-b625-87145e9f02c5",
+    "program": "table_average(Table 1; Lợi nhuận hoạt động (tỷ đồng); 12/22; 12/25)"
+  },
+  {
+    "qid": "b738621b-3cda-54a7-b054-1183009d3e2d",
+    "program": "chart_at(Image 1; VN-Index; Sep 26; none); chart_at(Image 1; VGC VN; Sep 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "72fc9a25-2403-5541-bdf5-9417cabca519",
+    "program": "divide(34.4; 4.5)"
+  },
+  {
+    "qid": "6319bdd3-82d7-5cbb-9b5a-a964d653bf27",
+    "program": "chart_at(Image 1; Trái phiếu; Aug-22; none); subtract(25.5; #0)"
+  },
+  {
+    "qid": "51f29729-a650-5a05-9764-9aff87079dc8",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(21; #0)"
+  },
+  {
+    "qid": "79e745db-de08-59b0-a930-1484335ad28d",
+    "program": "greater(24376; 21163)"
+  },
+  {
+    "qid": "0f6be7d5-c28c-522e-8282-92c88ac9d480",
+    "program": "table_max(Table 1; EPS (đồng); 12/22; 12/27F); table_min(Table 1; EPS (đồng); 12/22; 12/27F); subtract(#0; #1)"
+  },
+  {
+    "qid": "84cf232b-0b2a-55e6-88c2-e23bf89ed6ca",
+    "program": "subtract(3.8; 6.2)"
+  },
+  {
+    "qid": "d2a37d5a-6360-577d-a13a-c61be7e8524c",
+    "program": ""
+  },
+  {
+    "qid": "0588ec3a-bc2f-58a4-bbc3-379cc7aac67e",
+    "program": ""
+  },
+  {
+    "qid": "aa5a8cd2-2802-59f4-9764-f8bdb99546b6",
+    "program": "table_max(Table 1; 2026 (tăng trưởng GDP: 10% svck); Q1; Q4); table_min(Table 1; 2026 (tăng trưởng GDP: 10% svck); Q1; Q4); subtract(#0; #1)"
+  },
+  {
+    "qid": "670cc66b-3761-572f-b6e4-ff4ce51b0a62",
+    "program": ""
+  },
+  {
+    "qid": "5e25c951-cc21-5ab3-820d-4b719740b1fd",
+    "program": ""
+  },
+  {
+    "qid": "087bc85b-8de5-5cef-b73d-b451d5cff3e0",
+    "program": ""
+  },
+  {
+    "qid": "9cb5de61-fcbf-5d2c-a75e-a32f2c3185db",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 12/31/2024; none); chart_at(Image 1; Thấp nhất 1 năm; 12/31/2024; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "e85fc83d-99b8-53d6-b36f-5815ef838a8b",
+    "program": "subtract(20; 0)"
+  },
+  {
+    "qid": "dfb87e26-8001-58c3-91a3-f38bc2b169ae",
+    "program": "multiply(5080; 6.1)"
+  },
+  {
+    "qid": "e1578a67-b536-5b61-873a-a9fa248893a9",
+    "program": "chart_at(Image 1; DCM VN; Apr 26; none); chart_at(Image 1; VN-Index; Apr 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "b7cfb688-5965-593a-b45c-f51fd94817a4",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; 21); subtract(21; 22.2); subtract(#1; #2)"
+  },
+  {
+    "qid": "b77c5f21-822a-59b9-b2a3-f0b72c046d52",
+    "program": ""
+  },
+  {
+    "qid": "e2e4591a-18ab-5cd2-ba8e-df4b48963f0e",
+    "program": "subtract(51.1; 48.5)"
+  },
+  {
+    "qid": "20ce6db2-8ecf-5089-b8b1-c3bca16397de",
+    "program": ""
+  },
+  {
+    "qid": "ef606eb0-6fe8-5b8b-906b-92cd7601da4f",
+    "program": "divide(100; 100); multiply(9610; #0); divide(1842; #1); subtract(9610; #2)"
+  },
+  {
+    "qid": "149f936a-ffdb-5980-ba78-10c8221db52e",
+    "program": "chart_at(Image 2; Dệt may; none; none); subtract(24.4; #0)"
+  },
+  {
+    "qid": "490b0a79-9fdf-5711-8415-1f58eddd2ad9",
+    "program": "subtract(3.2; 2.3)"
+  },
+  {
+    "qid": "d630dcf2-010c-5536-922b-5d8122da5a80",
+    "program": ""
+  },
+  {
+    "qid": "3e4025fc-53bd-5298-9001-dc8ea3900564",
+    "program": "chart_at(Image 1; VLB - Tan Cang 1; none; none); chart_at(Image 2; VLB - Thanh Phu 1; none; none); add(49; #0); add(#2; #1); chart_at(Image 3; VLB; 2023; none); subtract(#3; #4)"
+  },
+  {
+    "qid": "af613c44-f140-5bfc-8827-25e2159f3e17",
+    "program": ""
+  },
+  {
+    "qid": "6fc1bb05-6824-59f8-af75-381b28393f73",
+    "program": "chart_max(Image 1; VN30; none; none); chart_min(Image 1; VN30; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "c11da78f-6030-50e0-99c6-d883fe481e9e",
+    "program": "chart_at(Image 1; Cổ phiếu; Aug-22; none); subtract(2.3; #0)"
+  },
+  {
+    "qid": "6df231ef-8d7f-56b0-a78f-1085a7b101cb",
+    "program": "add(1180; 1200); divide(#0; 2)"
+  },
+  {
+    "qid": "1d073ca3-05b4-5380-a05a-e3a503be99cd",
+    "program": "subtract(20.3; 12.1)"
+  },
+  {
+    "qid": "fe86a902-03ce-5dfa-9c72-ceafe43707f7",
+    "program": "chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); divide(14.6; 100); multiply(#0; #1)"
+  },
+  {
+    "qid": "47660109-0d29-5acf-91f1-680477f2ecde",
+    "program": ""
+  },
+  {
+    "qid": "fd828cf5-eac4-50a2-9cc9-a05a3281f2d6",
+    "program": "add(4131; 809)"
+  },
+  {
+    "qid": "cb063d7c-1925-5fa9-add1-dbd78366fe3b",
+    "program": ""
+  },
+  {
+    "qid": "89d16117-36c2-5f2c-90ac-ad50833b5d97",
+    "program": "chart_average(Image 2; Tiền tệ; Aug-21; Dec-21)"
+  },
+  {
+    "qid": "11d4f823-00d8-53ae-8c20-7ddeac80364f",
+    "program": "chart_at(Image 1; DHG VN; Jun 26; none); chart_at(Image 1; VN-Index; Jun 26; none); greater(#0; #1)"
+  },
+  {
+    "qid": "b52a6e7b-5175-54b1-9358-8494e5bea374",
+    "program": "multiply(32.7; 1000); subtract(#0; 32738)"
+  },
+  {
+    "qid": "80bf6bfc-4933-5b1f-b8b2-31b33d4f63df",
+    "program": "add(64437; 23698)"
+  },
+  {
+    "qid": "84e2f669-ba10-5fb0-ac8c-83caa2d2ae91",
+    "program": "subtract(0.329; 0.35)"
+  },
+  {
+    "qid": "cb4a00d2-2dc7-59a0-9e8e-c5864e8c3d42",
+    "program": "subtract(1.1; -1.625)"
+  },
+  {
+    "qid": "7962c639-0a7b-5bf3-b2d2-c12855c6f0f9",
+    "program": "multiply(2.1; 1000)"
+  },
+  {
+    "qid": "4d51e027-de14-5ecc-adb0-23bb62e16f4e",
+    "program": "greater(4022; 3854)"
+  },
+  {
+    "qid": "57cb8a51-0ff9-5f99-a4e9-99bea09a6e26",
+    "program": "chart_average(Image 1; APAC; 2018; 2022)"
+  },
+  {
+    "qid": "e487498b-f2cb-5f4f-bdd3-e7aadf46f750",
+    "program": ""
+  },
+  {
+    "qid": "72fa5e7e-f91a-532a-8a49-9d86f3ed6f1d",
+    "program": "chart_average(Image 1; Hàng tồn kho (T6/2026); none; none)"
+  },
+  {
+    "qid": "226c8475-7553-50c1-b493-96bbac35dcdf",
+    "program": "divide(18.9; 11)"
+  },
+  {
+    "qid": "2747baf4-e45f-5b8e-9b07-5ec99f5bcf41",
+    "program": "table_max(Table 1; LNTT@6T2026; none; none)"
+  },
+  {
+    "qid": "a4bb4320-a73b-5d77-9f27-bf3398094d0f",
+    "program": "table_max(Table 1; 2026 (tăng trưởng GDP: 10% svck); Q1; Q4); table_min(Table 1; 2026 (tăng trưởng GDP: 10% svck); Q1; Q4); subtract(#0; #1)"
+  },
+  {
+    "qid": "9b2fa3fa-147b-5082-a286-12a421bac58b",
+    "program": ""
+  },
+  {
+    "qid": "e14f5621-586a-5bfa-a107-a940444a0fc5",
+    "program": "add(93; 19); add(#0; 24)"
+  },
+  {
+    "qid": "cf1ce992-ea52-59e5-9d58-58959c3bedcd",
+    "program": ""
+  },
+  {
+    "qid": "865141a6-bc6c-52d0-8cc9-7daf4bc69c06",
+    "program": "divide(1856; 60); multiply(#0; 100); subtract(2690; #1)"
+  },
+  {
+    "qid": "95380899-2093-5f0c-97a6-677217f2d391",
+    "program": "chart_at(Image 1; Cổ phiếu; Aug-22; none)"
+  },
+  {
+    "qid": "a61f6376-1168-5da6-8437-3f3662839eef",
+    "program": "subtract(1200; 1250.5)"
+  },
+  {
+    "qid": "ca3d97cc-f787-59d4-96d5-9b0f12a701ef",
+    "program": ""
+  },
+  {
+    "qid": "d2f34c46-e956-5f87-ba4c-779f11e007cb",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2023; none); chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; #1); subtract(21; 19.5)"
+  },
+  {
+    "qid": "3199e751-f711-58dc-a8bb-31b24c14f0f1",
+    "program": "subtract(227.51; 39.44)"
+  },
+  {
+    "qid": "e1def1b6-33b7-57a6-9089-bbd5175bed79",
+    "program": "chart_at(Image 3; 2023; KBC; none); chart_at(Image 3; 2024; KBC; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "96058030-8668-58bb-9cd7-44610b674c8e",
+    "program": "subtract(27; 33); subtract(#0; -306)"
+  },
+  {
+    "qid": "8e091ace-5150-5167-bba2-f050e0fc8131",
+    "program": "subtract(4931; 2416)"
+  },
+  {
+    "qid": "9c8a920d-9d14-56cb-8d99-5a4005c5ad54",
+    "program": "add(32542; 32738); subtract(65280; #0)"
+  },
+  {
+    "qid": "efdc87ff-8ab8-5aca-86db-54e5b32f4083",
+    "program": ""
+  },
+  {
+    "qid": "477556c2-f9f1-5323-a556-5833612b8b0a",
+    "program": ""
+  },
+  {
+    "qid": "e72f7540-c2fb-5bf0-af64-d3876525ac6a",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2015; none); chart_at(Image 1; Tham chiếu; 2015; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "5ff27e64-eb84-5301-9b74-73cd702718bd",
+    "program": "subtract(32738; 26086); divide(#0; 26086); multiply(#1; 100)"
+  },
+  {
+    "qid": "c5af1863-460b-5b5e-bb17-1cf8c9dfefb9",
+    "program": ""
+  },
+  {
+    "qid": "183c7d0f-d9fe-589d-8a35-b07a1d63273f",
+    "program": "subtract(10.4; 10.2)"
+  },
+  {
+    "qid": "e7ce2f8c-a36e-55da-a2b9-25c94f2a4494",
+    "program": "chart_at(Image 1; DHG VN; Aug 25; none); chart_at(Image 1; DHG VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "efa43c17-e927-5d79-8cc7-41b65f078d43",
+    "program": "chart_max(Image 1; GT mua/bán ròng; none; none); chart_min(Image 1; GT mua/bán ròng; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ce89cdf4-aaae-53b3-ad8e-a0c9e2dbfbcb",
+    "program": "table_max(Table 1; P/E (x); FY2023; FY2028F); table_min(Table 1; P/E (x); FY2023; FY2028F); subtract(#0; #1)"
+  },
+  {
+    "qid": "e30cc40a-fa95-5603-9756-97a778f4d231",
+    "program": "chart_sum(Image 3; Việt Nam (phải); 01/2026; 06/2026)"
+  },
+  {
+    "qid": "0ca49a13-023b-5167-b193-01030863adbd",
+    "program": "add(288; 296); add(#0; 256)"
+  },
+  {
+    "qid": "f1db11b9-5f27-553c-b48c-66990c64dbb7",
+    "program": ""
+  },
+  {
+    "qid": "32d00dea-d0d3-5bf9-a6f0-5134584a49ce",
+    "program": "multiply(122500; 0.5); divide(#0; 100); subtract(#1; 65280)"
+  },
+  {
+    "qid": "8705df96-487d-59ef-b84d-08021992dd25",
+    "program": "greater(68.1; 53.0)"
+  },
+  {
+    "qid": "d1894562-2a4c-51b8-96ad-271b25452a9f",
+    "program": "chart_at(Image 1; VCB VN; Aug 25; none); chart_at(Image 1; VCB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(53517; 43862); divide(#5; 43862); multiply(#6; 100); subtract(#4; #7)"
+  },
+  {
+    "qid": "b392a0f2-1c72-56e6-bd93-7194aa144821",
+    "program": "multiply(500; 3.2)"
+  },
+  {
+    "qid": "fa02b8b7-354d-5754-bc6b-38e1b09429cf",
+    "program": "subtract(1250.5; 1200)"
+  },
+  {
+    "qid": "83828507-cb04-543f-b1f7-37d0c474567e",
+    "program": ""
+  },
+  {
+    "qid": "51b70be9-865e-5e30-b509-647a8d727ebd",
+    "program": "table_max(Table 1; Cổ tức/thị giá (%); FY 2021; FY 2026 (F))"
+  },
+  {
+    "qid": "8cff7df0-b3c6-5655-9d68-bb606dae1020",
+    "program": "chart_at(Image 1; Cổ phiếu; Mar-25; none)"
+  },
+  {
+    "qid": "2ec62e41-dbde-5728-b34c-53541ab9f6ef",
+    "program": "chart_at(Image 2; 2023; May; none); chart_at(Image 2; 2023; Feb; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "218ba8df-bc99-55ee-9dd6-0c198bd116ba",
+    "program": "subtract(2441929; 227536); divide(#0; 227536); multiply(#1; 100); subtract(#2; 3.4)"
+  },
+  {
+    "qid": "c22e1f9b-6414-5dec-a410-cfdd946be9f3",
+    "program": ""
+  },
+  {
+    "qid": "1adca8b5-fa48-5419-9309-2e4b026fa820",
+    "program": "table_average(Table 1; 1 tháng; none; none)"
+  },
+  {
+    "qid": "d530bc83-decb-5af1-96e0-d63744f983f7",
+    "program": "subtract(1873; 1795); divide(#0; 1795); multiply(#1; 100); subtract(#2; 4.3)"
+  },
+  {
+    "qid": "ab6af747-f364-59f6-86d9-e5d0db3c34a5",
+    "program": ""
+  },
+  {
+    "qid": "c112a7d8-7963-5951-af7f-0cbd108316aa",
+    "program": ""
+  },
+  {
+    "qid": "6760eff1-28ce-5d3f-b57b-1e31abe613b8",
+    "program": "chart_at(Image 3; 2024; IDC; none); chart_at(Image 3; 2023; IDC; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "723825ca-7b28-595b-b70a-0e67a42b8320",
+    "program": "divide(69900; 6702); subtract(#0; 10.4)"
+  },
+  {
+    "qid": "3420d08e-14ea-5556-86bc-4f4910a6a4ff",
+    "program": "divide(19.8; 100); subtract(1; #0); multiply(#1; 100)"
+  },
+  {
+    "qid": "0a803597-f19d-5846-8862-ba75966714a6",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "fa6efd88-89d5-57ce-acfd-04112a6b6683",
+    "program": ""
+  },
+  {
+    "qid": "e4ec12b5-c8be-5355-9a6f-f296bef6723b",
+    "program": ""
+  },
+  {
+    "qid": "ce728847-d4aa-5e28-a03a-8c9436f746a1",
+    "program": "table_average(Table 1; NSI@svck.; none; none)"
+  },
+  {
+    "qid": "8ae9b278-37e4-5f00-886b-e53cb93249c7",
+    "program": "chart_at(Image 1; Hàng tồn kho (T6/2026); VHM; none); divide(#0; 66.4)"
+  },
+  {
+    "qid": "25e5d0b7-a491-5629-851b-50b8f5ba9ac7",
+    "program": "table_max(Table 1; P/E (x); 2024; 2028F); table_min(Table 1; P/E (x); 2024; 2028F); subtract(#0; #1)"
+  },
+  {
+    "qid": "0704ddaa-becf-538c-ad35-1569ff8af461",
+    "program": "chart_at(Image 1; Dòng vốn ETF theo tháng (trái); Jan-24; none)"
+  },
+  {
+    "qid": "b159f3bd-4396-57f9-b189-cd4abbde6d77",
+    "program": ""
+  },
+  {
+    "qid": "b7ae633d-ac67-56a7-addc-1af5d12a03a7",
+    "program": "chart_at(Image 1; LS cho vay bình quân trung và dài hạn; 07/26; none); chart_at(Image 1; LS cho vay bình quân trung và dài hạn; 01/25; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4f904731-a9aa-5e74-ac7a-28f141cfc1fb",
+    "program": "chart_at(Image 1; PHR VN; Sep 26; none); chart_at(Image 1; VN-Index; Sep 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "78657c65-4d41-51ef-ad90-da460cf9d7c2",
+    "program": "chart_at(Image 2; Tiền tệ; Jun-22; none); subtract(110; #0)"
+  },
+  {
+    "qid": "0ee2bae4-b942-5b95-bc68-1ea93f68bb50",
+    "program": ""
+  },
+  {
+    "qid": "d7b354ca-74bc-5c38-970d-8c7e9ada3166",
+    "program": "subtract(-114028; -102581)"
+  },
+  {
+    "qid": "6da9bb41-ac0e-5529-85b4-b2d43cccb687",
+    "program": "subtract(53517; 29200)"
+  },
+  {
+    "qid": "560d5444-6de5-542a-92b0-dac47a584fea",
+    "program": "chart_at(Image 1; Trái phiếu; Aug-22; none); subtract(11.1; #0)"
+  },
+  {
+    "qid": "927c9679-7f2e-5973-8b69-da1a9ca22d96",
+    "program": "divide(3006; 18902)"
+  },
+  {
+    "qid": "b198f862-7840-542a-b7f6-ab517738d684",
+    "program": "multiply(21; 100); divide(#0; 100); subtract(88; #1)"
+  },
+  {
+    "qid": "e57908f0-44a7-567d-af8a-7812a15238d3",
+    "program": ""
+  },
+  {
+    "qid": "2395e93a-68d7-51c7-902e-bc3697b3ea55",
+    "program": ""
+  },
+  {
+    "qid": "42b32ac9-e950-5ee7-b377-4486ca29e776",
+    "program": "table_average(Table 1; Tăng trưởng doanh thu@2Q26; VGC; KBC)"
+  },
+  {
+    "qid": "c36981ef-877e-5822-8ef1-aaf5e821405a",
+    "program": ""
+  },
+  {
+    "qid": "05025d8c-2610-582b-a233-3936c42ef575",
+    "program": "subtract(13.2; 10.3)"
+  },
+  {
+    "qid": "dfca34bb-cd16-547f-ac68-e49f8bfe2e93",
+    "program": "chart_max(Image 1; VN-Index; Sep 25; Sep 26)"
+  },
+  {
+    "qid": "e60dda9c-3baa-50f8-b7f5-62d166684c8f",
+    "program": ""
+  },
+  {
+    "qid": "a2d5a14d-b5a4-520c-99bd-e650f3d2c779",
+    "program": "chart_at(Image 1; Hàng tồn kho (cuối 2025); VHM; none); chart_at(Image 1; Hàng tồn kho (T6/2026); VHM; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "3ed7e028-0bfa-52b4-a353-f445da37c303",
+    "program": "subtract(7582; 6992); divide(#0; 6992); multiply(#1; 100)"
+  },
+  {
+    "qid": "d4171f71-189a-56ff-8aaa-bf539d5fb7ee",
+    "program": "subtract(13789; 12480)"
+  },
+  {
+    "qid": "10377ec7-0d1e-5c23-8917-298df8ba76f5",
+    "program": ""
+  },
+  {
+    "qid": "e9afc5ec-0c60-54a3-bfe9-e0d012977cf0",
+    "program": ""
+  },
+  {
+    "qid": "c9cfd440-675e-5271-8440-2a52f44c8754",
+    "program": "table_max(Table 1; CPDP@sv. DP; none; none); table_min(Table 1; CPDP@sv. DP; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "d65d8a18-6906-5c65-af0e-52e8ac199d50",
+    "program": "table_average(Table 1; EPS (VND); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "615a8497-5de5-5795-a233-f3af982c16b0",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2021; none); chart_at(Image 1; Tỷ lệ SHNN; 2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "e86386bc-de90-5699-a4c7-56ddc0d2873b",
+    "program": ""
+  },
+  {
+    "qid": "1d9c54dd-2dc2-5874-98f1-632344b32370",
+    "program": "chart_at(Image 2; Dệt may; none; none); subtract(24.4; #0)"
+  },
+  {
+    "qid": "0936790a-06c8-507e-847a-2f91942014ac",
+    "program": "chart_at(Image 1; Lãi suất VNIndex (Nghĩch dạo PE FW); 2026; none); chart_at(Image 1; Lãi suất VNIndex (Nghĩch dạo PE FW); 2010; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ae75f32c-ecc3-5001-a11a-c8ee1af22481",
+    "program": "subtract(15.5; 11.8)"
+  },
+  {
+    "qid": "ade956fc-de02-56ed-ae8a-dd66584f0a64",
+    "program": "table_average(Table 1; Công nghiệp: Chế biến, chế tạo; 2026 (tăng trưởng GDP: 10% svck)@Q1; 2026 (tăng trưởng GDP: 10% svck)@Q4)"
+  },
+  {
+    "qid": "5b9c966c-c086-5b65-a4a6-ce12c4f74337",
+    "program": "chart_at(Image 1; VN30; 12/03/2023; none)"
+  },
+  {
+    "qid": "84a06408-839b-5b60-be03-ce7320e556b4",
+    "program": "divide(-7517; 13147)"
+  },
+  {
+    "qid": "06722daa-7735-5810-8b3e-9534c5281176",
+    "program": "greater(2.1; 1.75)"
+  },
+  {
+    "qid": "f2b431fc-7146-5ad9-8200-1abc042cf072",
+    "program": "divide(459.7; 17656)"
+  },
+  {
+    "qid": "ddda6a8c-f027-5e05-9ed2-02c933de8ebd",
+    "program": "subtract(17206; 13315); divide(#0; 13315); multiply(#1; 100)"
+  },
+  {
+    "qid": "2c58e3c6-c34e-58f1-ba7d-e74f8638ddcb",
+    "program": ""
+  },
+  {
+    "qid": "37c3bff8-4913-5bb2-8143-25a88a6527d7",
+    "program": "divide(17.6; 15.2)"
+  },
+  {
+    "qid": "ef048e82-9c5c-55a2-b8f5-d3802a1e8d3b",
+    "program": ""
+  },
+  {
+    "qid": "649154c0-2d42-5b43-96f1-7528eb0952e3",
+    "program": "chart_at(Image 3; 2023; KBC; none); chart_at(Image 3; 2024; KBC; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "677fe3f0-35c2-553d-938c-378341bfac56",
+    "program": "subtract(43862; 35178); divide(#0; 35178); multiply(#1; 100)"
+  },
+  {
+    "qid": "c915e7e1-418a-5341-9516-72ef4b7d1f12",
+    "program": "subtract(-317; -130); divide(#0; -130); multiply(#1; 100)"
+  },
+  {
+    "qid": "576469ce-dbbe-53fa-87e5-da7a9aa874c5",
+    "program": "subtract(12069; 12568); divide(#0; 12568); multiply(#1; 100)"
+  },
+  {
+    "qid": "adf194e8-f71d-526b-8155-5db18ad0361c",
+    "program": "chart_at(Image 1; Mỹ; 2024; none); greater(9610; #0)"
+  },
+  {
+    "qid": "5280e57f-cf7c-5843-bb11-25274910ad7e",
+    "program": "subtract(48.3; 19); divide(#0; 19); multiply(#1; 100)"
+  },
+  {
+    "qid": "2807f899-f3ed-5b63-b435-d4352ee51ba4",
+    "program": "subtract(1160; 1120)"
+  },
+  {
+    "qid": "2b5f4ddf-31b4-5cec-9c96-54ac263595ea",
+    "program": ""
+  },
+  {
+    "qid": "814bfe6d-f281-551b-87de-ed9eb26df5f0",
+    "program": "chart_at(Image 1; Khối ngoại mua ròng; T11/23; none); chart_at(Image 1; Khối ngoại mua ròng; T12/23; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "5b0e5b41-a14d-52e5-86e1-171a8d8e6135",
+    "program": ""
+  },
+  {
+    "qid": "29e3a35b-edf2-5ed4-926a-2851826f8f95",
+    "program": ""
+  },
+  {
+    "qid": "48ba4584-8711-5f0e-ac7c-5119fe123651",
+    "program": ""
+  },
+  {
+    "qid": "bada2c5e-54b7-5f51-8965-eeb8d4dcadb8",
+    "program": "table_average(Table 1; Biên LN HĐKD (%); 2023; 2025)"
+  },
+  {
+    "qid": "cb4d1524-e780-55cb-97e6-d34c8ac48c15",
+    "program": "subtract(29; 12)"
+  },
+  {
+    "qid": "168afb8f-0134-5589-91cd-c2bb3361dc68",
+    "program": "table_average(Table 1; 2026 TĐN; Việt Nam; Thái Lan)"
+  },
+  {
+    "qid": "1cd957f8-02cb-50f8-8646-be1a648d8408",
+    "program": "subtract(1873; 1795); divide(#0; 1795); multiply(#1; 100)"
+  },
+  {
+    "qid": "558ab985-cc4b-50d4-9f6d-059d99611e31",
+    "program": "table_average(Table 1; ROE (%); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "1a9c7112-ea0f-5243-b981-e2c09db4af9a",
+    "program": "add(582.3; 295.8)"
+  },
+  {
+    "qid": "c83594a7-6636-51ee-9ad7-dfb2bf961a49",
+    "program": "subtract(6.34; 3.2); divide(#0; 3.2); multiply(#1; 100)"
+  },
+  {
+    "qid": "7d83721e-6e15-58b0-b996-ffa52eddb5ef",
+    "program": ""
+  },
+  {
+    "qid": "5ef01bcf-5cf9-516c-8a3b-b1ccc7c15173",
+    "program": ""
+  },
+  {
+    "qid": "3d4c2657-f943-553e-98cd-2e9e6f777fd4",
+    "program": "subtract(10.7; 5.8)"
+  },
+  {
+    "qid": "6611d51e-9353-55ed-9a6f-03ae4a22ea4e",
+    "program": "subtract(125; 111)"
+  },
+  {
+    "qid": "27bc7622-062d-584b-a784-6490500b679c",
+    "program": "subtract(19317; 112000)"
+  },
+  {
+    "qid": "b2896700-8a07-5ec9-ba0a-55004afbce26",
+    "program": ""
+  },
+  {
+    "qid": "04896c3d-752d-5d53-8eee-d2b27908ac4b",
+    "program": "subtract(49; 0)"
+  },
+  {
+    "qid": "dfff55c1-f8b6-5d35-8623-437482e526b6",
+    "program": "chart_average(Image 1; VGC VN; none; none)"
+  },
+  {
+    "qid": "2d2448ea-6b4f-52aa-ab8e-98ef29ef6712",
+    "program": "subtract(28.1; 23.2)"
+  },
+  {
+    "qid": "9809c845-9dae-5a28-9b23-3d194b4dbbd6",
+    "program": ""
+  },
+  {
+    "qid": "62f2fc69-4ed5-5b3a-8a60-4fcdc35cdd69",
+    "program": "divide(6419.8; 13675); multiply(#0; 100)"
+  },
+  {
+    "qid": "fee2f98b-447b-5586-9a34-c90e2e759343",
+    "program": ""
+  },
+  {
+    "qid": "314d88b9-fe8d-504a-8d69-32110be193bb",
+    "program": "chart_at(Image 1; ANV VN; Aug 25; none); chart_at(Image 1; ANV VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "07647192-f356-5d29-99f8-616e67934b99",
+    "program": "divide(4131; 5637)"
+  },
+  {
+    "qid": "8e88f847-c213-583b-8e4e-719eaefcba52",
+    "program": "subtract(35; 32.6)"
+  },
+  {
+    "qid": "257bccf9-68f0-5c4f-8c3d-284bc1d77827",
+    "program": "multiply(15.8; 100)"
+  },
+  {
+    "qid": "408034d0-7711-5d99-84bb-13b43f9e27a2",
+    "program": "table_average(Table 1; ROE (%); 12/25; 12/27F)"
+  },
+  {
+    "qid": "40a0e6fd-bcad-52a8-af60-e33a434d98f8",
+    "program": ""
+  },
+  {
+    "qid": "1665c618-aa2e-5dad-958b-5605f4c5f993",
+    "program": "divide(11725; 42792)"
+  },
+  {
+    "qid": "b7ab1613-0e0d-55d0-9f5f-cfff0a31abf3",
+    "program": "subtract(13.9; 12)"
+  },
+  {
+    "qid": "c2e6c3f8-b4de-5cc9-9469-68fb145473d4",
+    "program": "add(1230; 1250); divide(#0; 2)"
+  },
+  {
+    "qid": "f1f43262-775d-5b33-9a42-4e52fd3ad626",
+    "program": "subtract(47108; 38155); divide(#0; 38155); multiply(#1; 100); subtract(#2; 16.3)"
+  },
+  {
+    "qid": "15508bdb-0939-531d-80e2-bff81ec3a622",
+    "program": ""
+  },
+  {
+    "qid": "806313bb-ea6e-5f61-a7f2-c61eee9c3143",
+    "program": "chart_at(Image 1; Trái phiếu; Jun-22; none); chart_at(Image 1; Trái phiếu; Aug-22; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "cc89294a-f604-593f-be2e-ca4f7f7b768c",
+    "program": ""
+  },
+  {
+    "qid": "ee45b672-b396-56f7-a5cd-d5994c9d4631",
+    "program": ""
+  },
+  {
+    "qid": "9418a4c1-98da-539a-a641-7c9320cabd0b",
+    "program": "chart_at(Image 1; VLB - Tan Cang 1; none; none); chart_at(Image 1; Donacoop- Tan Cang 6; none; none); add(#0; #1)"
+  },
+  {
+    "qid": "022a85da-13f6-5cf1-8ff9-a83dcd6fd742",
+    "program": "subtract(11; 6)"
+  },
+  {
+    "qid": "837bfe3c-30dc-54bf-9eb3-2f44d2e9fbc8",
+    "program": "table_average(Table 1; ROE (%); 12/22; 12/25)"
+  },
+  {
+    "qid": "7e5484fa-d695-5469-9190-3ed099dad356",
+    "program": "subtract(41.7; 39.8)"
+  },
+  {
+    "qid": "548d45c8-84f6-5016-aa28-5bec156547ee",
+    "program": "subtract(20.3; 12.1)"
+  },
+  {
+    "qid": "4c0e67f0-5a45-5d08-b907-d0d0af50a552",
+    "program": ""
+  },
+  {
+    "qid": "8066225b-dd92-5f9d-ac3e-8388b796953d",
+    "program": "multiply(9.86; 100)"
+  },
+  {
+    "qid": "b901e273-deeb-5037-a109-1d925c5c11a3",
+    "program": ""
+  },
+  {
+    "qid": "414767d2-4996-51b6-b563-e72109a6de9b",
+    "program": "chart_at(Image 3; 2024; IDC; none); chart_at(Image 3; 2023; IDC; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "542c654e-14a2-5aa2-8105-938e4cd81c0c",
+    "program": ""
+  },
+  {
+    "qid": "eff653c9-8076-5c00-a6fb-b0e1b60cd3eb",
+    "program": ""
+  },
+  {
+    "qid": "aa9be627-9cf1-5e51-afde-6c42c4f90b98",
+    "program": "chart_average(Image 1; VNMidcap; none; none)"
+  },
+  {
+    "qid": "4ed162a6-97a1-50d3-a067-f4db54b87864",
+    "program": "chart_at(Image 1; Trái phiếu; Jun-22; none); chart_at(Image 1; Trái phiếu; Aug-22; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "0ee1952b-a1db-54ff-8e86-eda4ccf27d7a",
+    "program": "subtract(31.5; 24.2)"
+  },
+  {
+    "qid": "f579664f-566f-53e7-8bda-5939f23bca5d",
+    "program": "chart_at(Image 2; 2023; Aug; none); chart_at(Image 2; 2023; Apr; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "558b1dff-515e-5536-b6b2-1b2b5481151f",
+    "program": ""
+  },
+  {
+    "qid": "d4695c87-8f0e-53a3-af79-edcf062a1f2c",
+    "program": "divide(4992; 10494)"
+  },
+  {
+    "qid": "7272cc30-c327-5561-b147-d6b0ba118abd",
+    "program": "subtract(1.97; 1.84)"
+  },
+  {
+    "qid": "8ce75336-35ff-5880-abf9-f58a2dc28b2f",
+    "program": "subtract(587; 425)"
+  },
+  {
+    "qid": "96b57240-2603-597d-803b-e8f6966950e7",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2021; none); chart_at(Image 1; Tỷ lệ SHNN; 2022; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "c653a820-62cd-5883-8e20-5c11a71c209d",
+    "program": "subtract(21; 20.3)"
+  },
+  {
+    "qid": "c6614439-a166-557b-8a8b-c1c585791ce5",
+    "program": "chart_at(Image 3; Vinfast; none; none); chart_at(Image 3; Toyota; none; none); add(#0; #1)"
+  },
+  {
+    "qid": "e3fb0012-a30d-55f8-b14f-bb60df883860",
+    "program": "table_max(Table 1; 1 năm; none; none); table_min(Table 1; 1 năm; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4f6e28cf-5a78-51b3-b492-2764e7caa105",
+    "program": "chart_average(Image 1; Tỷ trọng GD của Khối ngoại; T10/23; T12/23)"
+  },
+  {
+    "qid": "a93e2c19-3943-5a87-80c1-ec881ba8ae4d",
+    "program": "divide(28.1; 1000); divide(23.2; 1000); subtract(#0; #1); subtract(28.1; 23.2); divide(#3; 1000); subtract(#2; #4)"
+  },
+  {
+    "qid": "b46ac5de-bfc3-5b32-be71-9eade2c0b1db",
+    "program": "table_average(Table 1; Doanh thu (tỷ đồng); 2026F; 2028F)"
+  },
+  {
+    "qid": "834bf005-8fdf-5594-9984-2934b10dab31",
+    "program": "table_sum(Table 2; Dòng vốn (triệu USD); none; none)"
+  },
+  {
+    "qid": "05b93320-9b4f-56b6-a38b-63864eecfe75",
+    "program": "add(152; 600)"
+  },
+  {
+    "qid": "fd3230d7-824e-59ac-b06b-4f60853b46ec",
+    "program": ""
+  },
+  {
+    "qid": "07bf43b8-d295-59d3-b19c-763c13d759fe",
+    "program": "add(30.3; 118.8); add(#0; 5.4); divide(#1; 3)"
+  },
+  {
+    "qid": "5a4698a8-dc71-52af-bf4e-f743e8e135a0",
+    "program": "chart_at(Image 1; VNMidcap; 12/03/2023; none); subtract(#0; 50)"
+  },
+  {
+    "qid": "a6f3eeec-c91b-59de-be40-2bdd05691836",
+    "program": "greater(6797; 8142)"
+  },
+  {
+    "qid": "8265ed99-15a1-5f23-bc0a-ef4ce9a3188a",
+    "program": "add(-315.8; -336); add(#0; -39)"
+  },
+  {
+    "qid": "fa96f0fb-fd26-504b-96e1-7982cf6ef8c9",
+    "program": ""
+  },
+  {
+    "qid": "dc0c32b6-a174-5042-84fa-666125c0c48f",
+    "program": "chart_at(Image 1; VNMidcap; 12/03/2023; none); subtract(#0; 46)"
+  },
+  {
+    "qid": "8ea08029-d6dc-510c-b2fb-9464c49e5aab",
+    "program": "subtract(372.1; 200.8)"
+  },
+  {
+    "qid": "105e453b-6e77-5af1-9c5b-e23d73dd6a43",
+    "program": "table_max(Table 3; Vốn hóa tự do (Triệu USD) - 4/28/2026; none; none); table_min(Table 3; Vốn hóa tự do (Triệu USD) - 4/28/2026; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "83fec1f7-872d-58c0-bd1c-798ebe1a4d13",
+    "program": "subtract(84; 64)"
+  },
+  {
+    "qid": "0fe21dfa-4f91-5079-864f-92a38a25d48c",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); chart_at(Image 1; Tham chiếu; 2024; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "019c2287-b02b-52b8-82d7-cd39c319c45b",
+    "program": "subtract(32; 23)"
+  },
+  {
+    "qid": "23358e1d-dadf-5383-af2f-4989db20b5f5",
+    "program": "subtract(1759; 643)"
+  },
+  {
+    "qid": "ec92e722-8305-5952-bf9c-1c357e0b46ec",
+    "program": "table_max(Table 1; ROE (%); 2023; 2028F)"
+  },
+  {
+    "qid": "a21129cb-3743-5d08-9d9f-17cfd1c79c6e",
+    "program": "chart_max(Image 1; VCB VN; none; none); chart_min(Image 1; VCB VN; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "258bb4b7-b93b-5751-af14-400ce8f1b8a9",
+    "program": "divide(4549; 11998)"
+  },
+  {
+    "qid": "8c7f7bc5-c82d-5157-9add-a529ca83d987",
+    "program": "subtract(15; -1.5)"
+  },
+  {
+    "qid": "dfe205ac-dfd3-5cc5-9683-f9d79ed2687c",
+    "program": "divide(5714; 1423)"
+  },
+  {
+    "qid": "8c74ed31-eff4-5148-9c49-6734e1b0a0fe",
+    "program": "table_average(Table 1; EPS (đồng); 2024; 2028F)"
+  },
+  {
+    "qid": "bf4c4b5c-959f-5f11-ba38-46d73556d0de",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; 21); subtract(21; 22.2); subtract(#1; #2)"
+  },
+  {
+    "qid": "bf4136a1-e1a2-5422-b1a8-5eeec30ebcfb",
+    "program": ""
+  },
+  {
+    "qid": "6359e354-2cba-553c-9df5-35776cbcab77",
+    "program": ""
+  },
+  {
+    "qid": "97345248-9f65-5acf-a0c2-6bb2136ff240",
+    "program": "subtract(500; 283)"
+  },
+  {
+    "qid": "b3f3824f-46d3-5a89-b8d1-445059f9ae15",
+    "program": "chart_max(Image 1; DCM VN; Aug 25; Aug 26); chart_min(Image 1; DCM VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "596f1b30-d5a0-526f-af87-238e452083ec",
+    "program": "divide(-1218; 6094)"
+  },
+  {
+    "qid": "a7209a5f-6eb7-58a1-b79d-c5e8cdcd74ea",
+    "program": ""
+  },
+  {
+    "qid": "7de2520f-50de-5a9f-a221-2469b5787e10",
+    "program": "chart_min(Image 1; VNMidcap; none; none); chart_max(Image 1; VNMidcap; none; none)"
+  },
+  {
+    "qid": "4431b291-af8d-5a2f-b3df-3b1733a6961c",
+    "program": "chart_at(Image 5; Nhập khẩu; 07-26; none); chart_at(Image 5; Xuất khẩu; 07-26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "b23aae45-9155-5433-a9ad-ab99b0257832",
+    "program": ""
+  },
+  {
+    "qid": "de241158-22c4-52ef-93d2-f552321bc5f3",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); chart_at(Image 1; Tỷ lệ SHNN; 2023; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "5dd16b67-10b3-5b3d-aec0-7d1cc101a7f5",
+    "program": "divide(1272; 3457.1); multiply(#0; 100)"
+  },
+  {
+    "qid": "be53d66d-3325-5c6e-85a5-3bd375ef0630",
+    "program": "chart_average(Image 2; Cho vay ký quỹ; 1Q25; 4Q25)"
+  },
+  {
+    "qid": "77ce07dd-0430-5cd3-905d-0e62db86a74c",
+    "program": "chart_at(Image 1; VHC VN; Aug 25; none); chart_at(Image 1; VHC VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "5d714ba8-2f43-552f-965d-ef53ba07ca4d",
+    "program": "chart_at(Image 1; VN-Index; Aug 26; none); chart_at(Image 1; VCB VN; Aug 26; none); greater(#0; #1)"
+  },
+  {
+    "qid": "8f8c3ec2-57af-5bd0-b451-1f12ce149bb6",
+    "program": "subtract(340.1; 319.5)"
+  },
+  {
+    "qid": "b85fb649-58ec-528e-9eb5-58e9a9d3a173",
+    "program": "subtract(1510; 1157)"
+  },
+  {
+    "qid": "a02f74d6-36be-549e-80ac-19f3e7eb184c",
+    "program": "chart_at(Image 2; Lũy kế từ 2020 (phải); Jan-24; none)"
+  },
+  {
+    "qid": "443b4036-132e-5b87-a42d-f4520d741c40",
+    "program": "subtract(5825; 4862); divide(#0; 4862); multiply(#1; 100)"
+  },
+  {
+    "qid": "774aad3a-f8b5-59e4-815b-d1f993d4717c",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); chart_at(Image 1; Tham chiếu; 2024; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "6d30e61e-9b76-5f6d-a51d-dcc3e38be821",
+    "program": "chart_at(Image 3; 2024; IDC; none); chart_at(Image 2; Dệt may; none; none); subtract(#0; #1); add(#2; 11)"
+  },
+  {
+    "qid": "4e65fdc8-6a06-5791-891e-9b0a33f82bca",
+    "program": ""
+  },
+  {
+    "qid": "b5dc1c97-bd5c-5989-b795-144c8f2480b3",
+    "program": "add(11; 32)"
+  },
+  {
+    "qid": "cc10f9cb-7bfc-59eb-87eb-22876aae653c",
+    "program": "add(667; 757)"
+  },
+  {
+    "qid": "6b9635ac-43d9-5d64-bb0c-53d4aba66110",
+    "program": "divide(4.3; 100); multiply(#0; 55.7)"
+  },
+  {
+    "qid": "513f8417-824a-50dd-83cf-90be7329c8ef",
+    "program": "divide(330.2; 1000); multiply(837; #0)"
+  },
+  {
+    "qid": "77b5729f-3745-565b-8144-2ee89a13f0a7",
+    "program": ""
+  },
+  {
+    "qid": "dcbe20ec-a3b5-5598-b0d8-4da3f2c5e122",
+    "program": "divide(4549; 11998)"
+  },
+  {
+    "qid": "e4c78d5f-afce-5d10-9efc-0221b18d7c66",
+    "program": "subtract(1272; 668)"
+  },
+  {
+    "qid": "b81aa0ea-4659-5622-a0c6-85c69a608fff",
+    "program": "chart_at(Image 1; VCB VN; Aug 25; none); chart_at(Image 1; VCB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "404fb974-86ef-56c5-bac3-d75f1fb84a98",
+    "program": "chart_at(Image 1; Tiền tệ; Jun-22; none); chart_at(Image 1; Tiền tệ; Aug-22; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "236eeb00-4d34-5dc8-a7cd-b3f227859a45",
+    "program": "chart_at(Image 1; VCB VN; Aug 25; none); chart_at(Image 1; VCB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(#4; 100); subtract(5249; 43862)"
+  },
+  {
+    "qid": "667553b8-1dd1-5647-ba58-7f7d28feb927",
+    "program": "chart_average(Image 2; 2022; Jan; Mar)"
+  },
+  {
+    "qid": "5f86e496-7466-540d-8fce-57abae703675",
+    "program": ""
+  },
+  {
+    "qid": "62f35011-30b7-555c-bf55-1f2be1a572e4",
+    "program": "add(93; 19); add(#0; 24); add(#1; 27); add(#2; 33)"
+  },
+  {
+    "qid": "e70fa968-b009-5a96-b1bc-0f368f2bdd93",
+    "program": "chart_sum(Image 1; Hàng tồn kho (T6/2026); none; none)"
+  },
+  {
+    "qid": "13c3d3b8-9d3c-5282-99e7-eefc837b8390",
+    "program": "subtract(4.1; 3.5)"
+  },
+  {
+    "qid": "b5ee3fe9-adb6-5016-8171-1dbbe711f4c4",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 4/4/2025; none); subtract(29.1; #0)"
+  },
+  {
+    "qid": "e3833cd4-6722-5a65-ab5d-53149c7bade8",
+    "program": "add(48; 50); add(#0; 22); divide(#1; 3)"
+  },
+  {
+    "qid": "0153cb82-4976-5c68-8bda-32006afefc35",
+    "program": "chart_at(Image 1; Khối ngoại mua ròng; T12/23; none)"
+  },
+  {
+    "qid": "d7d1c8c9-2ca8-561a-b70a-8c4387916131",
+    "program": "divide(1068; 5637)"
+  },
+  {
+    "qid": "eea97464-c97f-5821-9820-01f675a0eedf",
+    "program": "subtract(2801685; 2441929); divide(#0; 2441929); multiply(#1; 100); subtract(#2; 8.8)"
+  },
+  {
+    "qid": "58d00ffe-ea15-5e51-813a-d14d5c2a638c",
+    "program": "chart_at(Image 2; Cá nhân trong nước; T12/23; none); subtract(3.8; #0)"
+  },
+  {
+    "qid": "d850c751-676a-5d1b-8d79-05ac839aa880",
+    "program": ""
+  },
+  {
+    "qid": "9f27d3b0-f3a5-5209-9358-594e90ae02ee",
+    "program": "subtract(20785; 16631); divide(#0; 16631); multiply(#1; 100)"
+  },
+  {
+    "qid": "df514798-59d9-5227-8610-28a7b9db80c8",
+    "program": ""
+  },
+  {
+    "qid": "5a411890-49f1-52d2-8934-5b844416e7e4",
+    "program": "divide(-23647; -114028)"
+  },
+  {
+    "qid": "d92e5262-661e-5fe2-8db4-0d60066ddeb6",
+    "program": ""
+  },
+  {
+    "qid": "ae481589-626f-5549-b241-b4c7865d9eb8",
+    "program": "add(504; 1600)"
+  },
+  {
+    "qid": "a3c27673-e750-53ea-9c89-f649c8fcb5d2",
+    "program": "subtract(43; 35)"
+  },
+  {
+    "qid": "c9319255-06a7-5b82-be6e-6db8b721825d",
+    "program": "chart_average(Image 1; CNTT nước ngoài; 1H24; 1H26)"
+  },
+  {
+    "qid": "428f6b45-0f55-5b2d-88d1-719c6c12d71a",
+    "program": "table_max(Table 2; Lợi suất tích lũy trước ngày phân loại@3 năm; none; none); table_min(Table 2; Lợi suất tích lũy trước ngày phân loại@3 năm; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "49532c76-0dab-59bd-9a2f-7596013f1f9f",
+    "program": "table_max(Table 1; ROE (%); FY 2021; FY 2026 (F)); table_min(Table 1; ROE (%); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "b1ea9a7c-1d0d-5216-9e97-49dfe991aba1",
+    "program": ""
+  },
+  {
+    "qid": "620cfabd-bc20-57d3-a5d9-ceb3849d9aa5",
+    "program": "chart_at(Image 1; DCM VN; Apr 26; none); chart_at(Image 1; VN-Index; Apr 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "c5c79c79-e703-5301-8613-f24f24095ce0",
+    "program": ""
+  },
+  {
+    "qid": "b6a9240b-742b-5649-a3ba-2750d3246681",
+    "program": ""
+  },
+  {
+    "qid": "0ea86007-324e-567d-9963-786e6d4b7443",
+    "program": "add(3700; 4600)"
+  },
+  {
+    "qid": "173e5f89-88fd-5d7a-9837-38cab83d3578",
+    "program": "divide(425.3; 41.9); multiply(#0; 100)"
+  },
+  {
+    "qid": "850cc0a4-3572-5954-8fe1-7e156b0ac06c",
+    "program": "subtract(48.3; 0.4)"
+  },
+  {
+    "qid": "f6dc773b-f12e-54ca-b640-bfbd639e1fa1",
+    "program": "add(11; 32)"
+  },
+  {
+    "qid": "72bf6d0a-6aa2-5c1f-8b8a-3008591a19fd",
+    "program": "chart_at(Image 1; 2026; T6; none); chart_at(Image 1; 2026; T7; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "9ff9f91a-58dd-5abe-9171-2a290f080c2d",
+    "program": ""
+  },
+  {
+    "qid": "998a8360-4705-59ed-a64f-eb404408a5db",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2021; none); subtract(20.3; #0)"
+  },
+  {
+    "qid": "9608b8b2-f7d9-5fda-9b9e-026fac337beb",
+    "program": "chart_at(Image 2; Cổ phiếu EM (LHS); Jul-22; none); subtract(4.1; #0)"
+  },
+  {
+    "qid": "28885970-bb73-52b8-89bf-dbc7a23934a0",
+    "program": ""
+  },
+  {
+    "qid": "0dedc582-c183-5207-9dc0-d97996b17b62",
+    "program": "subtract(5.51; 5.37)"
+  },
+  {
+    "qid": "8652ff81-cc4c-51c2-81d1-ff567abffa54",
+    "program": "add(0.034; 0.329); add(#0; 0.020); add(#1; 0.192); divide(#2; 4)"
+  },
+  {
+    "qid": "fe94f49a-2a7c-5db8-a549-b310260cd7f7",
+    "program": ""
+  },
+  {
+    "qid": "2b68ecfa-b639-56ce-8c76-5c2217fcbf0a",
+    "program": "chart_average(Image 3; 2023; Sep; Nov)"
+  },
+  {
+    "qid": "affd591b-86da-586f-9c7d-b2d6335b5bc4",
+    "program": "chart_at(Image 3; 2024; IDC; none); chart_at(Image 2; Dệt may; none; none); subtract(#0; #1); add(#2; 11)"
+  },
+  {
+    "qid": "82722ed9-73ac-5b97-8d1b-e7ebc8a0088c",
+    "program": ""
+  },
+  {
+    "qid": "28892ca0-1c13-552f-8367-63831947681f",
+    "program": "greater(6324; 5556)"
+  },
+  {
+    "qid": "d3821791-13eb-5daa-9c9d-5ec47b56bac3",
+    "program": ""
+  },
+  {
+    "qid": "f7cf5c91-ebb4-52d8-bc55-eca7f797c6e5",
+    "program": ""
+  },
+  {
+    "qid": "84c4058f-bf36-566b-8fc6-375ab85732ac",
+    "program": "multiply(8177; 11.7)"
+  },
+  {
+    "qid": "56968c69-2e30-56e2-8881-469389950491",
+    "program": "subtract(1388350; 1192344)"
+  },
+  {
+    "qid": "e9b79401-1ecf-5fa6-88e0-1e7050260038",
+    "program": "subtract(20785; 2690)"
+  },
+  {
+    "qid": "f6a234cd-39c0-5a0e-bd5d-1d6e92f7a051",
+    "program": "divide(22.8; 10)"
+  },
+  {
+    "qid": "c577e31b-2270-59f7-91e1-fd9a6fc22ebd",
+    "program": "divide(17146; 62577)"
+  },
+  {
+    "qid": "89c2d090-5451-5e29-8334-677e95613635",
+    "program": "table_average(Table 1; Lãi ròng (tỷ đồng); FY 2024; FY 2026 (F))"
+  },
+  {
+    "qid": "d6bce0dc-b8be-5ed4-80fe-b48ea8a8ca7f",
+    "program": "greater(26.7; 20.0)"
+  },
+  {
+    "qid": "84023298-0d3e-5af6-8bb8-3166af6ccd08",
+    "program": ""
+  },
+  {
+    "qid": "eee60a7f-64ab-5ce9-8399-bdfae58a21e2",
+    "program": "subtract(49; 20.1)"
+  },
+  {
+    "qid": "6481172a-4e70-577e-84f2-7859d6080420",
+    "program": "chart_at(Image 1; VGC VN; Sep 25; none); chart_at(Image 1; VGC VN; Sep 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "12b636e9-7d81-5be8-b550-d94141cc0586",
+    "program": "chart_max(Image 4; Lãi suất tiền gửi; none; none); chart_min(Image 4; Lãi suất tiền gửi; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "0b094ebd-c648-5dd4-84a5-4aba7267c421",
+    "program": "subtract(1960; 1420); divide(#0; 1420); multiply(#1; 100)"
+  },
+  {
+    "qid": "8bc7afdc-8cae-5eca-99e8-f95e27a39a22",
+    "program": ""
+  },
+  {
+    "qid": "172451d1-82d7-5ef9-9191-8a78c45002a9",
+    "program": "chart_at(Image 2; Dòng vốn Quỹ chủ động theo tháng (trái); Jan-24; none); subtract(#0; 1100)"
+  },
+  {
+    "qid": "13d421d6-bacb-5ec5-8e5e-3d558a77604d",
+    "program": "divide(30996; 47108)"
+  },
+  {
+    "qid": "f6b46dde-02c9-54ab-8aa1-d98978137230",
+    "program": ""
+  },
+  {
+    "qid": "6e2b4694-72f0-52eb-b77c-6af240964826",
+    "program": "table_average(Table 1; ROE (%); FY 2021; FY 2026 (F))"
+  },
+  {
+    "qid": "e7db6a6e-ece9-5df1-8572-e2b71a926cae",
+    "program": "subtract(57; 12)"
+  },
+  {
+    "qid": "3e24047e-63a0-544a-a155-61422a21ac5d",
+    "program": ""
+  },
+  {
+    "qid": "ea199509-246c-5fb1-993a-0b2c8b9f5ef0",
+    "program": "subtract(31.6; 1.7)"
+  },
+  {
+    "qid": "283a91af-f1bb-5b2b-b3e5-9401b35d2acd",
+    "program": "chart_at(Image 1; DHG VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "6c8b827b-8b7d-5879-bfce-5897a9b30fc3",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2019; none); chart_at(Image 1; Tỷ lệ SHNN; 2012; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "12facbea-0b57-5e48-a127-15c58b8da726",
+    "program": ""
+  },
+  {
+    "qid": "3b4e8369-e0ee-5e48-b29f-30acd686a72c",
+    "program": "subtract(301; 137)"
+  },
+  {
+    "qid": "f16e4f24-d4e6-5861-8c1a-82a73cfd4cfc",
+    "program": "chart_max(Image 1; DHG VN; Aug 25; Aug 26); chart_min(Image 1; DHG VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "684a67b0-718d-592a-83dc-e7038c7ce6cc",
+    "program": ""
+  },
+  {
+    "qid": "98ed9d4a-7058-5d69-a297-5e77552c815c",
+    "program": "subtract(293.5; 50.5)"
+  },
+  {
+    "qid": "220c5f60-f725-51b4-8713-3b34c7969813",
+    "program": "chart_at(Image 1; VN-Index; Aug 25; none); chart_at(Image 1; VN-Index; Dec 25; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "070ac3f2-1ea8-586b-b2de-5e4476a63a6a",
+    "program": ""
+  },
+  {
+    "qid": "aa94ec1d-784e-5ff5-b6c9-dcb2e90d078f",
+    "program": "divide(1759; 478); subtract(#0; 2.7)"
+  },
+  {
+    "qid": "acd307f0-2952-53a7-9440-65b1d02a5362",
+    "program": "chart_at(Image 1; VPB VN; Aug 25; none); chart_at(Image 1; VPB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(3789; 3024); subtract(#5; #4)"
+  },
+  {
+    "qid": "85ea5b75-87d9-5543-9126-a326baadb6d4",
+    "program": "chart_at(Image 3; KSB; 2023; none); chart_at(Image 3; KSB; 2024F; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "ce5a2c1b-b02a-598e-bb97-200e55eef9ba",
+    "program": "subtract(18.4; 13.8)"
+  },
+  {
+    "qid": "f137297e-6654-57fe-9d87-547cbbae2d59",
+    "program": "divide(2.58; 1.49)"
+  },
+  {
+    "qid": "fe1b64af-e1cf-502a-94ef-474a54378017",
+    "program": "chart_at(Image 3; 2024; VGC; none); chart_at(Image 3; 2024; BCM; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ff91ad64-3ecd-5d31-b838-5ca7e2e2b0c5",
+    "program": "divide(122500; 1800); multiply(#0; 100)"
+  },
+  {
+    "qid": "7ff29c65-0b14-577f-955b-1fa25d83ef22",
+    "program": "subtract(14; 12.2)"
+  },
+  {
+    "qid": "b5b9793e-c5c8-5ba9-b9bf-20c150bcbe98",
+    "program": ""
+  },
+  {
+    "qid": "f443a78c-59f2-51ed-b55b-0eb1b87be11e",
+    "program": "chart_at(Image 1; Tiền tệ; Jun-22; none); chart_at(Image 1; Tiền tệ; Aug-22; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "7fec87bc-6d1a-5481-b4a6-eaefc4753359",
+    "program": "subtract(17.6; 15.2)"
+  },
+  {
+    "qid": "432b62aa-7e7a-5965-a05f-3d4d2ce6e032",
+    "program": "chart_average(Image 5; GTGD TB tháng 6; none; none)"
+  },
+  {
+    "qid": "6ed065d5-73f1-5a44-a9a2-5d535646301f",
+    "program": "subtract(3.2; 2.3)"
+  },
+  {
+    "qid": "9e589833-a48d-581c-b425-d015bae6ffb6",
+    "program": "subtract(84; 71)"
+  },
+  {
+    "qid": "888449b5-fb82-5cfb-9206-8b9971355f1c",
+    "program": "chart_at(Image 2; Cổ phiếu DM (LHS); Jul-22; none); subtract(25.3; #0)"
+  },
+  {
+    "qid": "ff518569-5627-55fb-a75b-2fa1c2f267be",
+    "program": "add(3.2; 2.6); add(#0; 2.3)"
+  },
+  {
+    "qid": "4e2c8e3d-0683-5028-87ec-89a2541e519c",
+    "program": "table_average(Table 1; LNST cổ đông kiểm soát (tỷ đồng); 2026F; 2028F)"
+  },
+  {
+    "qid": "29a5639e-8eeb-57bc-87a0-e9cba1cc7b83",
+    "program": "subtract(2690; 1960); divide(#0; 1960); multiply(#1; 100); subtract(#2; 35.5)"
+  },
+  {
+    "qid": "b6e4a55b-3e89-593b-b3b3-987bd6ffc47d",
+    "program": "table_max(Table 1; Tăng trưởng doanh thu@2Q26; none; none)"
+  },
+  {
+    "qid": "87f8b499-6ed2-579d-838e-ed1ea753bc1d",
+    "program": "table_average(Table 2; Lợi suất tích lũy trước ngày phân loại; 1 năm; none)"
+  },
+  {
+    "qid": "eae7b3fa-cb05-5df8-94a0-0cf4f13582b1",
+    "program": ""
+  },
+  {
+    "qid": "91ba13f5-68d0-5fdf-83f7-feeb6609d06d",
+    "program": "subtract(73464; 58663); divide(#0; 58663); multiply(#1; 100); subtract(#2; 33.6)"
+  },
+  {
+    "qid": "b7adc5d3-8343-5e02-a16c-a263bcacadee",
+    "program": ""
+  },
+  {
+    "qid": "7af847b1-8656-5b85-97ef-a31cf8d7c168",
+    "program": "subtract(23.5; 12.1)"
+  },
+  {
+    "qid": "be92dfc7-7b0e-500d-aeb5-fe0ca69422bf",
+    "program": "chart_max(Image 1; Tỷ lệ SHNN; none; none); chart_min(Image 1; Tỷ lệ SHNN; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "d61975c9-4699-5849-98cf-3e15202addb6",
+    "program": "subtract(23.2; 16.2)"
+  },
+  {
+    "qid": "143655c1-ed53-5286-b486-07b90a6e65e8",
+    "program": ""
+  },
+  {
+    "qid": "beff8003-f5a1-5ab6-9ae8-323f59953271",
+    "program": ""
+  },
+  {
+    "qid": "dcab4288-9359-5f8e-9bb1-5cf25a207c24",
+    "program": "chart_at(Image 1; PHR VN; Sep 25; none); chart_at(Image 1; PHR VN; May 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "83549c65-7a47-5a23-854a-ec81ec191f09",
+    "program": "chart_max(Image 1; IMP VN; Sep 25; Sep 26); chart_min(Image 1; IMP VN; Sep 25; Sep 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "f5c1d7fe-48f2-50e6-9807-0d01d66f5830",
+    "program": ""
+  },
+  {
+    "qid": "8eadb4db-0282-50ec-9ef7-4500e0b786cb",
+    "program": "add(9610; 9292); subtract(#0; 18902)"
+  },
+  {
+    "qid": "7603077e-254e-50fc-b4e1-9041087dbd73",
+    "program": "subtract(1590494; 1260150)"
+  },
+  {
+    "qid": "ecf32135-de43-50eb-9936-66f14ec8606f",
+    "program": "greater(9; 9)"
+  },
+  {
+    "qid": "8b1d171d-368e-56b4-a0cf-2cfe7dc68f0f",
+    "program": ""
+  },
+  {
+    "qid": "b2cc22d2-d0eb-5933-83e1-23125147931a",
+    "program": "subtract(1250.5; 1200)"
+  },
+  {
+    "qid": "238e15bc-3628-5562-a116-15397660c7e6",
+    "program": "subtract(21; 20.3)"
+  },
+  {
+    "qid": "3e443ae0-505b-5118-bfc4-6b86b20559d2",
+    "program": ""
+  },
+  {
+    "qid": "f6489970-d928-54e9-9d44-760ec60dfec5",
+    "program": ""
+  },
+  {
+    "qid": "ef1cb4e0-fbe6-5340-b05a-6ed12acf6d03",
+    "program": ""
+  },
+  {
+    "qid": "91777c52-a905-5c9e-ba3c-735e5cc16a41",
+    "program": "divide(1500; 2392)"
+  },
+  {
+    "qid": "c004303e-6385-5d1b-9c77-9532d9f8b7de",
+    "program": ""
+  },
+  {
+    "qid": "6c35c532-0f8e-51e8-a4af-fb9b625ea428",
+    "program": "chart_at(Image 1; VLB - Tan Cang 1; none; none); add(49; #0); divide(#1; 100); multiply(#2; 28); add(#1; #3); subtract(#4; 49)"
+  },
+  {
+    "qid": "41a12db3-7a33-5dc1-a693-10f2d2cd5527",
+    "program": "table_sum(Table 1; Doanh thu (tỷ đồng); FY 2024; FY 2026 (F))"
+  },
+  {
+    "qid": "d25afc04-9cc7-5b41-ace4-29c0f46f83ed",
+    "program": ""
+  },
+  {
+    "qid": "ef051b6f-8327-5d1f-af37-3a97c2a4e490",
+    "program": "chart_at(Image 3; DHA; 2024F; none); chart_at(Image 3; BMJ; 2024F; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "f6a3fd48-c90d-527d-bbae-a1d9121d1c6a",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 12/31/2024; none); chart_at(Image 1; Thấp nhất 1 năm; 12/31/2024; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "0d288634-157f-57b6-88a5-d613265d5293",
+    "program": "table_max(Table 3; Tổng dòng tiền ước tính (Triệu USD); none; none); table_min(Table 3; Tổng dòng tiền ước tính (Triệu USD); none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "9a461823-249f-57d6-b570-741236fdb206",
+    "program": ""
+  },
+  {
+    "qid": "e9e3f551-22b4-5cae-9f8b-3ddcb43439b7",
+    "program": ""
+  },
+  {
+    "qid": "a2990ca2-256a-5577-8352-5b7db16f2aeb",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 4/4/2025; none); subtract(29.1; #0)"
+  },
+  {
+    "qid": "9ba0eb3e-c9db-567a-b906-cea65cd187e0",
+    "program": "divide(1423; 5055); multiply(#0; 100); subtract(#1; 28.2)"
+  },
+  {
+    "qid": "296c4191-0c04-5715-8188-1decb2f2b238",
+    "program": "chart_at(Image 2; Cho vay ký quỹ; 4Q25; none); chart_at(Image 2; Cho vay ký quỹ; 1Q26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "44fa016b-25d4-5051-820f-ef20034c4d0c",
+    "program": "subtract(11998; 6712)"
+  },
+  {
+    "qid": "05ed39c1-9511-5afe-91e6-f4f0b70aa456",
+    "program": "multiply(1.6; 1000)"
+  },
+  {
+    "qid": "25f0fbed-1710-5a78-8174-09612ef8462b",
+    "program": ""
+  },
+  {
+    "qid": "d897fea1-f063-55af-a12f-a868874dd1fe",
+    "program": "divide(6811; 18540)"
+  },
+  {
+    "qid": "e3d70742-0967-5955-86db-4b58f2b25fd5",
+    "program": "subtract(3.19; 2.53)"
+  },
+  {
+    "qid": "34bb7d1f-fcbc-5be2-81a7-fac09402dc41",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(88; #0)"
+  },
+  {
+    "qid": "fefe91d7-55e0-56b8-8ec0-087fc209c0d7",
+    "program": "chart_at(Image 1; TCB VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "fb1b4d0d-e3be-5759-9835-64171a2d2e2f",
+    "program": "chart_at(Image 1; Hàng tồn kho (cuối 2025); VHM; none); chart_at(Image 1; Hàng tồn kho (T6/2026); VHM; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(#4; -74.9)"
+  },
+  {
+    "qid": "a5646851-4161-5ff4-953e-70a51fef289e",
+    "program": "subtract(6.34; 3.2)"
+  },
+  {
+    "qid": "98e0dd84-0aa7-5939-8190-223eda68aa16",
+    "program": "chart_average(Image 1; VN-Index; Sep 25; Sep 26)"
+  },
+  {
+    "qid": "d95fcba1-12d3-5aed-96a2-ee97bf1a4793",
+    "program": ""
+  },
+  {
+    "qid": "3ba06b16-d88c-53a8-a4ca-2dbc05b1d9b3",
+    "program": ""
+  },
+  {
+    "qid": "466e12b1-7a41-51bf-9967-358aeee94005",
+    "program": "chart_at(Image 2; VLB - Thanh Phu 1; none; none); chart_at(Image 2; CTI - Thien Tan 10; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "8cd42b2c-c1a9-5cd6-9dfe-ca1234ded1ee",
+    "program": "subtract(104; 79)"
+  },
+  {
+    "qid": "772eb63b-0ccd-538a-82c4-93a0582bce91",
+    "program": "divide(23990; 1260150)"
+  },
+  {
+    "qid": "8d2c4a66-d1b1-5fce-9d39-7067efb2c8d9",
+    "program": ""
+  },
+  {
+    "qid": "fb2e2681-8a94-50c8-9886-ede3c48f4dfa",
+    "program": ""
+  },
+  {
+    "qid": "72858961-1bd0-50e3-8be5-b96c5c32147d",
+    "program": "add(68.1; 111.8)"
+  },
+  {
+    "qid": "ce10da4f-c6b1-5a5a-902c-f9e10b30dac9",
+    "program": "divide(1694; 13675); multiply(#0; 100); subtract(#1; 12.4)"
+  },
+  {
+    "qid": "50bada34-dc8d-5d95-a0a7-7c0f8d5cd0ee",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 12/31/2024; none); chart_at(Image 1; Thấp nhất 1 năm; 12/31/2024; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "3ecf4371-3926-537f-8f2a-c9a87643619b",
+    "program": ""
+  },
+  {
+    "qid": "e40c02a5-7be3-5fe2-97c2-c7ab49ce92b0",
+    "program": "divide(1590494; 207025)"
+  },
+  {
+    "qid": "2269eed5-eba0-54d6-9327-7a4307b0395a",
+    "program": "divide(111; 125); multiply(#0; 100)"
+  },
+  {
+    "qid": "58a838a9-4ca0-504a-aa4e-967d2386e96f",
+    "program": ""
+  },
+  {
+    "qid": "14c7093e-8301-529e-b76a-a307f1f1aad3",
+    "program": "subtract(1873; 1795); divide(#0; 1795); multiply(#1; 100)"
+  },
+  {
+    "qid": "740c6b73-cdee-5262-baf4-6589cf0233c7",
+    "program": "subtract(1.1; 100)"
+  },
+  {
+    "qid": "d3c5aaac-db47-5e44-bdfe-d81c91f3ef65",
+    "program": ""
+  },
+  {
+    "qid": "9aa11f5f-3894-506a-af29-aec434093176",
+    "program": "chart_at(Image 1; VPB VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ad5ed0d6-65a6-5d22-8621-a9d18cfca2d4",
+    "program": "subtract(112174; 72000); divide(#0; 72000); multiply(#1; 100)"
+  },
+  {
+    "qid": "4d2ba193-e93e-5277-a790-eb698d310273",
+    "program": "table_max(Table 1; Tăng trưởng NPATMI@1H26; none; none); table_min(Table 1; Tăng trưởng NPATMI@1H26; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "205169cb-d9d4-5012-9761-a09b3deb27fc",
+    "program": "subtract(300; 224); divide(#0; 224); multiply(#1; 100)"
+  },
+  {
+    "qid": "68e81109-6a5b-5f62-acdb-6c8ea4e0a215",
+    "program": "divide(14.5; 10.2)"
+  },
+  {
+    "qid": "8a60817f-0a2e-56d6-bfe2-d317c249e2aa",
+    "program": ""
+  },
+  {
+    "qid": "acb665df-b856-5dfd-bfce-c1b2b9500c09",
+    "program": ""
+  },
+  {
+    "qid": "84dcab3b-15d3-5e4b-bc37-4f4cc2690a25",
+    "program": "subtract(200.8; 232)"
+  },
+  {
+    "qid": "7bc5fba6-6094-59d2-98e9-2696c4f769ab",
+    "program": "subtract(25.5; 22.0)"
+  },
+  {
+    "qid": "6412d4fa-5de8-57c2-9b1d-9a65df0cd508",
+    "program": "subtract(78.3; 125.3)"
+  },
+  {
+    "qid": "893d0f07-39c1-580d-9daa-16bc6c33a6b3",
+    "program": "subtract(15.2; 20.3); divide(#0; 20.3); multiply(#1; 100)"
+  },
+  {
+    "qid": "7eb02abf-e0b3-5e3f-90af-e53f7107840c",
+    "program": "subtract(50.2; 47.6)"
+  },
+  {
+    "qid": "25da95c2-b5ac-547d-a20d-e3a026f979f9",
+    "program": "chart_at(Image 1; Trái phiếu; Mar-25; none)"
+  },
+  {
+    "qid": "8c0d48eb-e518-5ebb-9a8a-5895c15537f6",
+    "program": ""
+  },
+  {
+    "qid": "5b276887-b3c6-5305-a695-f7ffe2e7fe91",
+    "program": "chart_average(Image 2; TGDD; 23; 26)"
+  },
+  {
+    "qid": "a682a135-d925-51da-9707-83dfe2f0af00",
+    "program": "table_max(Table 1; Lãi ròng (tỷ đồng); FY 2021; FY 2026 (F)); table_min(Table 1; Lãi ròng (tỷ đồng); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "41a1982b-fd29-5a41-a6e3-0993c5825e98",
+    "program": "subtract(-1625; -1156)"
+  },
+  {
+    "qid": "d81062ad-8ce3-5a5b-ad4e-ffe6aa4ad54c",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Dec-22; none); chart_at(Image 1; Cảng biển & Logistics; Sep-23; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "b1dc25cb-6e6b-53a4-8815-b2a6ebe63b67",
+    "program": "add(55406; 13173)"
+  },
+  {
+    "qid": "fbc83e6d-23c4-5a53-8c94-e6f66b9218cb",
+    "program": "divide(122500; 1800)"
+  },
+  {
+    "qid": "3d116ee9-c39f-5b0e-ad33-c3a50df69d56",
+    "program": "divide(1161.4; 1000); divide(23; 100); add(1; #1); divide(1161.4; #2); multiply(#3; 1000)"
+  },
+  {
+    "qid": "b4faa762-b3e0-5f73-b7f9-bff7258cc9c2",
+    "program": "table_average(Table 1; Tỷ lệ LNHĐKD (%); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "db790db5-b236-50a7-b24a-a9981373b9f9",
+    "program": "subtract(53517; 43862)"
+  },
+  {
+    "qid": "522564ab-3a71-50a2-a7ac-7887ddda2348",
+    "program": "subtract(32.4; 93.0)"
+  },
+  {
+    "qid": "c53d4a54-9ea0-5b3a-b998-b6dbf5656550",
+    "program": "subtract(16.5; 9.3); divide(#0; 9.3)"
+  },
+  {
+    "qid": "74f83c5c-4697-52d9-b888-e1e29c4141b3",
+    "program": "subtract(73464; 58663); divide(#0; 58663); multiply(#1; 100)"
+  },
+  {
+    "qid": "2d8d5189-0be6-5027-8609-61f579e3c0f0",
+    "program": "subtract(8.6; 3.2)"
+  },
+  {
+    "qid": "3d982328-8bf9-5df3-adb6-09bbadbfe6d8",
+    "program": ""
+  },
+  {
+    "qid": "df0d3f12-dca9-5e99-a69c-b10ee2c0a692",
+    "program": "divide(475.02; 11725)"
+  },
+  {
+    "qid": "bd8f43f6-11dd-5a27-ab75-7aaab66dc71e",
+    "program": "greater(13.1; 14.8)"
+  },
+  {
+    "qid": "fde4e004-be1a-5a36-bcb1-9fe13b85e879",
+    "program": "chart_at(Image 1; Hàng tồn kho (T6/2026); NVL; none); chart_at(Image 1; Hàng tồn kho (T6/2026); DXG; none); divide(#0; #1)"
+  },
+  {
+    "qid": "1eda8ddd-8be4-57b7-aae9-25e4df9ab60b",
+    "program": "chart_at(Image 1; DCM VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "03fee219-13f9-5cea-abc6-86ed01892538",
+    "program": ""
+  },
+  {
+    "qid": "b26d3a08-7f2b-5c3a-83ca-8875cdf3b22c",
+    "program": "chart_at(Image 1; Cao nhất 1 năm; 3/31/2025; none); chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4edc6c67-2cf9-5390-b0df-3d37f935b8d2",
+    "program": "add(73464; 19317)"
+  },
+  {
+    "qid": "ad93305e-2aae-5823-85fc-1587ec58a2e3",
+    "program": "chart_at(Image 1; VNMidcap; 12/03/2023; none); chart_at(Image 2; Bất động sản; T12; none); add(#0; #1)"
+  },
+  {
+    "qid": "a8bc2ee2-2c7b-516a-8c2a-e20eada561ff",
+    "program": "subtract(13.1; 4.39)"
+  },
+  {
+    "qid": "07664feb-0463-5637-a453-b15732e2ace6",
+    "program": "table_average(Table 1; Tăng trưởng doanh thu@2Q26; Khu công nghiệp; none)"
+  },
+  {
+    "qid": "77679adf-b52f-55d2-b492-4084fc7ae3cc",
+    "program": "add(47108; 16391)"
+  },
+  {
+    "qid": "578e3817-689e-5f14-bdc2-5f2cb8c864a6",
+    "program": "multiply(1.6; 1000)"
+  },
+  {
+    "qid": "0f4be0fa-930c-52be-ae94-ec15971c1f16",
+    "program": "table_max(Table 1; Tổng tài sản (tỷ đồng); FY2023; FY2028F)"
+  },
+  {
+    "qid": "78f41534-7a45-5b5c-b5f9-22af8ec33c3a",
+    "program": "divide(4549; 351220)"
+  },
+  {
+    "qid": "3f2e6558-00b7-5f92-98c7-a88106485c73",
+    "program": "subtract(5637; 2561)"
+  },
+  {
+    "qid": "9f060227-14da-5d84-b7ec-5c099e97a45f",
+    "program": ""
+  },
+  {
+    "qid": "84e352a3-5be6-5d82-97a1-14434487e7a3",
+    "program": "subtract(13; 20); subtract(2; 3); divide(#1; 100); subtract(#0; #2)"
+  },
+  {
+    "qid": "b07dc37a-ad0a-5f27-a793-342606277de4",
+    "program": "chart_at(Image 2; Cá nhân trong nước; T12/23; none); chart_at(Image 2; NĐT nước ngoài; T12/23; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "184b2fab-51d7-5ad1-a8a2-dab8a0aa3a6c",
+    "program": "chart_at(Image 2; Cho vay ký quỹ; 1Q25; none); chart_at(Image 2; Cho vay ký quỹ; 1Q26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "2f84f19d-0df8-595a-a580-25842a8b23cb",
+    "program": "chart_at(Image 1; VPB VN; Aug 25; none); chart_at(Image 1; VPB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "b9565e5e-df69-563c-8410-46f2162ca301",
+    "program": "subtract(1250.5; 1200); divide(#0; 1200); multiply(#1; 100)"
+  },
+  {
+    "qid": "98dc2213-8cd6-5a58-b9a2-c38ff77102d4",
+    "program": "table_max(Table 1; T6/2026; none; none); table_min(Table 1; T6/2026; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "922bb497-bbc9-583c-a3dd-14b992a0f822",
+    "program": "greater(16.9; 15.4)"
+  },
+  {
+    "qid": "cd42ba71-c745-5fc3-9a9a-21d02b099ce5",
+    "program": "subtract(58; 27)"
+  },
+  {
+    "qid": "df9bf68b-1bdd-5131-b58a-2676f82dae17",
+    "program": "multiply(10; 1000)"
+  },
+  {
+    "qid": "a2619165-c5bd-5391-9fae-4d1c57fbcd88",
+    "program": "chart_at(Image 1; Trái phiếu; Mar-25; none); chart_at(Image 1; Cổ phiếu; Mar-25; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4a692a61-bc97-52da-888c-e57ee1994af2",
+    "program": "subtract(856; 643); divide(#0; 643); multiply(#1; 100)"
+  },
+  {
+    "qid": "f1f74c88-da1c-55ea-a83a-f791629cbf97",
+    "program": ""
+  },
+  {
+    "qid": "9371d1cf-d031-5e42-ad89-27d9626184fb",
+    "program": "chart_average(Image 1; Tăng trưởng CNTT NN; 1H23; 1H26)"
+  },
+  {
+    "qid": "f9162601-2630-588f-8b3d-6091258d8ce5",
+    "program": "chart_at(Image 1; Tiền tệ; Aug-22; none); subtract(30.9; #0)"
+  },
+  {
+    "qid": "204175bb-3f9a-5291-b510-ba9fd35baefb",
+    "program": "table_average(Table 1; ROE (%); 12/26F; 12/27F)"
+  },
+  {
+    "qid": "92feede2-58ec-5760-9742-d29806947789",
+    "program": "divide(5055; 5714)"
+  },
+  {
+    "qid": "f956a9e7-8f1c-5a9d-aa66-1f2ddd5f1a1c",
+    "program": "table_sum(Table 1; Ước tính dòng vốn vào (triệu USD); none; none); chart_at(Image 3; Việt Nam (phải); 06/2026; none); divide(#0; #1)"
+  },
+  {
+    "qid": "5e2c90d1-1e13-5ba1-af9c-25e11cc9e621",
+    "program": ""
+  },
+  {
+    "qid": "6f38d23c-273e-5690-afa1-b48a98806a11",
+    "program": ""
+  },
+  {
+    "qid": "24d3ce6a-ba14-54c2-9819-ca1a9be512a9",
+    "program": "subtract(42.1; 41.0); divide(#0; 41.0); multiply(#1; 100)"
+  },
+  {
+    "qid": "1b50bfbe-347e-5b90-bf51-ae13e3b47406",
+    "program": "subtract(1616065; 1192344); divide(#0; 1192344); multiply(#1; 100); subtract(#2; 6.8)"
+  },
+  {
+    "qid": "1ba60cdf-c081-5afd-88e4-24cd3af0436a",
+    "program": ""
+  },
+  {
+    "qid": "dcfe5562-ba0c-5233-9c14-a99a064f9533",
+    "program": "subtract(17206; 7737)"
+  },
+  {
+    "qid": "6ca75989-9e49-5560-94f2-f8edde4ceb75",
+    "program": "chart_min(Image 1; VNSmallcap; none; none)"
+  },
+  {
+    "qid": "2bb0ccc9-0aec-5288-9634-d36d4158ecc7",
+    "program": "chart_at(Image 2; Đăng ký cấp mới; 2024; none); chart_at(Image 2; Đăng ký cấp mới; 2025; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "14de462d-e6f2-5e40-899e-191652ece5d1",
+    "program": "divide(3006; 18902); divide(308; 4236); subtract(#0; #1)"
+  },
+  {
+    "qid": "f829e5f6-57ae-55ac-ac59-5039f587adab",
+    "program": "chart_max(Image 1; VN-Index; none; none)"
+  },
+  {
+    "qid": "6a85a514-4394-5586-a393-86dd0aba4824",
+    "program": "table_max(Table 2; Ngày giao dịch ước tính; none; none); table_min(Table 2; Ngày giao dịch ước tính; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "69289e81-a5ea-5b68-a51f-47344b27dc51",
+    "program": "chart_at(Image 1; Trái phiếu; Mar-25; none); chart_at(Image 1; Cổ phiếu; Mar-25; none); subtract(#0; #1); subtract(19.8; 48.7); subtract(#3; #2)"
+  },
+  {
+    "qid": "652b896b-1439-56db-9468-f6bff681be02",
+    "program": ""
+  },
+  {
+    "qid": "06b3d4d2-8b56-5336-a265-6012471cb036",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2020; none); chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "728da828-2afa-5bc6-9abd-1ea7d1dd269a",
+    "program": "table_average(Table 1; ROE (%); FY 2024; FY 2026 (F))"
+  },
+  {
+    "qid": "4a039178-b546-5deb-a7a7-1b9735e8250f",
+    "program": ""
+  },
+  {
+    "qid": "737758d2-9dd8-5a32-9691-b3d8d5fb8add",
+    "program": "chart_at(Image 1; VLB - Tan Cang 1; none; none); chart_at(Image 1; DND - Tan Cang 5; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "b505c280-2a59-5935-8a85-4e583adc700b",
+    "program": "chart_at(Image 1; ANV VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4acd5090-6d77-5815-8174-359ab7121041",
+    "program": "divide(4030; 6358)"
+  },
+  {
+    "qid": "48a9f547-25af-5395-a4d2-e6d4207a8a83",
+    "program": ""
+  },
+  {
+    "qid": "eca64597-972c-5624-b51f-7dba2bbeffcd",
+    "program": "chart_at(Image 1; VHC VN; Aug 25; none); chart_at(Image 1; VHC VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(6702; 6192); divide(#5; 6192); multiply(#6; 100); subtract(#4; #7)"
+  },
+  {
+    "qid": "a81e57de-28f0-53ac-a3dd-9010a111c062",
+    "program": "chart_at(Image 1; DHG VN; Aug 25; none); chart_at(Image 1; DHG VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "4a6a59bf-27da-58ad-ae70-9a43f2c115ea",
+    "program": "divide(1842; 9610); multiply(#0; 100)"
+  },
+  {
+    "qid": "c5f0a90f-1bc3-54a0-b1f9-4414960239eb",
+    "program": ""
+  },
+  {
+    "qid": "e2910ae0-1c99-5a5b-b3d8-30700f9cf9bd",
+    "program": "table_sum(Table 1; Ước tính dòng vốn vào (triệu USD); none; none)"
+  },
+  {
+    "qid": "b04bf873-dea7-5a09-b4bb-09f964c8acd4",
+    "program": "chart_max(Image 1; ANV VN; Aug 25; Aug 26); chart_min(Image 1; ANV VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "9ef843db-312f-5587-8b13-2f06c4d36b35",
+    "program": "chart_at(Image 1; IMP VN; Sep 26; none); chart_at(Image 1; VN-Index; Sep 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "a8f403bd-bc72-5ee8-8f0b-2f7ec61f9b6f",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Sep-23; none); chart_at(Image 1; Công nghiệp; Sep-23; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "593f57f3-aa45-5231-9fc9-cd5aeba16291",
+    "program": "chart_at(Image 1; Dòng vốn ETF theo tháng (trái); Jan-24; none); subtract(#0; 1625)"
+  },
+  {
+    "qid": "3ff576ee-fb85-5d8e-8fbe-ef9767a73f8b",
+    "program": "divide(8177; 6308)"
+  },
+  {
+    "qid": "e2b5d6d0-e8b1-5b4e-8249-f2ec87d50346",
+    "program": "subtract(1273; 1192344); divide(#0; 1192344); multiply(#1; 100); subtract(#2; 6.8)"
+  },
+  {
+    "qid": "da2c52a9-edd9-514e-a9ff-b66bb9b9518b",
+    "program": ""
+  },
+  {
+    "qid": "435069fe-0161-5aee-82de-3ab76763461c",
+    "program": "subtract(4.63; 4.45)"
+  },
+  {
+    "qid": "355485b2-9ec4-5faa-a20d-e8f8bd321cce",
+    "program": "subtract(177.8; 104)"
+  },
+  {
+    "qid": "d454fb26-f5c0-5bd9-bc80-2d9e9bf3ba30",
+    "program": ""
+  },
+  {
+    "qid": "d858972b-2279-53cd-b032-e9e053756473",
+    "program": ""
+  },
+  {
+    "qid": "ddf9ca8c-2b55-51cd-ba3b-409182e1a2c5",
+    "program": "table_average(Table 1; P/E (x); FY 2021; FY 2025); divide(6.1; #0)"
+  },
+  {
+    "qid": "f7580ea5-1625-578e-9772-8e78bfc845d9",
+    "program": ""
+  },
+  {
+    "qid": "18cbd6d4-aedc-5789-9480-6eac28c81dc8",
+    "program": "table_max(Table 1; Tỷ lệ LNHĐKD (%); FY 2021; FY 2026 (F)); table_min(Table 1; Tỷ lệ LNHĐKD (%); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "639ac14a-2af1-5846-a238-45207a7752f4",
+    "program": "subtract(11482; 12370); divide(#0; 12370); multiply(#1; 100)"
+  },
+  {
+    "qid": "64c09a96-97fe-5ccd-8503-6198f453cf5d",
+    "program": ""
+  },
+  {
+    "qid": "df55be69-b12e-512d-b498-673c7478192c",
+    "program": ""
+  },
+  {
+    "qid": "bc929338-9d84-5795-ab4d-824b5afd4358",
+    "program": "divide(8.8; 100); add(1; #0); divide(2441929; #1)"
+  },
+  {
+    "qid": "b4999468-a2e3-5a33-827f-1e8cf6bf484b",
+    "program": "table_max(Table 2; Tổng số vốn ước tính từ các quỹ ETF vào Việt Nam (Triệu USD); none; none)"
+  },
+  {
+    "qid": "86fc0a63-2373-504b-ab21-2d0f648089ba",
+    "program": ""
+  },
+  {
+    "qid": "7c636516-9c16-58f5-9431-0a1e9a2bf15b",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "a62e5233-bec1-50bf-b58e-1cc59f7c72db",
+    "program": "subtract(45; -14)"
+  },
+  {
+    "qid": "dfdc6be8-5c7d-5503-ac09-60788d60719a",
+    "program": "chart_max(Image 1; VPB VN; Aug 25; Aug 26); chart_min(Image 1; VPB VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "b67073a4-ef9a-5aff-afd8-47127066c81a",
+    "program": ""
+  },
+  {
+    "qid": "c0c44861-5298-5ed2-b33a-af59aa1e633c",
+    "program": "multiply(7213; 4.4)"
+  },
+  {
+    "qid": "5b8bfae7-b284-5b2b-a8b7-d309b24e528e",
+    "program": ""
+  },
+  {
+    "qid": "d21c87bb-15be-5ef6-a514-0245cca6f154",
+    "program": ""
+  },
+  {
+    "qid": "bbe0edd8-a6bc-5c61-88f3-c0b4c4ac4970",
+    "program": "chart_at(Image 2; Đăng ký cấp mới; 2026; none); chart_at(Image 2; Đăng ký cấp mới; 2025; none); add(#0; #1); chart_at(Image 2; Đăng ký điều chỉnh; 2026; none); chart_at(Image 2; Đăng ký điều chỉnh; 2025; none); add(#3; #4); subtract(#2; #5)"
+  },
+  {
+    "qid": "7b7c189f-9f38-5518-8d2a-c68ef515a639",
+    "program": ""
+  },
+  {
+    "qid": "b11aea75-f557-5938-99db-faec100c483f",
+    "program": ""
+  },
+  {
+    "qid": "9f4dedba-929d-5a40-809b-1b61d81f5642",
+    "program": "divide(73; 100); multiply(66.4; #0)"
+  },
+  {
+    "qid": "b1121728-ad93-57e9-9d95-f726c61b6d61",
+    "program": "subtract(122500; 65280)"
+  },
+  {
+    "qid": "3c855ec8-a4cc-53e8-bb96-e7b3cdeae333",
+    "program": "chart_at(Image 1; Trái phiếu; Aug-22; none); chart_at(Image 1; Cổ phiếu; Aug-22; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "e9ca8ca8-48d7-5fae-ac52-3f51dd1f25ad",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2017; none); chart_at(Image 1; Tỷ lệ SHNN; 2018; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ffbdaef2-2bb1-5bb4-85a1-f1590597f937",
+    "program": "subtract(4616; 2499)"
+  },
+  {
+    "qid": "5c749bf1-79bc-5f46-ab57-5b9fdeded22a",
+    "program": ""
+  },
+  {
+    "qid": "fe4c1d72-e05e-54aa-b66f-9c6d34986ebe",
+    "program": "chart_at(Image 1; Trái phiếu; Mar-25; none); subtract(19.8; #0)"
+  },
+  {
+    "qid": "55c56b1e-38f8-5ef4-a8b4-54fd0b2bfa72",
+    "program": ""
+  },
+  {
+    "qid": "20448d8f-92d4-5e40-87e7-84ac5c7de5f9",
+    "program": "subtract(13675; 12069); divide(#0; 12069); multiply(#1; 100)"
+  },
+  {
+    "qid": "d1df97cc-2314-5644-b1a0-e3fe2b157221",
+    "program": "divide(63400; 43862)"
+  },
+  {
+    "qid": "24de9590-2569-5310-968a-37b75daa0ab6",
+    "program": "table_max(Table 1; Ước tính dòng vốn vào (triệu USD); none; none)"
+  },
+  {
+    "qid": "31dd9c8d-d01a-5635-82be-65a557ceb076",
+    "program": "add(3700; 4600)"
+  },
+  {
+    "qid": "20a91ead-6933-5444-b3e3-09d006a895b7",
+    "program": "chart_max(Image 5; IIP; 2019; 1T2026); chart_min(Image 5; IIP; 2019; 1T2026); subtract(#0; #1)"
+  },
+  {
+    "qid": "8238d105-20b5-5c7f-aba4-3d3a869211a4",
+    "program": "add(27; 58)"
+  },
+  {
+    "qid": "dfa798fa-27db-5348-932d-4932def97f33",
+    "program": "chart_sum(Image 2; Đăng ký cấp mới; none; none); chart_sum(Image 2; Đăng ký điều chỉnh; none; none); chart_sum(Image 2; Gấp vốn, mua cổ phần; none; none); add(#0; #1); add(#3; #2)"
+  },
+  {
+    "qid": "8c1f418f-b73a-5ba9-a9c2-69f80b388f17",
+    "program": ""
+  },
+  {
+    "qid": "44a35214-3e78-52a9-b191-1881ac10128b",
+    "program": "multiply(424; 1000); chart_at(Image 2; Cho vay ký quỹ; 1Q26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "dcfc401c-fb85-517b-91da-86c35210acbf",
+    "program": "table_average(Table 1; VNIndex; 25/11; 29/11)"
+  },
+  {
+    "qid": "52831822-3c2d-5ce6-a0c9-2eadb3975472",
+    "program": "subtract(0.329; 0.35)"
+  },
+  {
+    "qid": "b67243b9-e5fc-5237-a288-7d73f76363b4",
+    "program": "add(400; 450); divide(#0; 2); subtract(#1; 587); divide(#2; 587); multiply(#3; 100)"
+  },
+  {
+    "qid": "ff9bf3b2-e060-5a53-80ca-ec5bdd171f53",
+    "program": "subtract(6.84; 6.0)"
+  },
+  {
+    "qid": "f61f601d-e3e3-5edf-82e1-c09a5e567eaa",
+    "program": "chart_sum(Image 3; Việt Nam (phải); 01/2026; 06/2026)"
+  },
+  {
+    "qid": "86c1eb2b-fbaf-5ae7-8919-c809e4e87c52",
+    "program": ""
+  },
+  {
+    "qid": "cf478bb4-775b-5893-be44-8d28c159e92f",
+    "program": "subtract(5714; 4838)"
+  },
+  {
+    "qid": "0792725b-da63-5e83-bd52-f6bee8dce60a",
+    "program": "chart_at(Image 1; VN-Index; Aug 26; none); chart_at(Image 1; VPB VN; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "ea525fb0-57cb-579d-acae-b685b62097c9",
+    "program": "chart_max(Image 2; Tổ chức trong nước; T1/23; T12/23)"
+  },
+  {
+    "qid": "12b35eda-f532-560c-a36e-55fcad404f84",
+    "program": ""
+  },
+  {
+    "qid": "9cf0e7e0-7c16-592e-9fec-225d0869ab32",
+    "program": ""
+  },
+  {
+    "qid": "81d69f45-2758-5770-b004-220038eb07ac",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "6b5f3c13-d989-548a-944a-d56a7878e019",
+    "program": "add(15.7; 15.7)"
+  },
+  {
+    "qid": "03dc543e-241f-575c-82e3-0f5320537cb1",
+    "program": "subtract(20.3; 15.2)"
+  },
+  {
+    "qid": "ad191d96-8eed-5beb-9e24-64f03cdbde65",
+    "program": "divide(26269; 57245); multiply(#0; 100)"
+  },
+  {
+    "qid": "6845a19a-dbed-5852-99ef-6e8406f177f1",
+    "program": "subtract(16; 6)"
+  },
+  {
+    "qid": "843d9df2-7126-50ab-9f3b-974f5a0b21bf",
+    "program": ""
+  },
+  {
+    "qid": "e5c308f9-34a8-50d9-b4f3-be75ac59d618",
+    "program": "subtract(6.1; 10.2)"
+  },
+  {
+    "qid": "c0fa62e9-4e78-50d0-8e04-bc1e71a5e6b7",
+    "program": "chart_at(Image 2; 2023; Oct; none); chart_at(Image 2; 2022; Oct; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "3cc15f22-95b1-55f4-b8b4-fb3330607b53",
+    "program": "chart_at(Image 3; Thủy điện; 2Q25; none); chart_at(Image 3; Thủy điện; 2Q26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "e350fd84-8e07-5862-9f7f-944eaa74bc54",
+    "program": "table_max(Table 1; P/E (x); 12/22; 12/27F); table_min(Table 1; P/E (x); 12/22; 12/27F); subtract(#0; #1)"
+  },
+  {
+    "qid": "f5268b7e-28b7-5ee5-89f9-2adbbb573942",
+    "program": ""
+  },
+  {
+    "qid": "a0c26e5f-d3b8-5de1-8b82-72c08ecbc6fa",
+    "program": "subtract(8.6; 0.489)"
+  },
+  {
+    "qid": "a1788e3b-426a-5ace-829e-bd84c56f7147",
+    "program": ""
+  },
+  {
+    "qid": "e3179507-20cd-5f90-b906-db657b06b8e3",
+    "program": "chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); subtract(14.6; #0)"
+  },
+  {
+    "qid": "7f85de0b-c852-5587-8c24-fa0d370bc2d6",
+    "program": "subtract(32; 11)"
+  },
+  {
+    "qid": "9bbfe5d2-ed31-5f90-85cf-2d04af124d2b",
+    "program": "divide(18902; 26269)"
+  },
+  {
+    "qid": "f5ac2882-8dfc-584c-9d85-02ff05115abb",
+    "program": ""
+  },
+  {
+    "qid": "4bd23a11-ae63-5b94-9012-5443692a510d",
+    "program": "subtract(4.95; 3.63)"
+  },
+  {
+    "qid": "62098925-bd0c-59c1-8cb5-e4a09995f246",
+    "program": "subtract(32; 11)"
+  },
+  {
+    "qid": "9166cb16-b71b-5548-a113-e7505b8b8cd9",
+    "program": "table_max(Table 2; Thực phẩm; 1Q25; 2Q26); table_min(Table 2; Thực phẩm; 1Q25; 2Q26); subtract(#0; #1)"
+  },
+  {
+    "qid": "7930c0e1-16f3-569e-8e35-7c6cd54f7e64",
+    "program": ""
+  },
+  {
+    "qid": "693208a5-3237-5716-8d69-cbb0e667a5a7",
+    "program": "subtract(2032; 1847)"
+  },
+  {
+    "qid": "adfec9c2-4681-58c2-a09a-d3c6816bbe72",
+    "program": "multiply(26269; 2); subtract(57245; #0)"
+  },
+  {
+    "qid": "32843531-1ce2-5a60-b01a-cbaef38fbea3",
+    "program": "chart_at(Image 2; NĐT nước ngoài; T9/23; none)"
+  },
+  {
+    "qid": "88d859e6-e721-57ed-b338-c509eaf60ffb",
+    "program": "chart_average(Image 1; Tỷ lệ SHNN; 2022; 2024)"
+  },
+  {
+    "qid": "bf8764d5-c6a6-5c3d-ad8d-e405c63cf7bf",
+    "program": "subtract(8.8; 21.1); divide(#0; 21.1); multiply(#1; 100)"
+  },
+  {
+    "qid": "aaf64d9b-0a07-5071-8073-e7fb23b7a2b4",
+    "program": "chart_average(Image 3; Xuất khẩu; 01-25; 01-26)"
+  },
+  {
+    "qid": "29554d23-92b1-5081-98bb-ee4ade9a5505",
+    "program": "add(18905; 25868); greater(29222; #0)"
+  },
+  {
+    "qid": "09ee2a22-05e3-56f5-a4a5-e0a75fb34313",
+    "program": "table_max(Table 1; EPS (VND); FY 2021; FY 2026 (F)); table_min(Table 1; EPS (VND); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "1c258d0b-4cd0-5fdf-a057-4929442b38a9",
+    "program": "chart_max(Image 2; 5Y; none; none); chart_min(Image 2; 5Y; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "d6dba57e-1da5-5d36-8d4b-d2b73ae0909c",
+    "program": ""
+  },
+  {
+    "qid": "0e037c01-5f0e-590f-896d-e2569ed73314",
+    "program": "divide(1500; 3900); multiply(#0; 100)"
+  },
+  {
+    "qid": "79e33237-4412-5a88-97ee-ae77fbadc5e9",
+    "program": ""
+  },
+  {
+    "qid": "7cb3747e-d698-566c-a35f-553d2f91b936",
+    "program": "greater(279.2; 258)"
+  },
+  {
+    "qid": "62c5f4c5-6703-51d6-b75d-58a14e875b4b",
+    "program": ""
+  },
+  {
+    "qid": "9a392082-59f1-5470-8007-1c1d64234ed8",
+    "program": "divide(263192; 2801685)"
+  },
+  {
+    "qid": "5ab295f5-b7bf-5c0c-bde6-411e762dc943",
+    "program": "chart_max(Image 1; VN-Index; Sep 25; Sep 26); chart_min(Image 1; VN-Index; Sep 25; Sep 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "9c966144-1e47-5f49-b9de-59d3c72a3aea",
+    "program": "divide(481; 146300)"
+  },
+  {
+    "qid": "141cf289-d33c-5288-81a3-8e847492ef36",
+    "program": "subtract(20785; 11998)"
+  },
+  {
+    "qid": "8d978c6f-2b84-5026-ad22-da53a5b6dc2c",
+    "program": ""
+  },
+  {
+    "qid": "290ad75e-1f89-5e27-98f0-d1bed11faace",
+    "program": "add(475.02; 49.12); add(#0; 84.16)"
+  },
+  {
+    "qid": "b72f497d-a2a6-5969-b82e-b5c93dc74766",
+    "program": "chart_at(Image 1; Tỷ trọng GD của Khối ngoại; T12/23; none)"
+  },
+  {
+    "qid": "2890ec5c-6b64-52a3-8fd4-1b3511bdb7bd",
+    "program": "table_average(Table 1; column_5; none; none)"
+  },
+  {
+    "qid": "30596261-9d2f-58ab-a230-015b55ee9ccd",
+    "program": "subtract(6.6; 10.8)"
+  },
+  {
+    "qid": "af4c7730-71fb-5544-a3e6-d499c5a0c26c",
+    "program": "divide(1175; 2780)"
+  },
+  {
+    "qid": "2e32973f-ed36-5db2-8e26-f7c3929cf7e9",
+    "program": "chart_at(Image 1; Reform Package; 2026; none); chart_at(Image 1; Reform Package; 2030; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "eb8a13d8-d283-56fa-91dd-50700890d191",
+    "program": "subtract(2.39; 0.84)"
+  },
+  {
+    "qid": "8cdcedad-a87b-507f-ae3e-6d5b36556731",
+    "program": "divide(11998; 100); multiply(#0; 100); subtract(20785; #1)"
+  },
+  {
+    "qid": "c8019658-6b02-590e-bc4e-21a19670fa22",
+    "program": ""
+  },
+  {
+    "qid": "7d9bd212-3347-5273-9c5a-9d0873424b69",
+    "program": "add(891; 350)"
+  },
+  {
+    "qid": "01a97ab6-453b-5cbf-8a11-5b1c319b2bba",
+    "program": "table_max(Table 1; ROE (%); FY 2021; FY 2026 (F)); table_min(Table 1; ROE (%); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "bf4ba522-b54b-5ca0-85dd-3425a660456e",
+    "program": "subtract(1.97; 1.08)"
+  },
+  {
+    "qid": "b5cfaac3-2648-5194-b085-d038d120e45c",
+    "program": "chart_at(Image 3; KSB; 2024F; none); add(#0; 18); chart_at(Image 2; KSB - Tan My; none; none); subtract(#1; #2)"
+  },
+  {
+    "qid": "5e98a7ef-8b58-5acc-b24c-c1f95b0ecaaf",
+    "program": "divide(20785; 1000); subtract(#0; 11998)"
+  },
+  {
+    "qid": "791040d9-cf80-536e-94b6-01523a491e12",
+    "program": "divide(7737; 17206); multiply(#0; 100)"
+  },
+  {
+    "qid": "cfce68cc-8f85-59df-b9ae-f08ea009fb42",
+    "program": ""
+  },
+  {
+    "qid": "85fd3ee0-9c57-5267-a840-c5c0e5b7156d",
+    "program": "divide(73; 100); multiply(66.4; #0)"
+  },
+  {
+    "qid": "ee6644c1-b136-5804-8756-722a62a8c806",
+    "program": ""
+  },
+  {
+    "qid": "d6301228-1157-55c6-bf31-1d3cacfc8861",
+    "program": "divide(1423; 5055)"
+  },
+  {
+    "qid": "891779ef-eb01-5a11-87cd-b84f607e7ec2",
+    "program": "subtract(665.6; 662.8); divide(#0; 665.6); multiply(#1; 100)"
+  },
+  {
+    "qid": "ad95e37a-4280-593c-8d89-2402203cdb0d",
+    "program": "subtract(4616; 2499)"
+  },
+  {
+    "qid": "ba0caece-3d14-5b69-af3e-0dd6e2fda1a4",
+    "program": "subtract(21; 19.5)"
+  },
+  {
+    "qid": "f473d7f1-edee-5ca9-b04c-bbee53f381e2",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(21; #0)"
+  },
+  {
+    "qid": "5a47324b-6364-5115-8369-407e2ef0e096",
+    "program": ""
+  },
+  {
+    "qid": "26475fc6-cbc7-5a94-8577-40c371500779",
+    "program": "subtract(85.1; 80.2)"
+  },
+  {
+    "qid": "7fd2b288-76b5-50f6-82c8-306aef33c19a",
+    "program": "subtract(10.4; 8.4)"
+  },
+  {
+    "qid": "ddaad84c-69e7-56d1-a168-9ee130830df5",
+    "program": "divide(102.2; 1273)"
+  },
+  {
+    "qid": "c260bd16-374a-50fc-8b53-9c0998f275a0",
+    "program": "chart_max(Image 1; VGC VN; Sep 25; Sep 26); chart_min(Image 1; VGC VN; Sep 25; Sep 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "de3b301a-66d1-59e1-b9d8-2462297700fa",
+    "program": "table_average(Table 1; 2026 (tăng trưởng GDP: 10% svck); Q1; Q4)"
+  },
+  {
+    "qid": "756a90f6-ad43-5c27-97b0-f3c80ef293fa",
+    "program": "chart_at(Image 1; VN-Index; Jul 26; none); chart_at(Image 1; PHR VN; Jul 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "97c4a1b0-2c11-5ff2-8aff-8d4c75065c73",
+    "program": ""
+  },
+  {
+    "qid": "4830d60c-892c-561f-bca6-682aff9d8be4",
+    "program": "divide(5.2; 100); add(1; #0)"
+  },
+  {
+    "qid": "8a2b2c05-f052-55c9-8a56-217ca2e76c23",
+    "program": ""
+  },
+  {
+    "qid": "6071703c-2651-58e1-b40a-c7842ad25ef6",
+    "program": "greater(2690; 20785)"
+  },
+  {
+    "qid": "d0b2a5d8-3ed7-5fb9-9b8d-2975c2dbf517",
+    "program": ""
+  },
+  {
+    "qid": "0ffd608c-81c6-5139-a227-3384d742adc3",
+    "program": "chart_at(Image 5; Nhập khẩu; 07-26; none); chart_at(Image 5; Xuất khẩu; 07-26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "8b434777-b3cb-5a2b-961b-f05d886268ac",
+    "program": "chart_average(Image 1; VCB VN; none; none)"
+  },
+  {
+    "qid": "dc191374-e95c-557f-b4bf-a0eace237892",
+    "program": "chart_at(Image 1; VNMidcap; 12/03/2023; none)"
+  },
+  {
+    "qid": "cd4000ab-5529-5ea0-b1ba-0c81874709bf",
+    "program": "divide(4; 100); multiply(30065; #0)"
+  },
+  {
+    "qid": "c98ffb89-2b74-5f1b-9161-ca2f6933f0d9",
+    "program": "table_max(Table 2; Dòng vốn (triệu USD); none; none)"
+  },
+  {
+    "qid": "4597822d-9e22-542c-90e0-5883e208d91a",
+    "program": "subtract(5637; 5267); divide(#0; 5267); multiply(#1; 100)"
+  },
+  {
+    "qid": "9dfbacd7-2348-59db-8b86-1a6c23033fd6",
+    "program": "subtract(53; 25)"
+  },
+  {
+    "qid": "288e6f80-6736-552e-a772-a4d6f0ebf053",
+    "program": "subtract(300000; 150000)"
+  },
+  {
+    "qid": "b480b4d2-142a-5eab-b426-0d07423c8767",
+    "program": "subtract(13147; 9084); divide(#0; 9084); multiply(#1; 100)"
+  },
+  {
+    "qid": "76750840-a4df-55f3-bd8f-33d1bad1700f",
+    "program": "subtract(15925; 9870); divide(#0; 9870); multiply(#1; 100)"
+  },
+  {
+    "qid": "833aaf2e-c1cd-5289-bf7b-ada1a9309bb8",
+    "program": ""
+  },
+  {
+    "qid": "9e3f93eb-e2a2-5426-a602-1e8bc3c15bca",
+    "program": "table_max(Table 1; ROE (%); FY (Dec. 31); 2028F); table_min(Table 1; ROE (%); FY (Dec. 31); 2024); subtract(#0; #1)"
+  },
+  {
+    "qid": "e03171eb-7339-5f9c-baf7-c11374874cfb",
+    "program": ""
+  },
+  {
+    "qid": "715b880d-99ac-5d98-9870-4698e9b1a29a",
+    "program": "add(891; 350)"
+  },
+  {
+    "qid": "6143fb48-6461-5ed4-9cad-a3f704aa9131",
+    "program": "chart_at(Image 1; Cổ phiếu; Mar-25; none); subtract(48.7; #0)"
+  },
+  {
+    "qid": "c12b6792-554c-5f41-af78-0b319d06bcf4",
+    "program": "divide(50; 84)"
+  },
+  {
+    "qid": "88c84383-5ec1-516d-a083-8302993a5861",
+    "program": ""
+  },
+  {
+    "qid": "7db1c230-21a3-54c5-a249-1976a0e74dc7",
+    "program": "chart_at(Image 2; Bất động sản; T8; none)"
+  },
+  {
+    "qid": "bdfb07cf-19a8-5ea3-a837-192d31e5cf50",
+    "program": "table_sum(Table 1; LN trước thuế (tỷ đồng); 2023; 2025)"
+  },
+  {
+    "qid": "fae24809-12b1-5b35-8c1b-2f609b6daf52",
+    "program": "divide(134.8; 3837.4); multiply(#0; 100)"
+  },
+  {
+    "qid": "68cd8ed9-7b1d-5271-9e4e-c9236e0930a4",
+    "program": "multiply(5637; 50.2); divide(#0; 100)"
+  },
+  {
+    "qid": "af5b0d3d-c025-51c3-b72c-dfcb9a4aeed8",
+    "program": "chart_max(Image 1; VN-Index; none; none); chart_min(Image 1; VN-Index; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "f2ad144c-4f2f-57c0-bb6c-d5cce45db4fc",
+    "program": "chart_at(Image 1; ANV VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "ab5d4912-b45b-547d-b339-eb9b1451858f",
+    "program": ""
+  },
+  {
+    "qid": "20d228bb-8cfa-594e-b6c3-1525150b5f55",
+    "program": ""
+  },
+  {
+    "qid": "1d980dcc-9630-50e6-ad10-d0e1f4a2127b",
+    "program": "divide(498; 1301)"
+  },
+  {
+    "qid": "9f82c012-ead8-5826-a663-a2b93e14f35d",
+    "program": "chart_at(Image 1; Hàng tồn kho (T6/2026); VHM; none); chart_at(Image 1; Hàng tồn kho (T6/2026); NVL; none); add(#0; #1)"
+  },
+  {
+    "qid": "0762b7ba-cf2f-5f76-b7ce-d40e6e37486d",
+    "program": ""
+  },
+  {
+    "qid": "b2193c8d-dae6-5280-a24e-c5085b985e1d",
+    "program": ""
+  },
+  {
+    "qid": "9a18310b-1d96-560d-9e59-4016c922a8b0",
+    "program": "subtract(-336; -39)"
+  },
+  {
+    "qid": "3ee3771b-7c71-50c1-b512-7f6215b657cb",
+    "program": "table_max(Table 1; P/E (x); FY 2021; FY 2026 (F)); table_min(Table 1; P/E (x); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "5bce5f23-c28f-5304-ae3a-6bcf870b0779",
+    "program": "chart_at(Image 2; Khác; none; none); chart_at(Image 2; Máy móc thiết bị; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "04fee64d-9717-5927-ba07-83f3fb73ce9d",
+    "program": "table_max(Table 1; ROE (%); FY 2021; FY 2026 (F)); table_min(Table 1; ROE (%); FY 2021; FY 2026 (F)); subtract(#0; #1)"
+  },
+  {
+    "qid": "94d102d7-80b0-5332-bd83-0bad6c68adc8",
+    "program": "subtract(904; 651)"
+  },
+  {
+    "qid": "b1de25a6-97e6-56dc-9f53-2e25c0cd9f75",
+    "program": "subtract(6.44; 25); divide(#0; 100)"
+  },
+  {
+    "qid": "0e2e720c-9ebc-5ad6-8d9d-d4cc51c6ca2f",
+    "program": "subtract(289; 4)"
+  },
+  {
+    "qid": "fcfa3f58-2d70-5ae2-b8ba-7aac14cd0d56",
+    "program": "subtract(8.5; 2.2)"
+  },
+  {
+    "qid": "01b985ab-47cb-51ed-83f4-9f4b231a8d42",
+    "program": ""
+  },
+  {
+    "qid": "2dc9b38f-80de-5266-b018-4fe77cdead45",
+    "program": "chart_at(Image 1; DCM VN; Aug 26; none); chart_at(Image 1; VN-Index; Aug 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "2fd2cde0-d596-5147-a847-164058738ce4",
+    "program": "divide(24.4; 100); multiply(23.2; #0); subtract(28.1; #1)"
+  },
+  {
+    "qid": "dc9d6abd-0568-5b96-8bc2-5ab9b7356476",
+    "program": "chart_max(Image 1; TCB VN; Aug 25; Aug 26); chart_min(Image 1; TCB VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "88189921-b99f-502e-8670-9b371d157814",
+    "program": ""
+  },
+  {
+    "qid": "983d19c6-ba26-5a0f-9213-f45d1da20332",
+    "program": "subtract(84; 71)"
+  },
+  {
+    "qid": "6ae4f983-60d6-58b7-8581-d493ed6dd794",
+    "program": "chart_at(Image 1; TCB VN; Aug 25; none); chart_at(Image 1; TCB VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(#4; 100); subtract(5413; 3569); divide(#6; 3569); multiply(#7; 100); subtract(#5; #8)"
+  },
+  {
+    "qid": "d2124e12-6472-5661-9252-51a3a3f2eba0",
+    "program": "subtract(2.39; 0.84)"
+  },
+  {
+    "qid": "b41ff405-fc33-5ed7-a78c-028b1afe78ff",
+    "program": ""
+  },
+  {
+    "qid": "9aabf0dd-0720-525a-90d8-b842e1a0f63a",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2010; none); chart_at(Image 1; Tỷ lệ SHNN; 2009; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "12a7a00f-fa61-5a37-b946-2b9aaec52786",
+    "program": "chart_max(Image 1; VHC VN; Aug 25; Aug 26); chart_min(Image 1; VHC VN; Aug 25; Aug 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "eba800ed-8a7e-57ce-adc2-4533bb1ee0f2",
+    "program": "chart_at(Image 2; Cá nhân trong nước; T12/23; none); chart_at(Image 2; Tổ chức trong nước; T12/23; none); add(#0; #1)"
+  },
+  {
+    "qid": "8a6a530f-1c0a-5bc5-bb02-a5a34f06b8fb",
+    "program": ""
+  },
+  {
+    "qid": "d1d38723-c185-5f84-80ce-b0c78951341b",
+    "program": "table_average(Table 1; Lãi ròng (tỷ đồng); FY 2021; FY 2025)"
+  },
+  {
+    "qid": "eacae74e-16c2-5394-ab4c-676f73db066b",
+    "program": "subtract(26338; 18902)"
+  },
+  {
+    "qid": "f0e5ad48-8cd0-5b52-a10e-98081846db39",
+    "program": "chart_at(Image 1; Tỷ trọng GD của Khối ngoại; T12/23; none); subtract(9.86; #0)"
+  },
+  {
+    "qid": "474cd684-0b10-5441-a272-8bace624d816",
+    "program": ""
+  },
+  {
+    "qid": "f92e89e2-749e-50b3-8900-cb4b489f5102",
+    "program": "chart_at(Image 2; DMX; 26; none); chart_at(Image 2; TGDD; 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "4f0d5c9a-219d-5299-9833-9ce68aee7892",
+    "program": ""
+  },
+  {
+    "qid": "bfd65d5b-68a3-571b-9b9b-75bc7eee00d5",
+    "program": "chart_max(Image 1; VN-Index; none; none); chart_min(Image 1; VN-Index; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "593f8492-477f-51ca-b9f1-6dda0fc825e8",
+    "program": "chart_average(Image 1; VN-Index; Aug 25; Aug 26)"
+  },
+  {
+    "qid": "ad6e71f4-563f-5523-b2fa-db0b73f929bf",
+    "program": ""
+  },
+  {
+    "qid": "588fc71a-08e8-515b-ac79-0599a65bdb97",
+    "program": "subtract(-1.5; -123)"
+  },
+  {
+    "qid": "65b30b64-0e50-5ffe-940b-7db75ecb5dc6",
+    "program": "subtract(56.6; 39.3)"
+  },
+  {
+    "qid": "3312d819-f52d-506a-9d7b-e1bf9a18d8a7",
+    "program": ""
+  },
+  {
+    "qid": "b7255fd0-7591-5828-9947-fe4abd5583ab",
+    "program": "chart_at(Image 2; Khác; none; none); chart_at(Image 2; Máy móc thiết bị; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "9ad438d5-94e7-512b-8dbf-4001e98dd9a9",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2024; none); chart_at(Image 1; Tỷ lệ SHNN; 2023; none); subtract(#1; #0)"
+  },
+  {
+    "qid": "9136d3a6-234b-56c0-9754-540cbe4e99cf",
+    "program": "chart_at(Image 2; Cá nhân trong nước; T12/23; none); chart_at(Image 2; Tổ chức trong nước; T12/23; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "a274f339-1134-5463-a020-9b042b891959",
+    "program": "chart_at(Image 3; 2024; IDC; none); divide(#0; 100); subtract(#1; 1)"
+  },
+  {
+    "qid": "41b3772e-cb34-5604-ae6b-d29892ecc92f",
+    "program": "chart_max(Image 1; VN-Index; none; none)"
+  },
+  {
+    "qid": "8e7f07e4-3a97-541f-939e-08ea25fea8dc",
+    "program": "chart_max(Image 1; PHR VN; Sep 25; Sep 26); chart_min(Image 1; PHR VN; Sep 25; Sep 26); subtract(#0; #1)"
+  },
+  {
+    "qid": "7c52556e-38e2-5196-89a1-ee8c3666f359",
+    "program": "chart_max(Image 1; VN-Index; none; none); chart_min(Image 1; VN-Index; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "518bb0d2-513a-5701-80e7-5d932043c5ee",
+    "program": "subtract(7; -10)"
+  },
+  {
+    "qid": "c9f40a4a-3427-5b2b-8eaa-406814a3070e",
+    "program": "add(1157; 1510)"
+  },
+  {
+    "qid": "c1e1cc60-efbf-5701-b0c3-7942663d2e4b",
+    "program": "chart_at(Image 2; KSB - Tan My; none; none); chart_at(Image 2; KSB - Thien Tan 7; none; none); add(#0; #1)"
+  },
+  {
+    "qid": "efaabf01-cec9-52ec-acf5-37cd6c59ea18",
+    "program": "subtract(30; 20)"
+  },
+  {
+    "qid": "cea9e73f-1da1-55ce-9f72-2e70c4ed7ebe",
+    "program": "chart_at(Image 3; Nhập khẩu; 01-26; none); chart_at(Image 5; IIP; 1T2026; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "3ebd4b49-2616-5777-92ad-aa8e93990730",
+    "program": "table_max(Table 1; NSI@svck.; none; none); table_min(Table 1; NSI@svck.; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "2cfc59b5-914d-5469-87be-0209d60831e4",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Nov-23; none); chart_at(Image 1; VNIIndex; Nov-23; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "cb15529d-2b6f-53c2-89c7-634b23ff40d0",
+    "program": "chart_at(Image 1; GT mua/bán ròng; Jan-25; none); subtract(#0; 28000)"
+  },
+  {
+    "qid": "492dae35-55d8-5512-a2c7-d9645e033ffd",
+    "program": "divide(47; 100); multiply(18902; #0)"
+  },
+  {
+    "qid": "d6c6f911-cc61-50a3-a4b3-fb81ceaffa15",
+    "program": "subtract(12; 3)"
+  },
+  {
+    "qid": "801977c7-1450-5bb3-aa70-5bbdd7a8a504",
+    "program": "multiply(2890; 9.0)"
+  },
+  {
+    "qid": "bcc6933b-634b-5401-bd83-361f54bb4cd1",
+    "program": ""
+  },
+  {
+    "qid": "497d229d-b7e3-5de8-8b69-4b76596fe005",
+    "program": "subtract(4; -4)"
+  },
+  {
+    "qid": "9c4ba826-a8b0-55b3-beff-e36a2e46849d",
+    "program": ""
+  },
+  {
+    "qid": "606c2f38-bff1-53b6-9e6b-f5e07f45b1f6",
+    "program": ""
+  },
+  {
+    "qid": "e53c5ed2-1fd8-5866-9cd6-259e35533d22",
+    "program": ""
+  },
+  {
+    "qid": "6bd2ba27-3f84-5b98-8727-bf0aa5c64747",
+    "program": "subtract(24.4; 3.5)"
+  },
+  {
+    "qid": "e6446dc2-edb4-51ce-9676-34655dbf306b",
+    "program": "table_max(Table 1; NSI@6T2026; none; none); table_min(Table 1; NSI@6T2026; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "7cce48d5-fb46-5149-a193-1ad723f0fbea",
+    "program": "table_average(Table 2; Vốn hóa (triệu USD); none; none)"
+  },
+  {
+    "qid": "6fec6902-7514-5bb1-8f46-a777e815f8bb",
+    "program": "chart_at(Image 1; VN-Index; Sep 26; none); chart_at(Image 1; PHR VN; Sep 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "1c1c84e0-aa16-5360-9bb2-c4dda5774198",
+    "program": "divide(875; 1795)"
+  },
+  {
+    "qid": "3ce4876a-2a14-504f-99b7-ac3f5cc02d3a",
+    "program": "table_average(Table 1; ROE (%); none; none)"
+  },
+  {
+    "qid": "0a36d758-d10c-56d6-b122-f91a2a74e542",
+    "program": "chart_at(Image 1; Thấp nhất 1 năm; 4/4/2025; none); divide(#0; 100)"
+  },
+  {
+    "qid": "6f235e2b-90f3-5959-938a-e0c520edd982",
+    "program": "subtract(1423; 331)"
+  },
+  {
+    "qid": "7c32cb0f-64e1-5b9a-a1c6-0667b36c554c",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Nov-23; none)"
+  },
+  {
+    "qid": "d29b76b1-9fd2-5a88-b653-9eb84a9e9a31",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2020; none); chart_at(Image 1; Tỷ lệ SHNN; 2024; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "8163d106-badd-5f05-b7d3-6e9de078c2b5",
+    "program": ""
+  },
+  {
+    "qid": "bccb2978-f5a4-5e5e-a7fa-d8df944a593a",
+    "program": ""
+  },
+  {
+    "qid": "6478e874-823b-5ee8-b4d8-f07d07733abc",
+    "program": "greater(10904; 8591)"
+  },
+  {
+    "qid": "90321084-3d66-51fc-a63a-4adaa947a01c",
+    "program": "subtract(20785; 16631); divide(#0; 16631); multiply(#1; 100)"
+  },
+  {
+    "qid": "7336616c-ce65-5642-9e1f-78cad4344b88",
+    "program": ""
+  },
+  {
+    "qid": "b4553caf-015a-530f-b0e9-75b4d1f9de15",
+    "program": "subtract(20.2; 17.2)"
+  },
+  {
+    "qid": "419f2f1e-5a81-50a4-b417-9d594a339ed3",
+    "program": ""
+  },
+  {
+    "qid": "a29be74f-b49e-5750-9715-1253fc182a17",
+    "program": "add(20.4; 90.4); add(#0; 99.2); add(#1; 113.4); subtract(111.8; #2)"
+  },
+  {
+    "qid": "1b6130f0-aef0-570a-b2b8-caad76f6f89e",
+    "program": "multiply(21; 100); divide(#0; 100); subtract(88; #1)"
+  },
+  {
+    "qid": "3981d7b0-b23a-58c3-aafb-dc71344e73ad",
+    "program": "subtract(1.0; 0.6)"
+  },
+  {
+    "qid": "f7c91e9b-9bfe-5289-93f1-e8732e6983c4",
+    "program": "subtract(23.2; 15.5)"
+  },
+  {
+    "qid": "4c0c6dbc-c62e-5155-a392-a172122b52dd",
+    "program": "chart_at(Image 1; Cảng biển & Logistics; Jun-23; none); chart_at(Image 1; VNIIndex; Jun-23; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "d7161772-e314-599c-a497-37aa2ef44ce4",
+    "program": "subtract(22.2; 21)"
+  },
+  {
+    "qid": "8df5c216-ac4b-5d5b-bd3c-d6a8291e3dcd",
+    "program": "chart_at(Image 2; 2023; Jan; none); chart_at(Image 2; 2023; Nov; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100); subtract(-1; #4)"
+  },
+  {
+    "qid": "696f086c-a156-5a0b-a562-7028ed435d12",
+    "program": "chart_at(Image 3; Thủy điện; 2Q26; none); divide(#0; 100); multiply(529; #1)"
+  },
+  {
+    "qid": "930aa9f6-783c-56f3-a046-c25f2f534190",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2015; none); chart_at(Image 1; Tham chiếu; 2015; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "125946fd-aeba-518e-a97e-a1fa8c8059cb",
+    "program": "chart_max(Image 1; DCM VN; none; none); chart_min(Image 1; DCM VN; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "f34bc4c3-967f-5bab-97f7-07d67ef6196f",
+    "program": ""
+  },
+  {
+    "qid": "bcaf6314-8ccf-5806-ac31-397d2e438110",
+    "program": "chart_at(Image 2; Dịch vụ tài chính; T12; none); add(3.2; 2.3); subtract(#1; #0)"
+  },
+  {
+    "qid": "41c9a110-2a2f-5741-992b-3587f971b39d",
+    "program": ""
+  },
+  {
+    "qid": "7c1ce94a-d4da-59a2-825e-739c617db968",
+    "program": "chart_at(Image 1; Tỷ lệ SHNN; 2010; none); chart_at(Image 1; Tỷ lệ SHNN; 2009; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "fe566ec2-cc95-5732-a0f2-7ab5fd518ad7",
+    "program": "divide(21100; 2103)"
+  },
+  {
+    "qid": "21614cda-2502-58e1-83ff-401e3241b7ef",
+    "program": "add(498; 99); add(#0; 32)"
+  },
+  {
+    "qid": "ff70cc2d-c799-5193-9ab2-45b134b2550c",
+    "program": "chart_max(Image 1; Tỷ trọng GD của Khối ngoại; T1/23; T12/23); chart_min(Image 1; Tỷ trọng GD của Khối ngoại; T1/23; T12/23); subtract(#0; #1)"
+  },
+  {
+    "qid": "2a38d637-cbf0-50d4-b6cf-6f25f981ed34",
+    "program": "table_min(Table 1; Tỷ lệ LNHĐKD (%); FY 2021; FY 2026 (F))"
+  },
+  {
+    "qid": "5c78d662-c0c2-57aa-b9bc-ad2b66ec1f8a",
+    "program": "table_max(Table 1; EPS (VND); FY 2021; FY 2026 (F))"
+  },
+  {
+    "qid": "cc36d5a2-6cd0-53b2-aac2-0f0a59c44818",
+    "program": ""
+  },
+  {
+    "qid": "76557bad-1ff6-5600-a45d-476fefe30b6d",
+    "program": "table_average(Table 1; VNIndex; 2020; 2020)"
+  },
+  {
+    "qid": "9eb5b5ed-e982-5ca1-8446-f5f5c531c17d",
+    "program": "chart_at(Image 1; VGC VN; Sep 26; none); chart_at(Image 1; VN-Index; Sep 26; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "32ac235e-46d3-5169-b2e8-ee7e307e69f0",
+    "program": ""
+  },
+  {
+    "qid": "9553a6f9-b27c-56b2-907a-3003415e6bce",
+    "program": "table_max(Table 2; Nhóm hàng ICT-CE; 1Q25; 2Q26); table_min(Table 2; Nhóm hàng ICT-CE; 1Q25; 2Q26); subtract(#0; #1)"
+  },
+  {
+    "qid": "465eeb86-27b8-5877-8f2c-070640862080",
+    "program": "subtract(20.5; 19.7)"
+  },
+  {
+    "qid": "ae8a70ab-45a1-5709-9cb4-a23d4f51142f",
+    "program": ""
+  },
+  {
+    "qid": "aa4c68eb-662a-570f-9c8e-b30ff868c273",
+    "program": ""
+  },
+  {
+    "qid": "72824d2d-64a6-54d5-ae2a-b0857eabc6c6",
+    "program": "divide(578; 904)"
+  },
+  {
+    "qid": "c97cfbd8-9f4a-53fa-93fb-aa11b41fbfa5",
+    "program": "divide(3413; 22756)"
+  },
+  {
+    "qid": "7feb169a-598a-5681-9d24-e6e5c3889f2b",
+    "program": "table_average(Table 1; P/E (x); 2026F; 2028F)"
+  },
+  {
+    "qid": "923df309-baea-5295-92c9-d1626c7869ff",
+    "program": "greater(14.6; 3)"
+  },
+  {
+    "qid": "baf65696-f4f6-5acd-8d45-770c51841d52",
+    "program": ""
+  },
+  {
+    "qid": "47350cab-06ec-561c-b9b2-3c1e714cf45d",
+    "program": "table_max(Table 1; Tăng trưởng NPATMI@2Q26; none; none); table_min(Table 1; Tăng trưởng NPATMI@2Q26; none; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "b9eefec0-7ac6-5834-8f37-20e226fd5144",
+    "program": "chart_at(Image 2; Cổ phiếu EM (LHS); Mar-22; none); chart_at(Image 2; Cổ phiếu EM (LHS); Jul-22; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "91b4b739-68c0-57cd-9991-2a7823b1a2ed",
+    "program": "chart_average(Image 3; Chỉ số giá sản xuất nhóm máy tính và thiết bị ngoại vi; none; none)"
+  },
+  {
+    "qid": "b543306e-73bc-552f-a144-0d734cfcbdac",
+    "program": "subtract(53.5; 29.2)"
+  },
+  {
+    "qid": "36c2426b-fdb6-5041-91a6-197eb3f33d5b",
+    "program": ""
+  },
+  {
+    "qid": "b760159a-6f9e-5373-a817-688867a8c4f8",
+    "program": ""
+  },
+  {
+    "qid": "693b2216-55f3-527c-b7d3-bb48ff551071",
+    "program": "chart_at(Image 2; 2023; Jan; none); subtract(#0; -1)"
+  },
+  {
+    "qid": "8d2173e8-0729-56ec-98f0-3c1f47251991",
+    "program": "chart_at(Image 1; Trái phiếu; Aug-22; none); subtract(19; #0)"
+  },
+  {
+    "qid": "f17cc8a2-8254-5fea-87bb-847852661a0c",
+    "program": "chart_at(Image 2; Cổ phiếu DM (LHS); Jul-22; none); subtract(3.5; #0)"
+  },
+  {
+    "qid": "d54c9a01-1013-556c-aef6-10d50a355df7",
+    "program": ""
+  },
+  {
+    "qid": "519febcf-559b-584c-b9a7-ce93633fd799",
+    "program": "divide(4876; 7350)"
+  },
+  {
+    "qid": "da1159ba-766c-5245-bbda-609839f27ad6",
+    "program": "subtract(136; 50)"
+  },
+  {
+    "qid": "63d772bb-19fe-5b66-b31e-2b1886161b48",
+    "program": "divide(89154; 6324); subtract(#0; 14.1)"
+  },
+  {
+    "qid": "3d6197eb-a02e-588b-a3a8-fad0e6fac081",
+    "program": ""
+  },
+  {
+    "qid": "83ceddff-d842-5b6d-980c-72fe5f820d3f",
+    "program": "subtract(45.2; 23.7)"
+  },
+  {
+    "qid": "9ad4fcd8-b3d2-58e1-9b64-73a6e5797b2b",
+    "program": "chart_at(Image 1; TCB VN; Feb 26; none); chart_at(Image 1; TCB VN; Aug 26; none); divide(#0; #1)"
+  },
+  {
+    "qid": "a6ecc1be-11c3-5401-8343-8b273f22d37d",
+    "program": ""
+  },
+  {
+    "qid": "37547235-f30a-5133-832f-41a811a80229",
+    "program": "chart_at(Image 1; DCM VN; Aug 25; none); chart_at(Image 1; DCM VN; Aug 26; none); subtract(#1; #0); divide(#2; #0); multiply(#3; 100)"
+  },
+  {
+    "qid": "753609e5-954d-5500-a590-5b9b58385332",
+    "program": "chart_at(Image 1; VNMidcap; 12/03/2023; none); chart_at(Image 1; VN30; 12/03/2023; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "1b602082-2194-5379-be3c-6a73eae47617",
+    "program": ""
+  },
+  {
+    "qid": "eb7d3e92-3ac5-50a3-900e-171fce060d8e",
+    "program": "subtract(21.3; -1.5)"
+  },
+  {
+    "qid": "62647088-fce6-511d-a3e2-663828c7e8ba",
+    "program": "add(-123; -72.8); subtract(-1.5; #0)"
+  },
+  {
+    "qid": "240fa7b5-528d-5aed-b6b8-6384212e21f6",
+    "program": "chart_at(Image 1; DCM VN; Jun 26; none); chart_at(Image 1; VN-Index; Jun 26; none); greater(#0; #1)"
+  },
+  {
+    "qid": "2fa08c12-52a8-5651-8705-f91229a89ede",
+    "program": "chart_at(Image 2; Cổ phiếu DM (LHS); Jul-22; none); chart_at(Image 2; Cổ phiếu EM (LHS); Jul-22; none); subtract(#0; #1)"
+  },
+  {
+    "qid": "36250b48-a9f5-5d58-9052-8efd9a35f4c0",
+    "program": "subtract(19; 18)"
+  },
+  {
+    "qid": "4b37ef39-fdbe-53bf-bc14-bdb1fdb6219f",
+    "program": "subtract(500; 300)"
+  }
+]
