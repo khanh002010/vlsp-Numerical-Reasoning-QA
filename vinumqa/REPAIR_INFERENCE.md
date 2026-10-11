@@ -1,5 +1,7 @@
 # Chạy lại private test với checkpoint hiện tại
 
+> Hướng dẫn dưới đây là phiên bản cũ. Với policy private v2, dùng [PRIVATE_REPAIR_V2.md](PRIVATE_REPAIR_V2.md): `results.json` chỉ xuất khi đủ program không rỗng. Các mô tả xuất chuỗi rỗng bên dưới không còn áp dụng cho runner mới.
+
 Không bắt buộc train lại cho bản sửa này. `INSTRUCTION`, FORMAT_VERSION và kiến trúc adapter không đổi; code sửa việc dựng nguồn, kiểm tra và retry khi inference. Dùng lại `final` hoặc một checkpoint tương thích. Sửa dữ liệu OCR không tự cập nhật các file kết quả cũ: phải chạy inference lại. Accuracy chỉ tính được ở public test có đáp án; private test chỉ báo mức hoàn tất và lỗi kiểm tra.
 
 Luồng mới ở `vinumqa.pipeline.repair_inference`, thay cho cell notebook cũ chỉ gọi `generate_with_prompt` một lần rồi bỏ trống câu bị loại.

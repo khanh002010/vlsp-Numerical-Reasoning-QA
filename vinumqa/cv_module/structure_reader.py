@@ -1,5 +1,6 @@
 """GPU adapter for bounded structure reads and optional numerical evidence reads."""
 import json
+from copy import deepcopy
 from pathlib import Path
 from PIL import Image
 from vinumqa.cv_module.structure import STRUCTURE_PROMPT, STRUCTURE_RETRY_PROMPT, json_object, validate_box
@@ -69,7 +70,7 @@ class ChartStructureReader:
                 print(f"[Structure] focused recovery: {retry_error}", flush=True)
                 return self._read_parts(path, focus, box)
 
-    def _read_parts(self, path, focus="", box=None):
+    def _read_parts(self, path, focus="", box=None, only=None, original=None):
         """Reduce generation length by reading independent fields from actual pixels.
 
         Never salvage a truncated JSON or invent names to pass the validator.
@@ -101,8 +102,11 @@ class ChartStructureReader:
              'and numerical scale ticks are NOT category labels. '
              'For horizontal bars copy full row names, not bar values. Do not list data points.'),
         ]
-        merged = {"regions": {}, "uncertain": []}
+        merged = deepcopy(original) if original is not None else {"regions": {}, "uncertain": []}
+        merged['uncertain'] = []
         for phase, template, instruction in fields:
+            if only is not None and phase != only:
+                continue
             prompt = ('Read the actual image. Return ONLY compact JSON, no Markdown. '
                       'Do not guess unreadable text. Template: '
                       + json.dumps({**template, "uncertain": []}) + '\n' + instruction + focus)
@@ -210,6 +214,7 @@ class ChartStructureReader:
         return self._structure(path)
 
     def inspect(self, path, request, structure):
+        self.last_generation = {'attempts': []}
         box = request.get("box") or structure.get("regions", {}).get(request["region"])
         hint = json.dumps({"region": request["region"], "unverified_series_hint": request["series"]}, ensure_ascii=False)
         focus = "\nFocus request: " + hint + (
@@ -219,7 +224,16 @@ class ChartStructureReader:
             "Do not turn printed point values into Y categories. Read Vietnamese accents exactly. "
             "A full-image review replaces incorrect labels; do not preserve a previous guess. "
             "If cropped, report only visible labels and set both completeness flags false.")
-        return {"structure": self._structure(path, focus, box), "full_image": box is None}
+        # Repeating the same all-fields prompt reproduces role confusion. Inspection
+        # deliberately uses independent legend/X/Y reads and their per-field guards.
+        region = request['region']
+        if region in {'legend', 'x_axis', 'y_axis'}:
+            fields = {'legend': ['title', 'kind', 'series', 'series_complete'],
+                      'x_axis': ['x_labels', 'x_labels_complete', 'x_order_known'],
+                      'y_axis': ['y_labels']}[region]
+            observed = self._read_parts(path, focus, box, only=region, original=structure)
+            return {'structure': observed, 'full_image': box is None, 'replace_fields': fields}
+        return {"structure": self._read_parts(path, focus, box), "full_image": box is None}
 
     def read_values(self, path, lookup, structure):
         from vinumqa.nlp_module.dsl_operators import DSL_OPERATORS

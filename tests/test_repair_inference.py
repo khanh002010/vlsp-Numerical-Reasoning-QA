@@ -91,9 +91,11 @@ class RepairRoundTests(unittest.TestCase):
             with self.assertRaises(KeyboardInterrupt):
                 run_repair(inp, root, root / "adapter", store.path, root / "out", store=store,
                            generator_factory=lambda: first, max_rounds=1)
-            rows = json.loads((root / "out/results.json").read_text())
+            self.assertFalse((root / 'out/results.json').exists())
+            rows = json.loads((root / "out/accepted.partial.json").read_text())
             self.assertTrue(rows[0]["predicted"])
-            self.assertFalse(rows[1]["predicted"])
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(json.loads((root/'out/unresolved.json').read_text())[0]['qid'], '1')
             second = Mock(generate_with_prompt=Mock(return_value=prediction("add(2; 3)")))
             self.assertTrue(run_repair(inp, root, root / "adapter", store.path, root / "out", store=store,
                                       generator_factory=lambda: second, max_rounds=1)["complete"])
@@ -115,7 +117,7 @@ class RepairRoundTests(unittest.TestCase):
                 return prediction(f"chart_at(Image 1; {'TCBB' if use_old else 'TCB'}; 2026; none)")
             generator = Mock(generate_with_prompt=Mock(side_effect=generate))
             run_repair(inp, root, root / "adapter", store.path, root / "out", store=store,
-                       generator_factory=lambda: generator, max_rounds=2)
+                       generator_factory=lambda: generator, max_rounds=2, nlp_attempts=1)
             self.assertEqual(len(calls), 4)
             output = json.loads((root / "out/results.json").read_text())
             self.assertTrue(all("; TCB;" in r["predicted"] for r in output))

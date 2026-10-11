@@ -16,7 +16,16 @@ from vinumqa.data.context import build_inline_context
 from vinumqa.nlp_module.contracts import build_prompt, INSTRUCTION
 from vinumqa.nlp_module.data_prep.incremental import write_json
 from vinumqa.nlp_module.inference.evidence_validation import validate_evidence
-from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE, REVIEW_VERSION, structure_concerns
+from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE, REVIEW_VERSION, structure_concerns, source_catalog
+
+
+DEFAULT_REVIEWED = Path(__file__).resolve().parents[1] / 'data' / 'reviewed_private_structures.json'
+
+
+def fatal_runtime_error(error):
+    message = str(error).lower()
+    return any(x in message for x in ('out of memory', 'device-side assert', 'cuda error',
+                                      'context budget', 'model not loaded', 'initialization failed'))
 
 
 def digest(value):
@@ -77,11 +86,25 @@ def export_outputs(output_dir, data, state, phase):
     ready = sum(bool(r["program"]) for r in programs)
     # Save state first. Reruns rebuild all exports from state if interrupted mid-export.
     write_json(output_dir / "state.json", state)
-    write_json(output_dir / "results.json", [{"qid": r["qid"], "predicted": r["program"]} for r in programs])
-    write_json(output_dir / "results_program.json", programs)
+    # Never publish empty programs as a submission. Progress and failures have separate files.
+    accepted = [r for r in programs if r['program']]
+    write_json(output_dir / "accepted.partial.json", [{"qid": r["qid"], "predicted": r["program"]} for r in accepted])
+    write_json(output_dir / "unresolved.json", [
+        {'qid': s['qid'], 'question': s['qa']['question'],
+         'candidate': records.get(s['qid'], {}).get('program') or None,
+         'errors': records.get(s['qid'], {}).get('evidence_validation', {}).get('errors', ['Not processed'])}
+        for s in data if not records.get(s['qid'], {}).get('valid') or not records.get(s['qid'], {}).get('program')])
+    if ready == len(data):
+        write_json(output_dir / "results.json", [{"qid": r["qid"], "predicted": r["program"]} for r in programs])
+        write_json(output_dir / "results_program.json", programs)
+    else:
+        for name in ('results.json', 'results_program.json'):
+            path = output_dir / name
+            if path.exists():
+                path.replace(output_dir / f'{name}.{time.time_ns()}.superseded')
     write_json(output_dir / "diagnostics.json", [{"qid": s["qid"], **records.get(s["qid"], {"valid": False, "status": "pending"})} for s in data])
     summary = {"total": len(data), "accepted_by_checks": ready, "unresolved": len(data) - ready,
-               "complete": ready == len(data), "phase": phase, "accuracy": None,
+               "complete": ready == len(data), "submission_written": ready == len(data), "phase": phase, "accuracy": None,
                "note": "Accepted is not official accuracy; inspect diagnostics before submission"}
     write_json(output_dir / "summary.json", summary)
     return summary
@@ -96,16 +119,24 @@ def apply_reviewed_structures(store, image_paths, corrections_path):
         correction = corrections.get(key)
         if not correction:
             continue
-        structure = validate_structure(correction["structure"])
         old = store.record(path)
-        if old and old.get("structure") == structure:
+        if 'patch' in correction:
+            if not old or not old.get('structure'):
+                continue
+            structure = validate_structure({**old['structure'], **correction['patch']})
+            reviewed_fields = correction['patch']
+        else:
+            structure = validate_structure(correction["structure"])
+            reviewed_fields = structure
+        if old and old.get("structure") == structure and old.get('reviewed_fields') == reviewed_fields:
             continue
         history = (old or {}).get("structure_history", [])
         if old and old.get("structure"):
             history = history + [old["structure"]]
         store.data["images"][key] = {"image": path.name, "sha256": key, "status": "ok",
             "structure": structure, "structure_history": history, "requests": {},
-            "review": correction["provenance"], "prompt_sha256": store.identity["prompt_sha256"]}
+            "review": correction["provenance"], 'reviewed_fields': reviewed_fields,
+            "prompt_sha256": store.identity["prompt_sha256"]}
         store.save()
         print(f"[CV reviewed] {path.name}: applied pixel-verified labels, SHA256 matched", flush=True)
 
@@ -119,7 +150,8 @@ def inspect_queue(store, queue, image_dir, state, expired):
                 request = validate_request(raw, sample.get("images", {}))
                 path = Path(image_dir) / sample["images"][request["image_id"]]
                 key = file_digest(path)
-                entry = grouped.setdefault(key, {"path": path, "hints": set()})
+                entry = grouped.setdefault(key, {"path": path, "hints": set(), "regions": set()})
+                entry['regions'].add(request['region'])
                 if request["series"]:
                     entry["hints"].add(request["series"])
             except (ValueError, OSError) as error:
@@ -131,28 +163,34 @@ def inspect_queue(store, queue, image_dir, state, expired):
                 break
             path = entry["path"]
             # One full-image review addresses all labels requested by all questions.
-            request = {"image_id": "Image 1", "kind": "inspect", "region": "full",
+            regions = entry['regions']
+            request = {"image_id": "Image 1", "kind": "inspect", "region": next(iter(regions)) if len(regions) == 1 else 'full',
                        "series": "; ".join(sorted(entry["hints"]))[:200]}
             signature = digest([key, request, INSPECTION_VERSION])
-            if signature in state["inspections"]:
+            previous = state['inspections'].get(signature, {})
+            if previous and (previous.get('status') != 'error' or previous.get('attempts', 1) >= 2):
                 continue
             before = digest((store.record(path) or {}).get("structure"))
             print(f"[CV review {index}/{len(grouped)}] {path.name}: START", flush=True)
             try:
                 record = store.record(path)
-                if record and record.get("review"):
+                reviewed = (record or {}).get('reviewed_fields', {})
+                legend_verified = request['region'] == 'legend' and 'series' in reviewed and record['structure'].get('series_complete')
+                if record and record.get("review") and (record['review'].get('scope', 'full') == 'full' or legend_verified):
                     status = "pixel_verified_structure_retained"
                 elif not record or record.get("status") != "ok":
                     store.get(path, retry_failed=True)
                     status = "read"
                 else:
-                    store.inspect(path, request)
+                    store.inspect(path, request, retry_failed=True)
                     status = "inspected"
-                state["inspections"][signature] = {"image": path.name, "status": status}
+                state["inspections"][signature] = {"image": path.name, "status": status, 'attempts': previous.get('attempts', 0)+1}
             except CVInitializationError:
                 raise
             except (ValueError, RuntimeError, OSError) as error:
-                state["inspections"][signature] = {"image": path.name, "status": "error", "error": str(error)}
+                if fatal_runtime_error(error):
+                    raise
+                state["inspections"][signature] = {"image": path.name, "status": "error", "error": str(error), 'attempts': previous.get('attempts', 0)+1}
             changed |= before != digest((store.record(path) or {}).get("structure"))
             print(f"[CV review {index}/{len(grouped)}] {path.name}: {state['inspections'][signature]}", flush=True)
     finally:
@@ -161,9 +199,12 @@ def inspect_queue(store, queue, image_dir, state, expired):
 
 
 def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previous_diagnostics=None,
-               reviewed_structures=None, max_rounds=3, max_hours=10.5, generator_factory=None, store=None):
-    if max_rounds < 1 or max_hours <= 0:
+               reviewed_structures=None, max_rounds=3, max_hours=10.5, generator_factory=None, store=None,
+               nlp_attempts=2):
+    if max_rounds < 1 or max_hours <= 0 or nlp_attempts < 1:
         raise ValueError("max_rounds and max_hours must be positive")
+    if reviewed_structures is None and DEFAULT_REVIEWED.is_file():
+        reviewed_structures = DEFAULT_REVIEWED
     data = read_json(input_path)
     if not isinstance(data, list) or len({s["qid"] for s in data}) != len(data):
         raise ValueError("Input must be raw question records with unique qid, not an image store")
@@ -218,12 +259,20 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
             except CVInitializationError:
                 raise
             except (ValueError, RuntimeError, OSError) as error:
+                if fatal_runtime_error(error):
+                    raise
                 print(f"[CV prepare {index}/{len(paths)}] {path.name}: {error}", flush=True)
         store.close()
+        # Partial reviewed patches need a base structure. Newly prepared images
+        # did not have one during the first application above.
+        apply_reviewed_structures(store, paths, reviewed_structures)
         queue = []
         for sample in data:
             charts, _, _, _ = source_view(sample, image_dir, store)
-            requests = list(previous.get(sample["qid"], {}).get("evidence_validation", {}).get("cv_requests", []))
+            previous_row = previous.get(sample['qid'], {})
+            # Saved requests refer to the old OCR snapshot. Recheck after reviewed
+            # corrections, rather than paying to reread labels that are already fixed.
+            requests = list(check_prediction(previous_row, sample, charts).get('cv_requests', [])) if previous_row.get('program') else []
             requests.extend({"image_id": k, "kind": "inspect", "region": "full", "series": ""}
                             for k, c in charts.items() if structure_concerns(c))
             queue.append((sample, requests))
@@ -256,24 +305,42 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                 if prior_check.get("errors"):
                     feedback = "\n\n### Validation feedback\n" + json.dumps({
                         "previous_program": prior.get("program", ""), "errors": prior_check["errors"]}, ensure_ascii=False)
-                prompt = build_prompt(context + "\n\n### Source review\n" + REVIEW_GUIDANCE + feedback,
+                catalog = json.dumps(source_catalog(sample.get('tables', {})), ensure_ascii=False)
+                reviewed_context = context + "\n\n### Source review\n" + REVIEW_GUIDANCE + '\nTable binding catalog: ' + catalog
+                prompt = build_prompt(reviewed_context + feedback,
                                       sample["qa"]["question"], ", ".join(images))
                 print(f"[NLP round {round_index+1}/{max_rounds} {index}/{len(data)}] {qid}: START", flush=True)
                 cached = prompt in cache
                 if not cached and generator is None:
                     store.close()
                     generator = generator_factory()
-                try:
-                    prediction = dict(cache[prompt]) if cached else generator.generate_with_prompt(prompt)
-                    check = check_prediction(prediction, sample, charts)
-                    if check["valid"]:
-                        cache[prompt] = dict(prediction)
-                except Exception as error:
-                    prediction = {"program": "", "error": str(error)}
-                    check = {"valid": False, "errors": [str(error)], "cv_requests": []}
                 history = list(old.get("repair_history", []))
-                history.append({"program": prediction.get("program", ""), "errors": check["errors"],
-                                "source_digest": context_digest})
+                initial_prompt = prompt
+                for attempt in range(nlp_attempts):
+                    try:
+                        prediction = dict(cache[initial_prompt]) if cached else generator.generate_with_prompt(prompt)
+                        if fatal_runtime_error(prediction.get('error', '')):
+                            raise RuntimeError(prediction['error'])
+                        check = check_prediction(prediction, sample, charts)
+                    except Exception as error:
+                        if fatal_runtime_error(error):
+                            raise
+                        prediction = {"program": "", "error": str(error)}
+                        check = {"valid": False, "errors": [str(error)], "cv_requests": []}
+                    history.append({"program": prediction.get("program", ""), "errors": check["errors"],
+                                    "source_digest": context_digest, 'prompt_sha256': digest(prompt),
+                                    'cv_requests': check['cv_requests']})
+                    if check['valid']:
+                        cache[initial_prompt] = dict(prediction)
+                        break
+                    if expired() or attempt + 1 == nlp_attempts:
+                        break
+                    feedback = '\n\n### Repair attempt\n' + json.dumps({
+                        'attempt': len(history), 'previous_program': prediction.get('program'),
+                        'errors': check['errors'], 'instruction':
+                        'Rebuild the complete program from source facts. Fix all errors, connect every branch to the final result, and emit both aligned Steps 1 and 2. Use exact existing labels when you picked the wrong source/name. If the required label truly is absent, return a CV request; never invent labels or change the question to pass validation. Do not repeat the rejected program.'}, ensure_ascii=False)
+                    prompt = build_prompt(reviewed_context + feedback, sample['qa']['question'], ', '.join(images))
+                    print(f"  [NLP repair {attempt+1}/{nlp_attempts}] {check['errors'][:2]}", flush=True)
                 state["records"][qid] = {**prediction, "valid": check["valid"], "cache_hit": cached,
                     "source_digest": context_digest, "evidence_validation": check, "unavailable_images": missing,
                     "repair_history": history, "status": "accepted" if check["valid"] else "needs_review"}
@@ -319,10 +386,11 @@ def main():
     parser.add_argument("--reviewed-structures")
     parser.add_argument("--max-rounds", type=int, default=3)
     parser.add_argument("--max-hours", type=float, default=10.5)
+    parser.add_argument('--nlp-attempts', type=int, default=2)
     args = parser.parse_args()
     result = run_repair(args.input, args.images, args.adapter, args.structure_store, args.output_dir,
                         previous_diagnostics=args.previous_diagnostics, reviewed_structures=args.reviewed_structures,
-                        max_rounds=args.max_rounds, max_hours=args.max_hours)
+                        max_rounds=args.max_rounds, max_hours=args.max_hours, nlp_attempts=args.nlp_attempts)
     if not result["complete"]:
         print("Unresolved predictions remain; rerun the same command to resume, inspect diagnostics before submitting.", flush=True)
         raise SystemExit(2)

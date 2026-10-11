@@ -91,7 +91,11 @@ def build_inline_context(text_segments, tables_dict, image_dict, cv_pipeline, pr
         m = pattern.fullmatch(segment.strip())
         if m:
             key = f"{m[1].capitalize()} {m[2]}"
-            if key not in blocks: raise ValueError(f"Unresolved source placeholder: {key}")
+            if key not in blocks:
+                if allow_unavailable_images and m[1].lower() == 'image':
+                    output.append(f"Unresolved image marker {key}: no image mapping was provided. This is not an available source; do not invent an image or shift another Image ID to replace it.")
+                    continue
+                raise ValueError(f"Unresolved source placeholder: {key}")
             output.append(blocks[key]); used.add(key)
         else: output.append(segment)
     output.extend(v for k, v in blocks.items() if k not in used)

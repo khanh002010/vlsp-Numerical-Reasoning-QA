@@ -10,11 +10,37 @@
       "title": "Độ rộng sàn HOSE",
       "kind": "bar",
       "series": [
-        {"name": "% Số mã duy trì trên ngưỡng MA200", "color": "black", "axis": "none", "unit": "%"},
-        {"name": "% Số mã duy trì trên ngưỡng MA50", "color": "red", "axis": "none", "unit": "%"},
-        {"name": "% Số mã duy trì trên ngưỡng MA20", "color": "gray", "axis": "none", "unit": "%"}
+        {
+          "name": "% Số mã duy trì trên ngưỡng MA200",
+          "color": "black",
+          "axis": "none",
+          "unit": "%"
+        },
+        {
+          "name": "% Số mã duy trì trên ngưỡng MA50",
+          "color": "red",
+          "axis": "none",
+          "unit": "%"
+        },
+        {
+          "name": "% Số mã duy trì trên ngưỡng MA20",
+          "color": "gray",
+          "axis": "none",
+          "unit": "%"
+        }
       ],
-      "x_labels": ["Cao nhất 1 năm", "Thấp nhất 1 năm", "12/31/2024", "1/24/2025", "2/28/2025", "3/7/2025", "3/14/2025", "3/21/2025", "3/31/2025", "4/4/2025"],
+      "x_labels": [
+        "Cao nhất 1 năm",
+        "Thấp nhất 1 năm",
+        "12/31/2024",
+        "1/24/2025",
+        "2/28/2025",
+        "3/7/2025",
+        "3/14/2025",
+        "3/21/2025",
+        "3/31/2025",
+        "4/4/2025"
+      ],
       "y_labels": [],
       "x_labels_complete": true,
       "series_complete": true,
@@ -34,17 +60,2265 @@
       "title": "Dòng vốn vào tài sản tài chính suy yếu đồng đều",
       "kind": "line",
       "series": [
-        {"name": "Cổ phiếu", "color": "red", "axis": "left", "unit": "Tỷ USD"},
-        {"name": "Trái phiếu", "color": "black", "axis": "left", "unit": "Tỷ USD"},
-        {"name": "Tiền tệ", "color": "gray", "axis": "left", "unit": "Tỷ USD"}
+        {
+          "name": "Cổ phiếu",
+          "color": "red",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        },
+        {
+          "name": "Trái phiếu",
+          "color": "black",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        },
+        {
+          "name": "Tiền tệ",
+          "color": "gray",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        }
       ],
-      "x_labels": ["Aug-20", "Oct-20", "Dec-20", "Feb-21", "Apr-21", "Jun-21", "Aug-21", "Oct-21", "Dec-21", "Feb-22", "Apr-22", "Jun-22", "Aug-22"],
+      "x_labels": [
+        "Aug-20",
+        "Oct-20",
+        "Dec-20",
+        "Feb-21",
+        "Apr-21",
+        "Jun-21",
+        "Aug-21",
+        "Oct-21",
+        "Dec-21",
+        "Feb-22",
+        "Apr-22",
+        "Jun-22",
+        "Aug-22"
+      ],
       "y_labels": [],
       "x_labels_complete": false,
       "series_complete": true,
       "x_order_known": true,
       "regions": {},
-      "uncertain": ["Only printed time ticks transcribed; intermediate monthly dates are not explicitly labelled."]
+      "uncertain": [
+        "Only printed time ticks transcribed; intermediate monthly dates are not explicitly labelled."
+      ]
+    }
+  },
+  "9532ffb1f419d16f0ad666a1686c63b63e0fd3c324a61ac2b479d7139631e2a0": {
+    "patch": {
+      "title": "",
+      "series": [
+        {
+          "name": "Nhật Bản",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "Mỹ",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "Châu Âu",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "APAC",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "00ff8c6b-9761-5380-85bc-76851b020292.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "50587776bc00d158655f3acca8bcb134c97d5916555093a70d294818b97e881a": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "0666db9a-eb16-54f3-ba88-7a7245f9a730.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "c738c590ea7a7d354342996b77f2cd42899878fa247e2f23dea2e0c6013dbefa": {
+    "patch": {
+      "kind": "bar",
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "0ab3b57e-86fe-5152-ab1d-f5ee610a234e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "6f2fbccf1bd9d8efc3363ae6b2a7224906e0bbb1daa9c00783763c4f740180fd": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Hàng tồn kho (cuối 2025)",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ đồng"
+        },
+        {
+          "name": "Hàng tồn kho (T6/2026)",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ đồng"
+        },
+        {
+          "name": "Nợ/Vốn chủ cuối 2025 (■)",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        },
+        {
+          "name": "Nợ/Vốn chủ T6/2026 (▲)",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        }
+      ],
+      "series_complete": true,
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "18c3c075-e750-5792-817c-45b3289c4031.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "5167bcac038c0eb2d90d43b371f1f91a74ab88249f604b724997c998409787ac": {
+    "patch": {
+      "kind": "bar",
+      "x_labels": [
+        "2010",
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "x_labels_complete": true,
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "1a4aa378-9797-5a35-8ca2-8fe2f96e3723.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "c0643cb504310cb8b4805ba2a5a1caf766d8d8e7233682a418cd2e10948bef32": {
+    "patch": {
+      "x_labels": [
+        "08/21/2025",
+        "09/21/2025",
+        "10/21/2025",
+        "11/21/2025",
+        "12/21/2025",
+        "01/21/2026",
+        "02/21/2026",
+        "03/21/2026",
+        "04/21/2026",
+        "05/21/2026",
+        "06/21/2026",
+        "07/21/2026",
+        "08/21/2026"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false
+    },
+    "provenance": {
+      "image": "1ea34911-7a4d-526f-a1b8-fe05058d9d5e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "843e42973360b164dba525acb6f2ef9ae1177682b6f98137758dc15ba61574e0": {
+    "patch": {
+      "series": [
+        {
+          "name": "Cổ phiếu EM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        },
+        {
+          "name": "Cổ phiếu DM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "216ce409-b9fc-5a61-b643-bb18fd318c1d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "5e1d1ca9fc2c2e58f92550a6987c9ff3ec866063d275d5b75eadb5a98ecba4e7": {
+    "patch": {
+      "series": [
+        {
+          "name": "Cổ phiếu EM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        },
+        {
+          "name": "Cổ phiếu DM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "25fc2521-43a0-5232-ad3a-2254cb646dbd.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "df16de43ccfed47531f90af6439eb41205be90dc25024d2c016e53a5921eb19d": {
+    "patch": {
+      "series": [
+        {
+          "name": "Cổ phiếu EM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        },
+        {
+          "name": "Cổ phiếu DM (LHS)",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "4f2a37ed-6a06-586a-9382-0791236b10a0.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "01ce07a409097800eb0ed72027bd9cd67b90e0f1e1eaae77afc2a37cc5ec049f": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Dòng vốn ETF theo tháng (trái)",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Lũy kế từ 2020 (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        }
+      ],
+      "x_labels": [
+        "01/20",
+        "04/20",
+        "07/20",
+        "10/20",
+        "01/21",
+        "04/21",
+        "07/21",
+        "10/21",
+        "01/22",
+        "04/22",
+        "07/22",
+        "10/22",
+        "01/23",
+        "04/23",
+        "07/23",
+        "10/23",
+        "01/24",
+        "04/24",
+        "07/24",
+        "10/24",
+        "01/25"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "307e1346-e30b-5675-812d-fccd65060604.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "5069f0cba3a54b1470a0ea4a373ff4c1972c9952752ef37bb14a78de9ce52185": {
+    "patch": {
+      "kind": "bar",
+      "x_labels": [
+        "2Q23",
+        "3Q23",
+        "4Q23",
+        "1Q24",
+        "2Q24",
+        "3Q24",
+        "4Q24F"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true
+    },
+    "provenance": {
+      "image": "3b15ceae-f79f-546e-a743-75037b37298e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "9ef2b89e04c7638271d1d053256e034720d87855f98c574815df87be0725cdae": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "3ce9a454-5fb4-5064-b756-edfd00e5e3c8.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "f0e11735136b6030aeee0bd56144b9a22ee57ec0c9fa3f3b242724ae6d9ce4ea": {
+    "patch": {
+      "kind": "bar",
+      "series": [
+        {
+          "name": "Đăng kí cấp mới",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Đăng kí điều chỉnh",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Góp vốn, mua cổ phần",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "x_labels": [],
+      "y_labels": [
+        "2026",
+        "2025",
+        "2024",
+        "2023",
+        "2022"
+      ],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "418403af-683c-58e5-8449-3f7fd6080d96.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "eafae3c374a1d745b830a37ccc018a25c5ca5c6d9a33016ecb551c7e93cdc8e8": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "CNTT nước ngoài",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ đồng"
+        },
+        {
+          "name": "CNTT trong nước",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ đồng"
+        },
+        {
+          "name": "GD, ĐT & khác",
+          "color": "",
+          "axis": "left",
+          "unit": "Tỷ đồng"
+        },
+        {
+          "name": "Tăng trưởng CNTT NN",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "4b85425f-6df1-5879-8ee6-e931ca10c766.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "9c723be5f5868579128cb18428df01d2f1e3b0b1a74bc7dd044073772ecbc04c": {
+    "patch": {
+      "series": [
+        {
+          "name": "Tài nguyên Cơ bản",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Bất động sản",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Thực phẩm và đồ uống",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Ngân hàng",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Dịch vụ tài chính",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "4c88e4b2-6508-5858-af16-a2877fecd6e7.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "12e13296da2098c5ca046d9249d6182adaddc8cf6c2835456985c4717eb48ce2": {
+    "patch": {
+      "y_labels": [],
+      "series": [
+        {
+          "name": "VLB - Tan Cang 1",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Donacoop- Tan Cang 6",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "An Phat - Tan Cang 7",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Tan Cang 9",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "DND - Tan Cang 5",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Tan Cang 8",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Phuoc Binh",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "DN Traffic Works JSC- Tan Cang 5",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "DHA - Tan Cang 3",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "530c7514-a14d-5017-bef6-2017a83b4448.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "74b0c138e3d74625a2e8766a44a82820b8bb07e62d959201b19ec64287d1ec42": {
+    "patch": {
+      "series": [
+        {
+          "name": "Chỉ số sản xuất công nghiệp",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Tổng mức bán lẻ (điều chỉnh lạm phát)",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "5392064e-44c7-5e8c-9f72-7c1c3ac79d2c.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "335ccbdcf298c1a652afa3c90ee05b202ad511a8c52fb04e56a8ae05c17fcc14": {
+    "patch": {
+      "x_labels": [
+        "1Q23",
+        "2Q23",
+        "3Q23",
+        "4Q23",
+        "1Q24",
+        "2Q24",
+        "3Q24",
+        "Oct-Nov"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true
+    },
+    "provenance": {
+      "image": "5a0939a4-7766-56ec-b6fa-adbac714907b.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "a40dc4f603ba2d9c44ffb991ee6e8b7515e7992a9c6e213089a2ff405251d4eb": {
+    "patch": {
+      "kind": "mixed",
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "5aa43597-1fde-5675-93fb-8640c4093ef6.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "2c5892e5d0a7f9e04046b18c6ad021110b384e11f3033dc9164ae61c337af383": {
+    "patch": {
+      "x_labels": [
+        "Aug-20",
+        "Oct-20",
+        "Dec-20",
+        "Feb-21",
+        "Apr-21",
+        "Jun-21",
+        "Aug-21",
+        "Oct-21",
+        "Dec-21",
+        "Feb-22",
+        "Apr-22",
+        "Jun-22",
+        "Aug-22"
+      ]
+    },
+    "provenance": {
+      "image": "5da66a5d-db8a-5982-9926-cb45ed86aabd.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "25f9d430ac0c7ed6fa33998a120bf412d54ee37b89762d5b50065c6022e10deb": {
+    "patch": {
+      "series": [
+        {
+          "name": "TGDD",
+          "color": "",
+          "axis": "left",
+          "unit": "Nghìn tỷ VND"
+        },
+        {
+          "name": "DMX",
+          "color": "",
+          "axis": "left",
+          "unit": "Nghìn tỷ VND"
+        }
+      ],
+      "x_labels": [
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "6cab794b-84b1-5538-b87a-435cf95278d5.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "6607315c0dc84f85765dfbd57b8161a0add0a40cde575a2d23a013f4b1e9f925": {
+    "patch": {
+      "series": [
+        {
+          "name": "Chênh lệch Huy động - Cho vay",
+          "color": "",
+          "axis": "left",
+          "unit": "Nghìn tỷ đồng"
+        },
+        {
+          "name": "Lãi suất tiền gửi",
+          "color": "",
+          "axis": "right",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "6f376170-1fc2-591a-8f03-74455f01f1b7.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "4e7e3de6edaf9d0951c873cb3e974b285965307d7399f0ae4b2e691fc01dc0c1": {
+    "patch": {
+      "kind": "bar",
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "78526d89-01a1-5e62-b74f-5683c0813dbe.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "b9701f0179589818369f3278eab3217485856536a4a665340bdb1bc0b5a75ce7": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "7b746361-0d23-5abf-8206-b5f6f9e202df.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "1d8b80dca723bd8811976404c55be52a489ce2940c47b144d3821a83126b63a2": {
+    "patch": {
+      "series": [
+        {
+          "name": "Ấn Độ",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Indonesia",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Thái Lan",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Việt Nam",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "x_labels": [
+        "Jan-20",
+        "Apr-20",
+        "Jul-20",
+        "Oct-20",
+        "Jan-21",
+        "Apr-21",
+        "Jul-21",
+        "Oct-21",
+        "Jan-22",
+        "Apr-22",
+        "Jul-22",
+        "Oct-22",
+        "Jan-23",
+        "Apr-23",
+        "Jul-23",
+        "Oct-23",
+        "Jan-24",
+        "Apr-24",
+        "Jul-24",
+        "Oct-24",
+        "Jan-25"
+      ],
+      "x_labels_complete": false,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "7d50198b-882e-5126-8bb8-36aa7d3499f8.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "556051f3d8cf099dee2db9f6a2b8306838e01bef0ea2bbe6d4fcf883af666950": {
+    "patch": {
+      "kind": "bar",
+      "series": [
+        {
+          "name": "Thủy điện",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Mặt trời",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Gió",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "84af4e65-bb51-5772-b89d-6ffb23dc7c20.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "70bd251bcf7091f026443914d01bd8fe3df475f8ffa06b4e2b544920716a7974": {
+    "patch": {
+      "series": [
+        {
+          "name": "Sản xuất cao su, nhựa",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Sản xuất TP & ĐU",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Máy móc thiết bị",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Dệt may",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Gỗ",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Hóa chất",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Khác",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "86c7302f-c0e7-5e14-a9b0-04d8f9454e7e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "7e6b87129b9e251bc8b3db82d672073de0540815b97e444b897c700b55737e1a": {
+    "patch": {
+      "kind": "bar",
+      "series": [
+        {
+          "name": "Đăng kí cấp mới",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Đăng kí điều chỉnh",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Góp vốn, mua cổ phần",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "x_labels": [],
+      "y_labels": [
+        "2026",
+        "2025",
+        "2024",
+        "2023",
+        "2022"
+      ],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "871b2b4c-841f-56eb-91fe-af1128b048d9.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "676e7c4f7d753fcd651628edd4f8e7d5ea53003c9075530dd225785e3b21d221": {
+    "patch": {
+      "kind": "mixed"
+    },
+    "provenance": {
+      "image": "8b09f92f-08ac-51e3-a0ad-e41e3774b58c.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "f6530575855aa16f1fd4fa6d17a061946ee74905a11f2c806ab5b90d36d7db38": {
+    "patch": {
+      "kind": "bar",
+      "series": [
+        {
+          "name": "Cổ phiếu",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ USD"
+        },
+        {
+          "name": "Trái phiếu",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ USD"
+        },
+        {
+          "name": "Tiền tệ",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "91d7cc46-f3b5-5a3c-ad27-1ce67933d508.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "87f26ae0870084f563afc0431794b4058fe1ad457795b5a651bc80070c1fc24b": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Dự trữ ngoại hối",
+          "color": "",
+          "axis": "left",
+          "unit": ""
+        },
+        {
+          "name": "USDVND",
+          "color": "",
+          "axis": "right",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "9ae8a913-bbde-5e80-b7eb-a0141d28f2cd.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "c746ed7711bbfbb6ff6d7822f489cf5b7716ebeb54c6560ea11a6494afea8a4e": {
+    "patch": {
+      "y_labels": [],
+      "series": [
+        {
+          "name": "VLB - Thanh Phu 1",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "CTI - Thien Tan 10",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "KSB - Tan My",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Binh Thanh - Thanh Phu 3",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "DND- Thien Tan 5",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "Hoang Hai - Thien Tan 3",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "DHA- Thach Phu 2",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        },
+        {
+          "name": "KSB - Thien Tan 7",
+          "color": "",
+          "axis": "none",
+          "unit": "Triệu m3"
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "a1bec9d6-22ec-5a3d-af6d-8a74fc930b9d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "3f37d15199a15ead978fa3949fc9cf38b2832048743dfa09d8e798ebff2d0948": {
+    "patch": {
+      "x_labels": [
+        "Dec-22",
+        "Jan-23",
+        "Feb-23",
+        "Mar-23",
+        "Apr-23",
+        "May-23",
+        "Jun-23",
+        "Jul-23",
+        "Aug-23",
+        "Sep-23",
+        "Oct-23",
+        "Nov-23"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false
+    },
+    "provenance": {
+      "image": "a21a7ca5-a5a1-522e-838e-aa4f040fd962.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "64ab3505d36b936e4d8f3995d645a5cacb64c9265259540226dee101c5418527": {
+    "patch": {
+      "series": [
+        {
+          "name": "2023",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "2024F",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "x_labels": [
+        "VLB",
+        "KSB",
+        "DHA",
+        "BMJ",
+        "NNC",
+        "C32",
+        "ALV",
+        "PDB",
+        "DND",
+        "KHD"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "a5ceb5b6-2844-5ba1-a760-87282c6b592b.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "409844f6fe002e8af7aa28824c2c1d8e15637ec8f46381330edbffbcad8b9287": {
+    "patch": {
+      "x_labels": [
+        "HAX",
+        "SVC",
+        "CTF",
+        "TMT",
+        "GMA"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true
+    },
+    "provenance": {
+      "image": "a609067c-4e19-5236-9c32-94716e86085d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "3db929b1537c3a168f804e6b169bea37bf46d223c95966c6e0040b0f998d5602": {
+    "patch": {
+      "series": [
+        {
+          "name": "IIP",
+          "color": "",
+          "axis": "left",
+          "unit": ""
+        },
+        {
+          "name": "Tổng mức bán lẻ (điều chỉnh lạm phát)",
+          "color": "",
+          "axis": "left",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "ac13e759-aac5-5c28-98c4-848876b178b1.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "93bbd1a3e138f72d417c292ceb1b0bf90c388d173eef0f86a9b0142c46b46f5e": {
+    "patch": {
+      "title": "Mặt bằng thanh khoản sàn HOSE vẫn thấp hơn giai đoạn 2021 - 2022",
+      "series": [
+        {
+          "name": "Mặt bằng thanh khoản sàn HOSE vẫn thấp hơn giai đoạn 2021 - 2022",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "x_labels": [
+        "2021",
+        "2022",
+        "2023"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "ad38c06c-d922-572c-a325-0bd0315d2cfd.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "b92eb95411631fe926ff62cd12e2d4c4976304fb5c3a85ec7510c9a2cc75d164": {
+    "patch": {
+      "series": [
+        {
+          "name": "VNIndex",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Tham chiếu",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true,
+      "x_labels": [
+        "10/31/2024",
+        "11/1/2024",
+        "11/2/2024",
+        "11/3/2024",
+        "11/4/2024",
+        "11/5/2024",
+        "11/6/2024",
+        "11/7/2024",
+        "11/8/2024",
+        "11/9/2024",
+        "11/10/2024",
+        "11/11/2024",
+        "11/12/2024",
+        "11/13/2024",
+        "11/14/2024",
+        "11/15/2024",
+        "11/16/2024",
+        "11/17/2024",
+        "11/18/2024",
+        "11/19/2024",
+        "11/20/2024",
+        "11/21/2024",
+        "11/22/2024",
+        "11/23/2024",
+        "11/24/2024",
+        "11/25/2024",
+        "11/26/2024",
+        "11/27/2024",
+        "11/28/2024",
+        "11/29/2024"
+      ],
+      "x_labels_complete": true
+    },
+    "provenance": {
+      "image": "b198223a-a17b-5457-806d-b30b26b8f67c.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "6a44d4cc4f4db442f50ad2f860a4da919dd74d50a03eec29cded84dba817fed0": {
+    "patch": {
+      "series": [
+        {
+          "name": "Lạm phát chung",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Lạm phát cơ bản",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "b6e10525-24fa-5b36-a87e-b9d0b11bd5be.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "f9d223b3e073403c1e5231c579dae2812ed402b42028a34316653a6cc00c29b5": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "b75e2c0d-20e2-5763-84f3-9584a8f138d9.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "70e5e6b9ed178068f4ad23b5356b3a2d1b74495fcf8c2067891e060f1fa0721a": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Dòng vốn ETF theo tháng (trái)",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Lũy kế từ 2020 (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        }
+      ],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "b7be1f54-bd23-518a-995b-134317f16ed1.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "7ffbe85a1fe33b93b672ee52eab04d76ffc75f10ae3e7b478378f2ecc81189a5": {
+    "patch": {
+      "kind": "bar",
+      "x_labels": [
+        "Binh Duong",
+        "Binh Phuoc",
+        "BR-VT",
+        "HCMC",
+        "Ha Noi",
+        "Dong Nai",
+        "Tay Ninh",
+        "Long An",
+        "Vinh Phuc",
+        "Bac Ninh",
+        "Bac Giang",
+        "Hai Duong",
+        "Hai Phong",
+        "Hung Yen",
+        "Quang Ninh",
+        "Thai Nguyen"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true
+    },
+    "provenance": {
+      "image": "bff1ead3-9bbf-51aa-8f4e-00f4eca9bab9.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "bf7c1f45e5d884d0420481dae80abcd13a013a722221112469671a1fd92d76eb": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "1H25",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ đồng"
+        },
+        {
+          "name": "1H26",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ đồng"
+        },
+        {
+          "name": "YoY (RHS)",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        }
+      ],
+      "x_labels": [
+        "TCB",
+        "VPB",
+        "CTG",
+        "STB",
+        "BID",
+        "MBB",
+        "VIB",
+        "TPB",
+        "HDB",
+        "ACB",
+        "VCB",
+        "EIB"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "c46683a2-978f-5571-b74e-33bded65b033.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "14cef2c26ee5fff728b3e600b7f4697c448cfef3fdca6a01c324e1e0fd81f2e6": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "c55672e9-0c8e-56b6-8da7-1f01eb35a248.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "4d9a554850b045d5621d3b110dd784feefa97e80a49129d8a15f5d0963ca3645": {
+    "patch": {
+      "x_labels": [
+        "01/20",
+        "07/20",
+        "01/21",
+        "07/21",
+        "01/22",
+        "07/22",
+        "01/23",
+        "07/23",
+        "01/24",
+        "07/24",
+        "01/25",
+        "07/25",
+        "01/26"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false
+    },
+    "provenance": {
+      "image": "c6d6b8ef-9c84-5a8c-9e90-64b2cea2db4c.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "9e3240a91cee4d535ff13ba7be7d98f28de46ea1222104bcbf1f8526eefad691": {
+    "patch": {
+      "series": [
+        {
+          "name": "Cổ phiếu",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Trái phiếu",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "Tiền tệ",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "cbbfcef3-a4c9-576d-ade6-bdc7d0538621.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "23aa7a3b9ebbf04c1b716a3119c758740b6c8fe805f388db742b376be9237071": {
+    "patch": {
+      "series": [
+        {
+          "name": "Hàn Quốc",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Đài Loan",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Ấn Độ",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Nhật Bản",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Trung Quốc",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Mỹ",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Việt Nam (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Thái Lan (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Indonesia (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Malaysia (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Philippines (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "cd4ed896-a73b-5014-8e10-f508531c8dc1.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "79fe67de3cbc01f34db7dd8d1d1edccd696c3d2ff702e4226d3621f9f9433f4b": {
+    "patch": {
+      "kind": "bar",
+      "series": [
+        {
+          "name": "Doanh số xe máy đã phục hồi trong Q3",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "ce0de681-e1f9-5690-bae6-fbc8f71af898.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "8c2e280bc9a1c94e55b4d9e7d624672b5e310c8d80940d7b95a01c8426b38cc8": {
+    "patch": {
+      "kind": "mixed",
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "d25dc943-70a2-5cdf-a890-0e4decfc7aa6.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "4abd6b4c280a2cbbc8c3ee44ff588cc6f949475258607f392638266963800893": {
+    "patch": {
+      "kind": "bar",
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "d287256e-2436-5fd4-8690-a2992a48d54b.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "3b41faab1723b003e17bd3ad3506c74cb9e1b9ae94ff901dfd9d0c404b4b8f38": {
+    "patch": {
+      "series": [
+        {
+          "name": "RON 95-III",
+          "color": "",
+          "axis": "left",
+          "unit": "VND"
+        },
+        {
+          "name": "E5 RON 92-II",
+          "color": "",
+          "axis": "left",
+          "unit": "VND"
+        },
+        {
+          "name": "Diezen 0.05S-II",
+          "color": "",
+          "axis": "left",
+          "unit": "VND"
+        }
+      ],
+      "x_labels": [
+        "22/8/18",
+        "22/2/19",
+        "22/8/19",
+        "22/2/20",
+        "22/8/20",
+        "22/2/21",
+        "22/8/21",
+        "22/2/22",
+        "22/8/22",
+        "22/2/23",
+        "22/8/23",
+        "22/2/24",
+        "22/8/24",
+        "22/2/25",
+        "22/8/25",
+        "22/2/26"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "d6060652-0ea6-5d64-8d0e-a224e0f07c42.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "21f864258c2220ccb5f8ad7bac3a06876d43a0a0070bee15687e93cece8d72db": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Dòng vốn Quỹ chủ động theo tháng (trái)",
+          "color": "",
+          "axis": "left",
+          "unit": "Triệu USD"
+        },
+        {
+          "name": "Lũy kế từ 2020 (phải)",
+          "color": "",
+          "axis": "right",
+          "unit": "Triệu USD"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "da175a9f-c29d-5533-bfd2-b875cce4fe9d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "7c345aecbe4913077a41f19e546434f2ae49319ac4f6bda07dd7edf5e7cbdb4e": {
+    "patch": {
+      "series": [
+        {
+          "name": "Biên LN gộp",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "Biên LN ròng",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "SG&A/Doanh thu",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        }
+      ],
+      "x_labels": [
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "1H26"
+      ],
+      "y_labels": [],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "dcbaab2b-1334-5c7c-81e2-4b5ddab51c7c.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "c3ba5d0ff62f9ee98f1a235a2056b2eee576e93bf75bf911bae43a1409c3c5d2": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "e4557d8c-e32c-53fe-9573-488f2bc153e8.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "ba82ee6d9b4a2f8d042662b8c303cac747a9ea2bcd95b256dbc80d8fd5f45e65": {
+    "patch": {
+      "x_labels": [
+        "01/25",
+        "03/25",
+        "05/25",
+        "07/25",
+        "09/25",
+        "11/25",
+        "01/26",
+        "03/26",
+        "05/26",
+        "07/26"
+      ],
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "e6380f47-6ac4-53fe-916a-76e2ccb11b9e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "628ead068762d8d08eacbabed1211236975c04ed02f5d2396570e487d0373426": {
+    "patch": {
+      "series": [
+        {
+          "name": "Lãi suất huy động VND >12 tháng - cao nhất",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "Lợi suất VNIndex (Nghịch đảo PE FW)",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "ed6e5752-606e-5cd2-9dec-b07a6ab64e1d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "29f8d78c92a0aaab4e08822532313de6a10a83b1be21860d5eb81df58477cd3a": {
+    "patch": {
+      "series": [
+        {
+          "name": "PE dự phóng VNIndex",
+          "color": "",
+          "axis": "left",
+          "unit": ""
+        },
+        {
+          "name": "PE dự phóng loại VIC, VHM, VRE, VPL",
+          "color": "",
+          "axis": "left",
+          "unit": ""
+        },
+        {
+          "name": "Lãi suất tiền gửi kỳ hạn 12 tháng",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "f55cce3b-ffb8-5d40-ad48-ab6083b8a9a6.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "ff74330a4ffac512332a85e30093d17a481ccb2ce1283e4013deaebe32199484": {
+    "patch": {
+      "kind": "mixed",
+      "series": [
+        {
+          "name": "Cho vay ký quỹ",
+          "color": "",
+          "axis": "left",
+          "unit": "tỷ đồng"
+        },
+        {
+          "name": "Cho vay ký quỹ/Tổng vốn hóa free-float trên HOSE",
+          "color": "",
+          "axis": "right",
+          "unit": "%"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "f67b03fa-e92d-5e86-b130-f936b0dc7a52.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "0c61b4579aa4c6b159fa1710b7e291a78a3384642e22b83c95027c5e393a1c88": {
+    "patch": {
+      "title": "P/E dự phóng 10 năm VNIndex loại trừ Vingroup",
+      "series": [
+        {
+          "name": "PE dự phóng 1 năm",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "TB 10 năm",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "-2 SD",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "-1 SD",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "+/- 1 SD",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        },
+        {
+          "name": "+/- 2 SD",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "bd43434b-60f3-5930-9014-70e875f3954f.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "37e3cd677181dd12a5a4088a9e544f2b0b9b87f8bdc64ddb27582558f18e3240": {
+    "patch": {
+      "x_labels": [
+        "07/20",
+        "11/20",
+        "03/21",
+        "07/21",
+        "11/21",
+        "03/22",
+        "07/22",
+        "11/22",
+        "03/23",
+        "07/23",
+        "11/23",
+        "03/24",
+        "07/24",
+        "11/24",
+        "03/25",
+        "07/25",
+        "11/25",
+        "03/26",
+        "07/26"
+      ],
+      "y_labels": [],
+      "x_labels_complete": false
+    },
+    "provenance": {
+      "image": "c3a3bd35-a222-5fd4-8f18-31f6d5ea0df6.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "694e9199f8c4b3554006a357e820483505a0e70911a303b01862c01c30d90c55": {
+    "patch": {
+      "series": [
+        {
+          "name": "Mar’25 Global FMS",
+          "color": "",
+          "axis": "none",
+          "unit": ""
+        }
+      ],
+      "x_labels": [],
+      "y_labels": [
+        "Eurozone",
+        "UK",
+        "EM",
+        "Cash",
+        "Staples",
+        "Materials",
+        "Banks",
+        "Utilities",
+        "Commod",
+        "Japan",
+        "REITs",
+        "Bonds",
+        "Industrials",
+        "Healthcare",
+        "Discretionary",
+        "Energy",
+        "Tech",
+        "Equities",
+        "US"
+      ],
+      "x_labels_complete": true,
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "3dc5c74e-8b68-59df-8236-1b62c19c4338.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "6d15b6bb6d5d1b4d79ef9f3d08f374eb78d2ca466ca98c63d1df5bad55d1793b": {
+    "patch": {
+      "series": [
+        {
+          "name": "Chỉ số giá sản xuất nhóm linh kiện bán dẫn và linh kiện điện tử khác",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        },
+        {
+          "name": "Chỉ số giá sản xuất nhóm máy tính và thiết bị ngoại vi",
+          "color": "",
+          "axis": "left",
+          "unit": "%"
+        }
+      ],
+      "y_labels": [],
+      "series_complete": true
+    },
+    "provenance": {
+      "image": "8b44270e-4c82-558d-8a5e-ff121d50fae2.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "346cce2bacf5c0b6c8eb6dac34afdc4d689519bb9820f54583c1fb95f278cad4": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "11fff7a7-7cc9-5fd5-99d8-4e8af2a340fb.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "96bb0919a38e2f9d1cfd3576cffe56814e6415e197870e54d817a301955c1d9e": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "4631ed34-86f2-5d32-a65e-e6d7d5073fb2.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "f377f76620c652bb7379fb0c9c86c5123d21066279b3dfd30ea2b7fe7129beac": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "4991142e-fff5-5cbe-809d-05e8653354f6.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "68c952cf2afcd8724db6b32e8ebbb6f45aecb8c098f4214197881c6e3629e1f8": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "5a8ae9c2-0995-59f4-81bb-a0635e2cce44.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "e54c1332a7d62a43174de06edc603dd0e387f36a74d9beedb5c87afe14c90dc0": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "70e5ab8a-0745-527f-b2a5-f65477b8efa7.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "78c2ab2e7e84c612eb9d7d0ff86cfb236dc99111e38226dcdfd256768f1155d5": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "95592175-a8e8-5841-88e8-3ccc3317657f.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "613087634c9fe0a59251ee49538cf182a38cf9ed0721bcf8cd23fcebc27294bf": {
+    "patch": {
+      "y_labels": []
+    },
+    "provenance": {
+      "image": "9a8538f2-9491-5125-852a-1103cdddabba.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "89f0e3ac12362267edccd2aa8aae7b090e371653caf67ee6dfc9cad195180cec": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "77cbdf0b-4547-5626-87cc-0e61531da76d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "19017269e52a9cadb454c8d0e87035e7b6e630f4275071bfc83e1722be88eb6e": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "1dfb709e-aed5-5fdf-a697-fa703b595bd4.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "0df71523ce8c902dc838fdccc6aac8bc0815dc0e4ccccf71e9dc8c422f9ffb50": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "24a20439-d303-5cf3-8d22-d2b84b0815af.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "b56308be84bf28e476429536f8a1b2da278203bb35195f34a3cea185a713acaa": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "3b72e65d-e76f-5c50-8aba-79f53139e822.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "e2816e67c440a45a6a2dd0ee430a03959bbd7239fd990f4cea0abcedfd9df847": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "4270d95f-80c7-5053-a7ea-a87dc6ad3b85.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "dae474ce860dca902098b5cc965d9312dea90e3465c4ecb50898cd44a19960de": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "5952a5bf-ed2e-5fc9-8112-825eef6cc97d.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "d7f02e4dc7e6ae816b00e4e35e9b203265abf8ad7fbb79424d9ff5b3f94efb8a": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "5fb2a577-8af6-50f3-9ec2-314343a0fa48.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "bec3e610ed45d9fe11a047b52d8c638fb2f55a50fd489fa748eeff14bcc3bce2": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "7f11f93c-3dd9-55ff-aae5-e0221b0a2a19.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "47fee72c81ece930944c230e023e3690b493c40b9ddc237bd3f3451c7404156d": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "7fba7a8a-86fc-585c-8521-866dd10211a3.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "9e426874bc9b7a602af9c7a9f23920bb490f2fda1c4bc240593607ffec24468e": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "926e2e51-8065-5b07-bc44-664339805903.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "d3907a2163d7ba435a318f2390ef232952debab7e187675b46adbb4caa96b666": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "a5606c59-d6db-526a-be03-dee5d3434726.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
+    }
+  },
+  "451601946a30c13abc0436e4bdc4afe2dcc45bf6f7888cae1859505f0015f0a6": {
+    "patch": {
+      "title": ""
+    },
+    "provenance": {
+      "image": "a69d19d0-26de-5153-867c-8c892bb0023e.png",
+      "review_date": "2026-10-11",
+      "scope": "fields",
+      "method": "visual transcription of original chart via audit contact sheets/full images; no program labels",
+      "note": "Only fields in patch verified. Other fields require ordinary CV review."
     }
   }
 }

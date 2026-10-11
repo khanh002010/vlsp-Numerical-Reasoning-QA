@@ -13,7 +13,7 @@ class SavedVisionFailure(RuntimeError):
     pass
 
 
-INSPECTION_VERSION = "legend-axis-review-v2"
+INSPECTION_VERSION = "legend-axis-review-v3-separated-fields"
 
 
 class ChartStructureStore:
@@ -123,18 +123,33 @@ class ChartStructureStore:
         if saved["status"] != "ok": raise SavedVisionFailure(saved["error"])
         return saved["result"]
 
-    def inspect(self, path, request):
+    def inspect(self, path, request, retry_failed=False):
         def read(reader, original):
             observed = reader.inspect(str(path), request, original)
             observed["structure"] = validate_structure(observed["structure"])
             return observed
+        if retry_failed:
+            record = self.record(path)
+            payload = {k: v for k, v in request.items() if k != 'image_id'}
+            if record:
+                record['requests'] = {k: v for k, v in record.get('requests', {}).items()
+                    if not (v.get('kind') == 'inspect' and v.get('request') == payload and v.get('status') == 'error')}
         cached = self.has_request(path, "inspect", request)
         result = self._request(path, "inspect", request, read)
         record = self.data["images"][self._key(path)]
         if cached:
             # A repeated old request must not roll back a newer full-image review.
             return validate_structure(record["structure"])
-        updated = merge_observation(record["structure"], result["structure"], result.get("full_image", False))
+        if result.get('replace_fields'):
+            allowed = {'title', 'kind', 'series', 'series_complete', 'x_labels', 'x_labels_complete', 'x_order_known', 'y_labels'}
+            updated = {**record['structure'], **{k: result['structure'][k] for k in result['replace_fields'] if k in allowed}}
+            updated['uncertain'] = list(dict.fromkeys(record['structure'].get('uncertain', []) + result['structure'].get('uncertain', [])))
+        else:
+            updated = merge_observation(record["structure"], result["structure"], result.get("full_image", False))
+        # Preserve fields transcribed from these exact image bytes by a human reviewer.
+        # A new automated read must not reintroduce an already corrected OCR error.
+        updated.update(record.get('reviewed_fields', {}))
+        updated = validate_structure(updated)
         if updated != record["structure"]:
             record.setdefault("structure_history", []).append(record["structure"])
         record["structure"] = updated

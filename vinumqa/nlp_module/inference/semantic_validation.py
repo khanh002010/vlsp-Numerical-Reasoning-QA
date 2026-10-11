@@ -4,7 +4,7 @@ import unicodedata
 from vinumqa.data.context import dict_to_markdown_table
 from vinumqa.utils.dsl_parser import parse_program, validate_program, MATH_OPS
 
-REVIEW_VERSION = "source-review-v1"
+REVIEW_VERSION = "source-review-v2-private"
 REVIEW_GUIDANCE = """Kiểm tra trước khi trả lời:
 - Chọn đúng ảnh, series, ô bảng và mốc thời gian theo câu hỏi; không chọn nguồn chỉ vì tên gần giống.
 - Giữ nhãn nguồn, gồm 1H26/6M26/2026F; không tự đổi sang năm hoặc ngày khác.
@@ -16,15 +16,61 @@ REVIEW_GUIDANCE = """Kiểm tra trước khi trả lời:
 - Số cụ thể chỉ lấy từ text/bảng. Không dùng nhãn số trong chart structure làm giá trị dữ liệu.
 - DSL phẳng: không dùng biểu thức lồng, sum(...), hoặc a+b trong đối số. Dùng các bước và #N.
 - Step 1 phải mô tả đúng mọi bước và thứ tự đối số của Step 2.
+- Trước khi chọn số, xác định đại lượng, kỳ, đơn vị và nguồn của cả tử số/mẫu số. Hai số cùng xuất hiện trong context chưa đủ chứng minh chúng trả lời câu hỏi.
+- Tách chú thích sự kiện khỏi tên series; không dùng một Image khác chỉ vì thiếu nhãn. Với bảng nhiều tầng, dùng đầy đủ header cha@con và đúng hàng chỉ tiêu.
+- Nếu không biết giá trị điểm ảnh, vẫn sinh chart_* từ nhãn đã xác minh; không cần tính đáp án số. Không thay chart_* bằng số đoán.
 """
 
 
 def table_axes(html):
-    # Use the exact same merged-cell/header-path renderer as the model prompt.
+    headers, body = table_grid(html)
+    keys = table_key_columns(body)
+    primary = keys[-1] if keys else 0
+    return [h for i, h in enumerate(headers) if i != primary], [r[primary] for r in body]
+
+
+def table_grid(html):
+    """Use the same merged-cell/header renderer as the model, including all key columns."""
     lines = dict_to_markdown_table({"Table 1": html}).splitlines()
     cells = lambda line: [x.strip().replace("\\|", "|") for x in re.split(r"(?<!\\)\|", line)[1:-1]]
+    if len(lines) < 3:
+        return [], []
     headers = cells(lines[1])
-    return headers[1:], [cells(line)[0] for line in lines[3:]]
+    return headers, [(cells(line) + [''] * len(headers))[:len(headers)] for line in lines[3:] if line.startswith('|')]
+
+
+def table_key_columns(body):
+    """Leading nonnumeric columns are candidate keys (group, ticker, metric...)."""
+    if not body:
+        return []
+    keys = [0]
+    for i in range(1, len(body[0])):
+        values = [r[i] for r in body if r[i]]
+        if not values or any(re.search(r'\d', v) for v in values):
+            break
+        keys.append(i)
+    return keys
+
+
+def table_binding_axes(html, metric):
+    headers, body = table_grid(html)
+    keys = table_key_columns(body)
+    axes = []
+    if metric in headers:
+        axes.extend([r[k] for r in body] for k in keys)
+    if any(metric == r[k] for r in body for k in keys):
+        axes.append([h for i, h in enumerate(headers) if i not in keys])
+    return headers, [r[k] for r in body for k in keys], axes
+
+
+def source_catalog(tables):
+    """Small binding guide; raw tables remain in context, not truncated or replaced."""
+    catalog = {}
+    for name, html in tables.items():
+        headers, body = table_grid(html)
+        keys = table_key_columns(body)
+        catalog[name] = {'headers': headers, 'row_keys': [[r[k] for r in body] for k in keys]}
+    return catalog
 
 
 def fold(text):
@@ -44,6 +90,10 @@ def structure_concerns(chart):
         reasons.append("Verify whether high/low captions are X categories rather than colored legend series")
     if not names:
         reasons.append("No verified series names")
+    if chart.get('kind') != 'pie' and not chart.get('x_labels') and not chart.get('y_labels'):
+        reasons.append("No X labels; inspect the actual category/time axis")
+    if any('(phải)' in n and s.get('axis') == 'left' for n, s in zip(names, chart.get('series', []))):
+        reasons.append("Right-axis legend has left-axis metadata")
     return reasons
 
 
@@ -78,21 +128,24 @@ def validate_semantics(program, tables, text_segments, question):
         if s.args[0] not in tables:
             errors.append(f"Unknown table {s.args[0]}")
             continue
-        columns, rows = table_axes(tables[s.args[0]])
         metric, start, end = s.args[1:]
-        axes = []
-        if metric in columns:
-            axes.append(rows)
-        if metric in rows:  # Financial tables commonly store metrics in rows.
-            axes.append(columns)
+        columns, rows, axes = table_binding_axes(tables[s.args[0]], metric)
         if not axes:
             errors.append(f"Step {s.step_id}: table metric {metric!r} does not exist; columns={columns}, rows={rows}")
             continue
         matching = [axis for axis in axes if all(x == "none" or x in axis for x in (start, end))]
         if not matching:
             errors.append(f"Step {s.step_id}: table range {start!r}..{end!r} is not on the metric's other axis; available={axes}")
-        elif start != "none" and end != "none" and all(a.index(start) > a.index(end) for a in matching):
-            errors.append(f"Step {s.step_id}: reversed table range")
+        elif start != "none" and end != "none":
+            # Aggregate endpoints select an inclusive interval in either display direction.
+            # Financial tables often put the newest period first; this isn't a reversed subtraction.
+            for axis in matching:
+                lo, hi = sorted((axis.index(start), axis.index(end)))
+                mentioned = {v for v in axis if v and re.search(r'(?<!\w)' + re.escape(v) + r'(?!\w)', question, re.I)}
+                if s.operator in {'table_average', 'table_sum'} and len(mentioned) >= 3 and not any(re.search(r'\d', v) for v in mentioned):
+                    selected = set(axis[lo:hi+1])
+                    if mentioned <= selected and selected != mentioned:
+                        errors.append(f"Step {s.step_id}: question names discrete rows {sorted(mentioned)}; this range includes additional rows. Use individual lookups or source literals.")
         # Only enforce growth columns when the named metric has an explicit YoY sibling.
         q = fold(question)
         if "@" in metric and "tăng trưởng" in q and ("cùng kỳ" in q or "svck" in q):
