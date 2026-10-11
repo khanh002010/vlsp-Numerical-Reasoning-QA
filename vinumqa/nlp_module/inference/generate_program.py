@@ -131,18 +131,46 @@ class ProgramGenerator:
             self.dsl_processor.reset(inputs.input_ids.shape[1])
             logits_processor.append(self.dsl_processor)
 
-        try:
-            precision = torch.autocast("cuda", dtype=torch.float16) if self.device == "cuda" else nullcontext()
-            with torch.inference_mode(), precision:
-                outputs = self.model.generate(
-                    **inputs,
-                    max_new_tokens=1536,
-                    pad_token_id=self.tokenizer.pad_token_id,
-                    do_sample=False,
-                    logits_processor=logits_processor,
-                    max_time=120,
-                )
+        # Hard timeout via thread: max_time= only checks between tokens but cannot
+        # interrupt a single GPU forward pass that hangs (common with very long contexts).
+        # A daemon thread abandoned after TIMEOUT_S prevents the whole pipeline from freezing.
+        TIMEOUT_S = 150
+        import threading
+        result_box = [None]
+        exc_box    = [None]
 
+        def _run():
+            try:
+                precision = torch.autocast("cuda", dtype=torch.float16) if self.device == "cuda" else nullcontext()
+                with torch.inference_mode(), precision:
+                    result_box[0] = self.model.generate(
+                        **inputs,
+                        max_new_tokens=1536,
+                        pad_token_id=self.tokenizer.pad_token_id,
+                        do_sample=False,
+                        logits_processor=logits_processor,
+                        max_time=120,
+                    )
+            except Exception as e:
+                exc_box[0] = e
+
+        thread = threading.Thread(target=_run, daemon=True)
+        thread.start()
+        thread.join(timeout=TIMEOUT_S)
+
+        if thread.is_alive():
+            # GPU forward pass did not return within TIMEOUT_S seconds.
+            print(f"[ERROR] Generation hard-timeout after {TIMEOUT_S}s (GPU stuck). Skipping sample.", flush=True)
+            return {"error": f"Generation hard timeout after {TIMEOUT_S}s", "extracted_values": "", "program": ""}
+
+        if exc_box[0] is not None:
+            import traceback
+            print(f"[ERROR] Generation failed: {exc_box[0]}")
+            traceback.print_exc()
+            return {"error": str(exc_box[0]), "extracted_values": "", "program": ""}
+
+        try:
+            outputs = result_box[0]
             response_text = self.tokenizer.decode(
                 outputs[0][inputs.input_ids.shape[1]:],
                 skip_special_tokens=True,
@@ -164,6 +192,7 @@ class ProgramGenerator:
             print(f"[ERROR] Generation failed: {e}")
             traceback.print_exc()
             return {"error": str(e), "extracted_values": "", "program": ""}
+
 
     def _build_prompt(
         self,
