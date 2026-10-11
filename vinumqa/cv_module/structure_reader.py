@@ -106,7 +106,19 @@ class ChartStructureReader:
             prompt = ('Read the actual image. Return ONLY compact JSON, no Markdown. '
                       'Do not guess unreadable text. Template: '
                       + json.dumps({**template, "uncertain": []}) + '\n' + instruction + focus)
-            value = self._read_part(path, phase, prompt, box)
+            try:
+                value = self._read_part(path, phase, prompt, box)
+            except ValueError as part_error:
+                # Legend failures are fatal: without title/kind/series the record is useless.
+                # x_axis and y_axis failures are non-fatal: fall back to empty defaults so that
+                # the successfully-read legend is not discarded (e.g. dense time-axis charts
+                # where the model keeps generating calendar dates instead of copying tick labels).
+                if phase not in ("x_axis", "y_axis"):
+                    raise
+                skip_msg = f"{phase} read failed after all retries (token limit or loop): {str(part_error)[:120]}"
+                print(f"[Structure] non-fatal {phase} failure, using empty fallback: {part_error}", flush=True)
+                self.last_generation.setdefault("phase_skipped", {})[phase] = str(part_error)
+                value = {**template, "uncertain": [skip_msg]}
             merged["uncertain"].extend(value.pop("uncertain"))
             merged.update(value)
         merged["uncertain"] = list(dict.fromkeys(merged["uncertain"]))

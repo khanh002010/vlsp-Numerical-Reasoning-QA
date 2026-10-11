@@ -98,5 +98,34 @@ class LocalizedTests(unittest.TestCase):
             cv._read_part('chart.png', 'legend', 'read legend')
         self.assertEqual(cv._read.call_count, 3)
 
+    def test_x_axis_total_failure_falls_back_to_empty_labels_but_keeps_legend(self):
+        """Dense time-axis charts where the model keeps generating calendar dates."""
+        cv = ChartStructureReader.__new__(ChartStructureReader)
+        cv.last_generation = {}
+        legend_value = {'title': 'My Chart', 'kind': 'line',
+                        'series': [{'name': 'Series A', 'color': '', 'axis': 'none', 'unit': ''}],
+                        'series_complete': True, 'uncertain': []}
+        # legend succeeds; x_axis fails on all retries (focused + crop); y_axis succeeds
+        cv._read_part = Mock(side_effect=[
+            legend_value,
+            ValueError('Structure read incomplete at the bounded token/time limit'),
+            {'y_labels': [], 'uncertain': []},
+        ])
+        result = cv._read_parts('chart.png')
+        self.assertEqual(result['title'], 'My Chart')
+        self.assertEqual(result['series'][0]['name'], 'Series A')
+        self.assertEqual(result['x_labels'], [])
+        self.assertFalse(result['x_labels_complete'])
+        self.assertTrue(any('x_axis' in u for u in result['uncertain']))
+        self.assertIn('x_axis', cv.last_generation.get('phase_skipped', {}))
+
+    def test_legend_failure_in_parts_is_still_fatal(self):
+        """Without title/kind/series the record is meaningless; must not silently return empty."""
+        cv = ChartStructureReader.__new__(ChartStructureReader)
+        cv.last_generation = {}
+        cv._read_part = Mock(side_effect=ValueError('legend loop'))
+        with self.assertRaises(ValueError):
+            cv._read_parts('chart.png')
+
 
 if __name__ == '__main__': unittest.main()
