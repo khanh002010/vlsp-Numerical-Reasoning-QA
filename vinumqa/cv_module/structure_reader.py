@@ -86,9 +86,10 @@ class ChartStructureReader:
              'If there is no legend, use a printed series title only when unambiguous. '
              'If a series name is unreadable, return series_complete=false and explain in uncertain.'),
             ("x_axis", {"x_labels": [], "x_labels_complete": False},
-             'Read ONLY X category/time labels, in visual order. Copy visible text exactly. '
+             'Read ONLY X category/time labels, in visual order. Copy ONLY the PRINTED TICK LABELS exactly as they appear. '
+             'STOP after the last visible tick — do NOT continue or extend the sequence. '
+             'NEVER interpolate, infer or generate dates/labels between printed ticks. '
              'For grouped categories include the visible parent with each child to distinguish them. '
-             'Never invent dates, omit duplicate positions, or add artificial numbering. '
              'Read rotated labels individually. Do not enumerate a calendar or continue a quarter cycle. '
              'For quarter/year tiers, copy each printed quarter together with its printed year. '
              'Sparse ticks or unreadable labels mean x_labels_complete=false.'),
@@ -115,8 +116,10 @@ class ChartStructureReader:
         return result
 
     def _read_part(self, path, phase, prompt, box=None):
+        # Use a larger budget for x_axis: quarterly date charts can have many ticks.
+        focused_budget = 2048 if phase == "x_axis" else 1024
         try:
-            value = self._read(path, prompt, box, budgets=(1024,),
+            value = self._read(path, prompt, box, budgets=(focused_budget,),
                                reset=False, phase="focused_" + phase)
             result, repairs = validate_part(phase, value)
         except ValueError as error:
@@ -173,10 +176,14 @@ class ChartStructureReader:
                 crop = validate_box([max(crop[0], box[0]), max(crop[1], box[1]),
                                      min(crop[2], box[2]), min(crop[3], box[3])])
             print(f"[Structure] re-read {phase} crop={crop}: {error}", flush=True)
-            value = self._read(path, prompt + '\nThis is a crop: report only visible text. '
+            # Use a larger token budget when cropping x_axis (dense quarterly/date charts).
+            crop_budget = 4096 if phase == "x_axis" else 2048
+            value = self._read(path, prompt + '\nThis is a crop: report ONLY visible printed tick labels. '
+                               'STOP after the last visible tick — do NOT extend or continue the sequence. '
+                               'NEVER infer dates between printed ticks. '
                                'Set completeness flags false. Close JSON after the last printed label. '
                                'Previous validation error: ' + str(error)[:200], crop,
-                               budgets=(2048,), reset=False, phase="crop_" + phase)
+                               budgets=(crop_budget,), reset=False, phase="crop_" + phase)
             result, repairs = validate_part(phase, value)
             if phase == "legend":
                 result["series_complete"] = False
