@@ -25,6 +25,28 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_bar_missing_readable_requires_matching_confirmation(self):
+        from vinumqa.cv_module.bar_label_regions import read_bar_labels
+        box=[0,.8,.1,1]
+        with patch('vinumqa.cv_module.bar_label_regions.bar_label_boxes',return_value=[box]):
+            reader=Mock();reader.last_generation={}
+            reader._read.side_effect=[{'lines':['2011','(Lần 2)']},
+                                      {'lines':[' 2011 ','(lần 2)']}]
+            labels,_=read_bar_labels(reader,'image',[])
+            self.assertEqual(labels,['2011 (Lần 2)'])
+            self.assertEqual(reader._read.call_count,2)
+            self.assertEqual(reader._read.call_args.args[2],box)
+            self.assertEqual(len(reader.last_generation['bar_label_confirmations']),1)
+            for second in ({'lines':['2011','(Lần 1)'],'readable':True},
+                           {'lines':['2011','(Lần 2)'],'readable':False},
+                           {'lines':['2011'],'readable':'true'}):
+                reader._read.side_effect=[{'lines':['2011','(Lần 2)']},second]
+                with self.assertRaises(ValueError):read_bar_labels(reader,'image',[])
+            reader._read.reset_mock()
+            reader._read.side_effect=[{'lines':['2011'],'readable':False}]
+            with self.assertRaises(ValueError):read_bar_labels(reader,'image',[])
+            self.assertEqual(reader._read.call_count,1)
+
     def test_bar_geometry_and_column_transcription(self):
         from PIL import Image,ImageDraw
         from vinumqa.cv_module.bar_label_regions import bar_label_boxes,read_bar_labels
