@@ -1,0 +1,22 @@
+{
+  "scope": "Four deliberately selected problematic public images, visually inspected at original resolution; not a random sample or a whole-dataset accuracy estimate. References transcribe pixels, not answer programs.",
+  "images": {
+    "0059817e-3b8f-4abe-a6ab-149a48319b72.png": {
+      "series": ["OPEX", "Prov.", "NII", "NSI", "NOI"],
+      "x_labels": ["2019", "2020", "2021", "2022", "2023", "3Q24 (TTM)"]
+    },
+    "78e21af7-0e0e-4474-94e5-11140ffd27a3.png": {
+      "series": ["P/E ước tính cho năm tài chính hiện tại", "TB 5 năm", "TB năm", "P/E ước tính 2024"],
+      "x_labels": ["1/2/2018", "3/2/2018", "5/2/2018", "7/2/2018", "9/2/2018", "11/2/2018", "1/2/2019", "3/2/2019", "5/2/2019", "7/2/2019", "9/2/2019", "11/2/2019", "1/2/2020", "3/2/2020", "5/2/2020", "7/2/2020", "9/2/2020", "11/2/2020", "1/2/2021", "3/2/2021", "5/2/2021", "7/2/2021", "9/2/2021", "11/2/2021", "1/2/2022", "3/2/2022", "5/2/2022", "7/2/2022", "9/2/2022", "11/2/2022", "1/2/2023", "3/2/2023", "5/2/2023", "7/2/2023", "9/2/2023", "11/2/2023", "1/2/2024", "3/2/2024", "5/2/2024", "7/2/2024", "9/2/2024", "11/2/2024"]
+    },
+    "8d9fb0be-8aa6-40a3-8c45-9215ac5cdb85.png": {
+      "series": ["Giá điện từ 2009 - 2023 (VND/kWh)"],
+      "note": "No separate legend; the printed single-series title is an acceptable visible identifier. Gold may use a shorter semantic alias.",
+      "x_labels": ["2009", "2010", "2011 (Lần 1)", "2011 (Lần 2)", "2012 (Lần 1)", "2012 (Lần 2)", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"]
+    },
+    "526ab4b8-a979-423f-84c0-997021186e77.png": {
+      "series": ["T12", "2023"],
+      "x_labels": ["Dịch vụ tài chính", "Truyền thông", "Công nghệ Thông tin", "Tài nguyên Cơ bản", "Hóa chất", "Dầu khí", "Viễn thông", "Xây dựng và Vật liệu", "Ngân hàng", "Y tế", "Bán lẻ", "Hàng cá nhân & Gia dụng", "Ô tô và phụ tùng", "Điện, nước & xăng dầu khí đốt", "Bất động sản", "Hàng & Dịch vụ Công nghiệp", "Bảo hiểm", "Thực phẩm và đồ uống", "Du lịch và Giải trí"]
+    }
+  }
+}

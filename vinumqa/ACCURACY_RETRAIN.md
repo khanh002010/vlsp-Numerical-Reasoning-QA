@@ -4,7 +4,8 @@ Baseline public: 240/459 (52,29%) theo `programs_equivalent` hiện tại. Xem
 [phân tích lỗi](../reports/public_accuracy_v2/analysis_vi.md) trước khi so kết quả mới.
 Các cell dưới đây giả định repo đã được cập nhật ở
 `/kaggle/working/vlsp-Numerical-Reasoning-QA`, môi trường training cũ đang hoạt động
-và GPU đã bật. Chưa push code thì `git pull` chưa lấy được bản sửa này.
+và GPU đã bật. File `reports/public_accuracy_v2/pixel_references.json` là dữ liệu
+reference cần thiết cho cell thử OCR và được lưu cùng code trên Git.
 
 OCR và training chạy ở các process/phiên riêng. Không nạp CV và NLP đồng thời.
 Giữ folder dữ liệu, checkpoint cũ để đối chiếu; kết quả mới ghi vào folder riêng.
