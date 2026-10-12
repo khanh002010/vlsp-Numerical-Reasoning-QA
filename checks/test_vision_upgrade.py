@@ -25,6 +25,17 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_rotated_ticks_preserve_literal_ambiguity_and_require_agreement(self):
+        from vinumqa.cv_module.axis_band_recovery import recover_rotated_ticks
+        reader=Mock();reader.last_generation={};c=chart();c['uncertain']=[]
+        with patch('vinumqa.cv_module.axis_band_recovery.rotated_tick_boxes',return_value=[[.1,.7,.2,.84]]*3):
+            reader._read.side_effect=[{'label':s} for s in ['Jan-01','Jan-01','Mar-01','Mar-01','Jan-01','Jan-01']]
+            labels,complete=recover_rotated_ticks(reader,'image',c)
+            self.assertEqual(labels,[]);self.assertFalse(complete)
+            self.assertEqual(c['x_tick_labels'],['Jan-01','Mar-01','Jan-01'])
+            reader._read.side_effect=[{'label':'Jan-01'},{'label':'Jan-02'}]
+            with self.assertRaisesRegex(ValueError,'disagree'):recover_rotated_ticks(reader,'image',c)
+
     def test_axis_band_parents_and_source_duplicates(self):
         from vinumqa.cv_module.axis_band_recovery import recover_axis_band,parse_band
         reader=Mock();reader.last_generation={};c=chart();c['uncertain']=[]
