@@ -50,6 +50,8 @@ command = [
     '--reviewed-structures', str(REPO / 'vinumqa/data/reviewed_private_structures.json'),
     '--output-dir', str(OUT), '--max-rounds', '4',
     '--nlp-attempts', '2', '--max-hours', '10.5',
+    '--nlp-device', 'cuda:0', '--progress-seconds', '30',
+    '--max-generation-seconds', '120',
 ]
 previous = REPO / 'submit/private_test/diagnostics.json'
 if previous.is_file():
@@ -63,6 +65,20 @@ elif process.returncode:
 ```
 
 `--max-rounds` áp dụng mỗi phiên. `--nlp-attempts` là số lượt sửa ngay cho lỗi DSL/Step 1/nguồn bảng. Thiếu nhãn ảnh chuyển sang CV trước. Giới hạn thời gian là mềm, có dự phòng lưu file. OOM dừng sớm thay vì đánh dấu cả tập lỗi.
+
+## Log generation và cảnh báo Timeout định kỳ
+
+`Timeout (0:03:00)!` từ `faulthandler.dump_traceback_later(180, repeat=True)` là dump stack định kỳ tính từ lúc bật bộ đếm, không phải exception hoặc bằng chứng một câu đã treo 180 giây. Trong log ngày 2026-10-12, câu 33 và 39 vẫn sinh xong và chuyển sang câu tiếp theo sau dump.
+
+Bản sửa in `[NLP generate]`, heartbeat `[NLP progress]` mỗi 30 giây, `[NLP generated]` và `[SAVE]`. Heartbeat có số token đã sinh và thời gian từ bước token cuối; nó không gọi CUDA và không tự chứng nhận GPU còn tiến triển. `generated_tokens=0` có thể là đang prefill. Raw output hiển thị 300 ký tự đầu; không suy ra program bị cắt chỉ từ dòng debug đó.
+
+NLP mặc định 4-bit, FP16, trên `cuda:0`; `--nlp-device auto` cho phép chia model nếu cần. Một GPU tránh truyền giữa hai GPU không cần thiết, nhưng vẫn có thể OOM nếu context lớn; không tự cắt context để tránh OOM. Chưa đo tốc độ thực tế trên T4 của người dùng.
+
+`--max-generation-seconds` là giới hạn mềm của Transformers, không thể ngắt CUDA forward đang kẹt. Generation chạy đồng bộ; không bỏ rơi thread GPU sau timeout rồi chạy câu khác trên cùng model. EOS được nhận diện theo toàn bộ danh sách stop token của model.
+
+Lỗi chỉ thiếu nhãn trục trong cấu trúc chưa đọc đủ được chuyển vào hàng đợi CV khi còn vòng CV tiếp theo. Sai series/DSL vẫn được NLP sửa; nếu lặp lại cùng candidate và cùng lỗi thì dừng các lượt retry dư trong vòng đó. CV chạy sau lượt NLP, không nạp đồng thời hai model. Không tự hợp thức hóa nhãn hoặc số không có bằng chứng.
+
+Cell có `faulthandler` ở ngoài vẫn sẽ in Timeout định kỳ: dùng lại `subprocess.run(command, cwd=REPO, env=env)` như trên để dùng heartbeat mới thay cho dump định kỳ. Giữ INPUT, ADAPTER, STORE, OUT của lượt đang chạy (kể cả INPUT chỉ gồm 228 câu); bản sửa runtime này không thay run identity. Không đổi INPUT 228 câu thành toàn bộ 980 câu trong cùng OUT.
 
 ## Cell kiểm tra kết quả
 

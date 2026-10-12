@@ -79,6 +79,28 @@ def check_prediction(prediction, sample, charts):
     return check
 
 
+def needs_cv_before_retry(prediction, check, charts):
+    """Only defer pure missing-evidence errors; wrong known labels still get NLP repair."""
+    if prediction.get('cv_request') and check.get('cv_requests'):
+        return True
+    if not check.get('cv_requests') or not check.get('errors'):
+        return False
+    # Don't suppress repair of DSL, source choice, Step-1 or numerical reasoning.
+    for error in check['errors']:
+        if error.startswith('Missing chart structure for '):
+            continue
+        if not any(f'unverified {field} label' in error for field in ('x_labels', 'y_labels')):
+            return False
+    for request in check['cv_requests']:
+        chart = charts.get(request['image_id'])
+        if chart is None:
+            continue
+        field = {'x_axis': 'x_labels', 'y_axis': 'y_labels'}.get(request['region'])
+        if field is None or chart.get(field + '_complete', False):
+            return False
+    return True
+
+
 def export_outputs(output_dir, data, state, phase):
     records = state["records"]
     programs = [{"qid": s["qid"], "program": records.get(s["qid"], {}).get("program", "")
@@ -200,7 +222,7 @@ def inspect_queue(store, queue, image_dir, state, expired):
 
 def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previous_diagnostics=None,
                reviewed_structures=None, max_rounds=3, max_hours=10.5, generator_factory=None, store=None,
-               nlp_attempts=2):
+               nlp_attempts=2, nlp_device='cuda:0', max_generation_seconds=120, progress_seconds=30):
     if max_rounds < 1 or max_hours <= 0 or nlp_attempts < 1:
         raise ValueError("max_rounds and max_hours must be positive")
     if reviewed_structures is None and DEFAULT_REVIEWED.is_file():
@@ -240,7 +262,9 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
     if generator_factory is None:
         def generator_factory():
             from vinumqa.nlp_module.inference.generate_program import ProgramGenerator
-            return ProgramGenerator(lora_weights=str(adapter))
+            return ProgramGenerator(lora_weights=str(adapter), device=nlp_device,
+                                    max_generation_seconds=max_generation_seconds,
+                                    progress_seconds=progress_seconds)
     started = time.monotonic()
     expired = lambda: time.monotonic() - started >= max(0, max_hours * 3600 - min(300, max_hours * 3600 / 10))
     generator = None
@@ -316,6 +340,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     generator = generator_factory()
                 history = list(old.get("repair_history", []))
                 initial_prompt = prompt
+                attempt_signatures = set()
                 for attempt in range(nlp_attempts):
                     try:
                         prediction = dict(cache[initial_prompt]) if cached else generator.generate_with_prompt(prompt)
@@ -333,6 +358,14 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     if check['valid']:
                         cache[initial_prompt] = dict(prediction)
                         break
+                    signature = digest([prediction.get('program'), prediction.get('cv_request'), check['errors']])
+                    if signature in attempt_signatures:
+                        print('  [NLP retry stopped] Same candidate/errors; saved for CV review or next round.', flush=True)
+                        break
+                    attempt_signatures.add(signature)
+                    if round_index + 1 < max_rounds and needs_cv_before_retry(prediction, check, charts):
+                        print('  [NLP -> CV queue] Missing evidence in incomplete structure; defer NLP retry until CV review.', flush=True)
+                        break
                     if expired() or attempt + 1 == nlp_attempts:
                         break
                     feedback = '\n\n### Repair attempt\n' + json.dumps({
@@ -345,6 +378,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     "source_digest": context_digest, "evidence_validation": check, "unavailable_images": missing,
                     "repair_history": history, "status": "accepted" if check["valid"] else "needs_review"}
                 queue.append((sample, check["cv_requests"]))
+                print(f'  [SAVE] {qid}: writing state and diagnostics', flush=True)
                 summary = export_outputs(output_dir, data, state, f"nlp_round_{round_index+1}")
                 print(f"  valid={check['valid']}; accepted={summary['accepted_by_checks']}/{len(data)}; errors={check['errors'][:2]}", flush=True)
             if generator is not None:
@@ -387,10 +421,15 @@ def main():
     parser.add_argument("--max-rounds", type=int, default=3)
     parser.add_argument("--max-hours", type=float, default=10.5)
     parser.add_argument('--nlp-attempts', type=int, default=2)
+    parser.add_argument('--nlp-device', default='cuda:0', help='cuda:0 (one GPU), cuda:1, auto (dispatch), or cpu')
+    parser.add_argument('--max-generation-seconds', type=float, default=120, help='Soft limit per generation; cannot interrupt a blocked CUDA forward')
+    parser.add_argument('--progress-seconds', type=float, default=30, help='CPU heartbeat interval during generation')
     args = parser.parse_args()
     result = run_repair(args.input, args.images, args.adapter, args.structure_store, args.output_dir,
                         previous_diagnostics=args.previous_diagnostics, reviewed_structures=args.reviewed_structures,
-                        max_rounds=args.max_rounds, max_hours=args.max_hours, nlp_attempts=args.nlp_attempts)
+                        max_rounds=args.max_rounds, max_hours=args.max_hours, nlp_attempts=args.nlp_attempts,
+                        nlp_device=args.nlp_device, max_generation_seconds=args.max_generation_seconds,
+                        progress_seconds=args.progress_seconds)
     if not result["complete"]:
         print("Unresolved predictions remain; rerun the same command to resume, inspect diagnostics before submitting.", flush=True)
         raise SystemExit(2)

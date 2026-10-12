@@ -4,8 +4,7 @@ Inference script to generate reasoning programs from text and tables using the f
 
 import torch
 import re
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, StoppingCriteriaList
 from vinumqa.nlp_module.inference.constrained_decode import DSLLogitsProcessor
 from vinumqa.nlp_module.contracts import DSL_HINT_SHORT, build_prompt, parse_response, FORMAT_VERSION, INSTRUCTION
 from vinumqa.utils.dsl_parser import validate_program
@@ -13,6 +12,8 @@ from pathlib import Path
 import json
 import hashlib
 from contextlib import nullcontext
+import time
+from vinumqa.nlp_module.inference.generation_runtime import GenerationProgress, placement, eos_ids
 
 
 class ProgramGenerator:
@@ -23,6 +24,8 @@ class ProgramGenerator:
         device: str = "cuda",
         use_constrained_decoding: bool = True,
         allow_legacy_adapter: bool = False,
+        max_generation_seconds: float = 120,
+        progress_seconds: float = 30,
     ):
         """
         Initialize the Program Generator (NLP Module).
@@ -34,7 +37,12 @@ class ProgramGenerator:
             use_constrained_decoding:   If True, activates DSLLogitsProcessor to prevent
                                         the model from generating unknown operators.
         """
-        self.device = device if torch.cuda.is_available() else "cpu"
+        if max_generation_seconds <= 0 or progress_seconds <= 0:
+            raise ValueError('Generation time and progress interval must be positive')
+        self.device, device_map = placement(device, torch.cuda.is_available())
+        self.max_generation_seconds = max_generation_seconds
+        self.progress_seconds = progress_seconds
+        cuda = self.device.startswith('cuda')
         self.use_constrained_decoding = use_constrained_decoding
         print(f"Loading {base_model_id} on {self.device}...")
 
@@ -60,23 +68,27 @@ class ProgramGenerator:
                 bnb_4bit_use_double_quant=True,
                 bnb_4bit_quant_type="nf4",
                 bnb_4bit_compute_dtype=torch.float16,
-            ) if self.device == "cuda" else None
+            ) if cuda else None
             self.model = AutoModelForCausalLM.from_pretrained(
                 base_model_id,
                 quantization_config=bnb_config,
-                device_map="auto" if self.device == "cuda" else "cpu",
+                device_map=device_map,
+                dtype=torch.float16 if cuda else torch.float32,
                 attn_implementation="sdpa",
             )
 
             if lora_weights:
+                from peft import PeftModel
                 print(f"Loading LoRA weights from {lora_weights}...")
                 self.model = PeftModel.from_pretrained(self.model, lora_weights)
 
             self.model.eval()
-            if self.device == "cuda":
+            if cuda:
                 from vinumqa.nlp_module.training.memory_attention import register_memory_attention
                 self.model.set_attn_implementation(register_memory_attention())
             self.model.config.use_cache = True
+            print(f'[NLP placement] device_map={getattr(self.model, "hf_device_map", device_map)}; '
+                  f'compute_dtype={"float16" if cuda else "float32"}', flush=True)
 
             # DSL Constrained Decoder
             if self.use_constrained_decoding:
@@ -131,60 +143,42 @@ class ProgramGenerator:
             self.dsl_processor.reset(inputs.input_ids.shape[1])
             logits_processor.append(self.dsl_processor)
 
-        # Hard timeout via thread: max_time= only checks between tokens but cannot
-        # interrupt a single GPU forward pass that hangs (common with very long contexts).
-        # A daemon thread abandoned after TIMEOUT_S prevents the whole pipeline from freezing.
-        TIMEOUT_S = 150
-        import threading
-        result_box = [None]
-        exc_box    = [None]
-
-        def _run():
-            try:
-                precision = torch.autocast("cuda", dtype=torch.float16) if self.device == "cuda" else nullcontext()
-                with torch.inference_mode(), precision:
-                    result_box[0] = self.model.generate(
-                        **inputs,
-                        max_new_tokens=1536,
-                        pad_token_id=self.tokenizer.pad_token_id,
-                        do_sample=False,
-                        logits_processor=logits_processor,
-                        max_time=120,
-                    )
-            except Exception as e:
-                exc_box[0] = e
-
-        thread = threading.Thread(target=_run, daemon=True)
-        thread.start()
-        thread.join(timeout=TIMEOUT_S)
-
-        if thread.is_alive():
-            # GPU forward pass did not return within TIMEOUT_S seconds.
-            print(f"[ERROR] Generation hard-timeout after {TIMEOUT_S}s (GPU stuck). Skipping sample.", flush=True)
-            return {"error": f"Generation hard timeout after {TIMEOUT_S}s", "extracted_values": "", "program": ""}
-
-        if exc_box[0] is not None:
-            import traceback
-            print(f"[ERROR] Generation failed: {exc_box[0]}")
-            traceback.print_exc()
-            return {"error": str(exc_box[0]), "extracted_values": "", "program": ""}
-
+        started = time.monotonic()
+        prompt_tokens = inputs.input_ids.shape[1]
+        print(f'[NLP generate] prompt_tokens={prompt_tokens}; max_new_tokens=1536; '
+              f'soft_time_limit={self.max_generation_seconds}s; device={self.device}', flush=True)
         try:
-            outputs = result_box[0]
+            precision = torch.autocast("cuda", dtype=torch.float16) if self.device.startswith('cuda') else nullcontext()
+            progress = GenerationProgress(prompt_tokens, self.progress_seconds)
+            with progress, torch.inference_mode(), precision:
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=1536,
+                    pad_token_id=self.tokenizer.pad_token_id,
+                    do_sample=False,
+                    logits_processor=logits_processor,
+                    max_time=self.max_generation_seconds,
+                    stopping_criteria=StoppingCriteriaList([progress]),
+                )
+
             response_text = self.tokenizer.decode(
                 outputs[0][inputs.input_ids.shape[1]:],
                 skip_special_tokens=True,
             )
 
             # Always log raw output for diagnosis
-            print(f"[DEBUG] Raw model output: {repr(response_text[:300])}")
+            print(f"[DEBUG] Raw model output (first 300 chars): {repr(response_text[:300])}", flush=True)
 
             result = self._parse_response(response_text)
             result["prompt_sha256"] = hashlib.sha256(prompt.encode()).hexdigest()
             result["generated_tokens"] = outputs.shape[1] - inputs.input_ids.shape[1]
-            result["termination"] = "eos" if int(outputs[0][-1]) == self.tokenizer.eos_token_id else "length_or_stop"
+            result['prompt_tokens'] = prompt_tokens
+            result['generation_seconds'] = round(time.monotonic() - started, 2)
+            result["termination"] = "eos" if int(outputs[0][-1]) in eos_ids(self.model.generation_config, self.tokenizer) else "length_or_stop"
             if result["termination"] != "eos":
                 result.update(valid=False, error="Generation stopped before EOS")
+            print(f'[NLP generated] tokens={result["generated_tokens"]}; '
+                  f'seconds={result["generation_seconds"]}; termination={result["termination"]}', flush=True)
             return result
 
         except Exception as e:
@@ -192,7 +186,6 @@ class ProgramGenerator:
             print(f"[ERROR] Generation failed: {e}")
             traceback.print_exc()
             return {"error": str(e), "extracted_values": "", "program": ""}
-
 
     def _build_prompt(
         self,
