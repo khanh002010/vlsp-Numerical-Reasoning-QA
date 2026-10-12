@@ -48,6 +48,8 @@ def validate_axis_roles(value):
 
 
 def axis_groups(value, series):
+    if isinstance(value,dict) and value.get('source_ambiguous') is True:
+        raise ValueError('Source axis has repeated labels without a visible parent; cannot invent unique dates')
     if not isinstance(value, dict) or not isinstance(value.get('complete'), bool):
         raise ValueError('Axis read requires groups and explicit completeness')
     if 'labels' in value:
@@ -141,6 +143,9 @@ def read_axis_labels(reader, path, axis, series):
         'Each string is ONE complete tick label; join only printed lines belonging to that tick. '
         'Adjacent dates and neighboring industry names MUST be separate strings. No nested lists. '
         'For multiline years copy only the occurrence qualifier printed under that SAME year. '
+        'For repeated quarters inspect the lower printed year row and attach its year to each child quarter. '
+        'If identical dates genuinely repeat in the source with no visible distinguishing parent, '
+        'return {"labels":[],"complete":false,"source_ambiguous":true}; never invent year increments. '
         'Never invent qualifiers or extend a calendar. Ignore legend, title, values and scale ticks. '
         'No boxes or coordinates. Empty labels means unreadable. complete=false for sparse ticks. '
         'Copy rotated labels individually. Do not interpolate dates.')
@@ -153,6 +158,32 @@ def read_axis_labels(reader, path, axis, series):
         except ValueError as error:
             reader.last_generation[axis+'_text_observations']=observations
             reader.last_generation[axis+'_crop_trigger']=str(error)
+            if 'Source axis has repeated labels' in str(error):
+                raise
+            if 'Legend entry mixed' in str(error):
+                raise  # Repair the series observation, not the category labels.
+            recent_text=' '.join(a.get('text','') for a in reader.last_generation.get('attempts',[])[-2:])
+            if axis=='x' and 'Duplicate categories' in str(error) and re.search(r'\b[1-4]Q\b|\bQ[1-4]\b',recent_text):
+                tiered=checked_read(reader,path,
+                    'Inspect ALL rows of X-axis text, including the lower parent-year row and divider lines. '
+                    'Return {"labels":[],"complete":false}. One string per tick. '
+                    'If quarters repeat under a printed year spanning several ticks, attach that printed '
+                    'year to EACH child, e.g. quarter followed by year. Copy only the year visibly spanning '
+                    'that group. Do not infer years from chronology or position. '
+                    'If the source itself repeats dates with no distinguishing parent label, return '
+                    '{"labels":[],"complete":false,"source_ambiguous":true}. '
+                    'Do not repeat a calendar to fill space.',
+                    validator=lambda v:axis_groups(v,series),phase='axis_parent_year',budgets=(1024,))
+                observations.append(tiered)
+                # Independent confirmation with the same parent-row instruction.
+                confirm=checked_read(reader,path,
+                    'Transcribe X ticks with their printed parent-year group. Read the bottom row and '
+                    'group dividers. Return {"labels":[],"complete":false}, one string per tick, '
+                    'quarter then printed year. Never invent missing years.',
+                    validator=lambda v:axis_groups(v,series),phase='axis_parent_year_verify',budgets=(1024,))
+                if axis_groups(tiered,series)==axis_groups(confirm,series):
+                    reader.last_generation['x_parent_observations']=[tiered,confirm]
+                    return axis_groups(tiered,series),False
             return read_axis_windows(reader,path,axis,series,prompt,
                                      [axis_groups(v,series) for v in observations])
         observations.append(value)
@@ -249,6 +280,25 @@ kind: line/bar/pie/mixed/table/unknown; axis: left/right/none. No numeric data v
         try:
             labels, complete = read_axis_labels(reader, path, axis, chart['series'])
         except ValueError as error:
+            if 'Legend entry mixed' in str(error):
+                repaired=reader._read_part(path,'legend',
+                    'Re-read the actual legend: colored swatches/line samples beside text. '
+                    'Company names or years printed under bars are X categories, NOT series. '
+                    'Look below the X labels for a second band of multiline legend entries. '
+                    'Join all lines belonging to EACH colored swatch. If no legend exists and a '
+                    'single quantity is plotted, use the exact printed chart title as its series name. '
+                    'Return {"title":"","kind":"unknown","series":[],"series_complete":false,"uncertain":[]}. '
+                    'Each series has name, color, axis (left/right/none), unit. No guessed names.')
+                chart['series']=repaired['series']
+                chart['series_complete']=repaired['series_complete']
+                chart['uncertain']=list(dict.fromkeys(chart.get('uncertain',[])+repaired.get('uncertain',[])))
+                # Re-observe categories with repaired series; still reject collisions.
+                labels,complete=read_axis_labels(reader,path,axis,chart['series'])
+                chart[axis+'_labels']=labels
+                if axis=='x':
+                    chart['x_labels_complete']=complete
+                    chart['x_order_known']=True
+                continue
             if axis!='x' or chart['kind']!='bar' or layout['orientation']!='vertical' or len(chart['series'])!=1:
                 raise
             from vinumqa.cv_module.bar_label_regions import read_bar_labels

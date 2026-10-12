@@ -25,6 +25,35 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_repeated_quarters_read_printed_parent_years(self):
+        from vinumqa.cv_module.reviewed_reader import read_axis_labels,axis_groups
+        reader=Mock();reader.last_generation={'attempts':[{'text':'"1Q", "2Q", "1Q"'}]}
+        value={'labels':['1Q 2017','2Q 2017','1Q 2018'],'complete':False}
+        reader._read.side_effect=[ValueError('Duplicate categories'),ValueError('Duplicate categories'),value,value]
+        labels,complete=read_axis_labels(reader,'image','x',[])
+        self.assertEqual(labels,value['labels']);self.assertFalse(complete)
+        self.assertEqual(reader._read.call_args_list[2].kwargs['phase'],'axis_parent_year')
+        with self.assertRaisesRegex(ValueError,'cannot invent'):
+            axis_groups({'labels':[],'complete':False,'source_ambiguous':True},[])
+
+    def test_legend_collision_rereads_series_before_categories(self):
+        reader=Mock();reader.last_generation={}
+        bad={'title':'Metric','kind':'bar','series':[{'name':'2020','unit':''}],
+             'series_complete':True,'uncertain':[]}
+        good={**bad,'series':[{'name':'Metric','unit':''}]}
+        reader._read_part.side_effect=[bad,good]
+        def observe(path,prompt,box=None,**kw):
+            phase=kw['phase']
+            if phase=='review_layout':return {'title':'Metric','kind':'bar','series_source':'unknown'}
+            if phase=='axis_roles':return {'x_axis_type':'time','y_axis_type':'numerical'}
+            if phase=='title_only':return {'title':'Metric'}
+            if phase.startswith(('axis_text','axis_verify')):return {'labels':['2020','2021'],'complete':False}
+            raise AssertionError(phase)
+        reader._read.side_effect=observe
+        result=read_reviewed(reader,'image')
+        self.assertEqual(result['series'][0]['name'],'Metric')
+        self.assertEqual(result['x_labels'],['2020','2021'])
+
     def test_bar_missing_readable_requires_matching_confirmation(self):
         from vinumqa.cv_module.bar_label_regions import read_bar_labels
         box=[0,.8,.1,1]
