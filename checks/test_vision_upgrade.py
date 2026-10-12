@@ -25,6 +25,28 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_crop_evidence_recovers_omission_without_inventing_or_reordering(self):
+        from vinumqa.cv_module.reviewed_reader import corroborated_candidate
+        full=['A','B','C','D','E']
+        self.assertEqual(corroborated_candidate([full,['A','B','D','E']],
+                         [['A','B','C'],['B','D'],['D','E']]),full)
+        for windows in ([['A','B'],['D','E']], [['A','B','C'],['E','D']],
+                        [['A','B','C'],['D','E','F']]):
+            with self.assertRaises(ValueError): corroborated_candidate([full],windows)
+
+    def test_invalid_full_axis_enters_crop_recovery(self):
+        from vinumqa.cv_module.reviewed_reader import read_axis_labels, axis_groups
+        reader=Mock();reader.last_generation={}
+        reader._read.side_effect=[ValueError('Duplicate categories'),ValueError('Duplicate categories')]+[
+            {'labels':labels,'complete':False} for labels in
+            [['2009','2010'],['2010','2011 (Lần 1)'],['2011 (Lần 1)','2011 (Lần 2)']]]
+        labels,complete=read_axis_labels(reader,'image','x',[])
+        self.assertEqual(labels[-1],'2011 (Lần 2)')
+        self.assertFalse(complete)
+        self.assertEqual(reader._read.call_args_list[2].kwargs['phase'],'axis_crop_x_0')
+        with self.assertRaisesRegex(ValueError,'no parent year'):
+            axis_groups({'labels':['(Lần 1)'],'complete':False},[])
+
     def test_review_retry_reobserves_invalid_layout_and_json_without_inventing_fields(self):
         from vinumqa.cv_module.reviewed_reader import checked_read, checked_layout
         reader=Mock(); reader.last_generation={}

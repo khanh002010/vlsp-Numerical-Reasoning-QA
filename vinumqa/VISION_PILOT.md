@@ -78,7 +78,10 @@ Các thay đổi:
 2. Recipe `flat-axis-windows-v3` uses flat `labels`, one string per tick, to avoid
    silently joining multiple industries into one label. Ambiguous nested text is rejected.
    If independent full-image reads disagree, read three fixed overlapping crops. Merge
-   only exact matching suffix/prefix boundary labels; never guess coordinates or labels.
+   using exact matching suffix/prefix boundary labels first. If a crop omits boundary
+   labels, an existing full-image candidate may be accepted only when crops cover
+   EVERY candidate label, preserve its order, and introduce no conflicting labels.
+   Validation errors also enter crop recovery. Never guess coordinates or labels.
    Crop results keep completeness false. Missing numeric ticks do not imply a matrix.
    A title matching a legend entry triggers a separate visual heading check.
    Use the NEW v4 output directory. These checks do not prove pixel accuracy.
