@@ -38,6 +38,10 @@ def validate_metadata(value):
 
 
 def validate_axis_roles(value):
+    if isinstance(value, dict):
+        for field in ('x_axis_type', 'y_axis_type'):
+            if value.get(field) == 'numeric':
+                value[field] = 'numerical'
     if not isinstance(value, dict) or any(value.get(k) not in {'numerical','time','categorical','none'}
                                         for k in ('x_axis_type','y_axis_type')):
         raise ValueError('Both axis roles must be observed')
@@ -54,6 +58,11 @@ def axis_groups(value, series):
     for lines in groups:
         if not isinstance(lines, list) or not lines or any(not isinstance(s,str) or not s.strip() for s in lines):
             raise ValueError('Each category needs its own nonempty list of printed lines')
+        # A group made entirely of full dates is a serialization grouping,
+        # not a multiline label. Preserve every date and its observed order.
+        if all(re.fullmatch(r'\d{1,2}/\d{1,2}/\d{4}', s.strip()) for s in lines):
+            labels.extend(s.strip() for s in lines)
+            continue
         text = ' '.join(s.strip() for s in lines)
         if len(re.findall(r'\b\d{1,2}/\d{1,2}/\d{4}\b', text)) > 1 or len(re.findall(r'\b(?:19|20)\d{2}\b',text)) > 1:
             raise ValueError('Multiple dates/years merged into one category; separate tick positions')

@@ -108,8 +108,14 @@ class VisionUpgradeTests(unittest.TestCase):
 
     def test_axis_groups_rejects_observed_date_merge_and_legend_pollution(self):
         from vinumqa.cv_module.reviewed_reader import axis_groups, read_axis_labels
+        self.assertEqual(axis_groups({'groups':[['1/2/2018','3/2/2018']], 'complete':False},[]),
+                         ['1/2/2018','3/2/2018'])
         with self.assertRaisesRegex(ValueError,'Multiple dates'):
-            axis_groups({'groups':[['1/2/2018','3/2/2018']], 'complete':True},[])
+            axis_groups({'groups':[['1/2/2018 3/2/2018']], 'complete':True},[])
+        from vinumqa.cv_module.reviewed_reader import validate_axis_roles
+        roles={'x_axis_type':'categorical','y_axis_type':'numeric'}
+        validate_axis_roles(roles)
+        self.assertEqual(roles['y_axis_type'],'numerical')
         with self.assertRaisesRegex(ValueError,'Legend entry'):
             axis_groups({'groups':[['Ng?n h?ng','T12']], 'complete':False},[{'name':'T12'}])
         reader=Mock();reader.last_generation={}
