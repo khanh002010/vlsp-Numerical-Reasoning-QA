@@ -108,6 +108,13 @@ def validate_structure(value):
         result[key] = value[key]
     if not isinstance(value.get("x_order_known", True), bool): raise ValueError("Invalid x_order_known")
     result["x_order_known"] = value.get("x_order_known", True)
+    if 'x_tick_labels' in value:
+        ticks=value['x_tick_labels']
+        if not isinstance(ticks,list) or not ticks or any(not isinstance(t,str) or not t.strip() for t in ticks):
+            raise ValueError('Invalid literal X tick observations')
+        if len(set(ticks))==len(ticks) or result['x_labels'] or result['x_labels_complete'] or result['x_order_known']:
+            raise ValueError('Ambiguous literal ticks cannot be used as unique lookup labels')
+        result['x_tick_labels']=ticks
     regions = value.get("regions", {})
     if not isinstance(regions, dict): raise ValueError("regions must be an object")
     result["regions"] = {k: validate_box(box) for k, box in regions.items()

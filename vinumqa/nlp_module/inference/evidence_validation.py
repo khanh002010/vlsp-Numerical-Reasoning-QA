@@ -36,6 +36,10 @@ def validate_evidence(program, charts, sources, evidence=None, *, tables=None, t
             requests.append({"image_id": image_id, "kind": "inspect", "region": "full", "series": ""})
             continue
         chart = validate_structure(charts[image_id])
+        if chart.get('x_tick_labels'):
+            errors.append(f'Step {step.step_id}: repeated source X labels in {image_id}; positional grounding required')
+            requests.append({'image_id':image_id,'kind':'inspect','region':'x_axis','series':''})
+            continue
         total = step.operator == "chart_total"
         series = step.args[3] if total else step.args[1]
         names = [s["name"] for s in chart["series"]]

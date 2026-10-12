@@ -86,6 +86,14 @@ Các thay đổi:
    detector finds separated solid bars sharing a baseline and color. Each label
    is then read below its own bar, including printed second-line qualifiers.
    Unsupported geometry fails explicitly; no reference labels enter inference.
+   Line-chart failures also read the lower axis band twice with explicit parent/tick
+   groups. Literal repeated source dates are saved in `x_tick_labels`, with empty
+   `x_labels`, completeness/order false and an uncertainty note. Such a record can
+   be stored successfully but is NOT safe for label-based program binding/execution;
+   those operations remain blocked pending positional grounding. Do not count store
+   status `ok` as accuracy or as unconditional readiness for training.
+   If legend/category collisions persist, two visual checks must confirm no legend
+   and one plotted quantity before using the printed title as the series name.
    Crop results keep completeness false. Missing numeric ticks do not imply a matrix.
    A title matching a legend entry triggers a separate visual heading check.
    Use the NEW v4 output directory. These checks do not prove pixel accuracy.

@@ -293,11 +293,24 @@ kind: line/bar/pie/mixed/table/unknown; axis: left/right/none. No numeric data v
                 chart['series_complete']=repaired['series_complete']
                 chart['uncertain']=list(dict.fromkeys(chart.get('uncertain',[])+repaired.get('uncertain',[])))
                 # Re-observe categories with repaired series; still reject collisions.
-                labels,complete=read_axis_labels(reader,path,axis,chart['series'])
+                try:
+                    labels,complete=read_axis_labels(reader,path,axis,chart['series'])
+                except ValueError as legend_error:
+                    if 'Legend entry mixed' not in str(legend_error):raise
+                    from vinumqa.cv_module.axis_band_recovery import recover_title_series
+                    recover_title_series(reader,path,chart)
+                    labels,complete=read_axis_labels(reader,path,axis,chart['series'])
                 chart[axis+'_labels']=labels
                 if axis=='x':
                     chart['x_labels_complete']=complete
                     chart['x_order_known']=True
+                continue
+            if axis=='x' and chart['kind']=='line':
+                from vinumqa.cv_module.axis_band_recovery import recover_axis_band
+                labels,complete=recover_axis_band(reader,path,chart)
+                chart['x_labels']=labels
+                chart['x_labels_complete']=complete
+                chart['x_order_known']=bool(labels)
                 continue
             if axis!='x' or chart['kind']!='bar' or layout['orientation']!='vertical' or len(chart['series'])!=1:
                 raise

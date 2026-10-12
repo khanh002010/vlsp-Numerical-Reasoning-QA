@@ -25,6 +25,34 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_axis_band_parents_and_source_duplicates(self):
+        from vinumqa.cv_module.axis_band_recovery import recover_axis_band,parse_band
+        reader=Mock();reader.last_generation={};c=chart();c['uncertain']=[]
+        grouped={'groups':[{'parent':'2017','ticks':['1Q','2Q']},{'parent':'2018','ticks':['1Q']}],'readable':True}
+        reader._read.return_value=grouped
+        labels,_=recover_axis_band(reader,'image',c)
+        self.assertEqual(labels,['1Q 2017','2Q 2017','1Q 2018'])
+        repeated={'groups':[{'parent':'','ticks':['Jan-01','Mar-01','Jan-01']}],'readable':True}
+        reader._read.return_value=repeated
+        labels,complete=recover_axis_band(reader,'image',c)
+        c.update(x_labels=labels,x_labels_complete=complete)
+        c=validate_structure(c)
+        self.assertEqual(c['x_tick_labels'],['Jan-01','Mar-01','Jan-01'])
+        self.assertFalse(validate_evidence('chart_at(Image 1; Giá điện; Jan-01; none)',{'Image 1':c},{'Image 1'})['valid'])
+        store=Mock();store.get.return_value=c
+        with self.assertRaisesRegex(ValueError,'positional grounding'):resolve_chart(store,'image','chart_at','a','b','c')
+        store.read_values.assert_not_called()
+        with self.assertRaises(ValueError):parse_band({'groups':[],'readable':True})
+
+    def test_no_legend_recovery_requires_visual_confirmation(self):
+        from vinumqa.cv_module.axis_band_recovery import recover_title_series
+        reader=Mock();reader.last_generation={};c=chart()
+        reader._read.return_value={'legend_present':False,'single_quantity':True}
+        recover_title_series(reader,'image',c)
+        self.assertEqual(c['series'][0]['name'],c['title'])
+        reader._read.return_value={'legend_present':True,'single_quantity':True}
+        with self.assertRaises(ValueError):recover_title_series(reader,'image',c)
+
     def test_repeated_quarters_read_printed_parent_years(self):
         from vinumqa.cv_module.reviewed_reader import read_axis_labels,axis_groups
         reader=Mock();reader.last_generation={'attempts':[{'text':'"1Q", "2Q", "1Q"'}]}

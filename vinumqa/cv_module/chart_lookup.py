@@ -6,6 +6,8 @@ from statistics import mean
 def resolve_chart(store, path, operator, a, b, c, allow_estimates=False):
     from vinumqa.cv_module.structure_grounding import resolve_series
     chart = store.get(path)
+    if chart.get('x_tick_labels'):
+        raise ValueError('Repeated source X labels require positional grounding before execution')
     # Resolve to the original visible name only for numerical execution. The DSL
     # emitted by NLP is untouched, including its chart_* operations and aliases.
     if operator == 'chart_total':
