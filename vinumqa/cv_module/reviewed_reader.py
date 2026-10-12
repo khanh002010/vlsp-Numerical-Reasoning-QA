@@ -4,9 +4,36 @@ from vinumqa.cv_module.structure import validate_box, validate_structure
 from vinumqa.cv_module.structure_grounding import positioned_labels, validate_layout, REVIEW_RECIPE
 
 
+def checked_read(reader, path, prompt, *, validator, phase, budgets):
+    """One fresh visual retry for invalid schema/semantics, retaining both attempts."""
+    for attempt in range(2):
+        try:
+            value = reader._read(path, prompt, budgets=budgets, reset=False,
+                                 phase=phase if attempt == 0 else phase + '_retry')
+            validator(value)
+            return value
+        except ValueError as error:
+            reader.last_generation.setdefault('review_errors', []).append(
+                {'phase': phase, 'attempt': attempt + 1, 'error': str(error)})
+            if attempt: raise
+            print(f'[Structure] {phase}: re-reading pixels after validation error: {error}', flush=True)
+            prompt += ('\nThe previous read failed validation: ' + str(error)[:250] +
+                       '\nRead the image again independently. Return ONE JSON OBJECT using the exact '
+                       'schema above, never a bare array or a list of strings. Do not invent missing '
+                       'coordinates, labels or completeness. No Markdown or explanation.')
+
+
+def checked_layout(meta):
+    layout = validate_layout(meta)
+    if 'unknown' in layout.values():
+        raise ValueError('Axis roles/orientation not verified; inspect marks and scale positions again')
+    if not isinstance(meta.get('title'), str) or not isinstance(meta.get('chart_unit', ''), str):
+        raise ValueError('Layout title/unit must be strings')
+
+
 def read_reviewed(reader, path):
     reader.last_generation = {'attempts': [], 'recipe': REVIEW_RECIPE}
-    meta = reader._read(path, '''Inspect the FULL chart before transcribing labels. Return only JSON:
+    meta = checked_read(reader, path, '''Inspect the FULL chart before transcribing labels. Return only JSON:
 {"title":"exact printed title or empty", "kind":"unknown", "series_source":"unknown",
  "chart_unit":"exact printed common unit or empty",
  "orientation":"unknown", "x_axis_type":"unknown", "y_axis_type":"unknown"}.
@@ -17,9 +44,12 @@ left/right), matrix, none (pie), unknown. Each axis type: numerical/categorical/
 Look at the PLOTTED MARKS and numerical scale positions, NOT the legend. A legend
 below the chart is not an axis. Rotated/multiline text below upright bars belongs to X.
 For a vertical bar/line plot with a numerical Y scale use y_axis_type=numerical.
+Orientation describes bar direction, NOT the wide shape of the image or text direction.
+Bars rising upward from a baseline are vertical even in a wide landscape image.
+Horizontal bars extend sideways: X is the numerical scale and Y contains row names.
 Copy all title words, accents and units exactly. Do not translate units or guess them.
 chart_unit is only a common unit explicitly printed for ALL series; empty for mixed units.
-Do not transcribe labels, numerical data points or programs.''', budgets=(512,), reset=False, phase='review_layout')
+Do not transcribe labels, numerical data points or programs.''', budgets=(512,), validator=checked_layout, phase='review_layout')
     layout = validate_layout(meta)
     if layout['y_axis_type'] == 'unknown' or layout['x_axis_type'] == 'unknown':
         raise ValueError('Axis roles not verified; inspect the full image before accepting labels')
@@ -47,8 +77,10 @@ kind: line/bar/pie/mixed/table/unknown; axis: left/right/none. No numeric data v
         axis_type = layout[axis + '_axis_type']
         if axis_type not in {'categorical', 'time'}:
             continue  # Numeric ticks never become category labels.
-        value = reader._read(path, '''Read ONLY the ''' + axis.upper() + ''' category/time tick labels.
+        value = checked_read(reader, path, '''Read ONLY the ''' + axis.upper() + ''' category/time tick labels.
 Return compact JSON: {"items":[{"box":[0.1,0.8,0.2,0.95],"lines":["exact first line","exact second line"]}],"complete":false}.
+The outermost value MUST be an OBJECT with keys items and complete, NOT an array.
+Each item MUST contain box and lines. Do not return a flat list of labels.
 The box is the TEXT LABEL bounds, normalized 0..1 relative to this full image.
 One item per plotted category/tick position; all its printed lines belong in that ONE item.
 For year + occurrence labels, keep year and (Lần ...) under the SAME column/mark.
@@ -57,7 +89,8 @@ them by their own printed qualifiers. Do not merge neighboring category position
 For rotated labels, one item contains the full rotated label. Copy printed ticks only,
 never interpolate dates. complete=true only if labels enumerate every category;
 use false for sparse time ticks. No legend names, numeric data labels or scale ticks.
-The template numbers are examples, not coordinates to copy.''', budgets=(4096,), reset=False, phase='positioned_' + axis)
+The template numbers are examples, not coordinates to copy.''', budgets=(4096,),
+                             validator=lambda v: positioned_labels(v, axis), phase='positioned_' + axis)
         labels, items = positioned_labels(value, axis)
         # Verify multiline labels at their own column/row; do not ask the model
         # to reassign qualifiers while looking at every neighboring label.

@@ -25,6 +25,25 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_review_retry_reobserves_invalid_layout_and_json_without_inventing_fields(self):
+        from vinumqa.cv_module.reviewed_reader import checked_read, checked_layout
+        reader=Mock(); reader.last_generation={}
+        valid={**chart()['layout'], 'title':'Example'}
+        reader._read.side_effect=[{**valid, 'orientation':'horizontal'}, valid]
+        result=checked_read(reader,'image.png','schema',validator=checked_layout,
+                            phase='review_layout',budgets=(512,))
+        self.assertEqual(result,valid)
+        self.assertEqual(reader._read.call_args.kwargs['phase'],'review_layout_retry')
+        reader._read.side_effect=[ValueError('Expected a JSON object'),
+                                 {'items':[{'box':[.1,.8,.2,.9],'lines':['2023']}], 'complete':False}]
+        result=checked_read(reader,'image.png','schema',validator=lambda v: positioned_labels(v,'x'),
+                            phase='positioned_x',budgets=(4096,))
+        self.assertFalse(result['complete'])
+        reader._read.side_effect=ValueError('Expected a JSON object')
+        with self.assertRaisesRegex(ValueError,'Expected a JSON object'):
+            checked_read(reader,'image.png','schema',validator=lambda v: positioned_labels(v,'x'),
+                         phase='positioned_x',budgets=(4096,))
+
     def test_axis_roles_reject_legend_as_y_but_preserve_horizontal_rows(self):
         c=chart(); c['y_labels']=['Giá điện']
         with self.assertRaisesRegex(ValueError, 'Numerical/absent'):
