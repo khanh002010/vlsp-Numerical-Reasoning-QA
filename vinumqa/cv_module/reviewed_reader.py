@@ -246,7 +246,15 @@ kind: line/bar/pie/mixed/table/unknown; axis: left/right/none. No numeric data v
         axis_type = layout[axis + '_axis_type']
         if axis_type not in {'categorical', 'time'}:
             continue  # Numeric ticks never become category labels.
-        labels, complete = read_axis_labels(reader, path, axis, chart['series'])
+        try:
+            labels, complete = read_axis_labels(reader, path, axis, chart['series'])
+        except ValueError as error:
+            if axis!='x' or chart['kind']!='bar' or layout['orientation']!='vertical' or len(chart['series'])!=1:
+                raise
+            from vinumqa.cv_module.bar_label_regions import read_bar_labels
+            reader.last_generation['bar_recovery_trigger']=str(error)
+            print('[Structure] Recovering labels below pixel-detected bars',flush=True)
+            labels, complete = read_bar_labels(reader,path,chart['series'])
         chart[axis + '_labels'] = labels
         if axis == 'x':
             chart['x_labels_complete'] = complete

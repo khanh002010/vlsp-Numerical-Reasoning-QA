@@ -82,6 +82,10 @@ Các thay đổi:
    labels, an existing full-image candidate may be accepted only when crops cover
    EVERY candidate label, preserve its order, and introduce no conflicting labels.
    Validation errors also enter crop recovery. Never guess coordinates or labels.
+   If this still fails on a single-series upright bar chart, a conservative pixel
+   detector finds separated solid bars sharing a baseline and color. Each label
+   is then read below its own bar, including printed second-line qualifiers.
+   Unsupported geometry fails explicitly; no reference labels enter inference.
    Crop results keep completeness false. Missing numeric ticks do not imply a matrix.
    A title matching a legend entry triggers a separate visual heading check.
    Use the NEW v4 output directory. These checks do not prove pixel accuracy.

@@ -25,6 +25,26 @@ def chart():
 
 
 class VisionUpgradeTests(unittest.TestCase):
+    def test_bar_geometry_and_column_transcription(self):
+        from PIL import Image,ImageDraw
+        from vinumqa.cv_module.bar_label_regions import bar_label_boxes,read_bar_labels
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'bars.png'
+            im=Image.new('RGB',(300,200),'white');d=ImageDraw.Draw(im)
+            for x,top in [(50,80),(125,50),(200,30)]: d.rectangle((x,top,x+20,150),fill=(60,110,200))
+            im.save(path)
+            boxes=bar_label_boxes(path)
+            self.assertEqual(len(boxes),3)
+            self.assertTrue(all(b[1]>.75 for b in boxes))
+            reader=Mock();reader.last_generation={}
+            reader._read.side_effect=[{'lines':v,'readable':True} for v in
+                                     [['2010'],['2011','(Lần 1)'],['2011','(Lần 2)']]]
+            labels,complete=read_bar_labels(reader,path,[])
+            self.assertEqual(labels,['2010','2011 (Lần 1)','2011 (Lần 2)'])
+            self.assertFalse(complete)
+            Image.new('RGB',(300,200),'white').save(path)
+            with self.assertRaises(ValueError):bar_label_boxes(path)
+
     def test_crop_evidence_recovers_omission_without_inventing_or_reordering(self):
         from vinumqa.cv_module.reviewed_reader import corroborated_candidate
         full=['A','B','C','D','E']
