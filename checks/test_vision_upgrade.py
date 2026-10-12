@@ -138,7 +138,8 @@ class VisionUpgradeTests(unittest.TestCase):
             model.generation_config.eos_token_id=2
             model.generate.return_value=torch.tensor([[7,8,9,2]])
             processor=processor_loader.return_value
-            processor.image_processor.min_pixels=3136
+            from types import SimpleNamespace
+            processor.image_processor=SimpleNamespace(size={'shortest_edge':3136, 'longest_edge':2359296})
             processor.apply_chat_template.return_value=Inputs(input_ids=torch.tensor([[7,8]]))
             processor.decode.return_value='recognized'
             reader=PaddleRecognizer()
@@ -152,6 +153,16 @@ class VisionUpgradeTests(unittest.TestCase):
             self.assertEqual(result['input_image_size'],[100,80])
             self.assertTrue(result['complete'])
             processor.decode.assert_called_once_with([9,2],skip_special_tokens=True)
+
+    def test_paddle_pixel_size_current_and_legacy_processors(self):
+        from types import SimpleNamespace
+        from vinumqa.cv_module.paddle_pilot import processor_size
+        for proc in (SimpleNamespace(size={'shortest_edge':147456}),
+                     SimpleNamespace(min_pixels=147456),
+                     SimpleNamespace(size=SimpleNamespace(shortest_edge=147456))):
+            self.assertEqual(processor_size(proc), {'shortest_edge':147456, 'longest_edge':1400000})
+        with self.assertRaises(ValueError):
+            processor_size(SimpleNamespace())
 
 
 if __name__=='__main__': unittest.main()
