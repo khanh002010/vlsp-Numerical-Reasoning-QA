@@ -85,27 +85,37 @@ class VisionUpgradeTests(unittest.TestCase):
         self.assertEqual(store.read_values.call_args.args[1]['arguments'][0],c['series'][0]['name'])
         self.assertEqual(program,'chart_at(Image 1; Giá điện; 2022; none)')
 
-    def test_reviewed_read_crops_each_multiline_label_and_never_reads_numeric_y(self):
+    def test_reviewed_read_uses_text_groups_without_generated_boxes(self):
         reader=Mock()
-        reader._read_part.return_value={'title':'', 'kind':'bar','series':[{'name':'Giá điện','unit':''}],
+        reader._read_part.return_value={'title':'', 'kind':'bar','series':[{'name':chart()['title'],'unit':'(VND/kWh)'}],
                                         'series_complete':True,'uncertain':[]}
         calls=[]
         def observe(path,prompt,box=None,**kw):
-            phase=kw['phase']; calls.append((phase,box))
+            phase=kw['phase']; calls.append(phase)
             if phase=='review_layout':
-                return {**chart()['layout'],'title':chart()['title'],'kind':'bar','chart_unit':'VND/kWh','series_source':'title'}
-            if phase=='positioned_x':
-                return {'complete':True,'items':[{'box':[.2,.8,.3,.98],'lines':['2011','(Lần 1)']},
-                                                {'box':[.4,.8,.5,.98],'lines':['2011','(Lần 2)']}]}
-            if phase=='verify_multiline_x':
-                return {'readable':True,'lines':['2011','(Lần 1)' if box[0]<.3 else '(Lần 2)']}
-            raise AssertionError('Unexpected visual read: '+phase)
+                return {**chart()['layout'],'title':chart()['title'],'kind':'bar','chart_unit':'','series_source':'title'}
+            if phase=='axis_roles': return {'x_axis_type':'categorical','y_axis_type':'numerical'}
+            if phase=='title_only': return {'title':chart()['title']}
+            if phase in ('axis_text_x','axis_verify_x'):
+                return {'complete':True,'groups':[['2011','(L?n 1)'],['2011','(L?n 2)']]}
+            raise AssertionError(phase)
         reader._read.side_effect=observe
         result=read_reviewed(reader,'image.png')
+        self.assertEqual(result['x_labels'],['2011 (L?n 1)','2011 (L?n 2)'])
         self.assertEqual(result['y_labels'],[])
-        self.assertEqual(result['x_labels'],['2011 (Lần 1)','2011 (Lần 2)'])
         self.assertEqual(result['series'][0]['unit'],'VND/kWh')
-        self.assertEqual(len([c for c in calls if c[0]=='verify_multiline_x']),2)
+        self.assertNotIn('positioned_x',calls)
+
+    def test_axis_groups_rejects_observed_date_merge_and_legend_pollution(self):
+        from vinumqa.cv_module.reviewed_reader import axis_groups, read_axis_labels
+        with self.assertRaisesRegex(ValueError,'Multiple dates'):
+            axis_groups({'groups':[['1/2/2018','3/2/2018']], 'complete':True},[])
+        with self.assertRaisesRegex(ValueError,'Legend entry'):
+            axis_groups({'groups':[['Ng?n h?ng','T12']], 'complete':False},[{'name':'T12'}])
+        reader=Mock();reader.last_generation={}
+        reader._read.side_effect=[{'groups':[['2022']], 'complete':True}, {'groups':[['2023']], 'complete':True}]
+        with self.assertRaisesRegex(ValueError,'disagree'):
+            read_axis_labels(reader,'image','x',[])
 
     def test_expanded_score_catches_hidden_y_title_and_unit_errors(self):
         ref={'a.png':{'series':['A'],'x_labels':['2023'],'y_labels':[], 'title':'Title','units':{'A':'%'}}}

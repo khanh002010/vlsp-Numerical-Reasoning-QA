@@ -2,7 +2,7 @@
 import re
 import unicodedata
 
-REVIEW_RECIPE = 'positioned-axes-v1'
+REVIEW_RECIPE = 'independent-axis-text-v2'
 
 
 def key(value):
