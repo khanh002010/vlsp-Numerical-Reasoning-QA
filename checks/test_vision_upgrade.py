@@ -97,11 +97,11 @@ class VisionUpgradeTests(unittest.TestCase):
             if phase=='axis_roles': return {'x_axis_type':'categorical','y_axis_type':'numerical'}
             if phase=='title_only': return {'title':chart()['title']}
             if phase in ('axis_text_x','axis_verify_x'):
-                return {'complete':True,'groups':[['2011','(L?n 1)'],['2011','(L?n 2)']]}
+                return {'complete':True,'labels':['2011 (Lần 1)','2011 (Lần 2)']}
             raise AssertionError(phase)
         reader._read.side_effect=observe
         result=read_reviewed(reader,'image.png')
-        self.assertEqual(result['x_labels'],['2011 (L?n 1)','2011 (L?n 2)'])
+        self.assertEqual(result['x_labels'],['2011 (Lần 1)','2011 (Lần 2)'])
         self.assertEqual(result['y_labels'],[])
         self.assertEqual(result['series'][0]['unit'],'VND/kWh')
         self.assertNotIn('positioned_x',calls)
@@ -116,12 +116,18 @@ class VisionUpgradeTests(unittest.TestCase):
         roles={'x_axis_type':'categorical','y_axis_type':'numeric'}
         validate_axis_roles(roles)
         self.assertEqual(roles['y_axis_type'],'numerical')
-        with self.assertRaisesRegex(ValueError,'Legend entry'):
+        with self.assertRaisesRegex(ValueError,'Ambiguous grouped'):
             axis_groups({'groups':[['Ng?n h?ng','T12']], 'complete':False},[{'name':'T12'}])
         reader=Mock();reader.last_generation={}
-        reader._read.side_effect=[{'groups':[['2022']], 'complete':True}, {'groups':[['2023']], 'complete':True}]
-        with self.assertRaisesRegex(ValueError,'disagree'):
-            read_axis_labels(reader,'image','x',[])
+        reader._read.side_effect=[{'labels':x,'complete':False} for x in
+                                 [['wrong'],['different'],['2009','2010'],['2010','2011 (Lần 1)'],['2011 (Lần 1)','2011 (Lần 2)']]]
+        labels,complete=read_axis_labels(reader,'image','x',[])
+        self.assertEqual(labels,['2009','2010','2011 (Lần 1)','2011 (Lần 2)'])
+        self.assertFalse(complete)
+        self.assertEqual(reader._read.call_args_list[2].args[2],[0,0,.45,1])
+        from vinumqa.cv_module.reviewed_reader import merge_axis_windows
+        with self.assertRaisesRegex(ValueError,'no exact shared'):
+            merge_axis_windows([['2009'],['2010']])
 
     def test_expanded_score_catches_hidden_y_title_and_unit_errors(self):
         ref={'a.png':{'series':['A'],'x_labels':['2023'],'y_labels':[], 'title':'Title','units':{'A':'%'}}}
@@ -136,6 +142,23 @@ class VisionUpgradeTests(unittest.TestCase):
         self.assertEqual(score({'a.png':{'structure':c}},ref)['fields']['y_labels']['exact_image_rate'],1)
         failed = score({'a.png': {'status': 'error', 'structure': c}}, ref)
         self.assertEqual(failed['fields']['y_labels']['exact_image_rate'], 0)
+
+    def test_missing_scale_is_not_matrix_and_legend_title_is_visually_checked(self):
+        reader=Mock()
+        reader._read_part.return_value={'title':'Metric','kind':'bar',
+            'series':[{'name':'Metric','unit':''}],'series_complete':True,'uncertain':[]}
+        def observe(path,prompt,box=None,**kw):
+            phase=kw['phase']
+            if phase=='review_layout': return {'title':'Metric','kind':'bar','series_source':'legend','chart_unit':''}
+            if phase=='axis_roles': return {'x_axis_type':'time','y_axis_type':'none'}
+            if phase=='title_only': return {'title':'Metric'}
+            if phase=='verify_heading': return {'separate_heading':False,'title':''}
+            if phase in ('axis_text_x','axis_verify_x'): return {'labels':['2022','2023'],'complete':False}
+            raise AssertionError(phase)
+        reader._read.side_effect=observe
+        result=read_reviewed(reader,'image')
+        self.assertEqual(result['layout']['orientation'],'vertical')
+        self.assertEqual(result['title'],'')
 
     def test_store_recipe_reopens_but_does_not_reuse_old_parts(self):
         with tempfile.TemporaryDirectory() as tmp:

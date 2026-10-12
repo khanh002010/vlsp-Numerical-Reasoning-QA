@@ -2,7 +2,7 @@
 import re
 import unicodedata
 
-REVIEW_RECIPE = 'independent-axis-text-v2'
+REVIEW_RECIPE = 'flat-axis-windows-v3'
 
 
 def key(value):
