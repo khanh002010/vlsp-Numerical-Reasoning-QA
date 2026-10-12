@@ -112,6 +112,17 @@ def validate_structure(value):
     if not isinstance(regions, dict): raise ValueError("regions must be an object")
     result["regions"] = {k: validate_box(box) for k, box in regions.items()
                          if k in {"legend", "x_axis", "y_axis", "plot"}}
+    from vinumqa.cv_module.structure_grounding import validate_layout, derived_series_aliases, check_axis_labels
+    if 'layout' in value:
+        result['layout'] = validate_layout(value['layout'])
+    if 'series_source' in value:
+        if value['series_source'] not in {'legend', 'title', 'unknown'}:
+            raise ValueError('Invalid series_source')
+        result['series_source'] = value['series_source']
+    # Recompute from visible title evidence; never trust aliases invented in model JSON.
+    aliases = derived_series_aliases(result)
+    if aliases: result['series_aliases'] = aliases
+    check_axis_labels(result)
     return result
 
 

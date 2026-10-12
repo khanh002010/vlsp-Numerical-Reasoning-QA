@@ -4,6 +4,7 @@ import re
 import unicodedata
 from vinumqa.utils.dsl_parser import validate_program, parse_program
 from vinumqa.cv_module.structure import validate_structure
+from vinumqa.cv_module.structure_grounding import resolve_series
 
 
 def label_key(label):
@@ -38,7 +39,7 @@ def validate_evidence(program, charts, sources, evidence=None, *, tables=None, t
         total = step.operator == "chart_total"
         series = step.args[3] if total else step.args[1]
         names = [s["name"] for s in chart["series"]]
-        if bound_label(series, names) is None and not (total and series == "none"):
+        if bound_label(series, names) is None and resolve_series(series, chart) is None and not (total and series == "none"):
             errors.append(f"Step {step.step_id}: unverified series {series!r} in {image_id}; available={names}")
             requests.append({"image_id": image_id, "kind": "inspect", "region": "legend", "series": series})
         if step.operator in {"chart_at", "chart_total"}:

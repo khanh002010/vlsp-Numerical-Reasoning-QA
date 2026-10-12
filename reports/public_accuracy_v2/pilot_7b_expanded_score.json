@@ -1,0 +1,299 @@
+{
+  "reviewed_images": 4,
+  "normalization": "NFC, whitespace and case only; no fuzzy matching or date inference",
+  "fields": {
+    "series": {
+      "correct": 12,
+      "predicted": 12,
+      "reference": 12,
+      "evaluated_images": 4,
+      "exact_images": 4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_image_rate": 1.0
+    },
+    "x_labels": {
+      "correct": 80,
+      "predicted": 83,
+      "reference": 84,
+      "evaluated_images": 4,
+      "exact_images": 3,
+      "precision": 0.963855421686747,
+      "recall": 0.9523809523809523,
+      "exact_image_rate": 0.75
+    },
+    "y_labels": {
+      "correct": 0,
+      "predicted": 43,
+      "reference": 0,
+      "evaluated_images": 4,
+      "exact_images": 1,
+      "precision": 0.0,
+      "recall": null,
+      "exact_image_rate": 0.25
+    }
+  },
+  "metadata": {
+    "title": {
+      "correct": 3,
+      "total": 4,
+      "accuracy": 0.75
+    },
+    "units": {
+      "correct": 6,
+      "total": 12,
+      "accuracy": 0.5
+    }
+  },
+  "images": {
+    "0059817e-3b8f-4abe-a6ab-149a48319b72.png": {
+      "series": {
+        "correct": 5,
+        "predicted": 5,
+        "reference": 5,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "x_labels": {
+        "correct": 6,
+        "predicted": 6,
+        "reference": 6,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "y_labels": {
+        "correct": 0,
+        "predicted": 5,
+        "reference": 0,
+        "ordered_exact": false,
+        "missing": [],
+        "extra": [
+          "opex",
+          "prov.",
+          "nii",
+          "nsi",
+          "noi"
+        ]
+      },
+      "title": {
+        "expected": "Thu nhập và chi phí của 9 ngân hàng trong nhóm theo dõi (nghìn tỷ)",
+        "actual": "",
+        "exact": false
+      },
+      "units": {
+        "OPEX": {
+          "expected": "nghìn tỷ",
+          "actual": "thousand tỷ",
+          "exact": false
+        },
+        "Prov.": {
+          "expected": "nghìn tỷ",
+          "actual": "thousand tỷ",
+          "exact": false
+        },
+        "NII": {
+          "expected": "nghìn tỷ",
+          "actual": "thousand tỷ",
+          "exact": false
+        },
+        "NSI": {
+          "expected": "nghìn tỷ",
+          "actual": "thousand tỷ",
+          "exact": false
+        },
+        "NOI": {
+          "expected": "nghìn tỷ",
+          "actual": "thousand tỷ",
+          "exact": false
+        }
+      }
+    },
+    "78e21af7-0e0e-4474-94e5-11140ffd27a3.png": {
+      "series": {
+        "correct": 4,
+        "predicted": 4,
+        "reference": 4,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "x_labels": {
+        "correct": 42,
+        "predicted": 42,
+        "reference": 42,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "y_labels": {
+        "correct": 0,
+        "predicted": 0,
+        "reference": 0,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "title": {
+        "expected": "",
+        "actual": "",
+        "exact": true
+      },
+      "units": {
+        "P/E ước tính cho năm tài chính hiện tại": {
+          "expected": "",
+          "actual": "",
+          "exact": true
+        },
+        "TB 5 năm": {
+          "expected": "",
+          "actual": "",
+          "exact": true
+        },
+        "TB năm": {
+          "expected": "",
+          "actual": "",
+          "exact": true
+        },
+        "P/E ước tính 2024": {
+          "expected": "",
+          "actual": "",
+          "exact": true
+        }
+      }
+    },
+    "8d9fb0be-8aa6-40a3-8c45-9215ac5cdb85.png": {
+      "series": {
+        "correct": 1,
+        "predicted": 1,
+        "reference": 1,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "x_labels": {
+        "correct": 13,
+        "predicted": 16,
+        "reference": 17,
+        "ordered_exact": false,
+        "missing": [
+          "2010",
+          "2011 (lần 1)",
+          "2012 (lần 1)",
+          "2012 (lần 2)"
+        ],
+        "extra": [
+          "2010 (lần 1)",
+          "2011",
+          "2012"
+        ]
+      },
+      "y_labels": {
+        "correct": 0,
+        "predicted": 19,
+        "reference": 0,
+        "ordered_exact": false,
+        "missing": [],
+        "extra": [
+          "2009",
+          "2010",
+          "2011",
+          "2011 (lần 1)",
+          "2011 (lần 2)",
+          "2012",
+          "2012 (lần 1)",
+          "2012 (lần 2)",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023"
+        ]
+      },
+      "title": {
+        "expected": "Giá điện từ 2009 - 2023 (VND/kWh)",
+        "actual": "Giá điện từ 2009 - 2023 (VND/kWh)",
+        "exact": true
+      },
+      "units": {
+        "Giá điện từ 2009 - 2023 (VND/kWh)": {
+          "expected": "VND/kWh",
+          "actual": "",
+          "exact": false
+        }
+      }
+    },
+    "526ab4b8-a979-423f-84c0-997021186e77.png": {
+      "series": {
+        "correct": 2,
+        "predicted": 2,
+        "reference": 2,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "x_labels": {
+        "correct": 19,
+        "predicted": 19,
+        "reference": 19,
+        "ordered_exact": true,
+        "missing": [],
+        "extra": []
+      },
+      "y_labels": {
+        "correct": 0,
+        "predicted": 19,
+        "reference": 0,
+        "ordered_exact": false,
+        "missing": [],
+        "extra": [
+          "dịch vụ tài chính",
+          "truyền thông",
+          "công nghệ thông tin",
+          "tài nguyên cơ bản",
+          "hóa chất",
+          "dầu khí",
+          "viễn thông",
+          "xây dựng và vật liệu",
+          "ngân hàng",
+          "y tế",
+          "bán lẻ",
+          "hàng cá nhân & gia dụng",
+          "ô tô và phụ tùng",
+          "điện, nước & xăng dầu khí đốt",
+          "bất động sản",
+          "hàng & dịch vụ công nghiệp",
+          "bảo hiểm",
+          "thực phẩm và đồ uống",
+          "du lịch và giải trí"
+        ]
+      },
+      "title": {
+        "expected": "Thay đổi giá theo nhóm ngành",
+        "actual": "Thay đổi giá theo nhóm ngành",
+        "exact": true
+      },
+      "units": {
+        "T12": {
+          "expected": "%",
+          "actual": "%",
+          "exact": true
+        },
+        "2023": {
+          "expected": "%",
+          "actual": "%",
+          "exact": true
+        }
+      }
+    }
+  },
+  "scope": "Four deliberately selected problematic public images, visually inspected at original resolution; not a random sample or a whole-dataset accuracy estimate. References transcribe pixels, not answer programs.",
+  "artifact_sha256": "eb06b2b1e64bb4ecc5b476a34ab614f5dd9d09b35f894b83649d83e0f4c21130"
+}

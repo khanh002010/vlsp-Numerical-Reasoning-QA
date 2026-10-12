@@ -6,6 +6,8 @@ Các cell dưới đây giả định repo đã được cập nhật ở
 `/kaggle/working/vlsp-Numerical-Reasoning-QA`, môi trường training cũ đang hoạt động
 và GPU đã bật. File `reports/public_accuracy_v2/pixel_references.json` là dữ liệu
 reference cần thiết cho cell thử OCR và được lưu cùng code trên Git.
+Đợt sửa trục/nhãn nhiều dòng dùng `reviewed` và folder mới `prepared_accuracy_v2`.
+Chạy bài thử Paddle và Qwen theo [VISION_PILOT.md](VISION_PILOT.md) trước khi OCR toàn bộ.
 
 OCR và training chạy ở các process/phiên riêng. Không nạp CV và NLP đồng thời.
 Giữ folder dữ liệu, checkpoint cũ để đối chiếu; kết quả mới ghi vào folder riêng.
@@ -32,8 +34,8 @@ from vinumqa.cv_module.structure_store import ChartStructureStore, SavedVisionFa
 
 refs = json.loads(Path('reports/public_accuracy_v2/pixel_references.json').read_text(encoding='utf-8'))
 store = ChartStructureStore(
-    '/kaggle/working/prepared_accuracy/chart_structures.json',
-    model_id='Qwen/Qwen2.5-VL-7B-Instruct', load_in_4bit=True, read_mode='parts',
+    '/kaggle/working/prepared_accuracy_v2/chart_structures.json',
+    model_id='Qwen/Qwen2.5-VL-7B-Instruct', load_in_4bit=True, read_mode='reviewed',
 )
 try:
     for i, name in enumerate(refs['images'], 1):
@@ -46,7 +48,7 @@ finally:
     store.close()
 PY
 python -m vinumqa.evaluation.score_ocr_labels \
-  --prepared /kaggle/working/prepared_accuracy/chart_structures.json \
+  --prepared /kaggle/working/prepared_accuracy_v2/chart_structures.json \
   --reference reports/public_accuracy_v2/pixel_references.json \
   --output /kaggle/working/ocr_accuracy_pilot.json
 ```
@@ -67,10 +69,10 @@ for split in train public_test; do
   python -u -m vinumqa.nlp_module.data_prep.format_training_data \
     --input "data/${split}/${split}.json" \
     --images "data/${split}/${split}_images" \
-    --output "/kaggle/working/prepared_accuracy/${split}_structured.json" \
-    --structure-store /kaggle/working/prepared_accuracy/chart_structures.json \
+    --output "/kaggle/working/prepared_accuracy_v2/${split}_structured.json" \
+    --structure-store /kaggle/working/prepared_accuracy_v2/chart_structures.json \
     --cv-model Qwen/Qwen2.5-VL-7B-Instruct \
-    --cv-4bit --cv-read-mode parts --prompt-profile source-review-v1 \
+    --cv-4bit --cv-read-mode reviewed --prompt-profile source-review-v1 \
     --retry-failed --max-minutes 240
 done
 ```
@@ -79,7 +81,7 @@ Giới hạn 240 phút áp dụng từng split, kiểm tra giữa các ảnh. M�
 Chạy lại cùng cell để tiếp tục; ảnh đã thành công lấy từ store, ảnh lỗi được thử lại.
 Không dùng script retry cũ với cấu hình mặc định 2B cho store 7B.
 Nếu hết thời gian mà còn pending/error, hoàn tất OCR trước bước training.
-Lưu/download `prepared_accuracy` để dùng phiên sau; training chỉ cần hai file structured.
+Lưu/download `prepared_accuracy_v2` để dùng phiên sau; training chỉ cần hai file structured.
 
 ## 3. Kiểm tra dữ liệu và đo chính xác token
 
@@ -88,11 +90,11 @@ Lưu/download `prepared_accuracy` để dùng phiên sau; training chỉ cần h
 set -e
 cd /kaggle/working/vlsp-Numerical-Reasoning-QA
 python -m vinumqa.evaluation.audit_supervision \
-  --train-data /kaggle/working/prepared_accuracy/train_structured.json \
-  --val-data /kaggle/working/prepared_accuracy/public_test_structured.json \
+  --train-data /kaggle/working/prepared_accuracy_v2/train_structured.json \
+  --val-data /kaggle/working/prepared_accuracy_v2/public_test_structured.json \
   --output /kaggle/working/supervision_accuracy.json
 python -m vinumqa.nlp_module.training.audit_token_lengths \
-  --prepared-dir /kaggle/working/prepared_accuracy \
+  --prepared-dir /kaggle/working/prepared_accuracy_v2 \
   --data-root data \
   --output-dir /kaggle/working/token_audit_accuracy
 ```
@@ -120,7 +122,7 @@ import sys
 from pathlib import Path
 
 REPO = Path('/kaggle/working/vlsp-Numerical-Reasoning-QA')
-PREP = Path('/kaggle/working/prepared_accuracy')
+PREP = Path('/kaggle/working/prepared_accuracy_v2')
 summary = json.loads(Path('/kaggle/working/token_audit_accuracy/summary.json').read_text())
 budget = summary['combined']['max_padded_to_8']
 env = os.environ.copy()
@@ -176,7 +178,7 @@ run = subprocess.run([
     '--input', 'data/public_test/public_test.json',
     '--images', 'data/public_test/public_test_images',
     '--adapter', '/kaggle/working/outputs/nlp_accuracy/best_program',
-    '--structure-store', '/kaggle/working/prepared_accuracy/chart_structures.json',
+    '--structure-store', '/kaggle/working/prepared_accuracy_v2/chart_structures.json',
     '--output-dir', '/kaggle/working/public_accuracy_validation',
     '--max-rounds', '3', '--nlp-attempts', '2',
     '--max-hours', '10.5', '--nlp-device', 'cuda:0',
@@ -200,7 +202,7 @@ cd /kaggle/working/vlsp-Numerical-Reasoning-QA
 python -m vinumqa.evaluation.audit_accuracy \
   --source data/public_test/public_test.json \
   --predictions /kaggle/working/public_accuracy_validation/results.json \
-  --prepared /kaggle/working/prepared_accuracy/public_test_structured.json \
+  --prepared /kaggle/working/prepared_accuracy_v2/public_test_structured.json \
   --output /kaggle/working/public_accuracy_validation/accuracy_audit.json
 ```
 

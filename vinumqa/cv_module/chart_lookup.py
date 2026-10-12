@@ -4,13 +4,20 @@ from statistics import mean
 
 
 def resolve_chart(store, path, operator, a, b, c, allow_estimates=False):
+    from vinumqa.cv_module.structure_grounding import resolve_series
+    chart = store.get(path)
+    # Resolve to the original visible name only for numerical execution. The DSL
+    # emitted by NLP is untouched, including its chart_* operations and aliases.
+    if operator == 'chart_total':
+        if c != 'none': c = resolve_series(c, chart) or c
+    else:
+        a = resolve_series(a, chart) or a
     lookup = {"operator": operator, "arguments": [a, b, c]}
     result = store.read_values(path, lookup)
     if not isinstance(result, dict) or result.get("complete") is not True:
         raise ValueError("Incomplete chart evidence; refusing an aggregate/lookup")
     points = result.get("points")
     if not isinstance(points, list) or not points: raise ValueError("No chart points")
-    chart = store.get(path)
     names = {s["name"] for s in chart["series"]}
     seen, values = set(), []
     for p in points:

@@ -45,7 +45,7 @@ def main():
     parser.add_argument('--prompt-profile', choices=['legacy', 'source-review-v1'], default='legacy')
     parser.add_argument('--cv-model', default='Qwen/Qwen2-VL-2B-Instruct')
     parser.add_argument('--cv-4bit', action='store_true', help='4-bit CUDA vision model; use a new store')
-    parser.add_argument('--cv-read-mode', choices=['joint', 'parts'], default='joint')
+    parser.add_argument('--cv-read-mode', choices=['joint', 'parts', 'reviewed'], default='joint')
     args = parser.parse_args()
     from vinumqa.nlp_module.data_prep.incremental import prepare_incrementally
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))

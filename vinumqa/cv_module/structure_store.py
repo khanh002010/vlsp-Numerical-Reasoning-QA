@@ -28,7 +28,7 @@ class ChartStructureStore:
 
     def __init__(self, path="prepared/chart_structures.json", model_id="Qwen/Qwen2-VL-2B-Instruct", reader=None, reader_factory=None,
                  load_in_4bit=False, read_mode='joint'):
-        if read_mode not in {'joint', 'parts'}: raise ValueError('Unknown structure read mode')
+        if read_mode not in {'joint', 'parts', 'reviewed'}: raise ValueError('Unknown structure read mode')
         self.path, self.model_id, self.reader = Path(path), model_id, reader
         self.load_in_4bit, self.read_mode = load_in_4bit, read_mode
         self.reader_factory = reader_factory
@@ -37,6 +37,9 @@ class ChartStructureStore:
                          "prompt_sha256": hashlib.sha256((STRUCTURE_PROMPT + "\n" + STRUCTURE_RETRY_PROMPT).encode()).hexdigest(), "max_pixels": 1400000}
         if load_in_4bit: self.identity['load_in_4bit'] = True
         if read_mode != 'joint': self.identity['read_mode'] = read_mode
+        if read_mode == 'reviewed':
+            from vinumqa.cv_module.structure_grounding import REVIEW_RECIPE
+            self.identity['review_recipe'] = REVIEW_RECIPE
         self.data = {"identity": self.identity, "images": {}}
         if self.path.exists():
             self.data = json.loads(self.path.read_text(encoding="utf-8"))
