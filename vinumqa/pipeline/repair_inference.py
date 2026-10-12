@@ -16,7 +16,8 @@ from vinumqa.data.context import build_inline_context
 from vinumqa.nlp_module.contracts import build_prompt, INSTRUCTION
 from vinumqa.nlp_module.data_prep.incremental import write_json
 from vinumqa.nlp_module.inference.evidence_validation import validate_evidence
-from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE, REVIEW_VERSION, structure_concerns, source_catalog
+from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE, REVIEW_VERSION, structure_concerns
+from vinumqa.nlp_module.prompting import reviewed_context as add_source_review
 
 
 DEFAULT_REVIEWED = Path(__file__).resolve().parents[1] / 'data' / 'reviewed_private_structures.json'
@@ -258,7 +259,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
         old = read_json(previous_diagnostics)
         previous = old.get("records", {}) if isinstance(old, dict) else {r["qid"]: r for r in old}
     if store is None:
-        store = ChartStructureStore(store_path)
+        store = ChartStructureStore.from_saved(store_path)
     if generator_factory is None:
         def generator_factory():
             from vinumqa.nlp_module.inference.generate_program import ProgramGenerator
@@ -329,8 +330,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                 if prior_check.get("errors"):
                     feedback = "\n\n### Validation feedback\n" + json.dumps({
                         "previous_program": prior.get("program", ""), "errors": prior_check["errors"]}, ensure_ascii=False)
-                catalog = json.dumps(source_catalog(sample.get('tables', {})), ensure_ascii=False)
-                reviewed_context = context + "\n\n### Source review\n" + REVIEW_GUIDANCE + '\nTable binding catalog: ' + catalog
+                reviewed_context = add_source_review(context, sample.get('tables', {}))
                 prompt = build_prompt(reviewed_context + feedback,
                                       sample["qa"]["question"], ", ".join(images))
                 print(f"[NLP round {round_index+1}/{max_rounds} {index}/{len(data)}] {qid}: START", flush=True)

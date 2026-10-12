@@ -5,6 +5,43 @@ from vinumqa.nlp_module.contracts import RESPONSE_PREFIX, parse_response, source
 from vinumqa.utils.dsl_parser import validate_program
 from vinumqa.nlp_module.data_prep.incremental import write_json
 from vinumqa.nlp_module.training.session_control import SessionBudgetExceeded
+from vinumqa.utils.dsl_parser import programs_equivalent
+from vinumqa.nlp_module.inference.generation_runtime import eos_ids
+
+
+def epoch_metrics(samples, predictions, diagnostics):
+    """Use the original local metric; gold is only accessed AFTER generation."""
+    raw = {r['qid']: r.get('program', '') for r in diagnostics}
+    emitted = {r['qid']: r['predicted'] for r in predictions}
+    gold = {r['qid']: parse_response(r['output'])['program'] for r in samples}
+    pending = sum(r.get('status') == 'pending_time_budget' for r in diagnostics)
+    complete = not pending and set(raw) == set(gold)
+    correct = sum(programs_equivalent(emitted.get(q, ''), g) for q,g in gold.items())
+    raw_correct = sum(programs_equivalent(raw.get(q, ''), g) for q,g in gold.items())
+    return {'total': len(gold), 'complete': complete, 'correct': correct,
+            'program_accuracy': correct / len(gold) if gold else 0.,
+            'raw_candidate_correct': raw_correct, 'raw_candidate_accuracy': raw_correct / len(gold) if gold else 0.,
+            'correct_candidates_rejected': sum(programs_equivalent(raw.get(q, ''), g) and not emitted.get(q) for q,g in gold.items()),
+            'metric': 'Existing local programs_equivalent; not official evaluator'}
+
+
+def save_best_program(model, tokenizer, output_dir, metrics, manifest, epoch, step):
+    """Retain the best generated-program checkpoint even if step checkpoints rotate."""
+    if not metrics['complete']: return False
+    directory = Path(output_dir) / 'best_program'
+    summary = directory / 'selection.json'
+    if summary.exists():
+        previous = json.loads(summary.read_text(encoding='utf-8'))
+        if previous['manifest'] != manifest:
+            raise ValueError('best_program belongs to a different training run; choose a new output-dir')
+        if previous['metrics']['program_accuracy'] >= metrics['program_accuracy']: return False
+    directory.mkdir(parents=True, exist_ok=True)
+    model.save_pretrained(directory)
+    tokenizer.save_pretrained(directory)
+    write_json(directory / 'pipeline_manifest.json', manifest)
+    write_json(summary, {'epoch': epoch, 'step': step, 'metrics': metrics, 'manifest': manifest})
+    print(f'[Best program] epoch={epoch:g}, step={step}, accuracy={metrics["program_accuracy"]:.4f}', flush=True)
+    return True
 
 
 def validation_prompt(sample):
@@ -53,10 +90,11 @@ def export_epoch_predictions(samples, generate, directory, epoch, step, session_
         except Exception as error:
             diagnostics.append({"qid": sample["qid"], "valid": False, "error": str(error)})
         save()  # Completed QIDs survive an interrupted validation pass.
+    write_json(directory / (stem + '.metrics.json'), epoch_metrics(samples, predictions, diagnostics))
     return predictions
 
 
-def make_epoch_callback(samples, tokenizer, max_new_tokens=1536, session_budget=None):
+def make_epoch_callback(samples, tokenizer, max_new_tokens=1536, session_budget=None, manifest=None):
     import torch
     from transformers import TrainerCallback
     from vinumqa.nlp_module.inference.constrained_decode import DSLLogitsProcessor
@@ -83,11 +121,15 @@ def make_epoch_callback(samples, tokenizer, max_new_tokens=1536, session_budget=
                         outputs = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False,
                             pad_token_id=tokenizer.pad_token_id, logits_processor=[processor], use_cache=True,
                             max_time=120)
-                    if int(outputs[0, -1]) != tokenizer.eos_token_id:
+                    if int(outputs[0, -1]) not in eos_ids(model.generation_config, tokenizer):
                         raise ValueError("Validation generation stopped before EOS")
                     return tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
                 export_epoch_predictions(samples, generate, Path(args.output_dir) / "validation_predictions",
                                          state.epoch or 0, state.global_step, session_budget)
+                if manifest is not None:
+                    stem = f'epoch_{state.epoch or 0:g}_step_{state.global_step}'
+                    metrics = json.loads((Path(args.output_dir) / 'validation_predictions' / (stem + '.metrics.json')).read_text(encoding='utf-8'))
+                    save_best_program(model, tokenizer, args.output_dir, metrics, manifest, state.epoch or 0, state.global_step)
             finally:
                 model.config.use_cache = use_cache
                 if checkpointing: model.gradient_checkpointing_enable()

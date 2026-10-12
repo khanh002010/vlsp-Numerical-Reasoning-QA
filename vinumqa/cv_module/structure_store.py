@@ -17,12 +17,26 @@ INSPECTION_VERSION = "legend-axis-review-v3-separated-fields"
 
 
 class ChartStructureStore:
-    def __init__(self, path="prepared/chart_structures.json", model_id="Qwen/Qwen2-VL-2B-Instruct", reader=None, reader_factory=None):
+    @classmethod
+    def from_saved(cls, path):
+        """Reopen a store with its recorded vision model/read mode, never guess 2B."""
+        path = Path(path)
+        if not path.is_file(): return cls(path)
+        identity = json.loads(path.read_text(encoding='utf-8')).get('identity', {})
+        return cls(path, model_id=identity.get('model', 'Qwen/Qwen2-VL-2B-Instruct'),
+                   load_in_4bit=identity.get('load_in_4bit', False), read_mode=identity.get('read_mode', 'joint'))
+
+    def __init__(self, path="prepared/chart_structures.json", model_id="Qwen/Qwen2-VL-2B-Instruct", reader=None, reader_factory=None,
+                 load_in_4bit=False, read_mode='joint'):
+        if read_mode not in {'joint', 'parts'}: raise ValueError('Unknown structure read mode')
         self.path, self.model_id, self.reader = Path(path), model_id, reader
+        self.load_in_4bit, self.read_mode = load_in_4bit, read_mode
         self.reader_factory = reader_factory
         self._initialization_error = None
         self.identity = {"version": STORE_VERSION, "model": model_id,
                          "prompt_sha256": hashlib.sha256((STRUCTURE_PROMPT + "\n" + STRUCTURE_RETRY_PROMPT).encode()).hexdigest(), "max_pixels": 1400000}
+        if load_in_4bit: self.identity['load_in_4bit'] = True
+        if read_mode != 'joint': self.identity['read_mode'] = read_mode
         self.data = {"identity": self.identity, "images": {}}
         if self.path.exists():
             self.data = json.loads(self.path.read_text(encoding="utf-8"))
@@ -56,7 +70,7 @@ class ChartStructureStore:
                     self.reader = self.reader_factory()
                 else:
                     from vinumqa.cv_module.structure_reader import ChartStructureReader
-                    self.reader = ChartStructureReader(self.model_id)
+                    self.reader = ChartStructureReader(self.model_id, load_in_4bit=self.load_in_4bit, read_mode=self.read_mode)
             except Exception as error:
                 self._initialization_error = f"Cannot load CV model: {error}"
                 raise CVInitializationError(self._initialization_error) from error

@@ -12,7 +12,7 @@ ARTIFACT_VERSION = "vinumqa-prepared-structures-v1"
 
 def prepare_structured(data, image_dir, output, store_path="prepared/chart_structures.json",
                        start_image=1, retry_failed=False, max_minutes=None, store=None,
-                       only_failed=False):
+                       only_failed=False, prompt_profile='legacy'):
     from vinumqa.nlp_module.data_prep.format_training_data import format_sample
     from vinumqa.nlp_module.contracts import FORMAT_VERSION, INSTRUCTION
     output = Path(output)
@@ -24,11 +24,14 @@ def prepare_structured(data, image_dir, output, store_path="prepared/chart_struc
     fingerprint = hashlib.sha256(json.dumps(data, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
     identity = {"artifact_version": ARTIFACT_VERSION, "format_version": FORMAT_VERSION,
                 "source_sha256": fingerprint, "prompt_sha256": hashlib.sha256(INSTRUCTION.encode()).hexdigest()}
+    if prompt_profile != 'legacy': identity['prompt_profile'] = prompt_profile
     artifact = {**identity, "images": [{"image": name, "index": i, "status": "pending"}
                                       for i, name in enumerate(names, 1)], "samples": []}
     if output.exists():
         artifact = json.loads(output.read_text(encoding="utf-8"))
-        if not isinstance(artifact, dict) or any(artifact.get(k) != v for k, v in identity.items()):
+        if (not isinstance(artifact, dict)
+                or any(artifact.get(k) != v for k, v in identity.items())
+                or artifact.get('prompt_profile', 'legacy') != prompt_profile):
             raise ValueError("Output uses different data/contract; choose a new --output for structure preparation")
         if [r["image"] for r in artifact["images"]] != names: raise ValueError("Image order changed")
     store = store if store is not None else ChartStructureStore(store_path)
@@ -44,7 +47,7 @@ def prepare_structured(data, image_dir, output, store_path="prepared/chart_struc
                 continue
             try:
                 structures = {key: records[name]["structure"] for key, name in sample.get("images", {}).items()}
-                row = format_sample(sample, image_structures=structures)
+                row = format_sample(sample, image_structures=structures, prompt_profile=prompt_profile)
                 rows.append({"qid": sample["qid"], "status": "ready", "data": row})
             except Exception as error:
                 rows.append({"qid": sample["qid"], "status": "error", "source": sample, "error": str(error)})

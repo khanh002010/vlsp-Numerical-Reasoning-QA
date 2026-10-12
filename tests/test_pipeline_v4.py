@@ -247,7 +247,8 @@ class PipelineTests(unittest.TestCase):
             for epoch in [1, 2]:
                 rows = export_epoch_predictions(samples, generate, tmp, epoch, epoch * 100)
                 self.assertEqual(rows, [{"qid": "q1", "predicted": "add(1; 2)"}, {"qid": "q2", "predicted": ""}])
-            self.assertEqual(len(list(Path(tmp).glob("*.json"))), 4)
+            self.assertEqual(len(list(Path(tmp).glob("*.json"))), 6)
+            self.assertEqual(len(list(Path(tmp).glob("*.metrics.json"))), 2)
 
     def test_adaptive_ocr_budget(self):
         from vinumqa.cv_module.chart_to_table.token_budget import budget_schedule, reached_eos, initial_token_budget

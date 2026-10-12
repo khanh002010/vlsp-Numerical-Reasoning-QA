@@ -50,13 +50,19 @@ def load_formatted_dataset(json_path: str, prepared_rows=None):
     return Dataset.from_list(rows)
 
 def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_dir=None, skip_unready=False,
-          resume_from_checkpoint=None, max_train_hours=10.5, save_steps=50, loss_mode="completion"):
+          resume_from_checkpoint=None, max_train_hours=10.5, save_steps=50, loss_mode="completion",
+          epochs=3, learning_rate=2e-4, warmup_ratio=None, source_id_augmentation=False):
     session = SessionBudget(max_train_hours)
     if save_steps <= 0: raise ValueError("save-steps must be positive")
     if loss_mode not in {"completion", "full"}: raise ValueError("Invalid loss mode")
     # 1. Configs
     lora_cfg = LoraConfig()
     train_cfg = TrainingConfig()
+    if epochs <= 0 or learning_rate <= 0 or (warmup_ratio is not None and not 0 <= warmup_ratio < 1):
+        raise ValueError('Invalid epoch/learning-rate/warmup settings')
+    train_cfg.num_train_epochs = epochs
+    train_cfg.learning_rate = learning_rate
+    if warmup_ratio is not None: train_cfg.warmup_steps = 0
     train_cfg.max_seq_length = max_seq_length
     if output_dir is not None:
         train_cfg.output_dir = str(output_dir)
@@ -66,6 +72,7 @@ def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_
     # 2. Load dataset
     train_data_path = str(Path(train_data_path).resolve() if train_data_path else PROJECT_ROOT / "prepared" / "train_structured.json")
     val_data_path = str(Path(val_data_path).resolve() if val_data_path else PROJECT_ROOT / "prepared" / "public_test_structured.json")
+    train_rows, validation_rows = load_prepared_pair(train_data_path, val_data_path, skip_unready=skip_unready)
     import hashlib
     manifest = {"format_version": FORMAT_VERSION, "base_model": model_id,
         "prompt_sha256": hashlib.sha256(INSTRUCTION.encode()).hexdigest(),
@@ -75,11 +82,18 @@ def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_
         "microbatch": train_cfg.per_device_train_batch_size,
         "gradient_accumulation_steps": train_cfg.gradient_accumulation_steps,
         "num_train_epochs": train_cfg.num_train_epochs}
+    profile = train_rows[0].get('prompt_profile', 'legacy')
+    if profile != 'legacy': manifest['prompt_profile'] = profile
+    if warmup_ratio is not None or learning_rate != 2e-4 or source_id_augmentation:
+        manifest['training_recipe'] = {'learning_rate': learning_rate, 'warmup_ratio': warmup_ratio,
+                                     'source_id_augmentation': source_id_augmentation, 'loss_mode': loss_mode}
     if resume_from_checkpoint:
         saved = json.loads((Path(resume_from_checkpoint) / "pipeline_manifest.json").read_text(encoding="utf-8"))
         if saved != manifest: raise ValueError("Resume checkpoint does not match the dataset/prompt/training length")
     
-    train_rows, validation_rows = load_prepared_pair(train_data_path, val_data_path, skip_unready=skip_unready)
+    if source_id_augmentation:
+        from vinumqa.nlp_module.training.supervision import augment_source_ids
+        train_rows = augment_source_ids(train_rows)
     print(f"Training from prepared JSON; no OCR required.\nTrain: {train_data_path}\nValidation: {val_data_path}")
         
     dataset = load_formatted_dataset(train_data_path, train_rows)
@@ -151,6 +165,7 @@ def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_
         max_steps=train_cfg.max_steps,
         num_train_epochs=train_cfg.num_train_epochs,
         warmup_steps=train_cfg.warmup_steps,
+        warmup_ratio=warmup_ratio or 0.,
         save_strategy="steps",
         save_steps=save_steps,
         save_total_limit=2,
@@ -170,7 +185,7 @@ def train(max_seq_length=7680, train_data_path=None, val_data_path=None, output_
         args=training_args,
         data_collator=data_collator,
         callbacks=[make_session_callback(session, manifest, tokenizer),
-                   make_epoch_callback(validation_rows, tokenizer, session_budget=session)],
+                   make_epoch_callback(validation_rows, tokenizer, session_budget=session, manifest=manifest)],
     )
     
     print("Starting training...")
@@ -196,8 +211,13 @@ if __name__ == "__main__":
     parser.add_argument("--resume-from-checkpoint")
     parser.add_argument("--max-train-hours", type=float, default=10.5, help="Soft per-process time budget, including loading and validation")
     parser.add_argument("--save-steps", type=int, default=50)
+    parser.add_argument('--epochs', type=float, default=3)
+    parser.add_argument('--learning-rate', type=float, default=2e-4)
+    parser.add_argument('--warmup-ratio', type=float, help='Use a fraction of actual optimizer steps instead of 100 warmup steps')
+    parser.add_argument('--augment-source-ids', action='store_true', help='Train-only consistent Image/Table ID permutations')
     parser.add_argument("--loss-mode", choices=("completion", "full"), default="completion",
                         help="completion keeps full context but skips logits for masked prompt positions; full is the baseline")
     args = parser.parse_args()
     train(args.max_seq_length, args.train_data, args.val_data, args.output_dir, args.skip_unready,
-          args.resume_from_checkpoint, args.max_train_hours, args.save_steps, args.loss_mode)
+          args.resume_from_checkpoint, args.max_train_hours, args.save_steps, args.loss_mode,
+          args.epochs, args.learning_rate, args.warmup_ratio, args.augment_source_ids)

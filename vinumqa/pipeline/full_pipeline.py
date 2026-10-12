@@ -5,16 +5,17 @@ from vinumqa.cv_module.structure_store import ChartStructureStore
 from vinumqa.cv_module.pipeline import CVInitializationError
 from vinumqa.nlp_module.inference.evidence_validation import validate_evidence
 from vinumqa.utils.dsl_parser import parse_program, execute_program
-from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE
+from vinumqa.nlp_module.prompting import reviewed_context
 
 
 class ViNumQAPipeline:
-    def __init__(self, cv_model_id="Qwen/Qwen2-VL-2B-Instruct",
+    def __init__(self, cv_model_id=None,
                  nlp_model_id="Qwen/Qwen2.5-7B-Instruct", nlp_lora_weights=None,
                  use_reflection=True, structure_store="prepared/chart_structures.json",
                  max_cv_requests=2, store=None, nlp_factory=None):
         if max_cv_requests < 0: raise ValueError("max_cv_requests must be nonnegative")
-        self.store = store if store is not None else ChartStructureStore(structure_store, cv_model_id)
+        self.store = store if store is not None else (ChartStructureStore(structure_store, cv_model_id)
+                      if cv_model_id else ChartStructureStore.from_saved(structure_store))
         self.max_cv_requests = max_cv_requests
         self.nlp_pipeline = None
         self.use_reflection = use_reflection
@@ -63,7 +64,7 @@ class ViNumQAPipeline:
         for _ in range(self.max_cv_requests + max_corrections + 1):
             context = build_inline_context(text_segments, tables_dict, image_dict, None, chart_structures=charts,
                                            allow_unavailable_images=True)
-            nlp_context = context + "\n\n### Source review\n" + REVIEW_GUIDANCE + ("\n\n### Validation feedback\n" + feedback if feedback else "")
+            nlp_context = reviewed_context(context, tables_dict) + ("\n\n### Validation feedback\n" + feedback if feedback else "")
             result = self._nlp().process(nlp_context, "", ", ".join(image_dict), question)
             if result.get("error"):
                 result["valid"] = False

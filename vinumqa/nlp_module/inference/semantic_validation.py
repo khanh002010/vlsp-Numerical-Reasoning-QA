@@ -1,6 +1,7 @@
 """Conservative source/graph checks; never claims semantic or official accuracy."""
 import re
 import unicodedata
+from decimal import Decimal
 from vinumqa.data.context import dict_to_markdown_table
 from vinumqa.utils.dsl_parser import parse_program, validate_program, MATH_OPS
 
@@ -158,6 +159,11 @@ def validate_semantics(program, tables, text_segments, question):
     if tables:
         source_text += "\n" + dict_to_markdown_table(tables)
     numbers = numeric_values(source_text)
+    # A literal fraction may be the exact representation of a printed percentage.
+    # Do not divide *all* source numbers by 100: require an explicit percent sign.
+    percent_fractions = set()
+    for match in re.finditer(r'([+-]?\d+(?:[.,]\d+)*)\s*%', source_text):
+        percent_fractions.update(float(Decimal(str(n)) / 100) for n in numeric_values(match[1]))
     # Common unit conversions may be written as literals already (e.g. 425.3
     # nghin ty -> 425300 ty). Do not reject those as invented numeric facts.
     amounts = set()
@@ -173,7 +179,7 @@ def validate_semantics(program, tables, text_segments, question):
             if a.startswith("#"):
                 continue
             n = float(a)
-            if n not in constants and n not in numbers:
+            if n not in constants and n not in numbers and n not in percent_fractions:
                 if abs(n) in magnitudes or abs(n) in converted:
                     warnings.append(f"Step {s.step_id}: verify sign/unit conversion for {a} against its source")
                 else:

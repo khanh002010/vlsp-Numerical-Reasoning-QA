@@ -5,7 +5,7 @@ from pathlib import Path
 
 import torch
 from PIL import Image
-from transformers import AutoProcessor, Qwen2VLForConditionalGeneration, StoppingCriteria, StoppingCriteriaList
+from transformers import AutoProcessor, AutoConfig, Qwen2VLForConditionalGeneration, StoppingCriteria, StoppingCriteriaList
 
 from vinumqa.cv_module.chart_to_table.backend import select_attention_backend
 from vinumqa.cv_module.chart_to_table.model_files import resolve_model_directory
@@ -34,11 +34,14 @@ class RepetitionStop(StoppingCriteria):
 
 
 class ChartToTableExtractor:
-    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", device="cuda", max_pixels=MAX_PIXELS):
+    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", device="cuda", max_pixels=MAX_PIXELS,
+                 load_in_4bit=False):
         if max_pixels <= 0:
             raise ValueError("max_pixels must be positive")
         self.max_pixels = max_pixels
         self.device = device if torch.cuda.is_available() else "cpu"
+        if load_in_4bit and self.device == 'cpu':
+            raise ValueError('4-bit OCR requires CUDA; use nonquantized CPU only for small diagnostics')
         print(f"Loading {model_id} on {self.device}...", flush=True)
         from transformers.utils import is_flash_attn_2_available
         capabilities = ([torch.cuda.get_device_capability(i) for i in range(torch.cuda.device_count())]
@@ -48,12 +51,27 @@ class ChartToTableExtractor:
         model_directory = resolve_model_directory(model_id)
         self.processor = AutoProcessor.from_pretrained(
             model_directory, min_pixels=4 * 28 * 28, max_pixels=self.max_pixels, local_files_only=True)
-        self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+        config = AutoConfig.from_pretrained(model_directory, local_files_only=True)
+        if config.model_type == 'qwen2_5_vl':
+            from transformers import Qwen2_5_VLForConditionalGeneration
+            model_class = Qwen2_5_VLForConditionalGeneration
+        elif config.model_type == 'qwen2_vl':
+            model_class = Qwen2VLForConditionalGeneration
+        else:
+            raise ValueError(f'Unsupported OCR architecture: {config.model_type}')
+        quantization = {}
+        if load_in_4bit:
+            from transformers import BitsAndBytesConfig
+            quantization['quantization_config'] = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_quant_type='nf4', bnb_4bit_use_double_quant=True,
+                bnb_4bit_compute_dtype=torch.float16)
+        self.model = model_class.from_pretrained(
             model_directory, local_files_only=True,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
             device_map="auto" if self.device == "cuda" else None,
-            attn_implementation=attention)
+            attn_implementation=attention, **quantization)
         self.model.eval()
+        print(f'OCR architecture={config.model_type}; 4bit={load_in_4bit}; max_pixels={self.max_pixels}', flush=True)
         self.base_prompt = OCR_PROMPT
         # Normalize irrelevant sampling settings without mutating model defaults.
         self.generation_config = copy.deepcopy(self.model.generation_config)

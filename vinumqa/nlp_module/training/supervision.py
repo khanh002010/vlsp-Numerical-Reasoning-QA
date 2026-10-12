@@ -30,6 +30,9 @@ def validate_dataset_pair(train, val, format_version, instruction, allow_group_o
     from vinumqa.nlp_module.contracts import parse_response
     groups = []
     all_qids = set()
+    profiles = {s.get('prompt_profile', 'legacy') for s in train + val}
+    if len(profiles) != 1:
+        raise ValueError('Train/validation prompt profiles differ; rebuild both with the same profile')
     for name, rows in [("train", train), ("val", val)]:
         if not rows: raise ValueError(f"Empty {name} dataset")
         keys = set()
@@ -44,6 +47,40 @@ def validate_dataset_pair(train, val, format_version, instruction, allow_group_o
             if not parse_response(s["output"])["valid"]: raise ValueError("Invalid target program")
         groups.append(keys)
     if groups[0] & groups[1] and not allow_group_overlap: raise ValueError("Train/validation document or image overlap")
+
+
+def augment_source_ids(rows):
+    """Add a train-only permutation of Image/Table IDs, consistently in input/target.
+
+    All source facts, values, ordering and questions are preserved up to source
+    renaming. Single-source samples receive a non-1 ID to discourage source priors.
+    """
+    import copy
+    import re
+    from vinumqa.nlp_module.contracts import source_ids, parse_response
+    augmented = []
+    pattern = re.compile(r'\b(?:Image|Table) [1-9]\d*\b')
+    for row in rows:
+        ids = source_ids(row['input'])
+        if not ids: continue
+        mapping = {}
+        for kind in ('Image', 'Table'):
+            names = sorted((x for x in ids if x.startswith(kind+' ')), key=lambda x: int(x.split()[1]))
+            if len(names) > 1:
+                mapping.update(zip(names, names[1:] + names[:1]))
+            elif names:
+                mapping[names[0]] = f'{kind} {int(names[0].split()[1])+1}'
+        remap = lambda text: pattern.sub(lambda m: mapping.get(m[0], m[0]), text)
+        changed = copy.deepcopy(row)
+        changed['qid'] = row['qid'] + ':source-permutation'
+        changed['input'], changed['output'] = remap(row['input']), remap(row['output'])
+        if 'charts' in row: changed['charts'] = {mapping.get(k,k): v for k,v in changed['charts'].items()}
+        changed['augmentation'] = {'kind': 'source-id-permutation-v1', 'source_qid': row['qid'], 'mapping': mapping}
+        if not parse_response(changed['output'])['valid']: raise ValueError('Invalid remapped target')
+        augmented.append(changed)
+    if {r['qid'] for r in rows} & {r['qid'] for r in augmented}:
+        raise ValueError('Augmented QID collision')
+    return rows + augmented
 
 def pad_supervised(features, pad_id, multiple=8):
     n = max(len(f["input_ids"]) for f in features)

@@ -9,9 +9,11 @@ from vinumqa.cv_module.structure_parts import validate_part, normalize_locator_b
 
 
 class ChartStructureReader:
-    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct"):
+    def __init__(self, model_id="Qwen/Qwen2-VL-2B-Instruct", load_in_4bit=False, read_mode='joint'):
+        if read_mode not in {'joint', 'parts'}: raise ValueError('Unknown structure read mode')
+        self.read_mode = read_mode
         from vinumqa.cv_module.chart_to_table.extract_table import ChartToTableExtractor
-        self.backend = ChartToTableExtractor(model_id=model_id)
+        self.backend = ChartToTableExtractor(model_id=model_id, load_in_4bit=load_in_4bit)
         self.backend.generation_config.max_time = 120
         self.backend.repetition_check = json_repetition_reason
         self.last_generation = {}
@@ -211,6 +213,9 @@ class ChartStructureReader:
         return result
 
     def read_structure(self, path):
+        if getattr(self, 'read_mode', 'joint') == 'parts':
+            self.last_generation = {'attempts': []}
+            return self._read_parts(path)
         return self._structure(path)
 
     def inspect(self, path, request, structure):

@@ -6,7 +6,7 @@ import json
 import math
 from pathlib import Path
 from vinumqa.nlp_module.contracts import RESPONSE_PREFIX
-from vinumqa.nlp_module.training.supervision import load_prepared_pair, encode_supervised
+from vinumqa.nlp_module.training.supervision import load_prepared_pair, encode_supervised, augment_source_ids
 from vinumqa.cv_module.structure import render_structure
 
 
@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--data-root', type=Path, default=Path('data'))
     parser.add_argument('--output-dir', type=Path, default=Path('reports/token_length_audit'))
     parser.add_argument('--model', default='Qwen/Qwen2.5-7B-Instruct')
+    parser.add_argument('--augment-source-ids', action='store_true', help='Measure the same train-only source permutations as training')
     args = parser.parse_args()
     from transformers import AutoTokenizer, __version__
     from huggingface_hub import HfApi
@@ -37,9 +38,12 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(args.model, revision=revision)
     print(f'Tokenizer: {args.model}@{revision}; no model weights loaded', flush=True)
     paths = [args.prepared_dir / f'{s}_structured.json' for s in ('train','public_test')]
-    datasets = load_prepared_pair(*paths)
+    datasets = list(load_prepared_pair(*paths))
+    if args.augment_source_ids:
+        datasets[0] = augment_source_ids(datasets[0])
     all_rows, image_rows = [], []
     report = {'model': args.model, 'revision': revision, 'transformers': __version__,
+              'source_id_augmentation': args.augment_source_ids,
               'tokenizer_class': type(tokenizer).__name__, 'eos_token_id': tokenizer.eos_token_id,
               'method': 'prompt and completion encoded separately, add_special_tokens=False; append one EOS; padding multiple=8',
               'component_note': 'Chart token counts are standalone diagnostics, not additive to total.',
