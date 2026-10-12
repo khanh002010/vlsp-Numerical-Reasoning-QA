@@ -64,7 +64,7 @@ python -u -m vinumqa.cv_module.structure_pilot \
   --model Qwen/Qwen2.5-VL-7B-Instruct --four-bit \
   --images data/public_test/public_test_images \
   --reference reports/public_accuracy_v2/pixel_references.json \
-  --output-dir /kaggle/working/prepared_accuracy_v2
+  --output-dir /kaggle/working/prepared_accuracy_v3
 ```
 
 Folder mới quan trọng: store cũ `parts` chứa lỗi nhưng status=ok, nên không được tái
@@ -75,10 +75,12 @@ Các thay đổi:
 1. Đọc layout độc lập trước: hướng plot, trục số/category/time và tiêu đề. Trục Y số
    không chạy bước chép category Y. Trục ngang vẫn được đọc row names, không xóa Y
    trên mọi biểu đồ. Kết quả mâu thuẫn vai trò bị từ chối, không ép qua bằng cách bỏ nhãn.
-2. Đọc nhãn X/Y có box theo từng vị trí; mỗi item chứa các dòng thuộc cùng một nhãn.
-   Nhãn nhiều dòng được đọc lại bằng crop chính vị trí đó. Không deduplicate năm và
-   không nối “Lần 1/Lần 2” theo thứ tự text toàn ảnh. Tọa độ phải normalized 0..1;
-   không tự coi `bbox_2d` không rõ hệ tọa độ là normalized.
+2. Updated recipe `independent-axis-text-v2`: generated label boxes are no longer used.
+   Read per-tick text groups twice independently and require matching ordered lists.
+   Reject multiple dates/years in one group and legend text mixed into category lines.
+   Read axis roles and standalone title separately. Agreement is not proof of accuracy;
+   score against pixels before full preparation. Use the NEW v3 output directory.
+
 3. Với một series không có legend, khi CV xác nhận title là tên series, có thể tạo alias
    bằng cách bỏ hậu tố kỳ/đơn vị có quy tắc. Ví dụ `Giá điện từ 2009 - 2023 (VND/kWh)`
    có alias `Giá điện`. Lưu cả tên gốc, alias và căn cứ. Không fuzzy-match P/E, TB năm,
@@ -88,8 +90,8 @@ Các thay đổi:
 
 Kết quả cần xem:
 
-- `/kaggle/working/prepared_accuracy_v2/chart_structures.json`
-- `/kaggle/working/prepared_accuracy_v2/ocr_accuracy_pilot.json`
+- `/kaggle/working/prepared_accuracy_v3/chart_structures.json`
+- `/kaggle/working/prepared_accuracy_v3/ocr_accuracy_pilot.json`
 - `/kaggle/working/paddle_pilot_v1/paddle_pilot.json`
 
 Chấm lại file Qwen pilot cũ bằng scorer mới cho thấy series recall 100%, X recall 95,24%,
