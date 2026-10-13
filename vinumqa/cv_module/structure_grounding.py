@@ -2,7 +2,7 @@
 import re
 import unicodedata
 
-REVIEW_RECIPE = 'flat-axis-windows-v3'
+REVIEW_RECIPE = 'region-evidence-v4'
 
 
 def key(value):

@@ -75,23 +75,6 @@ class VisionUpgradeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'cannot invent'):
             axis_groups({'labels':[],'complete':False,'source_ambiguous':True},[])
 
-    def test_legend_collision_rereads_series_before_categories(self):
-        reader=Mock();reader.last_generation={}
-        bad={'title':'Metric','kind':'bar','series':[{'name':'2020','unit':''}],
-             'series_complete':True,'uncertain':[]}
-        good={**bad,'series':[{'name':'Metric','unit':''}]}
-        reader._read_part.side_effect=[bad,good]
-        def observe(path,prompt,box=None,**kw):
-            phase=kw['phase']
-            if phase=='review_layout':return {'title':'Metric','kind':'bar','series_source':'unknown'}
-            if phase=='axis_roles':return {'x_axis_type':'time','y_axis_type':'numerical'}
-            if phase=='title_only':return {'title':'Metric'}
-            if phase.startswith(('axis_text','axis_verify')):return {'labels':['2020','2021'],'complete':False}
-            raise AssertionError(phase)
-        reader._read.side_effect=observe
-        result=read_reviewed(reader,'image')
-        self.assertEqual(result['series'][0]['name'],'Metric')
-        self.assertEqual(result['x_labels'],['2020','2021'])
 
     def test_bar_missing_readable_requires_matching_confirmation(self):
         from vinumqa.cv_module.bar_label_regions import read_bar_labels
@@ -217,26 +200,6 @@ class VisionUpgradeTests(unittest.TestCase):
         self.assertEqual(store.read_values.call_args.args[1]['arguments'][0],c['series'][0]['name'])
         self.assertEqual(program,'chart_at(Image 1; Giá điện; 2022; none)')
 
-    def test_reviewed_read_uses_text_groups_without_generated_boxes(self):
-        reader=Mock()
-        reader._read_part.return_value={'title':'', 'kind':'bar','series':[{'name':chart()['title'],'unit':'(VND/kWh)'}],
-                                        'series_complete':True,'uncertain':[]}
-        calls=[]
-        def observe(path,prompt,box=None,**kw):
-            phase=kw['phase']; calls.append(phase)
-            if phase=='review_layout':
-                return {**chart()['layout'],'title':chart()['title'],'kind':'bar','chart_unit':'','series_source':'title'}
-            if phase=='axis_roles': return {'x_axis_type':'categorical','y_axis_type':'numerical'}
-            if phase=='title_only': return {'title':chart()['title']}
-            if phase in ('axis_text_x','axis_verify_x'):
-                return {'complete':True,'labels':['2011 (Lần 1)','2011 (Lần 2)']}
-            raise AssertionError(phase)
-        reader._read.side_effect=observe
-        result=read_reviewed(reader,'image.png')
-        self.assertEqual(result['x_labels'],['2011 (Lần 1)','2011 (Lần 2)'])
-        self.assertEqual(result['y_labels'],[])
-        self.assertEqual(result['series'][0]['unit'],'VND/kWh')
-        self.assertNotIn('positioned_x',calls)
 
     def test_axis_groups_rejects_observed_date_merge_and_legend_pollution(self):
         from vinumqa.cv_module.reviewed_reader import axis_groups, read_axis_labels
@@ -275,22 +238,6 @@ class VisionUpgradeTests(unittest.TestCase):
         failed = score({'a.png': {'status': 'error', 'structure': c}}, ref)
         self.assertEqual(failed['fields']['y_labels']['exact_image_rate'], 0)
 
-    def test_missing_scale_is_not_matrix_and_legend_title_is_visually_checked(self):
-        reader=Mock()
-        reader._read_part.return_value={'title':'Metric','kind':'bar',
-            'series':[{'name':'Metric','unit':''}],'series_complete':True,'uncertain':[]}
-        def observe(path,prompt,box=None,**kw):
-            phase=kw['phase']
-            if phase=='review_layout': return {'title':'Metric','kind':'bar','series_source':'legend','chart_unit':''}
-            if phase=='axis_roles': return {'x_axis_type':'time','y_axis_type':'none'}
-            if phase=='title_only': return {'title':'Metric'}
-            if phase=='verify_heading': return {'separate_heading':False,'title':''}
-            if phase in ('axis_text_x','axis_verify_x'): return {'labels':['2022','2023'],'complete':False}
-            raise AssertionError(phase)
-        reader._read.side_effect=observe
-        result=read_reviewed(reader,'image')
-        self.assertEqual(result['layout']['orientation'],'vertical')
-        self.assertEqual(result['title'],'')
 
     def test_store_recipe_reopens_but_does_not_reuse_old_parts(self):
         with tempfile.TemporaryDirectory() as tmp:

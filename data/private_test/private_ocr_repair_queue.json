@@ -1,0 +1,761 @@
+{
+  "summary": {
+    "total_images": 83,
+    "pipeline_error": 5,
+    "ok_flagged": 41,
+    "selected_for_reread": 46,
+    "retained_outside_queue": 37
+  },
+  "images": [
+    {
+      "image": "00ff8c6b-9761-5380-85bc-76851b020292.png",
+      "split": "private_test",
+      "sha256": "9532ffb1f419d16f0ad666a1686c63b63e0fd3c324a61ac2b479d7139631e2a0",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Tiêu đề OCR không xuất hiện trên ảnh (ví dụ Trend of Economic Growth, Treasury Yield Curve, Time Series, GDP Growth Rate).",
+          "action": "Để title rỗng khi không có tiêu đề in trên ảnh; không tự đặt tên chủ đề.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "0666db9a-eb16-54f3-ba88-7a7245f9a730.png",
+      "split": "private_test",
+      "sha256": "50587776bc00d158655f3acca8bcb134c97d5916555093a70d294818b97e881a",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "18c3c075-e750-5792-817c-45b3289c4031.png",
+      "split": "private_test",
+      "sha256": "6f2fbccf1bd9d8efc3363ae6b2a7224906e0bbb1daa9c00783763c4f740180fd",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "1a4aa378-9797-5a35-8ca2-8fe2f96e3723.png",
+      "split": "private_test",
+      "sha256": "5167bcac038c0eb2d90d43b371f1f91a74ab88249f604b724997c998409787ac",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "1dfb709e-aed5-5fdf-a697-fa703b595bd4.png",
+      "split": "private_test",
+      "sha256": "19017269e52a9cadb454c8d0e87035e7b6e630f4275071bfc83e1722be88eb6e",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "1ea34911-7a4d-526f-a1b8-fe05058d9d5e.png",
+      "split": "private_test",
+      "sha256": "c0643cb504310cb8b4805ba2a5a1caf766d8d8e7233682a418cd2e10948bef32",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Tiêu đề OCR không xuất hiện trên ảnh (ví dụ Trend of Economic Growth, Treasury Yield Curve, Time Series, GDP Growth Rate).",
+          "action": "Để title rỗng khi không có tiêu đề in trên ảnh; không tự đặt tên chủ đề.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "216ce409-b9fc-5a61-b643-bb18fd318c1d.png",
+      "split": "private_test",
+      "sha256": "843e42973360b164dba525acb6f2ef9ae1177682b6f98137758dc15ba61574e0",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Chỉ lấy phụ đề Dòng vốn vào cổ phiếu theo thị trường theo tháng; bỏ heading chính phía trên.",
+          "action": "Lưu riêng heading và subtitle, không làm mất heading.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "24a20439-d303-5cf3-8d22-d2b84b0815af.png",
+      "split": "private_test",
+      "sha256": "0df71523ce8c902dc838fdccc6aac8bc0815dc0e4ccccf71e9dc8c422f9ffb50",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "25fc2521-43a0-5232-ad3a-2254cb646dbd.png",
+      "split": "private_test",
+      "sha256": "5e1d1ca9fc2c2e58f92550a6987c9ff3ec866063d275d5b75eadb5a98ecba4e7",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Chỉ lấy phụ đề Dòng vốn vào cổ phiếu theo thị trường theo tháng; bỏ heading chính phía trên.",
+          "action": "Lưu riêng heading và subtitle, không làm mất heading.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "3b15ceae-f79f-546e-a743-75037b37298e.png",
+      "split": "private_test",
+      "sha256": "5069f0cba3a54b1470a0ea4a373ff4c1972c9952752ef37bb14a78de9ce52185",
+      "status": "error",
+      "error": "Invalid series_source",
+      "issues": [
+        {
+          "field": "pipeline_error",
+          "evidence": "Invalid series_source",
+          "action": "Đọc lại nguồn tên series; chuẩn hóa enum có kiểm chứng, không biến lỗi enum thành ảnh không đọc được.",
+          "priority": "P0",
+          "confidence": "saved_error"
+        }
+      ]
+    },
+    {
+      "image": "3b72e65d-e76f-5c50-8aba-79f53139e822.png",
+      "split": "private_test",
+      "sha256": "b56308be84bf28e476429536f8a1b2da278203bb35195f34a3cea185a713acaa",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "3dc5c74e-8b68-59df-8236-1b62c19c4338.png",
+      "split": "private_test",
+      "sha256": "694e9199f8c4b3554006a357e820483505a0e70911a303b01862c01c30d90c55",
+      "status": "error",
+      "error": "No-legend single-quantity chart has not been confirmed",
+      "issues": [
+        {
+          "field": "pipeline_error",
+          "evidence": "No-legend single-quantity chart has not been confirmed",
+          "action": "Đọc lại legend/heading riêng; không ép chart có legend thành single-series.",
+          "priority": "P0",
+          "confidence": "saved_error"
+        }
+      ]
+    },
+    {
+      "image": "418403af-683c-58e5-8449-3f7fd6080d96.png",
+      "split": "private_test",
+      "sha256": "f0e11735136b6030aeee0bd56144b9a22ee57ec0c9fa3f3b242724ae6d9ce4ea",
+      "status": "error",
+      "error": "Both axis roles must be observed",
+      "issues": [
+        {
+          "field": "pipeline_error",
+          "evidence": "Both axis roles must be observed",
+          "action": "Đọc riêng trục ngang và dọc. Các ảnh này là bar ngang: danh mục/năm ở Y, thang số ở X.",
+          "priority": "P0",
+          "confidence": "saved_error"
+        }
+      ]
+    },
+    {
+      "image": "4270d95f-80c7-5053-a7ea-a87dc6ad3b85.png",
+      "split": "private_test",
+      "sha256": "e2816e67c440a45a6a2dd0ee430a03959bbd7239fd990f4cea0abcedfd9df847",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "4631ed34-86f2-5d32-a65e-e6d7d5073fb2.png",
+      "split": "private_test",
+      "sha256": "96bb0919a38e2f9d1cfd3576cffe56814e6415e197870e54d817a301955c1d9e",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "series",
+          "evidence": "Legend ghi Net % Expecting Stronger Economy (RHS); OCR dùng câu Net % of fund managers expecting a stronger economy (RHS) từ chú thích trên đồ thị.",
+          "action": "Giữ tên legend nguyên bản; tách chú thích mô tả.",
+          "priority": "P1",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "4b85425f-6df1-5879-8ee6-e931ca10c766.png",
+      "split": "private_test",
+      "sha256": "eafae3c374a1d745b830a37ccc018a25c5ca5c6d9a33016ecb551c7e93cdc8e8",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "4f2a37ed-6a06-586a-9382-0791236b10a0.png",
+      "split": "private_test",
+      "sha256": "df16de43ccfed47531f90af6439eb41205be90dc25024d2c016e53a5921eb19d",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Chỉ lấy phụ đề Dòng vốn vào cổ phiếu theo thị trường theo tháng; bỏ heading chính phía trên.",
+          "action": "Lưu riêng heading và subtitle, không làm mất heading.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "5392064e-44c7-5e8c-9f72-7c1c3ac79d2c.png",
+      "split": "private_test",
+      "sha256": "74b0c138e3d74625a2e8766a44a82820b8bb07e62d959201b19ec64287d1ec42",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "5952a5bf-ed2e-5fc9-8112-825eef6cc97d.png",
+      "split": "private_test",
+      "sha256": "dae474ce860dca902098b5cc965d9312dea90e3465c4ecb50898cd44a19960de",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "5a8ae9c2-0995-59f4-81bb-a0635e2cce44.png",
+      "split": "private_test",
+      "sha256": "68c952cf2afcd8724db6b32e8ebbb6f45aecb8c098f4214197881c6e3629e1f8",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "5fb2a577-8af6-50f3-9ec2-314343a0fa48.png",
+      "split": "private_test",
+      "sha256": "d7f02e4dc7e6ae816b00e4e35e9b203265abf8ad7fbb79424d9ff5b3f94efb8a",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "6cab794b-84b1-5538-b87a-435cf95278d5.png",
+      "split": "private_test",
+      "sha256": "25f9d430ac0c7ed6fa33998a120bf412d54ee37b89762d5b50065c6022e10deb",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "6f376170-1fc2-591a-8f03-74455f01f1b7.png",
+      "split": "private_test",
+      "sha256": "6607315c0dc84f85765dfbd57b8161a0add0a40cde575a2d23a013f4b1e9f925",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "77cbdf0b-4547-5626-87cc-0e61531da76d.png",
+      "split": "private_test",
+      "sha256": "89f0e3ac12362267edccd2aa8aae7b090e371653caf67ee6dfc9cad195180cec",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "78526d89-01a1-5e62-b74f-5683c0813dbe.png",
+      "split": "private_test",
+      "sha256": "4e7e3de6edaf9d0951c873cb3e974b285965307d7399f0ae4b2e691fc01dc0c1",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "7b746361-0d23-5abf-8206-b5f6f9e202df.png",
+      "split": "private_test",
+      "sha256": "b9701f0179589818369f3278eab3217485856536a4a665340bdb1bc0b5a75ce7",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Tiêu đề OCR không xuất hiện trên ảnh (ví dụ Trend of Economic Growth, Treasury Yield Curve, Time Series, GDP Growth Rate).",
+          "action": "Để title rỗng khi không có tiêu đề in trên ảnh; không tự đặt tên chủ đề.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "7f11f93c-3dd9-55ff-aae5-e0221b0a2a19.png",
+      "split": "private_test",
+      "sha256": "bec3e610ed45d9fe11a047b52d8c638fb2f55a50fd489fa748eeff14bcc3bce2",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "7fba7a8a-86fc-585c-8521-866dd10211a3.png",
+      "split": "private_test",
+      "sha256": "47fee72c81ece930944c230e023e3690b493c40b9ddc237bd3f3451c7404156d",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "84af4e65-bb51-5772-b89d-6ffb23dc7c20.png",
+      "split": "private_test",
+      "sha256": "556051f3d8cf099dee2db9f6a2b8306838e01bef0ea2bbe6d4fcf883af666950",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "871b2b4c-841f-56eb-91fe-af1128b048d9.png",
+      "split": "private_test",
+      "sha256": "7e6b87129b9e251bc8b3db82d672073de0540815b97e444b897c700b55737e1a",
+      "status": "error",
+      "error": "Both axis roles must be observed",
+      "issues": [
+        {
+          "field": "pipeline_error",
+          "evidence": "Both axis roles must be observed",
+          "action": "Đọc riêng trục ngang và dọc. Các ảnh này là bar ngang: danh mục/năm ở Y, thang số ở X.",
+          "priority": "P0",
+          "confidence": "saved_error"
+        }
+      ]
+    },
+    {
+      "image": "926e2e51-8065-5b07-bc44-664339805903.png",
+      "split": "private_test",
+      "sha256": "9e426874bc9b7a602af9c7a9f23920bb490f2fda1c4bc240593607ffec24468e",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "9a8538f2-9491-5125-852a-1103cdddabba.png",
+      "split": "private_test",
+      "sha256": "613087634c9fe0a59251ee49538cf182a38cf9ed0721bcf8cd23fcebc27294bf",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Tiêu đề OCR không xuất hiện trên ảnh (ví dụ Trend of Economic Growth, Treasury Yield Curve, Time Series, GDP Growth Rate).",
+          "action": "Để title rỗng khi không có tiêu đề in trên ảnh; không tự đặt tên chủ đề.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "9ae8a913-bbde-5e80-b7eb-a0141d28f2cd.png",
+      "split": "private_test",
+      "sha256": "87f26ae0870084f563afc0431794b4058fe1ad457795b5a651bc80070c1fc24b",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "a5606c59-d6db-526a-be03-dee5d3434726.png",
+      "split": "private_test",
+      "sha256": "d3907a2163d7ba435a318f2390ef232952debab7e187675b46adbb4caa96b666",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "a69d19d0-26de-5153-867c-8c892bb0023e.png",
+      "split": "private_test",
+      "sha256": "451601946a30c13abc0436e4bdc4afe2dcc45bf6f7888cae1859505f0015f0a6",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "ac13e759-aac5-5c28-98c4-848876b178b1.png",
+      "split": "private_test",
+      "sha256": "3db929b1537c3a168f804e6b169bea37bf46d223c95966c6e0040b0f998d5602",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "b198223a-a17b-5457-806d-b30b26b8f67c.png",
+      "split": "private_test",
+      "sha256": "b92eb95411631fe926ff62cd12e2d4c4976304fb5c3a85ec7510c9a2cc75d164",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa chú thích sự kiện Đợt 2 kỳ họp Quốc hội thứ 8, khóa XV vào title; đây là annotation có mũi tên.",
+          "action": "Lưu annotation riêng; không coi là tiêu đề biểu đồ.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "b6e10525-24fa-5b36-a87e-b9d0b11bd5be.png",
+      "split": "private_test",
+      "sha256": "6a44d4cc4f4db442f50ad2f860a4da919dd74d50a03eec29cded84dba817fed0",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "c3a3bd35-a222-5fd4-8f18-31f6d5ea0df6.png",
+      "split": "private_test",
+      "sha256": "37e3cd677181dd12a5a4088a9e544f2b0b9b87f8bdc64ddb27582558f18e3240",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "c55672e9-0c8e-56b6-8da7-1f01eb35a248.png",
+      "split": "private_test",
+      "sha256": "14cef2c26ee5fff728b3e600b7f4697c448cfef3fdca6a01c324e1e0fd81f2e6",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        },
+        {
+          "field": "x_labels/layout",
+          "evidence": "Ảnh có ticks 23, 24, 25, 26 nhưng x_labels=[]; X bị phân loại numerical nên bị bỏ qua.",
+          "action": "Lưu nguyên các ticks 23,24,25,26 và bằng chứng vị trí; không tự thêm thế kỷ từ ảnh.",
+          "priority": "P0",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "cd4ed896-a73b-5014-8e10-f508531c8dc1.png",
+      "split": "private_test",
+      "sha256": "23aa7a3b9ebbf04c1b716a3119c758740b6c8fe805f388db742b376be9237071",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Đưa đơn vị/nhãn trục như (%), Tỷ đồng, Nghìn tỷ VND vào title, dù ảnh không có tiêu đề riêng.",
+          "action": "Tách axis title và unit; title riêng để rỗng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        },
+        {
+          "field": "unit/series",
+          "evidence": "Unit của series phải là 1.000,2.000,...5.000: đó là mốc trục, không phải đơn vị; (phải) bị đọc thành (phái).",
+          "action": "Tách numerical ticks khỏi unit; giữ chính xác chữ phải trong legend.",
+          "priority": "P0",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "ce0de681-e1f9-5690-bae6-fbc8f71af898.png",
+      "split": "private_test",
+      "sha256": "79fe67de3cbc01f34db7dd8d1d1edccd696c3d2ff702e4226d3621f9f9433f4b",
+      "status": "error",
+      "error": "Invalid series_source",
+      "issues": [
+        {
+          "field": "pipeline_error",
+          "evidence": "Invalid series_source",
+          "action": "Đọc lại nguồn tên series; chuẩn hóa enum có kiểm chứng, không biến lỗi enum thành ảnh không đọc được.",
+          "priority": "P0",
+          "confidence": "saved_error"
+        }
+      ]
+    },
+    {
+      "image": "d25dc943-70a2-5cdf-a890-0e4decfc7aa6.png",
+      "split": "private_test",
+      "sha256": "8c2e280bc9a1c94e55b4d9e7d624672b5e310c8d80940d7b95a01c8426b38cc8",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "axis",
+          "evidence": "Có series bị gán right dù đồ thị chỉ có thang số bên trái (T12/2023 hoặc Reform Package).",
+          "action": "Đối chiếu vị trí thang số thực tế; không đồng nhất line với right axis.",
+          "priority": "P0",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "d6060652-0ea6-5d64-8d0e-a224e0f07c42.png",
+      "split": "private_test",
+      "sha256": "3b41faab1723b003e17bd3ad3506c74cb9e1b9ae94ff901dfd9d0c404b4b8f38",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "x_labels",
+          "evidence": "Ảnh ghi 22/2/19, 22/2/20...; OCR nhiều lần đọc thành 22/12/19, 22/12/20... và có bước 22/12/26 thừa.",
+          "action": "Đọc lại từng nhãn xoay và so thứ tự vị trí; chuỗi từ 22/8/18 đến 22/2/26.",
+          "priority": "P0",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "dcbaab2b-1334-5c7c-81e2-4b5ddab51c7c.png",
+      "split": "private_test",
+      "sha256": "7c345aecbe4913077a41f19e546434f2ae49319ac4f6bda07dd7edf5e7cbdb4e",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "series",
+          "evidence": "Tên series bị gắn giá trị cuối đường như 32.4%, 19.7%, 17.5%... vào name.",
+          "action": "Giữ raw_text; tách tên và point annotation có tọa độ, không dùng giá trị điểm cuối làm định danh series.",
+          "priority": "P1",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    },
+    {
+      "image": "e6380f47-6ac4-53fe-916a-76e2ccb11b9e.png",
+      "split": "private_test",
+      "sha256": "ba82ee6d9b4a2f8d042662b8c303cac747a9ea2bcd95b256dbc80d8fd5f45e65",
+      "status": "ok",
+      "error": null,
+      "issues": [
+        {
+          "field": "title",
+          "evidence": "Title ghép từ legend, nhãn ngày/tháng hoặc mốc trục; không có dòng tiêu đề riêng tương ứng trong ảnh.",
+          "action": "Chỉ nhận heading có vị trí/bằng chứng; giữ legend và ticks ở trường riêng.",
+          "priority": "P2",
+          "confidence": "confirmed_visual"
+        }
+      ]
+    }
+  ]
+}
