@@ -61,6 +61,11 @@ def main():
     report['four_bit'] = args.four_bit
     report['reference_sha256'] = hashlib.sha256(args.reference.read_bytes()).hexdigest()
     report['status_counts'] = {s: sum(r.get('status') == s for r in records.values()) for s in ('ok', 'error')}
+    report['stage_progress'] = {name: {
+        'completed': list(record.get('generation', {}).get('completed_stages', {})),
+        'failed': record.get('generation', {}).get('failed_stages', {}),
+        'note': 'Stage completion is cross-view validation, not measured OCR accuracy.'}
+        for name, record in records.items()}
     measured = [t['seconds'] for t in timings.values() if not t['cache_hit']]
     report['runtime'] = {'uncached_images': len(measured),
                          'median_seconds_excluding_model_load': statistics.median(measured) if measured else None,

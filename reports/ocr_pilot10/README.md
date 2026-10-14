@@ -23,8 +23,8 @@ REPO = Path('/kaggle/working/vlsp-Numerical-Reasoning-QA')
 REFERENCE = REPO / 'reports/ocr_pilot10/pixel_references.json'
 assert REFERENCE.is_file(), 'Cần đồng bộ code và reference pilot10 mới lên Kaggle.'
 
-# Thư mục mới cho contract tọa độ v5; không dùng store pilot v4.
-PILOT10 = Path('/kaggle/working/ocr_pilot10_coordinates_v5')
+# Thư mục mới cho reader v6; không dùng store pilot v4/v5.
+PILOT10 = Path('/kaggle/working/ocr_pilot10_text_location_v6')
 print('Output:', PILOT10, flush=True)
 
 env = dict(os.environ, CUDA_VISIBLE_DEVICES='0', PYTHONUNBUFFERED='1')

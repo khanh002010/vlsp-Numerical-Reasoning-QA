@@ -10,16 +10,30 @@ from vinumqa.cv_module.structure_grounding import key, REVIEW_RECIPE
 from vinumqa.cv_module.coordinate_contract import PROMPT as COORDINATE_PROMPT, normalize_observation
 
 
-def observe(reader, path, prompt, validator, phase, budget=1024, box=None):
+def observe(reader, path, prompt, validator, phase, budget=1024, box=None, coordinates=False):
     from vinumqa.cv_module.reviewed_reader import checked_read
     def validate_normalized(value):
+        if coordinates and value.get('coordinate_system', 'normalized_1') != 'normalized_1':
+            raise ValueError('This call requires normalized_1 decimal fractions, not pixels or 0..1000')
         validator(normalize_observation(value))
-    value = checked_read(reader, path, prompt + COORDINATE_PROMPT,
+    value = checked_read(reader, path, prompt + (COORDINATE_PROMPT if coordinates else ''),
                          validator=validate_normalized, phase=phase, budgets=(budget,), box=box)
     normalized = normalize_observation(value)
     reader.last_generation.setdefault('observations', []).append(
         {'phase': phase, 'value': normalized, 'status': 'schema_checked_not_accuracy_verified'})
     return normalized
+
+
+def locate_text(reader, path, printed, phase):
+    def valid(v):
+        b = validate_box(v.get('box'))
+        if (b[2]-b[0])*(b[3]-b[1]) > .8:
+            raise ValueError('Locate only the requested text, not the full image')
+    return observe(reader, path,
+        'Locate this exact printed text, including all its lines: ' + json.dumps(printed, ensure_ascii=False) +
+        '. Return only {"coordinate_system":"normalized_1","box":[0.10,0.20,0.90,0.30]}. '
+        'The example is a format, not its position. Read the actual location. Do not transcribe or rename it.',
+        valid, phase, 256, coordinates=True)['box']
 
 
 def text(value, field, empty=False):
@@ -62,29 +76,34 @@ def crop_text(reader, path, box, phase, instruction=''):
 
 
 def read_heading(reader, path):
-    value = observe(reader, path,
-        'Locate the standalone chart heading/banner, including its subtitle if part of the heading. '
-        'Unit at an axis, legend names, tick dates and event annotations with arrows are NOT headings. '
-        'Do not invent a descriptive title for an untitled chart. Return '
-        '{"role":"absent","title":"","box":null}, or role=heading with exact title and '
-        'normalized box [left,top,right,bottom] enclosing only that heading. '
-        'Include ALL lines of the heading, excluding separate axis-unit text.',
-        heading, 'heading_location', 512)
-    confirmation = observe(reader, path,
-        'Check the full image for a separate chart heading/banner. Exclude axis units, '
-        'legend, dates and event annotations. Return {"role":"absent","title":"","box":null} '
-        'if none exists; otherwise role=heading, copy the complete heading and give its normalized box. '
-        'Do not describe the chart yourself.', heading, 'heading_confirmation', 512)
-    if key(value['title']) != key(confirmation['title']) or value['role'] != confirmation['role']:
-        raise ValueError('Heading presence/text observations disagree')
-    if value['role'] == 'absent': return ''
-    actual = crop_text(reader, path, value['box'], 'heading_pixels')
-    if key(actual) != key(value['title']):
-        raise ValueError('Heading crop disagrees with full-image heading; re-localize')
-    return actual
+    def valid(v):
+        if v.get('role') not in {'heading','absent'}: raise ValueError('Invalid heading role')
+        title = text(v, 'title', empty=True)
+        if (v['role']=='heading') != bool(title): raise ValueError('Heading role/text disagree')
+    value = observe(reader,path,
+        'Read the standalone chart title and subtitle exactly. Exclude legend, scale units and annotations. '
+        'Return {"role":"heading","title":"exact printed title"} if present, otherwise '
+        '{"role":"absent","title":""}. No coordinates; do not invent a descriptive title.',
+        valid,'heading_text',512)
+    if value['role']=='absent':
+        other=observe(reader,path,
+            'Transcribe any standalone chart heading, excluding legend and scale units. '
+            'Return {"role":"heading","title":"exact title"} or {"role":"absent","title":""}. No boxes.',
+            valid,'heading_absence_check',512)
+        if other['role']=='absent': return ''
+        value=other
+    for attempt in range(2):
+        box=locate_text(reader,path,value['title'],'heading_box_'+str(attempt))
+        heading({**value,'box':box})
+        try:
+            actual=crop_text(reader,path,box,'heading_pixels')
+            if key(actual)==key(value['title']): return actual
+        except ValueError:
+            if attempt: raise
+    raise ValueError('Heading crop disagrees with transcription; retained as unverified')
 
 
-def inventory(v):
+def inventory(v, require_boxes=True):
     if not isinstance(v, dict): raise ValueError('Series inventory must be an object')
     if v.get('kind') not in {'line','bar','mixed','pie','table'}: raise ValueError('Unknown chart kind')
     boolean(v, 'series_complete')
@@ -96,7 +115,7 @@ def inventory(v):
         if not isinstance(s, dict): raise ValueError('Invalid series entry')
         name, raw = text(s, 'name'), text(s, 'raw_text')
         if not isinstance(s.get('color',''),str):raise ValueError('Invalid observed color')
-        validate_box(s.get('box'))
+        if require_boxes: validate_box(s.get('box'))
         if s.get('source') not in {'legend','direct','title'}: raise ValueError('Invalid series text source')
         if key(name) not in key(raw): raise ValueError('Series name must be verbatim inside raw printed text')
         # The trailing percentage in a direct label is a point annotation, not its name.
@@ -134,19 +153,24 @@ def read_series(reader, path):
         'and named threshold/reference lines (+1 Std, Avg., etc.). Do not take axis categories or '
         'a standalone unit as a series. A plot can have a title-named main quantity AND named references. '
         'Return {"kind":"line","series_complete":false,"series":['
-        '{"name":"","raw_text":"","color":"","source":"legend","box":[0,0,1,1]}]}. '
+        '{"name":"","raw_text":"","color":"","source":"legend"}]}. '
         'source is legend, direct (text beside a curve), or title (only if heading identifies that '
         'otherwise unnamed plotted quantity). raw_text is the exact printed label; name preserves '
         'its words but excludes a trailing endpoint value. Never translate China/US or expand abbreviations. '
         'Color is the visibly associated swatch/curve color, empty if uncertain; do not invent hex codes. '
-        'Each normalized box encloses the text of ONE entry, all its lines, without neighbors. '
+        'Transcribe text only in this step: do not return coordinates or boxes. '
         'series_complete=true only if no plotted quantity/reference is missing.',
-        inventory, 'series_inventory', 2048)
+        lambda x: inventory(x, require_boxes=False), 'series_inventory', 2048)
     for i, s in enumerate(v['series']):
-        actual = crop_text(reader, path, s['box'], f'series_pixels_{i}',
-                           'Copy the full label, including any point-value suffix, but ignore the colored swatch.')
-        if key(actual) != key(s['raw_text']):
-            raise ValueError('Series crop disagrees with inventory: ' + s['name'])
+        for attempt in range(2):
+            s['box']=locate_text(reader,path,s['raw_text'],f'series_box_{i}_{attempt}')
+            try:
+                actual = crop_text(reader, path, s['box'], f'series_pixels_{i}',
+                                   'Copy only this label, ignoring the swatch and neighbors.')
+                if key(actual) == key(s['raw_text']): break
+                raise ValueError('Series crop disagrees with inventory: ' + s['name'])
+            except ValueError:
+                if attempt: raise
     names = [s['name'] for s in v['series']]
     b = observe(reader, path,
         'Inspect actual scale positions and follow each plotted series to its scale. '
@@ -160,7 +184,7 @@ def read_series(reader, path):
         'For each existing vertical numerical scale supply its normalized box. '
         'Evidence must describe the visible scale/unit/legend association. '
         'Return exactly these names in this order: ' + json.dumps(names, ensure_ascii=False),
-        lambda x: bindings(x, names), 'scale_binding', 2048)
+        lambda x: bindings(x, names), 'scale_binding', 2048, coordinates=True)
     scale_checks={}
     for side,box in b['scales'].items():
         if side not in {'left','right'} or box is None:continue
@@ -247,7 +271,7 @@ def read_axis(reader, path, axis):
         'For a single label with an occurrence qualifier include both lines in its one box. '
         'Never generate intermediate ticks or infer years. all_data_labelled=false for sparse '
         'time ticks. Do not transcribe label text in this step.',
-        lambda x: axis_plan(x, axis), 'locate_ticks_'+axis, 4096)
+        lambda x: axis_plan(x, axis), 'locate_ticks_'+axis, 4096, coordinates=True)
     if plan['role'] in {'numerical','none'}:
         def role_check(v):
             if not isinstance(v,dict) or v.get('role') != plan['role']:
@@ -298,19 +322,26 @@ def read_chart(reader,path):
     reader.last_generation={'attempts':[], 'recipe':REVIEW_RECIPE}
     # Re-localize once on crop disagreement; never accept the unchecked candidate.
     def stage(fn, name):
-        for attempt in range(2):
+        for attempt in range(1):
             try:
                 value = fn()
                 reader.last_generation.setdefault('completed_stages', {})[name] = value
                 return value
             except ValueError as e:
                 reader.last_generation.setdefault('stage_errors',[]).append({'stage':name,'error':str(e)})
-                if attempt: raise
-                print('[Structure] Re-localizing '+name+': '+str(e),flush=True)
+                reader.last_generation.setdefault('failed_stages', {})[name] = str(e)
+                print('[Structure] Unverified '+name+': '+str(e),flush=True)
+                return None
     title=stage(lambda:read_heading(reader,path),'heading')
     inv=stage(lambda:read_series(reader,path),'series')
-    x,xlabels,xticks=stage(lambda:read_axis(reader,path,'x'),'x_axis')
-    y,ylabels,_=stage(lambda:read_axis(reader,path,'y'),'y_axis')
+    xr=stage(lambda:read_axis(reader,path,'x'),'x_axis')
+    yr=stage(lambda:read_axis(reader,path,'y'),'y_axis')
+    failures=reader.last_generation.get('failed_stages', {})
+    if failures:
+        reader.last_generation['quality_status']='partial_unverified'
+        raise ValueError('Unverified fields: '+json.dumps(failures,ensure_ascii=False))
+    x,xlabels,xticks=xr
+    y,ylabels,_=yr
     orientation=('none' if inv['kind']=='pie' else 'matrix' if inv['kind']=='table' else
                  'horizontal' if x['role']=='numerical' and y['role'] in {'categorical','time'} else 'vertical')
     series=[{'name':s['name'],'color':s.get('color',''),'axis':b['axis'],'unit':b['unit']}

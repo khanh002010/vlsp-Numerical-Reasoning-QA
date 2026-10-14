@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from vinumqa.cv_module.grounded_review import heading, inventory, bindings, axis_plan, read_axis, read_chart
 from vinumqa.cv_module.repair_audited import repair, digest
@@ -86,8 +86,10 @@ class GroundedReviewTests(unittest.TestCase):
         def observe(path,prompt,box=None,**kw):
             nonlocal bad_first
             phase=kw['phase']
-            if phase in {'heading_location','heading_confirmation'}:
-                return {'role':'heading','title':'Metric','box':[0,0,1,.1]}
+            if phase == 'heading_text':
+                return {'role':'heading','title':'Metric'}
+            if phase.startswith('heading_box_'): return {'box':[0,0,1,.1]}
+            if phase.startswith('series_box_'): return {'box':[0,.9,.2,1]}
             if phase=='heading_pixels':return {'text':'Metric','readable':True}
             if phase=='series_inventory':return {'kind':'bar','series_complete':True,'series':[
                 {'name':'A','raw_text':'A','source':'legend','box':[0,.9,.2,1]}]}
@@ -110,8 +112,28 @@ class GroundedReviewTests(unittest.TestCase):
         self.assertEqual(result['x_labels'],['2022','2023'])
         self.assertTrue(result['x_labels_complete'])
         self.assertEqual(result['series'][0]['name'],'A')
-        self.assertEqual(reader.last_generation['stage_errors'][0]['stage'],'series')
+        self.assertEqual(sum(c.kwargs['phase']=='series_inventory' for c in reader._read.call_args_list),1)
+        self.assertEqual(sum(c.kwargs['phase'].startswith('series_box_') for c in reader._read.call_args_list),2)
         self.assertIn('not_human_verified',reader.last_generation['quality_status'])
+
+    def test_heading_failure_does_not_block_series_or_axes(self):
+        reader=Mock();reader.last_generation={}
+        with patch('vinumqa.cv_module.grounded_review.read_heading',side_effect=ValueError('bad title')), \
+             patch('vinumqa.cv_module.grounded_review.read_series',return_value={'saved':'series'}) as series, \
+             patch('vinumqa.cv_module.grounded_review.read_axis',return_value=({'role':'none'},[],[])) as axis:
+            with self.assertRaisesRegex(ValueError,'Unverified fields'):read_chart(reader,'image')
+        series.assert_called_once()
+        self.assertEqual(axis.call_count,2)
+        self.assertEqual(set(reader.last_generation['completed_stages']),{'series','x_axis','y_axis'})
+        self.assertEqual(reader.last_generation['quality_status'],'partial_unverified')
+
+    def test_fixed_frame_does_not_silently_reinterpret_wrong_numbers(self):
+        from vinumqa.cv_module.grounded_review import locate_text
+        reader=Mock();reader.last_generation={}
+        reader._read.return_value={'coordinate_system':'normalized_1','box':[458,26,700,46]}
+        with self.assertRaises(ValueError):locate_text(reader,'image','A','locate')
+        reader._read.return_value={'coordinate_system':'normalized_1000','box':[458,26,700,46]}
+        with self.assertRaisesRegex(ValueError,'requires normalized_1'):locate_text(reader,'image','A','locate')
 
     def test_repair_rereads_selected_ok_and_preserves_others_and_resumes(self):
         with tempfile.TemporaryDirectory() as d:

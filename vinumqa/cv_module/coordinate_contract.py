@@ -3,13 +3,11 @@ from copy import deepcopy
 from vinumqa.cv_module.structure import validate_box
 
 PROMPT = '''
-Coordinate contract: return a single JSON object. Add coordinate_system="normalized_1000"
-when returning boxes. In that system x and y range from 0 to 1000 relative to the
-ENTIRE image supplied in this call. Example: [100,200,900,300]. Locate actual text;
-never copy a full-image placeholder for an individual label.
-Alternatively declare coordinate_system="normalized_1" for coordinates 0..1.
-Pixel coordinates require coordinate_system="pixels" AND coordinate_size=[width,height]
-of the exact image coordinate frame you used. Never mix coordinate systems.
+For this call use ONLY coordinate_system="normalized_1": four decimal fractions
+[left,top,right,bottom], each between 0 and 1 relative to the whole supplied image.
+Example: [0.10,0.20,0.90,0.30]. Never output pixels or numbers such as 100 or 900.
+A box is a flat list of four numbers, not [[...]]. Do not use the full image as
+the box of an individual label. Return one JSON object with all required fields.
 '''
 
 
