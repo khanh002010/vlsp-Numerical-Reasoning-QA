@@ -18,6 +18,7 @@ from vinumqa.nlp_module.data_prep.incremental import write_json
 from vinumqa.nlp_module.inference.evidence_validation import validate_evidence
 from vinumqa.nlp_module.inference.semantic_validation import REVIEW_GUIDANCE, REVIEW_VERSION, structure_concerns
 from vinumqa.nlp_module.prompting import reviewed_context as add_source_review
+from vinumqa.nlp_module.inference.source_selection import VERSION as SOURCE_PLAN_VERSION, selection_prompt, validate_selection, plan_feedback
 
 
 DEFAULT_REVIEWED = Path(__file__).resolve().parents[1] / 'data' / 'reviewed_private_structures.json'
@@ -223,7 +224,8 @@ def inspect_queue(store, queue, image_dir, state, expired):
 
 def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previous_diagnostics=None,
                reviewed_structures=None, max_rounds=3, max_hours=10.5, generator_factory=None, store=None,
-               nlp_attempts=2, nlp_device='cuda:0', max_generation_seconds=120, progress_seconds=30):
+               nlp_attempts=2, nlp_device='cuda:0', max_generation_seconds=120, progress_seconds=30,
+               three_pass=False):
     if max_rounds < 1 or max_hours <= 0 or nlp_attempts < 1:
         raise ValueError("max_rounds and max_hours must be positive")
     if reviewed_structures is None and DEFAULT_REVIEWED.is_file():
@@ -242,7 +244,8 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                            (p.suffix in {".json", ".safetensors", ".jinja"} or p.name == "adapter_model.bin")) if adapter.exists() else []
     if generator_factory is None and not adapter_files:
         raise FileNotFoundError(f"Adapter files missing: {adapter}")
-    identity = digest({"data": data, "adapter": [(p.name, file_digest(p)) for p in adapter_files],
+    identity = digest({**({'source_selection': SOURCE_PLAN_VERSION} if three_pass else {}),
+        "data": data, "adapter": [(p.name, file_digest(p)) for p in adapter_files],
         "images": [(p.name, file_digest(p) if p.is_file() else None) for p in paths],
         "policy": REVIEW_VERSION, "instruction": INSTRUCTION, "review_guidance": REVIEW_GUIDANCE,
         "inspection": INSPECTION_VERSION,
@@ -314,7 +317,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
         invalidate_stale()
         export_outputs(output_dir, data, state, "prepared")
         for round_index in range(max_rounds):
-            queue, cache = [], {}
+            queue, cache, plan_cache = [], {}, {}
             if expired(): break
             for index, sample in enumerate(data, 1):
                 if expired(): break
@@ -331,6 +334,35 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     feedback = "\n\n### Validation feedback\n" + json.dumps({
                         "previous_program": prior.get("program", ""), "errors": prior_check["errors"]}, ensure_ascii=False)
                 reviewed_context = add_source_review(context, sample.get('tables', {}))
+                selection = None
+                if three_pass:
+                    plan_prompt = selection_prompt(reviewed_context, sample['qa']['question'], ', '.join(images))
+                    if generator is None:
+                        store.close()
+                        generator = generator_factory()
+                    print(f'[NLP source selection {index}/{len(data)}] {qid}', flush=True)
+                    if plan_prompt not in plan_cache:
+                        plan_cache[plan_prompt] = generator.generate_with_prompt(
+                            plan_prompt, response_format='source_plan', max_new_tokens=512)
+                    selection = dict(plan_cache[plan_prompt])
+                    if fatal_runtime_error(selection.get('error', '')):
+                        raise RuntimeError(selection['error'])
+                    plan = selection.get('source_plan', {})
+                    errors = validate_selection(plan, sample, charts, reviewed_context)
+                    if selection.get('termination') != 'eos' or selection.get('error'):
+                        errors.append(selection.get('error') or 'Source selection did not finish at EOS')
+                    selection['validation_errors'] = errors
+                    if isinstance(plan, dict) and plan.get('cv_request') and not selection.get('error') and selection.get('termination') == 'eos':
+                        prediction = {'cv_request': plan['cv_request'], 'program': '', 'termination': 'eos'}
+                        check = check_prediction(prediction, sample, charts)
+                        if check['cv_requests']:
+                            state['records'][qid] = {**prediction, 'valid': False, 'source_selection': selection,
+                                'source_digest': context_digest, 'evidence_validation': check, 'status': 'needs_review'}
+                            queue.append((sample, check['cv_requests']))
+                            export_outputs(output_dir, data, state, f'nlp_round_{round_index+1}')
+                            continue
+                    reviewed_context += plan_feedback(plan, errors)
+                    if expired(): break
                 prompt = build_prompt(reviewed_context + feedback,
                                       sample["qa"]["question"], ", ".join(images))
                 print(f"[NLP round {round_index+1}/{max_rounds} {index}/{len(data)}] {qid}: START", flush=True)
@@ -341,7 +373,8 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                 history = list(old.get("repair_history", []))
                 initial_prompt = prompt
                 attempt_signatures = set()
-                for attempt in range(nlp_attempts):
+                attempt_limit = min(nlp_attempts, 2) if three_pass else nlp_attempts
+                for attempt in range(attempt_limit):
                     try:
                         prediction = dict(cache[initial_prompt]) if cached else generator.generate_with_prompt(prompt)
                         if fatal_runtime_error(prediction.get('error', '')):
@@ -366,7 +399,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     if round_index + 1 < max_rounds and needs_cv_before_retry(prediction, check, charts):
                         print('  [NLP -> CV queue] Missing evidence in incomplete structure; defer NLP retry until CV review.', flush=True)
                         break
-                    if expired() or attempt + 1 == nlp_attempts:
+                    if expired() or attempt + 1 == attempt_limit:
                         break
                     feedback = '\n\n### Repair attempt\n' + json.dumps({
                         'attempt': len(history), 'previous_program': prediction.get('program'),
@@ -375,6 +408,7 @@ def run_repair(input_path, image_dir, adapter, store_path, output_dir, *, previo
                     prompt = build_prompt(reviewed_context + feedback, sample['qa']['question'], ', '.join(images))
                     print(f"  [NLP repair {attempt+1}/{nlp_attempts}] {check['errors'][:2]}", flush=True)
                 state["records"][qid] = {**prediction, "valid": check["valid"], "cache_hit": cached,
+                    **({'source_selection': selection} if three_pass else {}),
                     "source_digest": context_digest, "evidence_validation": check, "unavailable_images": missing,
                     "repair_history": history, "status": "accepted" if check["valid"] else "needs_review"}
                 queue.append((sample, check["cv_requests"]))
@@ -421,6 +455,7 @@ def main():
     parser.add_argument("--max-rounds", type=int, default=3)
     parser.add_argument("--max-hours", type=float, default=10.5)
     parser.add_argument('--nlp-attempts', type=int, default=2)
+    parser.add_argument('--three-pass', action='store_true', help='Select sources (512 tokens), generate, then repair once if needed; use a new output directory')
     parser.add_argument('--nlp-device', default='cuda:0', help='cuda:0 (one GPU), cuda:1, auto (dispatch), or cpu')
     parser.add_argument('--max-generation-seconds', type=float, default=120, help='Soft limit per generation; cannot interrupt a blocked CUDA forward')
     parser.add_argument('--progress-seconds', type=float, default=30, help='CPU heartbeat interval during generation')
@@ -429,7 +464,7 @@ def main():
                         previous_diagnostics=args.previous_diagnostics, reviewed_structures=args.reviewed_structures,
                         max_rounds=args.max_rounds, max_hours=args.max_hours, nlp_attempts=args.nlp_attempts,
                         nlp_device=args.nlp_device, max_generation_seconds=args.max_generation_seconds,
-                        progress_seconds=args.progress_seconds)
+                        progress_seconds=args.progress_seconds, three_pass=args.three_pass)
     if not result["complete"]:
         print("Unresolved predictions remain; rerun the same command to resume, inspect diagnostics before submitting.", flush=True)
         raise SystemExit(2)

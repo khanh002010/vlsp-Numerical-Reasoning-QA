@@ -7,12 +7,19 @@ import re
 
 from vinumqa.cv_module.structure import validate_box, validate_structure
 from vinumqa.cv_module.structure_grounding import key, REVIEW_RECIPE
+from vinumqa.cv_module.coordinate_contract import PROMPT as COORDINATE_PROMPT, normalize_observation
 
 
 def observe(reader, path, prompt, validator, phase, budget=1024, box=None):
     from vinumqa.cv_module.reviewed_reader import checked_read
-    return checked_read(reader, path, prompt, validator=validator, phase=phase,
-                        budgets=(budget,), box=box)
+    def validate_normalized(value):
+        validator(normalize_observation(value))
+    value = checked_read(reader, path, prompt + COORDINATE_PROMPT,
+                         validator=validate_normalized, phase=phase, budgets=(budget,), box=box)
+    normalized = normalize_observation(value)
+    reader.last_generation.setdefault('observations', []).append(
+        {'phase': phase, 'value': normalized, 'status': 'schema_checked_not_accuracy_verified'})
+    return normalized
 
 
 def text(value, field, empty=False):
@@ -292,7 +299,10 @@ def read_chart(reader,path):
     # Re-localize once on crop disagreement; never accept the unchecked candidate.
     def stage(fn, name):
         for attempt in range(2):
-            try: return fn()
+            try:
+                value = fn()
+                reader.last_generation.setdefault('completed_stages', {})[name] = value
+                return value
             except ValueError as e:
                 reader.last_generation.setdefault('stage_errors',[]).append({'stage':name,'error':str(e)})
                 if attempt: raise

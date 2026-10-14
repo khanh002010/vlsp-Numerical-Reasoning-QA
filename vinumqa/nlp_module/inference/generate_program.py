@@ -124,28 +124,30 @@ class ProgramGenerator:
         prompt = self._build_prompt(context_text, markdown_table, images_available_str, question)
         return self.generate_with_prompt(prompt)
 
-    def generate_with_prompt(self, prompt: str) -> dict:
+    def generate_with_prompt(self, prompt: str, *, response_format='program', max_new_tokens=1536) -> dict:
         """
         Generate a reasoning program directly from a raw prompt string.
         """
+        if response_format not in {'program', 'source_plan'} or max_new_tokens < 1:
+            raise ValueError('Invalid generation format or token budget')
         if self.model is None:
             print("[ERROR] Model not loaded. Cannot generate.")
             return {"error": "Model not loaded", "extracted_values": "", "program": ""}
 
         inputs = self.tokenizer(prompt, return_tensors="pt", add_special_tokens=False).to(self.model.get_input_embeddings().weight.device)
         limit = getattr(self.model.config, "max_position_embeddings", 32768)
-        if inputs.input_ids.shape[1] + 1536 > limit:
+        if inputs.input_ids.shape[1] + max_new_tokens > limit:
             return {"error": "Prompt exceeds model context budget", "program": "", "extracted_values": ""}
 
         # Build logits_processor list
         logits_processor = []
-        if self.use_constrained_decoding and self.dsl_processor is not None:
+        if response_format == 'program' and self.use_constrained_decoding and self.dsl_processor is not None:
             self.dsl_processor.reset(inputs.input_ids.shape[1])
             logits_processor.append(self.dsl_processor)
 
         started = time.monotonic()
         prompt_tokens = inputs.input_ids.shape[1]
-        print(f'[NLP generate] prompt_tokens={prompt_tokens}; max_new_tokens=1536; '
+        print(f'[NLP generate] format={response_format}; prompt_tokens={prompt_tokens}; max_new_tokens={max_new_tokens}; '
               f'soft_time_limit={self.max_generation_seconds}s; device={self.device}', flush=True)
         try:
             precision = torch.autocast("cuda", dtype=torch.float16) if self.device.startswith('cuda') else nullcontext()
@@ -153,7 +155,7 @@ class ProgramGenerator:
             with progress, torch.inference_mode(), precision:
                 outputs = self.model.generate(
                     **inputs,
-                    max_new_tokens=1536,
+                    max_new_tokens=max_new_tokens,
                     pad_token_id=self.tokenizer.pad_token_id,
                     do_sample=False,
                     logits_processor=logits_processor,
@@ -169,7 +171,14 @@ class ProgramGenerator:
             # Always log raw output for diagnosis
             print(f"[DEBUG] Raw model output (first 300 chars): {repr(response_text[:300])}", flush=True)
 
-            result = self._parse_response(response_text)
+            if response_format == 'source_plan':
+                from vinumqa.nlp_module.inference.source_selection import parse_selection
+                try:
+                    result = {'source_plan': parse_selection(response_text), 'raw_output': response_text}
+                except (ValueError, TypeError) as error:
+                    result = {'error': 'Invalid source plan: ' + str(error), 'raw_output': response_text}
+            else:
+                result = self._parse_response(response_text)
             result["prompt_sha256"] = hashlib.sha256(prompt.encode()).hexdigest()
             result["generated_tokens"] = outputs.shape[1] - inputs.input_ids.shape[1]
             result['prompt_tokens'] = prompt_tokens

@@ -23,9 +23,8 @@ REPO = Path('/kaggle/working/vlsp-Numerical-Reasoning-QA')
 REFERENCE = REPO / 'reports/ocr_pilot10/pixel_references.json'
 assert REFERENCE.is_file(), 'Cần đồng bộ code và reference pilot10 mới lên Kaggle.'
 
-# Giữ PILOT10 khi chạy lại cell trong cùng phiên để tiếp tục store hiện tại.
-if 'PILOT10' not in globals():
-    PILOT10 = Path('/kaggle/working') / ('ocr_pilot10_' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'))
+# Thư mục mới cho contract tọa độ v5; không dùng store pilot v4.
+PILOT10 = Path('/kaggle/working/ocr_pilot10_coordinates_v5')
 print('Output:', PILOT10, flush=True)
 
 env = dict(os.environ, CUDA_VISIBLE_DEVICES='0', PYTHONUNBUFFERED='1')

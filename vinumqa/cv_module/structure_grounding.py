@@ -2,7 +2,7 @@
 import re
 import unicodedata
 
-REVIEW_RECIPE = 'region-evidence-v4'
+REVIEW_RECIPE = 'region-evidence-v5-explicit-coordinates'
 
 
 def key(value):
