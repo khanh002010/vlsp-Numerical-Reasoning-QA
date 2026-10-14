@@ -14,7 +14,9 @@ OUT = Path('/kaggle/working/ocr_pilot10_paddle_qwen_v1')
 assert REPO.is_dir(), 'Clone repo vao /kaggle/working/vlsp-Numerical-Reasoning-QA truoc.'
 assert (REPO/'reports/ocr_pilot10/pixel_references.json').is_file()
 OUT.mkdir(parents=True, exist_ok=True)
-env = dict(os.environ, PYTHONUNBUFFERED='1', CUDA_VISIBLE_DEVICES='0')
+env = dict(os.environ, PYTHONUNBUFFERED='1')
+# Respect an explicit device selection; otherwise allow device_map=auto to use
+# all GPUs Kaggle exposes instead of hiding the second T4.
 subprocess.run([sys.executable, '-c',
     'import torch; from transformers.utils import is_bitsandbytes_available; '
     'assert torch.cuda.is_available(), "Enable Kaggle GPU"; '

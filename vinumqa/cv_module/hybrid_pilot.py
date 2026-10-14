@@ -25,6 +25,12 @@ def tokens_from_result(result, width, height):
     return tokens
 
 
+def prompt_tokens(tokens):
+    """Keep every ID/text; compact geometry only in the model prompt, not artifacts."""
+    rows = [[t['id'], t['text'], *[round(float(v), 4) for v in t['box']]] for t in tokens]
+    return json.dumps(rows, ensure_ascii=False, separators=(',', ':'))
+
+
 def build_structure(plan, tokens):
     """Text is assembled ONLY from selected OCR IDs; Qwen supplies relationships."""
     from vinumqa.cv_module.structure import validate_structure
@@ -116,7 +122,9 @@ Return ONE JSON object with ALL these fields:
 kind: line/bar/mixed/pie/table/unknown; orientation: vertical/horizontal/none/matrix;
 axis type: time/categorical/numerical/none/unknown. series_source: legend/title/unknown.
 IDs in the example are placeholders. Unit IDs must reference printed units, not tick numbers.
-No question, answer or numerical computation is required. OCR candidates:
+No question, answer or numerical computation is required.
+Each OCR candidate is [id,text,left,top,right,bottom]; coordinates are normalized 0..1.
+OCR candidates:
 '''
     try:
         for i,name in enumerate(names,1):
@@ -125,11 +133,13 @@ No question, answer or numerical computation is required. OCR candidates:
             sha=hashlib.sha256((args.images/name).read_bytes()).hexdigest()
             if sha!=data['source_sha256']: raise ValueError('Stale OCR: '+name)
             record={'image':name,'sha256':sha,'status':'error'}
+            candidates=prompt_tokens(data['tokens'])
+            print(f'  OCR candidates: {len(data["tokens"])} regions, {len(candidates)} characters',flush=True)
             reader.last_generation={'attempts':[]}
             started=time.monotonic();feedback=''
             for attempt in range(2):
                 try:
-                    plan=reader._read(str(args.images/name),prompt+json.dumps(data['tokens'],ensure_ascii=False)+feedback,
+                    plan=reader._read(str(args.images/name),prompt+candidates+feedback,
                                       budgets=(2048,),reset=False,phase='ocr_role_assignment')
                     record['role_assignment']=plan
                     structure=build_structure(plan,data['tokens'])

@@ -1,8 +1,21 @@
 import unittest
-from vinumqa.cv_module.hybrid_pilot import tokens_from_result, build_structure
+from vinumqa.cv_module.hybrid_pilot import tokens_from_result, build_structure, prompt_tokens
+import json
+from copy import deepcopy
 
 
 class HybridTests(unittest.TestCase):
+    def test_prompt_compaction_preserves_text_and_artifact(self):
+        tokens=[{'id':7,'text':'Doanh thu 2026F; 12,34%', 'score':0.987654321,
+                 'box':[0.123456789,0.234567891,0.345678912,0.456789123]}]
+        original=deepcopy(tokens)
+        compact=prompt_tokens(tokens)
+        row=json.loads(compact)[0]
+        self.assertEqual(row[:2],[7,tokens[0]['text']])
+        self.assertTrue(all(abs(a-b)<=0.00005 for a,b in zip(row[2:],tokens[0]['box'])))
+        self.assertEqual(tokens,original)
+        self.assertLess(len(compact),len(json.dumps(tokens,ensure_ascii=False)))
+
     def test_paddle_coordinates_and_alignment(self):
         raw={'res':{'rec_texts':['A'],'rec_scores':[.9],'rec_polys':[[[10,20],[30,20],[30,40],[10,40]]]}}
         tokens=tokens_from_result(raw,100,200)
