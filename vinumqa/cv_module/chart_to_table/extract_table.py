@@ -49,16 +49,22 @@ class ChartToTableExtractor:
         attention = select_attention_backend(capabilities, is_flash_attn_2_available())
         print(f"OCR attention backend: {attention}; GPU capabilities: {capabilities}", flush=True)
         model_directory = resolve_model_directory(model_id)
-        self.processor = AutoProcessor.from_pretrained(
-            model_directory, min_pixels=4 * 28 * 28, max_pixels=self.max_pixels, local_files_only=True)
         config = AutoConfig.from_pretrained(model_directory, local_files_only=True)
-        if config.model_type == 'qwen2_5_vl':
+        processor_options = {'min_pixels': 4 * 28 * 28, 'max_pixels': self.max_pixels}
+        if config.model_type == 'qwen3_vl':
+            from transformers import Qwen3VLForConditionalGeneration
+            model_class = Qwen3VLForConditionalGeneration
+            processor_options = {'size': {'shortest_edge': 4 * 32 * 32,
+                                          'longest_edge': self.max_pixels}}
+        elif config.model_type == 'qwen2_5_vl':
             from transformers import Qwen2_5_VLForConditionalGeneration
             model_class = Qwen2_5_VLForConditionalGeneration
         elif config.model_type == 'qwen2_vl':
             model_class = Qwen2VLForConditionalGeneration
         else:
             raise ValueError(f'Unsupported OCR architecture: {config.model_type}')
+        self.processor = AutoProcessor.from_pretrained(
+            model_directory, local_files_only=True, **processor_options)
         quantization = {}
         if load_in_4bit:
             from transformers import BitsAndBytesConfig
