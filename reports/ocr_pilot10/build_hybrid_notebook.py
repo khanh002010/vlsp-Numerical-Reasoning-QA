@@ -20,12 +20,10 @@ subprocess.run([sys.executable, '-c',
     'assert torch.cuda.is_available(), "Enable Kaggle GPU"; '
     'assert is_bitsandbytes_available(), "bitsandbytes unavailable"'], check=True, env=env)
 
-# Isolate Paddle packages from the working Qwen/PyTorch environment.
-VENV = Path('/kaggle/working/paddle_ocr_cpu_env')
-if not (VENV/'bin/python').exists():
-    subprocess.run([sys.executable, '-m', 'venv', str(VENV)], check=True)
-PPY = str(VENV/'bin/python')
-subprocess.run([PPY, '-m', 'pip', 'install', 'paddlepaddle', 'paddleocr>=3,<4', 'Pillow'], check=True)
+# Kaggle images may omit ensurepip, so do not create a virtualenv. Install the
+# CPU OCR packages into the notebook environment and run Paddle on CPU.
+PPY = sys.executable
+subprocess.run([PPY, '-m', 'pip', 'install', '-q', 'paddlepaddle', 'paddleocr>=3,<4', 'Pillow'], check=True)
 '''
 cell+='\nRUNNER = '+repr(runner)+'\n'
 cell+='''
