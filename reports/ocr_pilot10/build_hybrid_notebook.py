@@ -44,4 +44,10 @@ notebook={'nbformat':4,'nbformat_minor':5,'metadata':{'kernelspec':{'display_nam
           'cells':[{'cell_type':'code','id':'paddle-qwen-pilot','execution_count':None,'metadata':{},'outputs':[],'source':cell.splitlines(True)}]}
 target=Path(__file__).parent/'paddle_qwen_one_cell.ipynb'
 target.write_text(json.dumps(notebook,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+# Also emit a plain Python cell. Kaggle users who paste/upload the .ipynb as a
+# code cell would execute JSON (`null`, `true`, ...) and get NameError; the .py
+# file is safe to paste directly into one code cell.
+plain=Path(__file__).parent/'paddle_qwen_one_cell.py'
+plain.write_text(cell,encoding='utf-8')
 print(target)
+print(plain)
