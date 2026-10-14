@@ -68,10 +68,14 @@ def main():
         from paddleocr import PaddleOCR
         from importlib.metadata import version
         # Documented native pipeline, explicit v5 + Vietnamese. CPU avoids changing CUDA packages.
-        engine=PaddleOCR(ocr_version='PP-OCRv5',lang='vi',device='cpu',
+        # Avoid the oneDNN PIR ArrayAttribute conversion failure on Kaggle CPUs.
+        # Set the pipeline option explicitly so all detection/recognition models inherit it.
+        print('[Paddle OCR] CPU inference; enable_mkldnn=False',flush=True)
+        engine=PaddleOCR(ocr_version='PP-OCRv5',lang='vi',device='cpu',enable_mkldnn=False,
             use_doc_orientation_classify=False,use_doc_unwarping=False,use_textline_orientation=False)
         write_json(out/'ocr_environment.json',{'paddleocr':version('paddleocr'),
-            'paddlepaddle':version('paddlepaddle'),'ocr_version':'PP-OCRv5','lang':'vi','device':'cpu'})
+            'paddlepaddle':version('paddlepaddle'),'ocr_version':'PP-OCRv5','lang':'vi','device':'cpu',
+            'enable_mkldnn':False})
         for i,name in enumerate(names,1):
             print(f'[Paddle OCR {i}/10] {name}',flush=True)
             folder=out/'ocr'/Path(name).stem;folder.mkdir(parents=True,exist_ok=True)
